@@ -15,11 +15,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { AddCustomerComponent } from './add-customer/add-customer.component';
 
 
 @NgModule({
   declarations: [
-    ManageCustomersComponent
+    ManageCustomersComponent,
+    AddCustomerComponent
   ],
   imports: [
     CommonModule,
