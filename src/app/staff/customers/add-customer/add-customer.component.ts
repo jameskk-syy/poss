@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ManageCustomersComponent } from '../manage-customers/manage-customers.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-customer',
@@ -7,9 +10,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddCustomerComponent implements OnInit {
 
-  constructor() { }
+  customerRegirstartionForm: FormGroup
+
+
+  constructor(
+    private fb: FormBuilder,
+    public dialogRef: MatDialogRef<ManageCustomersComponent>,
+    
+  ) { }
 
   ngOnInit(): void {
+
+
+    this.customerRegirstartionForm = this.fb.group({
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      contact: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+    });
+
   }
 
 }
