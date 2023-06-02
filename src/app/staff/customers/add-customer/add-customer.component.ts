@@ -10,7 +10,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class AddCustomerComponent implements OnInit {
 
-  customerRegirstartionForm: FormGroup
+  customerRegistrationForm: FormGroup
 
 
   constructor(
@@ -22,7 +22,7 @@ export class AddCustomerComponent implements OnInit {
   ngOnInit(): void {
 
 
-    this.customerRegirstartionForm = this.fb.group({
+    this.customerRegistrationForm = this.fb.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       contact: ['', [Validators.required]],

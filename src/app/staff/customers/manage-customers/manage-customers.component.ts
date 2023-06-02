@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -21,16 +21,22 @@ export class ManageCustomersComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     "customerno",
-    "name",
+    "firstName",
+    "lastName",
+    "contact",  
     "address",
-    "contact",
     "status",
     'action',
   ];
 
-  constructor() { }
+  constructor(
+    private fb:FormBuilder
+  ) { }
 
   ngOnInit(): void {
+    this.filterform= this.fb.group({
+      customer_no: [""],
+    })
   }
 
 
@@ -42,12 +48,12 @@ export class ManageCustomersComponent implements OnInit {
 
   }
 
-  filterFarmers(){
+  filterCustomers(){
 
   }
 
-  getFarmerByFarmerNo(){
-
+  getCustomerByCustomerNo(){
+    let farmerNo=this.filterform.value.farmer_no
   }
 
   editCall(){
@@ -67,7 +73,7 @@ export class ManageCustomersComponent implements OnInit {
   }
 
   farmerDetailsCall(){
-    
+
   }
 
 }
