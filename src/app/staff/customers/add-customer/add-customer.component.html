@@ -27,8 +27,8 @@
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>First Name</mat-label>
-                                    <input matInput formControlName="firstName" required />
-                                    <mat-error *ngIf="customerRegistrationForm.get('firstName').hasError('required')">
+                                    <input matInput formControlName="firstname" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('firstname').hasError('required')">
                                         firstName name is required
                                     </mat-error>
                                 </mat-form-field>
@@ -36,8 +36,8 @@
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Last Name</mat-label>
-                                    <input matInput formControlName="lastName" required />
-                                    <mat-error *ngIf="customerRegistrationForm.get('lastName').hasError('required')">
+                                    <input matInput formControlName="lastname" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('lastname').hasError('required')">
                                         lastName name is required
                                     </mat-error>
                                 </mat-form-field>
@@ -67,7 +67,7 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            
+
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Address</mat-label>

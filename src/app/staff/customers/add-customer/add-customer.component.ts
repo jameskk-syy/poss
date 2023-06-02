@@ -4,6 +4,7 @@ import { ManageCustomersComponent } from '../manage-customers/manage-customers.c
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CustomersService } from '../services/customers.service';
 import { Subscription } from 'rxjs';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 
 @Component({
   selector: 'app-add-customer',
@@ -21,6 +22,7 @@ export class AddCustomerComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private snackBar: SnackbarService,
     private customerService: CustomersService,
     public dialogRef: MatDialogRef<ManageCustomersComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -30,8 +32,8 @@ export class AddCustomerComponent implements OnInit {
 
 
     this.customerRegistrationForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+      firstname: ['', [Validators.required]],
+      lastname: ['', [Validators.required]],
       contact: ['', [Validators.required]],
       address: ['', [Validators.required]],
       routeFk: ['', [Validators.required]],
@@ -42,6 +44,21 @@ export class AddCustomerComponent implements OnInit {
 
 
   onSubmit(){
+
+    this.isLoading = true
+
+    this.subscription = this.customerService.addCustomer(this.customerRegistrationForm.value)
+    .subscribe((res)=> {
+      this.snackBar.showNotification('snackbar-success', 'Successful!');
+          this.isLoading = false;
+          this.customerRegistrationForm.reset();
+          this.dialogRef.close();
+    }, 
+    (err)=> {
+      this.isLoading = false;
+      this.snackBar.showNotification('snackbar-danger', err);
+      this.dialogRef.close();
+    })
 
   }
 
