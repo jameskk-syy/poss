@@ -107,28 +107,28 @@
                                         *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="customerno">
+                                <ng-container matColumnDef="customerNO">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Customer No.
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{row.customerno}}
+                                        {{row.customerNO}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="firstName">
+                                <ng-container matColumnDef="firstname">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">First Name
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{row.firstName}}
+                                        {{row.firstname}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="lastName">
+                                <ng-container matColumnDef="lastname">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
                                         Last name</mat-header-cell>
                                     <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{row.lastName}}
+                                        {{row.lastname}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="contact">
