@@ -16,12 +16,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
+import { DeleteCustomerComponent } from './delete-customer/delete-customer.component';
 
 
 @NgModule({
   declarations: [
     ManageCustomersComponent,
-    AddCustomerComponent
+    AddCustomerComponent,
+    DeleteCustomerComponent
   ],
   imports: [
     CommonModule,

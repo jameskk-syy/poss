@@ -40,6 +40,9 @@ export class CustomersService {
     return this.http.get(`${environment.apiUrl}/api/v1/customer/customer/status?status=${status}`)
   }
 
+  public deleteCustomer(id: any): Observable<any>{
+    return this.http.delete(`${environment.apiUrl}/api/v1/customer/delete/${id}`)
+  }
 
   public fetchRoutes(): Observable<any>{
     return this.http.get(`${environment.apiUrl}/api/v1/routes/get`)
