@@ -59,6 +59,12 @@ const routes: Routes = [
         (m) => m.InventoryModule
       ),
   },
+  {
+    path: 'customers', 
+    loadChildren: () => 
+    import('./customers/customers.module').then
+    (m => m.CustomersModule)
+  },
 ];
 
 @NgModule({
