@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ManageCustomersComponent } from '../manage-customers/manage-customers.component';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-customer',
@@ -12,11 +12,12 @@ export class AddCustomerComponent implements OnInit {
 
   customerRegistrationForm: FormGroup
 
+  isLoading: boolean = false
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ManageCustomersComponent>,
-    
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit(): void {
@@ -28,7 +29,15 @@ export class AddCustomerComponent implements OnInit {
       contact: ['', [Validators.required]],
       address: ['', [Validators.required]],
     });
+  }
 
+
+  onSubmit(){
+
+  }
+
+  onCancel(){
+    this.dialogRef.close()
   }
 
 }

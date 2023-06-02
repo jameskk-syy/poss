@@ -162,22 +162,22 @@
                                         [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, row)">
                                         <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
                                             (click)="editCall(row)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="Edit farmer"
+                                            <app-feather-icons matTooltip="Edit Customer"
                                                 [icon]="'edit'"></app-feather-icons>
                                         </button>
                                         <button mat-icon-button color="accent" (click)="$event.stopPropagation()"
                                             (click)="deleteCall(farmer)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="Delete farmer" [icon]="'trash-2'"
+                                            <app-feather-icons matTooltip="Delete Customer" [icon]="'trash-2'"
                                                 [class]="'tbl-fav-delete'"></app-feather-icons>
                                         </button>
                                         <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                            (click)="viewFarmerDetails(farmer)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="View Farmer Details" [icon]="'eye'"
+                                            (click)="viewCustomerDetails(customer)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="View Customer Details" [icon]="'eye'"
                                                 [class]="'tbl-fav-eye'"></app-feather-icons>
                                         </button>
                                         <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                            (click)="viewFarmerCollections(farmer)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="View Delivery Statements" [icon]="'book'"
+                                            (click)="viewCustomerPurchases(customer)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="View Purchase Statements" [icon]="'book'"
                                                 [class]="'tbl-fav-eye'"></app-feather-icons>
                                         </button>
                                     </mat-cell>
@@ -186,7 +186,7 @@
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                 <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                                 <mat-row *matRowDef="let row; columns: displayedColumns"
-                                    (click)="farmerDetailsCall(farmer)" [style.cursor]="'pointer'" matRipple>
+                                    (click)="customerDetailsCall(customer)" [style.cursor]="'pointer'" matRipple>
                                 </mat-row>
                                 <mat-cell *matNoDataRow colspan="4">
                                     No data matching the filter "{{ input.value }}"</mat-cell>

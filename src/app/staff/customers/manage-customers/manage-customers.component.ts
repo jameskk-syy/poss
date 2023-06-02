@@ -5,6 +5,8 @@ import { CustomersService } from '../services/customers.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AddCustomerComponent } from '../add-customer/add-customer.component';
 
 @Component({
   selector: 'app-manage-customers',
@@ -41,7 +43,8 @@ export class ManageCustomersComponent implements OnInit {
   ];
 
   constructor(
-    private fb: FormBuilder, private customerservice: CustomersService
+    private fb: FormBuilder, private customerservice: CustomersService,
+    private dialog: MatDialog
   ) { }
 
   applyFilter(event: Event) {
@@ -89,7 +92,18 @@ export class ManageCustomersComponent implements OnInit {
   }
 
   addCall() {
+    const dialogConfig = new MatDialogConfig()
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "1000px"
+    dialogConfig.data = {
+      customer: ""
+    }
 
+    const dialogRef = this.dialog.open(AddCustomerComponent, dialogConfig)
+    dialogRef.afterClosed().subscribe((res)=> {
+      this.getData()
+    })
   }
 
   filterCustomers() {
@@ -108,15 +122,15 @@ export class ManageCustomersComponent implements OnInit {
 
   }
 
-  viewFarmerDetails() {
+  viewCustomerDetails() {
 
   }
 
-  viewFarmerCollections() {
+  viewCustomerPurchases() {
 
   }
 
-  farmerDetailsCall() {
+  customerDetailsCall() {
 
   }
 
