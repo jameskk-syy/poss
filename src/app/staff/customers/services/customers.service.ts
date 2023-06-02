@@ -41,4 +41,8 @@ export class CustomersService {
   }
 
 
+  public fetchRoutes(): Observable<any>{
+    return this.http.get(`${environment.apiUrl}/api/v1/routes/get`)
+  }
+
 }
