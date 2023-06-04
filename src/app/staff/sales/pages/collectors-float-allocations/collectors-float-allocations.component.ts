@@ -110,6 +110,7 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
       }
       else {
         this.isdata = false;
+        this.isLoading = false;
         this.milkDatasource = new MatTableDataSource<any>(null);
       }
     })
