@@ -10,6 +10,7 @@ import { SalesService } from '../../services/sales.service';
 import { DeleteFloatAllocationComponent } from '../delete-float-allocation/delete-float-allocation.component';
 import { EditFloatAllocationComponent } from '../edit-float-allocation/edit-float-allocation.component';
 import { FloatAllocationComponent } from '../float-allocation/float-allocation.component';
+import { MilkAllocationComponent } from '../milk-allocation/milk-allocation.component';
 
 @Component({
   selector: 'app-collectors-float-allocations',
@@ -37,14 +38,26 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.floatDatasource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    if (this.floatDatasource.paginator) {
+      this.floatDatasource.paginator.firstPage();
     }
   }
 
-  dataSource!: MatTableDataSource<any>;
+
+  applyMilkAllocationFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.milkDatasource.filter = filterValue.trim().toLowerCase();
+
+    if (this.milkDatasource.paginator) {
+      this.milkDatasource.paginator.firstPage();
+    }
+  }
+
+
+  milkDatasource!: MatTableDataSource<any>;
+ floatDatasource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild("filter", { static: true }) filter: ElementRef;
@@ -55,6 +68,27 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
   ngOnInit(): void {
     this.getData();
   }
+
+
+  //MILK ALLOCATION
+
+  addMilkAllocationCall(){
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "40%"
+    dialogConfig.data = {
+      test: ""
+    }
+    this.dialog.open(MilkAllocationComponent, dialogConfig)
+
+  }
+
+
+
+  // Float allocation
+
   getData() {
     this.isLoading = true;
     this.service.getCollectorAllocations().subscribe(res => {
@@ -63,13 +97,13 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
         this.isLoading = false;
         this.isdata = true;
         // Binding with the datasource
-        this.dataSource = new MatTableDataSource(this.data.entity);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        this.floatDatasource = new MatTableDataSource(this.data.entity);
+        this.floatDatasource.paginator = this.paginator;
+        this.floatDatasource.sort = this.sort;
       }
       else {
         this.isdata = false;
-        this.dataSource = new MatTableDataSource<any>(null);
+        this.floatDatasource = new MatTableDataSource<any>(null);
       }
     })
   }

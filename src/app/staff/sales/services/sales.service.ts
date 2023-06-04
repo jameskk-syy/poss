@@ -146,4 +146,14 @@ export class SalesService {
     return this.http.get(`${environment.apiUrl}/api/v1/payments/records`, httpOptions);
   }
 
+  fetchSalesPersons(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/admin/api/v1/users/users-by-role-name?roleName=SALES_PERSON`, httpOptions);
+  }
+
+  addMilkAllocation(data: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/v1/milk_allocation/add`, data, httpOptions);
+  }
+
+  
+
 }
