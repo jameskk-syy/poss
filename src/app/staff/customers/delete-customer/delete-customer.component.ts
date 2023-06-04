@@ -3,6 +3,7 @@ import { ManageCustomersComponent } from '../manage-customers/manage-customers.c
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { CustomersService } from '../services/customers.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-delete-customer',
@@ -12,6 +13,9 @@ import { CustomersService } from '../services/customers.service';
 export class DeleteCustomerComponent implements OnInit {
 
   customer: any
+  isloading: boolean = false
+
+  subscription: Subscription
 
   constructor(
     public dialogRef: MatDialogRef<ManageCustomersComponent>,
@@ -21,6 +25,26 @@ export class DeleteCustomerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log("Customer Details,", this.data.customer)
+    this.customer = this.data.customer.firstname + " " + this.data.customer.lastname
+  }
+
+  onDelete(){
+    this.subscription = this.customerService.deleteCustomer(this.data.customer.id)
+    .subscribe((res)=> {
+      this.isloading = true;
+      this.snackbar.showNotification("snackbar-success", "Successful!");
+      this.dialogRef.close();
+    },
+    (err)=> {
+      this.isloading = false;
+      this.snackbar.showNotification("snackbar-danger", err);
+      this.dialogRef.close();
+    })
+  }
+
+  onCancel(){
+    this.dialogRef.close()
   }
 
 }

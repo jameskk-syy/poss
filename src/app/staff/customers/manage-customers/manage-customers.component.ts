@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddCustomerComponent } from '../add-customer/add-customer.component';
+import { DeleteCustomerComponent } from '../delete-customer/delete-customer.component';
 
 @Component({
   selector: 'app-manage-customers',
@@ -74,7 +75,6 @@ export class ManageCustomersComponent implements OnInit {
 
       this.isLoading = false
       if (res.entity.length > 0) {
-        console.log("Customers Details Response", res.entity)
         this.isdata = true
         // Binding with the datasource
         this.dataSource = new MatTableDataSource(res.entity);
@@ -82,7 +82,6 @@ export class ManageCustomersComponent implements OnInit {
         this.dataSource.sort = this.sort;
 
       } else {
-        console.log("Customers Details Response::: No Collection", res.entity)
         this.isLoading = false
         this.isdata = false
         this.dataSource = new MatTableDataSource<any>(this.data);
@@ -118,8 +117,19 @@ export class ManageCustomersComponent implements OnInit {
 
   }
 
-  deleteCall() {
+  deleteCall(data: any) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "40%"
+    dialogConfig.data = {
+      customer: data
+    }
 
+    const dialogRef = this.dialog.open(DeleteCustomerComponent, dialogConfig)
+    dialogRef.afterClosed().subscribe((res)=> {
+      this.getData()
+    })
   }
 
   viewCustomerDetails() {

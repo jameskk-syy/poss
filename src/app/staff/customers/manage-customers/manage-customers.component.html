@@ -166,20 +166,20 @@
                                                 [icon]="'edit'"></app-feather-icons>
                                         </button>
                                         <button mat-icon-button color="accent" (click)="$event.stopPropagation()"
-                                            (click)="deleteCall(farmer)" class="tbl-action-btn">
+                                            (click)="deleteCall(row)" class="tbl-action-btn">
                                             <app-feather-icons matTooltip="Delete Customer" [icon]="'trash-2'"
                                                 [class]="'tbl-fav-delete'"></app-feather-icons>
                                         </button>
                                         <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                            (click)="viewCustomerDetails(customer)" class="tbl-action-btn">
+                                            (click)="viewCustomerDetails(row)" class="tbl-action-btn">
                                             <app-feather-icons matTooltip="View Customer Details" [icon]="'eye'"
                                                 [class]="'tbl-fav-eye'"></app-feather-icons>
                                         </button>
-                                        <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                        <!-- <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
                                             (click)="viewCustomerPurchases(customer)" class="tbl-action-btn">
                                             <app-feather-icons matTooltip="View Purchase Statements" [icon]="'book'"
                                                 [class]="'tbl-fav-eye'"></app-feather-icons>
-                                        </button>
+                                        </button> -->
                                     </mat-cell>
                                 </ng-container>
 
