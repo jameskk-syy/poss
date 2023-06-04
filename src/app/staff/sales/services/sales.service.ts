@@ -154,6 +154,10 @@ export class SalesService {
     return this.http.post(`${environment.apiUrl}/api/v1/milk_allocation/add`, data, httpOptions);
   }
 
+  fetchMilkAllocations(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/milk_allocation/fetch/allocations`, httpOptions)
+  }
+
   
 
 }

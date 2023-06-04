@@ -104,51 +104,58 @@
                                                 *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
                                         </ng-container>
-                                        <ng-container matColumnDef="collector">
+                                        <ng-container matColumnDef="salesPersonName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                 class="column-nowrap">Sales Person</mat-header-cell>
-                                            <mat-cell *matCellDef="let float;let i = index" [class.odd-row]="i % 2"
+                                            <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                                {{float.user_name}}
+                                                {{row.salesPersonName}}
                                             </mat-cell>
                                         </ng-container>
-                                        <ng-container matColumnDef="floatAmount">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Allocated Quantity</mat-header-cell>
-                                            <mat-cell *matCellDef="let float;let i = index" [class.odd-row]="i % 2"
+                                        <ng-container matColumnDef="date">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Allocated
+                                                Date
+                                            </mat-header-cell>
+                                            <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                                {{float.float_amount}}
+                                                {{row.allocatedOn | date}}
+                                            </mat-cell>
+                                        </ng-container>
+                                        <ng-container matColumnDef="allocatedMilkQuantity">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Allocated Quantity</mat-header-cell>
+                                            <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
+                                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                                {{row.allocatedMilkQuantity}}
                                             </mat-cell>
                                         </ng-container>
         
-                                        <ng-container matColumnDef="amountSpent">
+                                        <!-- <ng-container matColumnDef="balance">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Quantity
                                                 Sold</mat-header-cell>
-                                            <mat-cell *matCellDef="let float;let i = index" [class.odd-row]="i % 2"
+                                                <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                                <span *ngIf="float.float_spent == null">0</span>
-                                                <span *ngIf="float.float_spent != null">{{float.float_spent}}</span>
+                                                {{row.balance}}
+                                            </mat-cell>
+                                        </ng-container> -->
         
+                                        <ng-container matColumnDef="availableMilkQuantity">
+                                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                                class="column-nowrap">Available Quanity</mat-header-cell>
+                                            <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
+                                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                                {{row.availableMilkQuantity}}
                                             </mat-cell>
                                         </ng-container>
-        
+
                                         <ng-container matColumnDef="balance">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                 class="column-nowrap">Balance</mat-header-cell>
-                                            <mat-cell *matCellDef="let float;let i = index" [class.odd-row]="i % 2"
+                                            <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                                {{float.balance}}
+                                                {{row.balance}}
                                             </mat-cell>
                                         </ng-container>
         
-                                        <ng-container matColumnDef="date">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Allocated
-                                                By
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let float;let i = index" [class.odd-row]="i % 2"
-                                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                                {{float.allocated_by}}
-                                            </mat-cell>
-                                        </ng-container>
                                         <ng-container matColumnDef="action">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
                                             <mat-cell *matCellDef="let float;let i = index" [class.odd-row]="i % 2"
@@ -166,9 +173,9 @@
                                             </mat-cell>
                                         </ng-container>
         
-                                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                        <mat-header-row *matHeaderRowDef="displayedColumns1"></mat-header-row>
                                         <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
-                                        <mat-row *matRowDef="let row; columns: displayedColumns"
+                                        <mat-row *matRowDef="let row; columns: displayedColumns1"
                                             (click)="floatDetailsCall(float)" [style.cursor]="'pointer'" matRipple>
                                         </mat-row>
                                         <mat-cell *matNoDataRow colspan="4">

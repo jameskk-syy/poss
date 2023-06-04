@@ -30,6 +30,16 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
     'action',
   ];
 
+  displayedColumns1: string[] = [
+    'id',
+    "salesPersonName",
+    'allocatedMilkQuantity',
+    'availableMilkQuantity',
+    "balance",
+    'date',
+    'action',
+  ];
+
   subscription!: Subscription;
   data: any;
   isdata: boolean = false;
@@ -57,7 +67,7 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
 
 
   milkDatasource!: MatTableDataSource<any>;
- floatDatasource!: MatTableDataSource<any>;
+  floatDatasource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild("filter", { static: true }) filter: ElementRef;
@@ -67,12 +77,13 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData();
+    this.fetchMilkAllocations()
   }
 
 
   //MILK ALLOCATION
 
-  addMilkAllocationCall(){
+  addMilkAllocationCall() {
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
@@ -83,6 +94,25 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
     }
     this.dialog.open(MilkAllocationComponent, dialogConfig)
 
+  }
+
+  fetchMilkAllocations(){
+    this.isLoading = true;
+    this.service.fetchMilkAllocations().subscribe(res => {
+      this.data = res;
+      if (this.data.entity.length > 0) {
+        this.isLoading = false;
+        this.isdata = true;
+        // Binding with the datasource
+        this.milkDatasource = new MatTableDataSource(this.data.entity);
+        this.milkDatasource.paginator = this.paginator;
+        this.milkDatasource.sort = this.sort;
+      }
+      else {
+        this.isdata = false;
+        this.milkDatasource = new MatTableDataSource<any>(null);
+      }
+    })
   }
 
 
