@@ -18,6 +18,7 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { DeleteCustomerComponent } from './delete-customer/delete-customer.component';
 import { ViewCustomerComponent } from './view-customer/view-customer.component';
+import { UpdateCustomerComponent } from './update-customer/update-customer.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ViewCustomerComponent } from './view-customer/view-customer.component';
     ManageCustomersComponent,
     AddCustomerComponent,
     DeleteCustomerComponent,
-    ViewCustomerComponent
+    ViewCustomerComponent,
+    UpdateCustomerComponent
   ],
   imports: [
     CommonModule,
