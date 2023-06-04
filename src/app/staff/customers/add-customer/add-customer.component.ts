@@ -43,30 +43,30 @@ export class AddCustomerComponent implements OnInit {
   }
 
 
-  onSubmit(){
+  onSubmit() {
 
     this.isLoading = true
 
     this.subscription = this.customerService.addCustomer(this.customerRegistrationForm.value)
-    .subscribe((res)=> {
-      this.snackBar.showNotification('snackbar-success', 'Successful!');
+      .subscribe((res) => {
+        this.snackBar.showNotification('snackbar-success', 'Successful!');
+        this.isLoading = false;
+        this.customerRegistrationForm.reset();
+        this.dialogRef.close();
+      },
+        (err) => {
           this.isLoading = false;
-          this.customerRegistrationForm.reset();
+          this.snackBar.showNotification('snackbar-danger', err);
           this.dialogRef.close();
-    }, 
-    (err)=> {
-      this.isLoading = false;
-      this.snackBar.showNotification('snackbar-danger', err);
-      this.dialogRef.close();
-    })
+        })
 
   }
 
-  onCancel(){
+  onCancel() {
     this.dialogRef.close()
   }
 
-  getRoutes(){
+  getRoutes() {
     this.pLoading = true
     this.subscription = this.customerService.fetchRoutes().subscribe((res) => {
       if (res.entity.length > 0) {

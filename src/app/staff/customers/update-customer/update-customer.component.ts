@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ManageCustomersComponent } from '../manage-customers/manage-customers.component';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { CustomersService } from '../services/customers.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-update-customer',
@@ -7,9 +13,82 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UpdateCustomerComponent implements OnInit {
 
-  constructor() { }
+  customerUpdateForm: FormGroup
+  pLoading: boolean = false
+  isLoading: boolean = false
+  subscription: Subscription
+  routes: any
 
-  ngOnInit(): void {
+  constructor(
+    private fb: FormBuilder,
+    public dialogRef: MatDialogRef<ManageCustomersComponent>,
+    private dialog: MatDialog,
+    private customerService: CustomersService,
+    private snackbar: SnackbarService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) { }
+
+  ngOnInit(
+
+  ): void {
+    console.log("These are customer details for upload", this.data.customer),
+      this.customerUpdateForm = this.customerDetailsForm()
+
+    this.getRoutes()
+  }
+
+  customerDetailsForm(): FormGroup {
+    return this.fb.group({
+
+      firstname: [this.data.customer.firstname, [Validators.required]],
+      lastname: [this.data.customer.lastname, [Validators.required]],
+      routeFk: [this.data.customer.routeFk, [Validators.required]],
+      contact: [this.data.customer.contact, [Validators.required]],
+      address: [this.data.customer.address, [Validators.required]],
+      customerNO: [this.data.customer.customerNO, [Validators.required]],
+      id: [this.data.customer.id],
+      createdAt: [this.data.customer.createdAt],
+      status: [this.data.customer.status],
+      updateOn: [this.data.customer.updatedOn],
+      deletedOn: [this.data.customer.deletedOn],
+      deleteFlag: [this.data.customer.deleteFlag]
+    });
+  }
+
+  getRoutes() {
+    this.pLoading = true
+    this.subscription = this.customerService.fetchRoutes().subscribe((res) => {
+      if (res.entity.length > 0) {
+        this.pLoading = false
+        this.routes = res.entity;
+
+        console.log("Routes ", this.routes)
+      } else {
+        this.pLoading = false
+        this.routes = [];
+      }
+    });
+  }
+
+  onSubmit() {
+    console.log("Customer Details Update", this.customerUpdateForm.value)
+    this.isLoading = true
+    this.subscription = this.customerService.updateCustomer(this.customerUpdateForm.value).subscribe(
+      (res) => {
+        this.isLoading = false
+        this.snackbar.showNotification("snackbar-success", "Successful!");
+        this.dialogRef.close();
+      },
+      (err) => {
+        this.isLoading = false
+        this.snackbar.showNotification("snackbar-danger", err);
+        this.dialogRef.close();
+      }
+    )
+  }
+
+  onCancel() {
+    this.dialogRef.close()
   }
 
 }
