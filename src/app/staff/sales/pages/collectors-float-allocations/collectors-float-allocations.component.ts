@@ -76,7 +76,7 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
-    this.getData();
+    // this.getData();
     this.fetchMilkAllocations()
   }
 
@@ -116,6 +116,16 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
     })
   }
 
+  deleteMilkAllocation(row) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "40%"
+    dialogConfig.data = {
+      allocation: row
+    }
+    this.dialog.open(DeleteFloatAllocationComponent, dialogConfig)
+  }
 
 
   // Float allocation

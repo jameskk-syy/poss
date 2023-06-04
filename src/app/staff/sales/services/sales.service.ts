@@ -158,6 +158,9 @@ export class SalesService {
     return this.http.get(`${environment.apiUrl}/api/v1/milk_allocation/fetch/allocations`, httpOptions)
   }
 
+  deleteCustomer(id: any): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/v1/milk_allocation/delete?allocationId=${id}`, httpOptions)
+  }
   
 
 }

@@ -158,16 +158,16 @@
         
                                         <ng-container matColumnDef="action">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                                            <mat-cell *matCellDef="let float;let i = index" [class.odd-row]="i % 2"
-                                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, float)">
+                                            <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
+                                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, row)">
                                                 <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                                    (click)="editCall(float)" class="tbl-action-btn">
-                                                    <app-feather-icons matTooltip="Edit float"
+                                                    (click)="editCall(row)" class="tbl-action-btn">
+                                                    <app-feather-icons matTooltip="Edit Allocation"
                                                         [icon]="'edit'"></app-feather-icons>
                                                 </button>
                                                 <button mat-icon-button color="accent" (click)="$event.stopPropagation()"
-                                                    (click)="deleteCall(float)" class="tbl-action-btn">
-                                                    <app-feather-icons matTooltip="Delete float" [icon]="'trash-2'"
+                                                    (click)="deleteMilkAllocation(row)" class="tbl-action-btn">
+                                                    <app-feather-icons matTooltip="Delete Allocation" [icon]="'trash-2'"
                                                         [class]="'tbl-fav-delete'"></app-feather-icons>
                                                 </button>
                                             </mat-cell>
@@ -176,7 +176,7 @@
                                         <mat-header-row *matHeaderRowDef="displayedColumns1"></mat-header-row>
                                         <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                                         <mat-row *matRowDef="let row; columns: displayedColumns1"
-                                            (click)="floatDetailsCall(float)" [style.cursor]="'pointer'" matRipple>
+                                            (click)="floatDetailsCall(row)" [style.cursor]="'pointer'" matRipple>
                                         </mat-row>
                                         <mat-cell *matNoDataRow colspan="4">
                                             No data matching the filter "{{ input.value }}"</mat-cell>
