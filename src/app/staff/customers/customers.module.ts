@@ -17,13 +17,15 @@ import { MatTableModule } from '@angular/material/table';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { AddCustomerComponent } from './add-customer/add-customer.component';
 import { DeleteCustomerComponent } from './delete-customer/delete-customer.component';
+import { ViewCustomerComponent } from './view-customer/view-customer.component';
 
 
 @NgModule({
   declarations: [
     ManageCustomersComponent,
     AddCustomerComponent,
-    DeleteCustomerComponent
+    DeleteCustomerComponent,
+    ViewCustomerComponent
   ],
   imports: [
     CommonModule,

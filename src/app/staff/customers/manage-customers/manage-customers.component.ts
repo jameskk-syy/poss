@@ -8,6 +8,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddCustomerComponent } from '../add-customer/add-customer.component';
 import { DeleteCustomerComponent } from '../delete-customer/delete-customer.component';
+import { ViewCustomerComponent } from '../view-customer/view-customer.component';
 
 @Component({
   selector: 'app-manage-customers',
@@ -132,8 +133,19 @@ export class ManageCustomersComponent implements OnInit {
     })
   }
 
-  viewCustomerDetails() {
+  viewCustomerDetails(data: any) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "60%"
+    dialogConfig.data = {
+      customer: data
+    }
 
+    const dialogRef = this.dialog.open(ViewCustomerComponent, dialogConfig)
+    dialogRef.afterClosed().subscribe((res)=> {
+      this.getData()
+    })
   }
 
   viewCustomerPurchases() {

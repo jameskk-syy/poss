@@ -25,7 +25,6 @@ export class DeleteCustomerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("Customer Details,", this.data.customer)
     this.customer = this.data.customer.firstname + " " + this.data.customer.lastname
   }
 
