@@ -2,8 +2,8 @@
     <div class="content-block">
         <div class="block-header">
             <!-- breadcrumb -->
-            <app-breadcrumb [title]="'All farmers / Milk Suppliers'" [items]="['Farmers']"
-                [active_item]="'All Farmers'">
+            <app-breadcrumb [title]="'All customers'" [items]="['Customers']"
+                [active_item]="'All Customers'">
             </app-breadcrumb>
         </div>
 
@@ -18,7 +18,7 @@
                                     <div class="col-10">
                                         <ul class="header-buttons-left ms-0">
                                             <li class="dropdown">
-                                                <h2>Farmers</h2>
+                                                <h2>Customers</h2>
                                             </li>
 
                                             <li>
@@ -39,7 +39,7 @@
                                                 <mat-form-field>
                                                     <mat-label>Filter By </mat-label>
                                                     <mat-select [(value)]="selected">
-                                                        <mat-option value="fn"><b>Farmer Number</b></mat-option>
+                                                        <mat-option value="fn"><b>Customer Number</b></mat-option>
 
 
                                                     </mat-select>
@@ -48,10 +48,10 @@
                                             <li class="dropdown">
                                                 <form [formGroup]="filterform">
                                                     <mat-form-field class="m-l-3" *ngIf="selected == 'fn'">
-                                                        <input matInput (dateChange)="filterFarmers()"
-                                                            placeholder="Enter Farmer Number"
-                                                            formControlName="farmer_no">
-                                                        <mat-icon matSuffix (click)="getFarmerByFarmerNo()">search
+                                                        <input matInput (dateChange)="filterCustomers()"
+                                                            placeholder="Enter Customer Number"
+                                                            formControlName="customer_no">
+                                                        <mat-icon matSuffix (click)="getCustomerByCustomerNo()">search
                                                         </mat-icon>
                                                     </mat-form-field>
 
@@ -77,18 +77,6 @@
                                                         (click)="exporter.exportTable('csv')" />
                                                 </div>
                                             </li>
-                                            <!-- <li>
-                                                <div class="export-button m-l-10" matTooltip="JSON">
-                                                    <img src="assets/images/icons/json.png" alt=""
-                                                        (click)="exporter.exportTable('json')" />
-                                                </div>
-                                            </li> -->
-                                            <!-- <li>
-                                                <div class="export-button m-l-10" matTooltip="TXT">
-                                                    <img src="assets/images/icons/txt.png" alt=""
-                                                        (click)="exporter.exportTable('txt')" />
-                                                </div>
-                                            </li> -->
                                         </ul>
                                     </div>
                                 </div>
@@ -119,87 +107,86 @@
                                         *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="farmer_no">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Farmer No.
+                                <ng-container matColumnDef="customerNO">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Customer No.
                                     </mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
+                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.farmer_no}}
+                                        {{row.customerNO}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="username">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Farmer
-                                        Name</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
+                                <ng-container matColumnDef="firstname">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">First Name
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.username}}
+                                        {{row.firstname}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="mobile_no">
+                                <ng-container matColumnDef="lastname">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
+                                        Last name</mat-header-cell>
+                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)" class="column-nowrap">
+                                        {{row.lastname}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="contact">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
                                         class="column-nowrap">Phone.</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
+                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.mobile_no}}
+                                        {{row.contact}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="ID No.">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">ID
-                                        No.</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
+                                <ng-container matColumnDef="address">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Address.</mat-header-cell>
+                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.id_number}}
+                                        {{row.address}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="route">
+                                <ng-container matColumnDef="status">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">Route</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
+                                        class="column-nowrap">Status</mat-header-cell>
+                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.route }}
+                                        {{row.status }}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="pickUpLocation">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">PickUp
-                                        Location
-                                        on</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.pickUpLocation }}
-                                    </mat-cell>
-                                </ng-container>
+                
 
                                 <ng-container matColumnDef="action">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, farmer)">
+                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, row)">
                                         <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                            (click)="editCall(farmer)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="Edit farmer"
+                                            (click)="editCall(row)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="Edit Customer"
                                                 [icon]="'edit'"></app-feather-icons>
                                         </button>
                                         <button mat-icon-button color="accent" (click)="$event.stopPropagation()"
-                                            (click)="deleteCall(farmer)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="Delete farmer" [icon]="'trash-2'"
+                                            (click)="deleteCall(row)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="Delete Customer" [icon]="'trash-2'"
                                                 [class]="'tbl-fav-delete'"></app-feather-icons>
                                         </button>
                                         <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                            (click)="viewFarmerDetails(farmer)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="View Farmer Details" [icon]="'eye'"
+                                            (click)="viewCustomerDetails(row)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="View Customer Details" [icon]="'eye'"
                                                 [class]="'tbl-fav-eye'"></app-feather-icons>
                                         </button>
-                                        <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                            (click)="viewFarmerCollections(farmer)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="View Delivery Statements" [icon]="'book'"
+                                        <!-- <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                            (click)="viewCustomerPurchases(customer)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="View Purchase Statements" [icon]="'book'"
                                                 [class]="'tbl-fav-eye'"></app-feather-icons>
-                                        </button>
+                                        </button> -->
                                     </mat-cell>
                                 </ng-container>
 
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                 <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                                 <mat-row *matRowDef="let row; columns: displayedColumns"
-                                    (click)="farmerDetailsCall(farmer)" [style.cursor]="'pointer'" matRipple>
+                                    (click)="customerDetailsCall(customer)" [style.cursor]="'pointer'" matRipple>
                                 </mat-row>
                                 <mat-cell *matNoDataRow colspan="4">
                                     No data matching the filter "{{ input.value }}"</mat-cell>
