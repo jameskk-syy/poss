@@ -35,6 +35,8 @@ import { EditCollectionComponent } from './pages/edit-collection/edit-collection
 import { LookupPickUpLocationsComponent } from './pages/lookup-pick-up-locations/lookup-pick-up-locations.component';
 import { RoutesLookUpComponent } from './pages/routes-look-up/routes-look-up.component';
 import { VerifyproductAllocationsComponent } from './verifyproduct-allocations/verifyproduct-allocations.component';
+import { MilkAllocationComponent } from './pages/milk-allocation/milk-allocation.component';
+import { SalesPersonsLookupComponent } from './pages/sales-persons-lookup/sales-persons-lookup.component';
 
 
 @NgModule({
@@ -53,7 +55,9 @@ import { VerifyproductAllocationsComponent } from './verifyproduct-allocations/v
         EditCollectionComponent,
         LookupPickUpLocationsComponent,
         RoutesLookUpComponent,
-        VerifyproductAllocationsComponent
+        VerifyproductAllocationsComponent,
+        MilkAllocationComponent,
+        SalesPersonsLookupComponent
     ],
     imports: [
         CommonModule,
