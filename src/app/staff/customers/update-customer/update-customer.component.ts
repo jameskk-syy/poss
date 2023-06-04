@@ -18,6 +18,7 @@ export class UpdateCustomerComponent implements OnInit {
   isLoading: boolean = false
   subscription: Subscription
   routes: any
+  selectedStatus: any
 
   constructor(
     private fb: FormBuilder,
@@ -37,6 +38,12 @@ export class UpdateCustomerComponent implements OnInit {
     this.getRoutes()
   }
 
+  statusOptions = [
+    { value: 'Active', viewValue: 'Active' },
+    { value: 'Inactive', viewValue: 'Active' },
+    { value: 'Deleted', viewValue: 'Deleted' },
+  ];
+
   customerDetailsForm(): FormGroup {
     return this.fb.group({
 
@@ -48,7 +55,7 @@ export class UpdateCustomerComponent implements OnInit {
       customerNO: [this.data.customer.customerNO, [Validators.required]],
       id: [this.data.customer.id],
       createdAt: [this.data.customer.createdAt],
-      status: [this.data.customer.status],
+      status: [this.data.customer.status, [Validators.required]],
       updateOn: [this.data.customer.updatedOn],
       deletedOn: [this.data.customer.deletedOn],
       deleteFlag: [this.data.customer.deleteFlag]

@@ -89,6 +89,17 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Status</mat-label>
+                                    <input matInput formControlName="status" required />
+                                    <mat-error *ngIf="customerUpdateForm.get('status').hasError('required')">
+                                        Status is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
 
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-0">
                                 <div class="example-button-row">
