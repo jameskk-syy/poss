@@ -380,6 +380,19 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
   {
+    path: '/staff/product-sales',
+    title: 'Milk Sales',
+    moduleName: 'product-sales',
+    iconType: 'feather',
+    icon: 'briefcase',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ROLE_STAFF'],
+    submenu: [],
+  },
+  {
     path: '/staff/farmers/farmers',
     title: 'Farmers',
     moduleName: 'farmers',
@@ -407,7 +420,7 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: '/staff/sales/allocations',
-    title: 'Float Allocations',
+    title: 'Milk Allocations',
     moduleName: 'sales',
     iconType: 'feather',
     icon: 'activity',

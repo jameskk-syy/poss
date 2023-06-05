@@ -65,7 +65,11 @@ const routes: Routes = [
     import('./customers/customers.module').then
     (m => m.CustomersModule)
   },
-  { path: 'product-sales', loadChildren: () => import('./product-sales/product-sales.module').then(m => m.ProductSalesModule) },
+  { path: 'product-sales',
+   loadChildren: () => 
+   import('./product-sales/product-sales.module').then
+   (m => m.ProductSalesModule)
+   },
 ];
 
 @NgModule({
