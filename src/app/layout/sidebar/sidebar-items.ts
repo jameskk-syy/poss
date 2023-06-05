@@ -108,7 +108,7 @@ export const ROUTES: RouteInfo[] = [
       // },
       {
         path: "/admin/pickup-locations",
-        title: "Pick Up Locations",
+        title: "Routes",
         moduleName: "pickup",
         iconType: "feather",
         icon: "layers",

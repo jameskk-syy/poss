@@ -16,19 +16,15 @@ export class PickupService {
   constructor(private http: HttpClient) { }
   url = `${environment.apiUrl}/api/v1/pickuplocations/`;
 
+  routesUrl = `${environment.apiUrl}/api/v1/routes/`;
+
   public getLocations(): Observable<any> {
     return this.http.get<any>(this.url + 'fetch');
   }
-  public getRoutes(): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/api/v1/routes/get` );
-  }
+ 
 
   public getLocationById(id:any): Observable<any> {
     return this.http.get<any>(this.url + id);
-  }
-
-  addNewLocation(data: any): Observable<any> {
-    return this.http.post(this.url + 'add', data, httpOptions);
   }
 
   updateLocation(data: any): Observable<any> {
@@ -38,4 +34,15 @@ export class PickupService {
   deleteLocation(id: any): Observable<any> {
     return this.http.delete(this.url + id, httpOptions);
   }
+
+  //Routes
+
+  addNewRoute(data: any): Observable<any> {
+    return this.http.post(this.routesUrl + 'add', data, httpOptions);
+  }
+
+  public getRoutes(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/api/v1/routes/get` );
+  }
+
 }

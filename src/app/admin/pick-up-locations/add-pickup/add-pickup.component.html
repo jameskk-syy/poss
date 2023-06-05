@@ -6,35 +6,23 @@
                 <div class="row">
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
                         <mat-form-field class="example-full-width mb-1" appearance="outline">
-                            <mat-label>Collection center name </mat-label>
-                            <input formControlName="name" matInput />
+                            <mat-label>Route name </mat-label>
+                            <input formControlName="route" matInput />
                         </mat-form-field>
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
                         <mat-form-field class="example-full-width mb-1" appearance="outline">
-                            <mat-label>Collection center land mark</mat-label>
-                            <input formControlName="landMark" matInput />
+                            <mat-label>Route Code </mat-label>
+                            <input formControlName="routeCode" matInput />
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
-                        <mat-form-field class="example-full-width mb-2" appearance="outline">
-                            <mat-label>Subcounty</mat-label>
-                            <input readonly formControlName="subcounty_fk" matInput />
-                            <button (click)="pickSubCountyDialog()" mat-icon-button matSuffix [attr.aria-label]="'Hide password'">
-                                <mat-icon>search</mat-icon>
-                            </button>
-                        </mat-form-field>   
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
-                        <mat-form-field class="example-full-width" appearance="outline">
-                            <mat-label>Ward</mat-label>
-                            <mat-select formControlName="ward_fk">
-                              <mat-option *ngFor="let ward of wards" [value]="ward.id">{{ ward.name
-                                }}</mat-option>
-                            </mat-select>
-                          </mat-form-field>
+                        <mat-form-field class="example-full-width mb-1" appearance="outline">
+                            <mat-label>Collection center land mark</mat-label>
+                            <input formControlName="landMark" matInput />
+                        </mat-form-field>
                     </div>
                 </div>
                 <div>
@@ -46,7 +34,7 @@
                     </button>
                 </div>
             </mat-step>
-            <mat-step>
+            <!-- <mat-step>
                 <ng-template matStepLabel>Collection Centers Routes</ng-template>
                 <div class="row">
                     <form [formGroup]="routesForm" class="mx-4">
@@ -162,7 +150,7 @@
                         Next
                     </button>
                 </div>
-            </mat-step>
+            </mat-step> -->
             <mat-step>
                 <ng-template matStepLabel>Collection Center Collectors</ng-template>
                 <div class="row">
