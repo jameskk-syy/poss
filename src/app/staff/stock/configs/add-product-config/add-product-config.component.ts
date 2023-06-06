@@ -17,6 +17,7 @@ export class AddProductConfigComponent extends BaseComponent implements OnInit {
 
   configsForm: FormGroup;
   loading = false;
+  pLoading: boolean = false
   routes: any[] = [];
 
   constructor(
@@ -38,6 +39,7 @@ export class AddProductConfigComponent extends BaseComponent implements OnInit {
       sellingPrice: ["", [Validators.required]],
       unitMeasurement: ["", [Validators.required]],
       quantity: ["", [Validators.required]],
+      memberType: ["", [Validators.required]],
       effectiveFrom: [""],
       routeFk: ["", [Validators.required]]
     });
@@ -45,13 +47,16 @@ export class AddProductConfigComponent extends BaseComponent implements OnInit {
   }
 
   getRoutes(){
+    this.pLoading = true
     this.service.getRoutes().pipe(takeUntil(this.subject)).subscribe(res => {
+      this.pLoading = false
       let routes = res.entity;
 
       if(routes.length > 0){
         this.routes = routes;
       }
     }, err => {
+      this.pLoading = false
       console.log(err)
     })
   }
@@ -62,6 +67,8 @@ export class AddProductConfigComponent extends BaseComponent implements OnInit {
   }
 
   onSubmit() {
+
+    console.log("The price configurations data ::: ", this.configsForm.value)
     this.loading = true;
     this.service.addNewConfiguration(this.configsForm.value).subscribe(
       (res) => {
