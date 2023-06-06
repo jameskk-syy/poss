@@ -67,15 +67,20 @@ export class AddProductConfigComponent extends BaseComponent implements OnInit {
   }
 
   onSubmit() {
-
-    console.log("The price configurations data ::: ", this.configsForm.value)
     this.loading = true;
     this.service.addNewConfiguration(this.configsForm.value).subscribe(
       (res) => {
-        this.loading = false;
+        if(res.statusCode == 200){
+          this.loading = false;
         this.snackbar.showNotification("snackbar-success", "Successful!");
         this.configsForm.reset();
         this.dialogRef.close();
+        }else {
+          this.loading = false;
+          this.snackbar.showNotification("snackbar-danger", res.message);
+          this.configsForm.reset();
+          this.dialogRef.close();
+        }
       },
       (err) => {
         this.loading = false;
