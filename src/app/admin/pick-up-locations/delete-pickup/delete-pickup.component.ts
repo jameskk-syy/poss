@@ -27,7 +27,7 @@ export class DeletePickupComponent implements OnInit {
 
   onDelete() {
     this.loading = true;
-    this.subscription = this.service.deleteLocation(this.data.location.id).subscribe(res => {
+    this.subscription = this.service.deleteRoute(this.data.location.id).subscribe(res => {
       this.loading = false;
       this.snackbar.showNotification("snackbar-success", "Successful!");
       this.dialogRef.close();

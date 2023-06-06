@@ -131,13 +131,13 @@ export class ManagePickupsComponent implements OnInit {
     this.dialog.open(ViewPickupComponent, dialogConfig)
   }
 
-  deleteLocationCall(Location) {
+  deleteLocationCall(Route) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "500px"
     dialogConfig.data = {
-      location: Location
+      location: Route
     }
     this.dialog.open(DeletePickupComponent, dialogConfig)
   }

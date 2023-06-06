@@ -102,7 +102,7 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
   }
 
   getPickupLocationById(collectionId) {
-    this.collectionCenterService.getLocationById(collectionId).subscribe(
+    this.collectionCenterService.getRouteById(collectionId).subscribe(
       (res) => {
         console.log('Pick up location', res);
 
@@ -111,9 +111,8 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
         this.pickupLocationForm.patchValue({
           id: res.entity.id,
           landMark: res.entity.landMark,
-          name: res.entity.name,
-          subcounty_fk: res.entity.subcounty_fk,
-          ward_fk: res.entity.ward_fk,
+          route: res.entity.route,
+          routeCode: res.entity.routeCode,
         });
 
         this.collectorsArray = res.entity.collectors;
@@ -154,38 +153,36 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
       });
   }
 
-  pickSubCountyDialog(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '40%';
-    dialogConfig.data = {
-      user: '',
-    };
-    const dialogRef = this.dialog.open(
-      SubCountiesLookupComponent,
-      dialogConfig
-    );
-    dialogRef.afterClosed().subscribe((result) => {
-      this.dialogData = result;
-      this.pickupLocationForm.patchValue({
-        subCounty: this.dialogData.data.subcounty,
-        subcounty_fk: this.dialogData.data.id,
-      });
+  // pickSubCountyDialog(): void {
+  //   const dialogConfig = new MatDialogConfig();
+  //   dialogConfig.disableClose = false;
+  //   dialogConfig.autoFocus = true;
+  //   dialogConfig.width = '40%';
+  //   dialogConfig.data = {
+  //     user: '',
+  //   };
+  //   const dialogRef = this.dialog.open(
+  //     SubCountiesLookupComponent,
+  //     dialogConfig
+  //   );
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     this.dialogData = result;
+  //     this.pickupLocationForm.patchValue({
+  //       subCounty: this.dialogData.data.subcounty,
+  //       subcounty_fk: this.dialogData.data.id,
+  //     });
 
-      this.getWards(this.dialogData.data.id);
-    });
-  }
+  //     this.getWards(this.dialogData.data.id);
+  //   });
+  // }
 
   createPickupLocationForm(): FormGroup {
     return this.fb.group({
       id: [''],
       collectors: new FormArray([]),
       landMark: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-      routes: new FormArray([]),
-      subcounty_fk: ['', [Validators.required]],
-      ward_fk: ['', [Validators.required]],
+      route: ['', [Validators.required]],
+      routeCode: ['', [Validators.required]]
     });
   }
 
@@ -370,24 +367,18 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
   }
   /** Milk Collectors Ends */
 
-  createCollectionCenter() {
+  updateRouteDetails() {
     this.btnLoading = true;
     this.collectorsFormControl.clear();
-
-    this.routesFormControl.clear();
 
     this.collectorsArray.forEach((collector) => {
       this.collectorsFormControl.push(this.fb.group(collector));
     });
 
-    this.routesArray.forEach((route) => {
-      this.routesFormControl.push(this.fb.group(route));
-    });
-
     console.log('Update Collection Center Form ', this.pickupLocationForm.value);
 
     this.collectionCenterService
-      .updateLocation(this.pickupLocationForm.value)
+      .updateRouteDetails(this.pickupLocationForm.value)
       .pipe(takeUntil(this.subject))
       .subscribe(
         (res) => {
