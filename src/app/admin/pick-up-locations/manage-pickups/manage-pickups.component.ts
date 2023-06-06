@@ -22,11 +22,11 @@ export class ManagePickupsComponent implements OnInit {
 
   displayedColumns: string[] = [
     'id',
-    'name',
-    'subCounty',
-    'ward',
+    'route',
+    'routeCode',
     'landMark',
     'collectors',
+    'createdon',
     'action',
   ];
 
@@ -50,7 +50,7 @@ export class ManagePickupsComponent implements OnInit {
 
   getData() {
     this.isLoading = true;
-    this.subscription = this.service.getLocations().subscribe(res => {
+    this.subscription = this.service.getRoutes().subscribe(res => {
       this.data = res;
       if (this.data.entity.length > 0) {
         this.isLoading = false;

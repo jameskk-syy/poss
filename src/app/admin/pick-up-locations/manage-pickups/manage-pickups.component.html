@@ -101,28 +101,20 @@
                                         *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="name">
+                                <ng-container matColumnDef="route">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">Location</mat-header-cell>
+                                        class="column-nowrap">Route</mat-header-cell>
                                     <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{row.name}}
+                                        {{row.route}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="collectors">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Milk
-                                        Collectors</mat-header-cell>
+                                
+                                <ng-container matColumnDef="routeCode">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Route Code</mat-header-cell>
                                     <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{row.collectors}}
-                                    </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="subCounty">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Sub County</mat-header-cell>
-                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{row.subcounty}}
+                                        {{row.routeCode}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -131,16 +123,24 @@
                                         Mark</mat-header-cell>
                                     <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{row.landmark}}
+                                        {{row.landMark}}
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="ward">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">Ward</mat-header-cell>
+                                <ng-container matColumnDef="collectors">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Milk
+                                        Collectors</mat-header-cell>
                                     <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{row.ward}}
+                                        {{ row.collectors.length }}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="createdon">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                        class="column-nowrap">Created On</mat-header-cell>
+                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)" class="column-nowrap">
+                                        {{row.createdOn | date }}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="action">
