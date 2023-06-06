@@ -20,8 +20,9 @@ export class ProductsConfigsComponent implements OnInit {
   displayedColumns: string[] = [
     "id",
     "product_name",
+    'member_type',
     "buying_price",
-    // "selling_price",
+    "selling_price",
     "quantity",
     "unit_measurement",
     "route",
@@ -62,6 +63,7 @@ export class ProductsConfigsComponent implements OnInit {
     this.service.getConfigs()
       .subscribe(
         (res) => {
+          console.log("Configurations LIST::::", res.entity)
           this.configs = res.entity
           if (this.configs.length > 0) {
             this.isLoading = false;
@@ -72,6 +74,7 @@ export class ProductsConfigsComponent implements OnInit {
           }
           else {
             this.isdata = false;
+            this.isLoading = false;
             this.dataSource = new MatTableDataSource<any>(this.configs);
           }
         }

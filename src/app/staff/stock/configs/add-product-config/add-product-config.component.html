@@ -6,6 +6,7 @@
                     <h2>Add Product Configuration</h2>
                 </div>
                 <div class="body">
+                    <mat-progress-bar mode="indeterminate" *ngIf="pLoading"></mat-progress-bar>
                     <form [formGroup]="configsForm" class="m-4">
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
@@ -66,10 +67,19 @@
                                   </mat-form-field>  
                             </div>
                         </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
+                            <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                <mat-label>Tier</mat-label>
+                                <input matInput formControlName="memberType" required />
+                                <mat-error *ngIf="configsForm.get('memberType').hasError('required')">
+                                    tier is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Ward</mat-label>
+                                    <mat-label>Route</mat-label>
                                     <mat-select formControlName="routeFk">
                                       <mat-option *ngFor="let route of routes" [value]="route.id">{{ route.route
                                         }}</mat-option>

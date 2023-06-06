@@ -156,9 +156,6 @@ export class AddPickupComponent extends BaseComponent implements OnInit {
       landMark: ['', [Validators.required]],
       routeCode: ['', [Validators.required]],
       route: ['', [Validators.required]],
-      // routes: new FormArray([]),
-      // subcounty_fk: ['', [Validators.required]],
-      // ward_fk: ['', [Validators.required]],
     });
   }
 

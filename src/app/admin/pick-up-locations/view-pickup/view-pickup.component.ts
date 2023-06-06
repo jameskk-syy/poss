@@ -19,6 +19,7 @@ export class ViewPickupComponent implements OnInit {
 
 
   loading = false;
+  pLoading = false
   pickupLocationForm: FormGroup;
   dialogData: any;
   items: MilkCollectors[] = [];
@@ -63,30 +64,28 @@ export class ViewPickupComponent implements OnInit {
 
   ngOnInit(): void {
     this.pickupLocationForm = this.fb.group({
-      name: [this.data.location.name, [Validators.required]],
-      subCounty: [this.data.location.subcounty],
-      wardName: [this.data.location.ward],
+      route: [this.data.location.name, [Validators.required]],
+      routeCode: [this.data.location.subcounty],
+      // wardName: [this.data.location.ward],
       landMark: [this.data.location.landmark],
     });
 
-    this.getPickupLocationById(this.data.location.id);
+    this.getPickupRouteById(this.data.location.id);
 
     // this.getMilkCollectors();
   }
 
-  getPickupLocationById(collectionId) {
-    this.collectionCenterService.getLocationById(collectionId).subscribe(
+  getPickupRouteById(collectionId) {
+    this.pLoading = true
+    this.collectionCenterService.getRouteById(collectionId).subscribe(
       (res) => {
         console.log('Pick up location', res);
-
-        this.getWards(res.entity.subcounty_fk);
-
+        this.pLoading = false
         this.pickupLocationForm.patchValue({
           id: res.entity.id,
           landMark: res.entity.landMark,
-          name: res.entity.name,
-          subcounty_fk: res.entity.subcounty_fk,
-          ward_fk: res.entity.ward_fk,
+          route: res.entity.route,
+          routeCode: res.entity.routeCode,
         });
 
         this.collectorsArray = res.entity.collectors;
@@ -108,24 +107,25 @@ export class ViewPickupComponent implements OnInit {
         }
       },
       (err) => {
+        this.pLoading = false
         console.log(err);
       }
     );
   }
 
-  getWards(id: any) {
-    this.subscription = this.wardsService
-      .getSubCountyById(id)
-      .subscribe((res) => {
-        this.data = res;
+  // getWards(id: any) {
+  //   this.subscription = this.wardsService
+  //     .getSubCountyById(id)
+  //     .subscribe((res) => {
+  //       this.data = res;
 
-        console.log('Wards ', this.data);
-        if (this.data.entity.wards.length > 0) {
-          this.wards = this.data.entity.wards;
-        } else {
-        }
-      });
-  }
+  //       console.log('Wards ', this.data);
+  //       if (this.data.entity.wards.length > 0) {
+  //         this.wards = this.data.entity.wards;
+  //       } else {
+  //       }
+  //     });
+  // }
 
   getRoutes(agendasArray: any) {
     this.routesDataSource = new MatTableDataSource(agendasArray);

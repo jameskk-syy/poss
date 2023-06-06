@@ -17,6 +17,7 @@ export class AddProductConfigComponent extends BaseComponent implements OnInit {
 
   configsForm: FormGroup;
   loading = false;
+  pLoading: boolean = false
   routes: any[] = [];
 
   constructor(
@@ -38,6 +39,7 @@ export class AddProductConfigComponent extends BaseComponent implements OnInit {
       sellingPrice: ["", [Validators.required]],
       unitMeasurement: ["", [Validators.required]],
       quantity: ["", [Validators.required]],
+      memberType: ["", [Validators.required]],
       effectiveFrom: [""],
       routeFk: ["", [Validators.required]]
     });
@@ -45,13 +47,16 @@ export class AddProductConfigComponent extends BaseComponent implements OnInit {
   }
 
   getRoutes(){
+    this.pLoading = true
     this.service.getRoutes().pipe(takeUntil(this.subject)).subscribe(res => {
+      this.pLoading = false
       let routes = res.entity;
 
       if(routes.length > 0){
         this.routes = routes;
       }
     }, err => {
+      this.pLoading = false
       console.log(err)
     })
   }
@@ -65,10 +70,17 @@ export class AddProductConfigComponent extends BaseComponent implements OnInit {
     this.loading = true;
     this.service.addNewConfiguration(this.configsForm.value).subscribe(
       (res) => {
-        this.loading = false;
+        if(res.statusCode == 200){
+          this.loading = false;
         this.snackbar.showNotification("snackbar-success", "Successful!");
         this.configsForm.reset();
         this.dialogRef.close();
+        }else {
+          this.loading = false;
+          this.snackbar.showNotification("snackbar-danger", res.message);
+          this.configsForm.reset();
+          this.dialogRef.close();
+        }
       },
       (err) => {
         this.loading = false;

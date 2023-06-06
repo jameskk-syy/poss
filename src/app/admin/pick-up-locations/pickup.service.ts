@@ -45,4 +45,16 @@ export class PickupService {
     return this.http.get<any>(`${environment.apiUrl}/api/v1/routes/get` );
   }
 
+  public getRouteById(id: any): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/api/v1/routes/get/id?id=${id}` );
+  }
+
+  updateRouteDetails(data: any): Observable<any> {
+    return this.http.put(this.routesUrl + 'update', data, httpOptions);
+  }
+
+  deleteRoute(id: any): Observable<any> {
+    return this.http.delete(this.url + id, httpOptions);
+  }
+
 }

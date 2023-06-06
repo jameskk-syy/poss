@@ -5,7 +5,7 @@
                 <div class="modalHeader clearfix">
                     <div class="modal-about">
                         <div class="font-weight-bold p-t-5 ms-2 me-2 font-17">
-                            Milk Pickup Location Details
+                            Milk Pickup Route Details
                         </div>
                     </div>
                 </div>
@@ -16,12 +16,13 @@
         </button>
     </div>
     <div mat-dialog-content>
+        <mat-progress-bar mode="indeterminate" *ngIf="pLoading"></mat-progress-bar>
         <form class="register-form m-4" [formGroup]="pickupLocationForm">
             <div class="row">
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Location Name</mat-label>
-                        <input matInput formControlName="name" readonly />
+                        <mat-label>Route Name</mat-label>
+                        <input matInput formControlName="route" readonly />
                     </mat-form-field>
                 </div>
 
@@ -36,20 +37,20 @@
             <div class="row">
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Sub County</mat-label>
-                        <input matInput formControlName="subCounty" readonly />
+                        <mat-label>Route Code</mat-label>
+                        <input matInput formControlName="routeCode" readonly />
                     </mat-form-field>
                 </div>
 
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Ward</mat-label>
                         <input matInput formControlName="wardName" readonly />
                     </mat-form-field>
-                </div>
+                </div> -->
             </div>
             <mat-tab-group>
-                <mat-tab label="Collection Center Routes">
+                <!-- <mat-tab label="Collection Center Routes">
                     <br>
                     <mat-table #table matTableExporter [dataSource]="routesDataSource" matSort class="mat-cell"
                         #exporter="matTableExporter">
@@ -90,8 +91,8 @@
                     <mat-paginator [pageSize]="2" #routesPaginator="matPaginator"
                         [pageSizeOptions]="[2, 5, 10, 20, 30, 40, 50, 100]"
                         aria-label="Select page of users"></mat-paginator>
-                </mat-tab>
-                <mat-tab label="Collection Center Collectors">
+                </mat-tab> -->
+                <mat-tab label="Route Collectors">
                     <br>
                     <mat-table #table matTableExporter [dataSource]="collectorsDataSource" matSort class="mat-cell"
                         #exporter="matTableExporter">

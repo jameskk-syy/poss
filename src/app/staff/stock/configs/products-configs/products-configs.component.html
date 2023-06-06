@@ -107,6 +107,13 @@
                                         }}</mat-cell>
                                 </ng-container>
 
+                                <ng-container matColumnDef="member_type">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Tier</mat-header-cell>
+                                    <mat-cell *matCellDef="let configs;let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)" class="column-nowrap">{{ configs.memberType
+                                        }}</mat-cell>
+                                </ng-container>
+
                                 <ng-container matColumnDef="buying_price">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Buying
                                         Price</mat-header-cell>
@@ -115,13 +122,13 @@
                                         }}</mat-cell>
                                 </ng-container>
 
-                                <!-- <ng-container matColumnDef="selling_price">
+                                <ng-container matColumnDef="selling_price">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Selling
                                         Price</mat-header-cell>
                                     <mat-cell *matCellDef="let configs;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">{{configs.selling_price
                                         }}</mat-cell>
-                                </ng-container> -->
+                                </ng-container>
 
                                 <ng-container matColumnDef="quantity">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
