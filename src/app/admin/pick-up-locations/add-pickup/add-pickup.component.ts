@@ -127,19 +127,6 @@ export class AddPickupComponent extends BaseComponent implements OnInit {
     })
   }
 
-  // onSubmit() {
-  //   this.loading = true;
-  //   this.subscription = this.service.addNewLocation(this.addLocationForm.value).subscribe(res => {
-  //     this.loading = false;
-  //     this.snackbar.showNotification("snackbar-success", "Successful!");
-  //     this.addLocationForm.reset();
-  //     this.dialogRef.close();
-  //   }, err => {
-  //     this.loading = false;
-  //     this.snackbar.showNotification("snackbar-danger", err);
-  //     this.dialogRef.close();
-  //   })
-  // }
 
   pickSubCountyDialog(): void {
     const dialogConfig = new MatDialogConfig();
@@ -161,64 +148,17 @@ export class AddPickupComponent extends BaseComponent implements OnInit {
     });
   }
 
-  // pickRoute(): void {
-  //   const dialogConfig = new MatDialogConfig();
-  //   dialogConfig.disableClose = false;
-  //   dialogConfig.autoFocus = true;
-  //   dialogConfig.width = "40%";
-  //   dialogConfig.data = {
-  //     user: '',
-  //   };
-  //   const dialogRef = this.dialog.open(RoutesLookupComponent, dialogConfig);
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     this.dialogData = result;
-  //     this.addLocationForm.patchValue({
-  //       route: this.dialogData.data.route,
-  //       route_fk: this.dialogData.data.id
-  //     });
-  //   });
-  // }
-
-  // pickMilkCollectorsDialog(department): void {
-  //   const dialogConfig = new MatDialogConfig();
-  //   dialogConfig.disableClose = false;
-  //   dialogConfig.autoFocus = true;
-  //   dialogConfig.width = "50%";
-  //   dialogConfig.data = {
-  //     department: department,
-  //   };
-  //   const dialogRef = this.dialog.open(LookupMilkCollectorsComponent, dialogConfig);
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     this.milkCollectors = result.data;
-  //     if (this.milkCollectors.length > 0) {
-  //       this.dataSource = new MatTableDataSource<any>(this.milkCollectors);
-  //       this.dataSource.paginator = this.paginator;
-  //       this.dataSource.sort = this.sort;
-  //       this.addLocationForm.value.collectors = this.milkCollectors;
-  //     }
-  //   });
-  // }
-
-  // onClick() {
-  //   this.dialogRef.close();
-  // }
-
-  // removeUser(index: any) {
-  //   this.milkCollectors.splice(index, 1);
-  //   this.dataSource = new MatTableDataSource<any>(this.milkCollectors);
-  //   this.dataSource.paginator = this.paginator;
-  //   this.dataSource.sort = this.sort;
-  //   this.addLocationForm.value.collectors = this.milkCollectors;
-  // }
+ 
 
   createPickupLocationForm(): FormGroup {
     return this.fb.group({
       collectors: new FormArray([]),
       landMark: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-      routes: new FormArray([]),
-      subcounty_fk: ['', [Validators.required]],
-      ward_fk: ['', [Validators.required]],
+      routeCode: ['', [Validators.required]],
+      route: ['', [Validators.required]],
+      // routes: new FormArray([]),
+      // subcounty_fk: ['', [Validators.required]],
+      // ward_fk: ['', [Validators.required]],
     });
   }
 
@@ -410,7 +350,7 @@ export class AddPickupComponent extends BaseComponent implements OnInit {
 
 
 
-    this.collectionCenterService.addNewLocation(this.pickupLocationForm.value)
+    this.collectionCenterService.addNewRoute(this.pickupLocationForm.value)
     .subscribe(res => {
       this.btnLoading = false;
       console.log("Response : "+ res)
