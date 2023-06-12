@@ -1,0 +1,109 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modalHeader clearfix">
+                    <div class="modal-about">
+                        <div class="font-weight-bold p-t-5 ms-2 me-2 font-17">
+                            Add Sales
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <mat-progress-bar mode="indeterminate" *ngIf="pLoading"></mat-progress-bar>
+        <form class="register-form m-4" [formGroup]="productSalesAssignment">
+            <!--Supplier Details-->
+            <div class="row">
+                <mat-card>
+                    <mat-card-title style="font-size: x-small;">Sales Details</mat-card-title>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Customer</mat-label>
+                                    <mat-select formControlName="customerFk" required>
+                                        <mat-option *ngFor="let customer of customers" [value]="customer.id">
+                                            {{ customer.firstname +' '+customer.lastname}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="productSalesAssignment.get('customerFk').hasError('required')">
+                                        customer is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Product Fk</mat-label>
+                                    <input matInput formControlName="productFk" required />
+                                    <mat-error *ngIf="productSalesAssignment.get('productFk').hasError('required')">
+                                        product fk is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Quantity</mat-label>
+                                    <input matInput formControlName="quantity" required />
+                                    <mat-error *ngIf="productSalesAssignment.get('quantity').hasError('required')">
+                                        quantity is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                    <mat-label>Routes</mat-label>
+                                    <mat-select formControlName="routeFk" required>
+                                        <mat-option *ngFor="let route of routes" [value]="route.id">
+                                            {{ route.route }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="productSalesAssignment.get('routeFk').hasError('required')">
+                                        route is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Sales Person</mat-label>
+                                    <mat-select formControlName="salesPersonFk" required>
+                                        <mat-option *ngFor="let sp of salesPersons" [value]="sp.id">
+                                            {{ sp.username }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="productSalesAssignment.get('salesPersonFk').hasError('required')">
+                                        sales person is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-0">
+                                <div class="example-button-row">
+                                    <button mat-raised-button color="warn" (click)="onCancel()" tabindex="-1">
+                                        Cancel
+                                    </button>
+                                    <button mat-raised-button color="primary"
+                                        [disabled]="!productSalesAssignment.valid" (click)="onSubmit()">
+                                        <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        <b>Submit</b>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </form>
+    </div>
+</div>
