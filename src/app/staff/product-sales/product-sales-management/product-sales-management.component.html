@@ -18,10 +18,10 @@
                                     <div class="col-10">
                                         <ul class="header-buttons-left ms-0">
                                             <li class="dropdown">
-                                                <h2>Product Sale</h2>
+                                                <h2>Sales Persons</h2>
                                             </li>
 
-                                            <li>
+                                            <!-- <li>
                                                 <div class="m-l-10" matTooltip="Add">
                                                     <button mat-mini-fab color="primary" (click)="addCall()">
                                                         <mat-icon class="col-white">add</mat-icon>
@@ -34,27 +34,40 @@
                                                         <mat-icon class="col-white">refresh</mat-icon>
                                                     </button>
                                                 </div>
-                                            </li>
+                                            </li> -->
                                             <li class="dropdown m-l-5">
                                                 <mat-form-field>
                                                     <mat-label>Filter By </mat-label>
                                                     <mat-select [(value)]="selected">
-                                                        <mat-option value="salesCode"><b>Sales Code</b></mat-option>
-                                                        <mat-option value="date"><b>Date</b></mat-option>
+                                                        <mat-option value="name"><b>Name</b></mat-option>
+                                                        <mat-option value="email"><b>Email</b></mat-option>
+                                                        <mat-option value="mobile"><b>Mobile</b></mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
                                             </li>
                                             <li class="dropdown">
                                                 <form [formGroup]="filterform">
-                                                    <mat-form-field class="m-l-3" *ngIf="selected == 'salesCode'">
+                                                    <mat-form-field class="m-l-3" *ngIf="selected == 'name'">
                                                         <input matInput
-                                                            placeholder="Enter sales code"
-                                                            formControlName="sales_code">
-                                                        <mat-icon matSuffix (click)="getSalesBySalesCode()">search
+                                                            placeholder="Enter sales person name"
+                                                            formControlName="spName">
+                                                        <mat-icon matSuffix (click)="getSalesPersonByName()">search
                                                         </mat-icon>
                                                     </mat-form-field>
 
-                                        
+                                                    <mat-form-field class="m-l-3" *ngIf="selected == 'email'">
+                                                        <input matInput
+                                                            placeholder="Enter sales person Email">
+                                                        <mat-icon matSuffix (click)="getSalesPersonByEmail()">search
+                                                        </mat-icon>
+                                                    </mat-form-field>
+                                                    <mat-form-field class="m-l-3" *ngIf="selected == 'mobile'">
+                                                        <input matInput
+                                                            placeholder="Enter sales person mobile"
+                                                            formControlName="spMobile">
+                                                        <mat-icon matSuffix (click)="getSalesPersonByMobile()">search
+                                                        </mat-icon>
+                                                    </mat-form-field>
                                                 </form>
                                             </li>
                                         </ul>
@@ -102,42 +115,31 @@
                                     *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                     [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
                             </ng-container>
-                            <ng-container matColumnDef="customerName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Customer Name
-                                </mat-header-cell>
-                                <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
-                                    [class.even-row]="!(i % 2)" class="column-nowrap">
-                                    {{row.customerName}}
-                                </mat-cell>
-                            </ng-container>
+                         
                             <ng-container matColumnDef="salesPersonName">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Sales Person Name
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                     [class.even-row]="!(i % 2)" class="column-nowrap">
-                                    {{row.salesPersonName}}
+                                    {{row.username}}
                                 </mat-cell>
                             </ng-container>
-                            <ng-container matColumnDef="productName">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Product Name
+                            <ng-container matColumnDef="email">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">E-mail
                                 </mat-header-cell>
                                 <mat-cell *matCellDef="let row;let i= index" [class.odd-row]="i%2"
                                     [class.even-row]="!(i % 2)" class="column-nowrap"
-                                >{{row.productName??'NULL'}}</mat-cell>
+                                >{{row.email??'NULL'}}</mat-cell>
                             </ng-container>
             
-                            <ng-container matColumnDef="amount">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header  class="column-nowrap">Amount</mat-header-cell>
+                            <ng-container matColumnDef="mobile">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header  class="column-nowrap">Mobile</mat-header-cell>
                                 <mat-cell *matCellDef="let row; let i=index" 
-                                [class.odd-row]="i%2" class="column-nowrap" [class.even-row]="!(i%2)">{{row.amount}}</mat-cell>
+                                [class.odd-row]="i%2" class="column-nowrap" [class.even-row]="!(i%2)">{{row.mobile}}</mat-cell>
                             </ng-container>
-                            <ng-container matColumnDef="quantity">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Quantity</mat-header-cell>
-                                <mat-cell *matCellDef="let row;let i=index;" [class.odd-row]="i%2" [class.even-row]="!(i%2)" class="column-nowrap">{{row.quantity}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="paymentStatus">
-                                <mat-header-cell *matHeaderCellDef class="column-nowrap" mat-sort-header>Payment Status</mat-header-cell>
-                                <mat-cell *matCellDef="let row; let i=index" [class.odd-row]="i%2" [class.even-row]="!(i%2)" class="column-nowrap">{{row.paymentStatus}}</mat-cell>
+                            <ng-container matColumnDef="status">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
+                                <mat-cell *matCellDef="let row;let i=index;" [class.odd-row]="i%2" [class.even-row]="!(i%2)" class="column-nowrap">{{row.status}}</mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="action">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
@@ -145,8 +147,9 @@
                                     [class.even-row]="!(i % 2)">
                                    
                                     <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                        (click)="viewSalesPersonDetails(row)"
                                          class="tbl-action-btn">
-                                        <app-feather-icons matTooltip="View Purchase Statements" [icon]="'book'"
+                                        <app-feather-icons matTooltip="View Customer" [icon]="'book'"
                                             [class]="'tbl-fav-eye'"></app-feather-icons>
                                     </button>
                                 </mat-cell>

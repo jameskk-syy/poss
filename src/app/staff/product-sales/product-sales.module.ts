@@ -12,11 +12,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AddProductSaleComponent } from './add-product-sale/add-product-sale.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ViewSalesPersonComponent } from './view-sales-person/view-sales-person.component';
 
 @NgModule({
   declarations: [
     ProductSalesManagementComponent,
-    AddProductSaleComponent
+    AddProductSaleComponent,
+    ViewSalesPersonComponent
   ],
   imports: [
     CommonModule,

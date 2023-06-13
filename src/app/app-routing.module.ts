@@ -31,7 +31,15 @@ const routes: Routes = [
         loadChildren: () =>
           import("./staff/staff.module").then((m)=>m.StaffModule),
       },
-
+      {
+        path: "sales-person",
+        canActivate: [AuthGuard],
+        data: {
+          role: Role.SalesPerson,
+        },
+        loadChildren: () =>
+          import("./sales_person/sales-person.module").then((m)=>m.SalesPerson),
+      },
       {
         path: "user",
         canActivate: [AuthGuard],

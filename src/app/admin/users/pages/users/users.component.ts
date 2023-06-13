@@ -76,7 +76,6 @@ export class UsersComponent extends BaseComponent implements OnInit {
         (res) => {
           this.users = res.userData;
 
-          console.log("Users ", this.users)
 
           if (this.users.length > 0) {
             this.isLoading = false;

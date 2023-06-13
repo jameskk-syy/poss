@@ -381,7 +381,7 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: '/staff/product-sales',
-    title: 'Milk Sales',
+    title: 'Sales People',
     moduleName: 'product-sales',
     iconType: 'feather',
     icon: 'briefcase',
@@ -565,5 +565,18 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
     ]
-  }
+  },
+  {
+    path: '/sales-person/dashboard/main',
+    title: 'Dashboard',
+    moduleName: 'dashboard',
+    iconType: 'feather',
+    icon: 'monitor',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['SALES_PERSON'],
+    submenu: [],
+  },
 ];

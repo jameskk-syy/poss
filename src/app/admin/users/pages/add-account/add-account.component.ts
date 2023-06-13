@@ -95,6 +95,7 @@ export class AddAccountComponent extends BaseComponent implements OnInit {
           }
         },
         (err) => {
+          console.log(err)
           this.snackbar.showNotification(err.error.error, "snackbar-danger");
           console.log(err);
           this.loading = false;

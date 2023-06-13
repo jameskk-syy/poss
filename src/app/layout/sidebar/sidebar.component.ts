@@ -119,6 +119,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
         this.userType = Role.Staff;
       } else if (userRole == Role.Collector) {
         this.userType = Role.Collector;
+      }else if (userRole == Role.SalesPerson) {
+        this.userType = Role.SalesPerson;
       }
 
     }

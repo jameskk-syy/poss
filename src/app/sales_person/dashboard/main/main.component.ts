@@ -1,20 +1,19 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ProductSaleService } from '../service/product-sale.service';
+import { Component, ElementRef, NgModule, OnInit, ViewChild } from '@angular/core';
+import { ProductSaleService } from './service/product-sale.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { AddProductSaleComponent } from '../add-product-sale/add-product-sale.component';
-import { ViewSalesPersonComponent } from '../view-sales-person/view-sales-person.component';
+import { AddProductSaleComponent } from './add-product-sale/add-product-sale.component';
 
 @Component({
-  selector: 'app-product-sales-management',
-  templateUrl: './product-sales-management.component.html',
-  styleUrls: ['./product-sales-management.component.sass']
+  selector: 'app-main-management',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.scss']
 })
-export class ProductSalesManagementComponent implements OnInit {
+export class MainComponent implements OnInit {
   filterform: FormGroup
   selected = "";
 
@@ -29,15 +28,18 @@ export class ProductSalesManagementComponent implements OnInit {
 
   displayedColumns: string[] = [
     'id',
-    "salesPersonName",
-    "email",
-    "mobile",
-    "status",
+    "salesCode",
+    "customerName",
+    "productName",
+    "amount",
+    "quantity",
+    "paymentStatus",
     'action',
   ];
   data: any;
   isdata: boolean = false;
   isLoading: boolean = false;
+  customers: any;
 
   constructor(
     private salesservice: ProductSaleService,
@@ -47,26 +49,42 @@ export class ProductSalesManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterform = this.fb.group({
-      spName: [''],
-      spEmail: [''],
-      spMobile: [''],
+      sales_code: ['']
     })
     this.getData()
+    this.fetchCustomers()
+  }
+  fetchCustomers() {
+    this.isLoading = true
+    this.isdata = false
+    this.salesservice.fetchCustomers().subscribe(res => {
+      this.data = res
+      this.isLoading = false
+      if (res.entity.length > 0) {
+        this.isdata = true
+     
+        this.customers = res.entity;
+
+      } else {
+        this.isLoading = false
+        this.isdata = false
+      }
+    })
   }
 
   getData() {
+    const currentUserId = JSON.parse(localStorage.getItem('auth-user')).id
     this.selected = ""
     this.isLoading = true
     this.isdata = false
-    this.salesservice.fetchSalesPersons().subscribe(res => {
+    this.salesservice.fetchAllSalesBySalesPersonFk(currentUserId).subscribe(res => {
       this.data = res
       this.isLoading = false
-
-      if (res.userData.length > 0) {
+      if (res.entity.length > 0) {
         this.isdata = true
-       
+     
         // Binding with the datasource
-        this.dataSource = new MatTableDataSource(res.userData);
+        this.dataSource = new MatTableDataSource(res.entity);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
 
@@ -77,6 +95,14 @@ export class ProductSalesManagementComponent implements OnInit {
       }
   
     })
+  }
+  fetchCustomerByCustomerId(customerFk: any): string {
+    const customer = this.customers && this.customers.find(c=>c.id==customerFk)
+    let name: string='';
+    if(customer){
+      name = customer.firstname+' '+customer.lastname;
+    }
+    return name;
   }
 
   addCall(){
@@ -94,7 +120,7 @@ export class ProductSalesManagementComponent implements OnInit {
 
 
 
-  getSalesPersonByName(){
+  getSalesBySalesCode(){
     const code = this.filterform.value.sales_code;
     this.salesservice.fetchSalesBySalesCode(code).subscribe(res=>{
       
@@ -105,23 +131,4 @@ export class ProductSalesManagementComponent implements OnInit {
 
     })
   }
-  viewSalesPersonDetails(data: any) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false
-    dialogConfig.autoFocus = true
-    dialogConfig.width = "60%"
-    dialogConfig.data = {
-      salesPerson: data
-    }
-
-    const dialogRef = this.dialog.open(ViewSalesPersonComponent, dialogConfig)
-    dialogRef.afterClosed().subscribe((res)=> {
-      this.getData()
-    })
-  }
-
-  getSalesPersonByEmail(){
-
-  }
-  getSalesPersonByMobile(){}
 }
