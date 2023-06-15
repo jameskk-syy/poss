@@ -11,7 +11,7 @@ import { ProfileService } from '../profile.service';
 })
 export class BusinessProfileComponent implements OnInit {
   subscription!: Subscription;
-  loading = false;
+  loading = true;
   userForm!: FormGroup;
   state:boolean = false;
 
@@ -67,7 +67,7 @@ export class BusinessProfileComponent implements OnInit {
   data:any;
   getProfile() {
     this.createForm();
-    this.loading = true;
+    this.loading = false;
     this.subscription = this.service.getProfile().subscribe(res => {
       this.data = res;
       this.profile = this.data.entity[0].logo;

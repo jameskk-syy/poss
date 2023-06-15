@@ -11,6 +11,10 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ProductSaleService {
+  generateReceipt(arg0: { salesCode: any; salesPersonFk: any; }):Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/pdf' });
+    return this.http.get(`${this.baseUrl}/reports/sales?salesCode=${arg0.salesCode}&salesPersonId=${arg0.salesPersonFk}`,{headers,responseType: 'blob',});
+  }
   getPrices(routeFk:number):Observable<any> {
     return this.http.get(`${this.baseUrl}/product/configuration/get/by-routefk/${routeFk}`,httpOptions)
   }

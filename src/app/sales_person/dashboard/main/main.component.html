@@ -143,10 +143,10 @@
                               <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                   [class.even-row]="!(i % 2)">
                                  
-                                  <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                  <button mat-icon-button color="primary" (click)="generateReceipt(row.salesCode)"
                                        class="tbl-action-btn">
-                                      <app-feather-icons matTooltip="View Purchase Statements" [icon]="'book'"
-                                          [class]="'tbl-fav-eye'"></app-feather-icons>
+                                       <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                                  <mat-icon>download</mat-icon>
                                   </button>
                               </mat-cell>
                           </ng-container>

@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddProductSaleComponent } from './add-product-sale/add-product-sale.component';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-main-management',
@@ -40,10 +41,12 @@ export class MainComponent implements OnInit {
   isdata: boolean = false;
   isLoading: boolean = false;
   customers: any;
+  currentUserId:any
 
   constructor(
     private salesservice: ProductSaleService,
     private dialog: MatDialog,
+    private snackBarService:SnackbarService,
     private fb:FormBuilder,
     ) { }
 
@@ -73,18 +76,17 @@ export class MainComponent implements OnInit {
   }
 
   getData() {
-    const currentUserId = JSON.parse(localStorage.getItem('auth-user')).id
+    this.currentUserId = JSON.parse(localStorage.getItem('auth-user')).id
     this.selected = ""
     this.isLoading = true
     this.isdata = false
-    this.salesservice.fetchAllSalesBySalesPersonFk(currentUserId).subscribe(res => {
+    this.salesservice.fetchAllSalesBySalesPersonFk(this.currentUserId).subscribe(res => {
       this.data = res
       this.isLoading = false
       if (res.entity.length > 0) {
         this.isdata = true
-     
         // Binding with the datasource
-        this.dataSource = new MatTableDataSource(res.entity);
+        this.dataSource = new MatTableDataSource(res.entity.sort((a,b)=>b.id-a.id));
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
 
@@ -130,5 +132,29 @@ export class MainComponent implements OnInit {
       this.dataSource.sort = this.sort;
 
     })
+  }
+  generateReceipt(salesCode){
+    this.isLoading = true
+    this.salesservice.generateReceipt({
+      salesCode,
+      salesPersonFk:this.currentUserId
+    })
+    .subscribe((response: Blob) => {
+      const url = window.URL.createObjectURL(response);
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.style.display = 'none';
+      a.href = url;
+      a.download = `${salesCode}-sales_receipt.pdf`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      this.isLoading = false
+      this.getData();
+      
+    },(error) => {
+      this.isLoading = false;
+      this.snackBarService.showNotification(error,"snackbar-red")
+    });
   }
 }
