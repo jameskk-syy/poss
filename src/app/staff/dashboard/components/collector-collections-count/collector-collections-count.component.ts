@@ -87,15 +87,15 @@ export class CollectorCollectionsCountComponent
 
   ngOnInit(): void {
     this.getAllUsers();
-
     this.chartParametersForm = this.createChartParamtersForm();
+    this.getCollectorCountPerMonth()
   }
 
   createChartParamtersForm() {
     return this.fb.group({
       year: [this.currentYear],
       month: [this.currentMonth.value],
-      collectorId: [''],
+      collectorId: ['2'],
     });
   }
 
@@ -131,10 +131,8 @@ export class CollectorCollectionsCountComponent
 
   getCollectorCountPerMonth() {
     this.isLoading = true;
-
     let months: any[] = [];
     let collections: any[] = [];
-
     let params = new HttpParams()
       .set('year', this.chartParametersForm.value.year)
       .set('collectorId', this.chartParametersForm.value.collectorId);
@@ -144,7 +142,6 @@ export class CollectorCollectionsCountComponent
       .pipe(takeUntil(this.subject))
       .subscribe(
         (res) => {
-          console.log('Response', res);
           if (res.entity.length > 0) {
             res.entity.forEach((item) => {
               months.push(item.month);
@@ -251,13 +248,11 @@ export class CollectorCollectionsCountComponent
           let users = res.userData;
 
           users.forEach((user) => {
-            console.log(user);
             if (user.roles[0].name == 'ROLE_COLLECTOR') {
               this.collectors.push(user);
             }
           });
 
-          console.log('COLLECTORS ', this.collectors);
 
           if (this.collectors.length > 0) {
             this.chartParametersForm.patchValue({

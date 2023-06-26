@@ -75,7 +75,6 @@ export class MilkQauntityPerLocationComponent
   }
 
   ngOnInit(): void {
-    console.log('Current Month ', this.currentMonth);
     this.getQuantityPerLocation();
   }
 
@@ -95,7 +94,6 @@ export class MilkQauntityPerLocationComponent
       .pipe(takeUntil(this.subject))
       .subscribe(
         (res) => {
-          console.log('Response', res);
 
           if(res.entity.length){
             res.entity.forEach((item) => {
@@ -174,6 +172,7 @@ export class MilkQauntityPerLocationComponent
           this.isLoading = false;
         },
         (err) => {
+          this.isLoading = false
           console.log(err);
         }
       );

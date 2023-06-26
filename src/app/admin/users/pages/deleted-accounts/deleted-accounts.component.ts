@@ -79,7 +79,9 @@ export class DeletedAccountsComponent extends BaseComponent implements OnInit {
         
         },
         (err) => {
-          console.log(err);
+          console.log('EMPTY');
+          this.deletedAccounts=[]
+          this.isLoading=false
         }
       );
   }

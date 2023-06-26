@@ -16,6 +16,9 @@ export class AddProductSaleComponent implements OnInit {
   subscription!: Subscription;
   method=""
   filterForm: FormGroup
+  customertype="corporate"
+  selectedCustomer: any
+  routePrice:number
   
   isLoading: boolean = false
   pLoading: boolean = false
@@ -25,6 +28,7 @@ export class AddProductSaleComponent implements OnInit {
   amount:any
   prices: Record<string,number>
   amountToPay: number
+  mpesa_number:string;
   
 
   constructor(
@@ -51,6 +55,24 @@ export class AddProductSaleComponent implements OnInit {
     this.getRoutes();
     this.getCustomers();
     // this.getSalesPersons();
+  }
+  getRoutePrice(event:any){
+    this.isLoading = true;
+    const routeFk:number = event.value;
+    const quantity:number = this.productSalesAssignment.value.quantity;
+    this.salesservice.getPrices(routeFk).subscribe(res=>{
+      this.isLoading = false;
+        this.routePrice = res.entity.selling_price;
+        this.amountToPay = isNaN(Number(quantity)* this.routePrice) ?0:
+    Number(quantity)* this.routePrice
+    })
+  }
+  updateQuantity(){
+    this.amountToPay = isNaN(Number(this.productSalesAssignment.value.quantity)* this.routePrice) ?0:
+    Number(this.productSalesAssignment.value.quantity)* this.routePrice
+  }
+  customerSelected(event:any){
+    this.selectedCustomer = this.customers.filter(c=> c.id==event.value)[0]
   }
   getRoutes() {
     this.pLoading = true
@@ -105,7 +127,7 @@ export class AddProductSaleComponent implements OnInit {
   }
 
   computeAmount(){
-    this.pLoading = true;
+    this.isLoading = true;
     const routeFk:number = this.productSalesAssignment.value.routeFk;
     const quantity:number = this.productSalesAssignment.value.quantity;
     this.salesservice.getPrices(routeFk).subscribe(res=>{
@@ -117,6 +139,33 @@ export class AddProductSaleComponent implements OnInit {
   }
 
   mpesaPayment(){
-    console.log('MPESA')
+    this.isLoading = true;
+    const routeFk:number = this.productSalesAssignment.value.routeFk;
+    const quantity:number = this.productSalesAssignment.value.quantity;
+    let mpesa_number: string = this.filterForm.value.mpesa_number
+    const pattern = /^(\+254|254|0)\d{9}$/
+    if(pattern.test(mpesa_number) && mpesa_number.startsWith('0')){
+      mpesa_number = '254'+mpesa_number.substring(1)
+
+    }else if(pattern.test(mpesa_number) && mpesa_number.startsWith('+')){
+      mpesa_number = mpesa_number.substring(1)
+    }else if(!pattern.test(mpesa_number)){
+      this.snackBar.showNotification('red','Invalid number')
+      return;
+    }
+    this.salesservice.getPrices(routeFk).subscribe(res=>{
+      this.prices = {buying_price:res.entity.buying_price,
+        selling_price:res.entity.selling_price};
+        this.amountToPay = quantity * this.prices.selling_price;
+        this.salesservice.pushNotification({amount:this.amountToPay,mpesa_number}).subscribe((r:any)=>{
+          this.isLoading = false;
+          if(r.customerMessage.indexOf('Success')){
+            this.snackBar.showNotification('success','Notification sent')
+          }else{
+            this.snackBar.showNotification('error','Pending transaction')
+          }
+          
+        })
+    })
   }
 }

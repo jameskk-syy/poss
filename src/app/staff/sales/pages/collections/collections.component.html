@@ -19,7 +19,7 @@
                                             <div class="clearfix">
                                                 <div class="card-right">
                                                     <div>
-                                                        <h5 class="float-end">Quantity (Kgs)</h5>
+                                                        <h5 class="float-end">Quantity (Ltr)</h5>
                                                     </div>
                                                     <div class="m-r-10 m-l-10">
                                                         <h3 class="font-weight-bold float-end mb-0">{{dquantity | number
@@ -305,11 +305,11 @@
 
                                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                         <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
-                                        <mat-row *matRowDef="let row; columns: displayedColumns"
+                                        <!-- <mat-row *matRowDef="let row; columns: displayedColumns"
                                             (click)="countyDetailsCall(county)" [style.cursor]="'pointer'" matRipple>
-                                        </mat-row>
+                                        </mat-row> -->
                                         <mat-cell *matNoDataRow colspan="4">
-                                            No data matching the filter "{{ input.value }}"</mat-cell>
+                                            No data matching the filter </mat-cell>
                                     </mat-table>
 
                                     <!-- Loading spinner -->

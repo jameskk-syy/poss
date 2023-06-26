@@ -78,7 +78,9 @@ export class LockedAccountsComponent extends BaseComponent implements OnInit {
           
         },
         (err) => {
-          console.log(err);
+          this.lockedAccounts=[]
+          this.isLoading=false
+          console.log('EMPTY')
         }
       );
   }
