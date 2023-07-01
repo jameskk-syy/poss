@@ -6,22 +6,15 @@
                     <h2>Update Product Configuration</h2>
                 </div>
                 <div class="body">
+                    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
                     <form [formGroup]="configsForm" class="m-4">
-                        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
                         <div class="row">
                            
-                                <mat-form-field class="example-full-width mb-3" appearance="outline" hidden>
-                                    <mat-label>Product ID</mat-label>
-                                    <input formControlName="id" matInput required />
-                                    <mat-error *ngIf="configsForm.get('id').hasError('required')" >
-                                        Product ID Name is required
-                                    </mat-error>
-                                </mat-form-field>
                            
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
                                 <mat-form-field class="example-full-width mb-3" appearance="outline">
                                     <mat-label>Product Name</mat-label>
-                                    <input formControlName="productName" matInput required readonly />
+                                    <input formControlName="productName" matInput readonly />
                                     <mat-error *ngIf="configsForm.get('productName').hasError('required')">
                                         Product Name is required
                                     </mat-error>
@@ -63,6 +56,15 @@
                                     <input matInput formControlName="quantity" required />
                                     <mat-error *ngIf="configsForm.get('quantity').hasError('required')">
                                         quantity is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
+                                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                    <mat-label>Tier</mat-label>
+                                    <input matInput formControlName="memberType" required />
+                                    <mat-error *ngIf="configsForm.get('memberType').hasError('required')">
+                                        tier is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>

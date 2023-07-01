@@ -48,7 +48,6 @@ export class CollectionsComponent implements OnInit {
   @ViewChild('map') map: AgmMap;
   ngAfterViewInit() {
     this.map.fitBounds == true;
-    this.getAllColectionsSummary()
   }
 
   collectors: any;
@@ -75,7 +74,6 @@ export class CollectionsComponent implements OnInit {
     "session",
     "collection_date",
     "route",
-    "pickUpLocation",
     'action',
   ];
 
@@ -117,9 +115,8 @@ export class CollectionsComponent implements OnInit {
       case 'current_date':
         this.getTodaysData()
         break;
-      case 'all':
-        this.getData()
-        break;
+        case 'all':
+          this.getData()
       default:
         break;
 
@@ -298,10 +295,11 @@ export class CollectionsComponent implements OnInit {
       date: ["", [Validators.required]],
     });
 
-    // console.log("The current date is", this.currentDate)
+    console.log("The current date is", this.currentDate)
   }
 
   viewFarmerCollections(row) {
+    console.log(row)
     this.router.navigate(['/staff/sales/farmer', row.farmerId]);
   }
   getDateSummary(date) {
@@ -311,7 +309,6 @@ export class CollectionsComponent implements OnInit {
       this.data = res;
       if (this.data) {
         this.isLoading = false
-        this.isLoading = true;
         this.dquantity = this.data.entity[0].quantity;
         this.damount = this.data.entity[0].amount;
         this.dcount = this.data.entity[0].count
@@ -327,7 +324,6 @@ export class CollectionsComponent implements OnInit {
       this.data = res;
       if (this.data) {
         this.isLoading = false
-        this.isLoading = true;
         this.dquantity = this.data.entity[0].quantity;
         this.damount = this.data.entity[0].amount;
         this.dcount = this.data.entity[0].count
@@ -343,7 +339,6 @@ export class CollectionsComponent implements OnInit {
       this.data = res;
       if (this.data) {
         this.isLoading = false
-        this.isLoading = true;
         this.dquantity = this.data.entity[0].quantity;
         this.damount = this.data.entity[0].amount;
         this.dcount = this.data.entity[0].count
@@ -358,7 +353,6 @@ export class CollectionsComponent implements OnInit {
       this.data = res;
       if (this.data) {
         this.isLoading = false
-        this.isLoading = true;
         this.dquantity = this.data.entity[0].quantity;
         this.damount = this.data.entity[0].amount;
         this.dcount = this.data.entity[0].count
@@ -372,8 +366,8 @@ export class CollectionsComponent implements OnInit {
   
     this.subscription = this.dashboard.getAllCollectionsRecords().subscribe(res => {
       this.data = res;
-      this.isLoading = false
       if (this.data) {
+        this.isLoading = false
         this.dquantity = this.data.entity[0].quantity;
         this.damount = this.data.entity[0].amount;
         this.dcount = this.data.entity[0].count
@@ -435,6 +429,7 @@ export class CollectionsComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(RoutesLookUpComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
+      console.log("Routes", result)
       this.dialogData = result;
       this.form.patchValue({
         route: this.dialogData.data.route,
@@ -450,6 +445,7 @@ export class CollectionsComponent implements OnInit {
     this.getSummaryPerPickUpLocatins(id)
 
     // let pickUpLocationId = this.form.value.pickUpLocationId
+    console.log("Passed Id is ", id)
 
     this.subscription = this.service.getCollectionsPerPickUpLocation(id).subscribe(res => {
       this.data = res;
@@ -517,6 +513,7 @@ export class CollectionsComponent implements OnInit {
     this.getSummaryPerRoute(id)
 
     // let pickUpLocationId = this.form.value.pickUpLocationId
+    console.log("Passed ROute Id is ", id)
 
     this.subscription = this.service.getCollectionsPerPRoute(id).subscribe(res => {
       this.data = res;
