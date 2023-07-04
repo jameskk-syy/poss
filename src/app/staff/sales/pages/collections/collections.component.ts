@@ -361,6 +361,21 @@ export class CollectionsComponent implements OnInit {
 
 
   }
+  getSummaryPerFarmerNo(farmer_no) {
+    this.isLoading = true
+    
+    this.subscription = this.dashboard.getFarmerNoCollections(farmer_no).subscribe(res => {
+      this.data = res;
+      if (this.data) {
+        this.isLoading = false
+        this.dquantity = this.data.entity[0].quantity;
+        this.damount = this.data.entity[0].amount;
+        this.dcount = this.data.entity[0].count
+      }
+    });
+
+
+  }
   getAllColectionsSummary() {
     this.isLoading = true
   
@@ -445,7 +460,6 @@ export class CollectionsComponent implements OnInit {
     this.getSummaryPerPickUpLocatins(id)
 
     // let pickUpLocationId = this.form.value.pickUpLocationId
-    console.log("Passed Id is ", id)
 
     this.subscription = this.service.getCollectionsPerPickUpLocation(id).subscribe(res => {
       this.data = res;
@@ -490,6 +504,7 @@ export class CollectionsComponent implements OnInit {
       //     this.dataSource = new MatTableDataSource(null);
       //   }
       // })
+      this.getSummaryPerFarmerNo(farmerNo)
       this.subscription = this.service.getCollectionsByFarmerNo(farmerNo).subscribe(res => {
         this.data = res;
         if (this.data) {
@@ -513,7 +528,6 @@ export class CollectionsComponent implements OnInit {
     this.getSummaryPerRoute(id)
 
     // let pickUpLocationId = this.form.value.pickUpLocationId
-    console.log("Passed ROute Id is ", id)
 
     this.subscription = this.service.getCollectionsPerPRoute(id).subscribe(res => {
       this.data = res;

@@ -10,6 +10,10 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class DashboardService {
+  getFarmerNoCollections(farmerNo: any):Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/records/by-farmer-no?farmerNo=`+farmerNo,httpOptions);
+
+  }
 
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient) { }
