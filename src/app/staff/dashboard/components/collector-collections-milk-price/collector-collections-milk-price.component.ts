@@ -89,7 +89,7 @@ export class CollectorCollectionsMilkPriceComponent extends BaseComponent implem
     return this.fb.group({
       year: [this.currentYear],
       month: [this.currentMonth.value],
-      collectorId: [""]
+      collectorId: ["2"]
     });
   }
 
@@ -116,7 +116,6 @@ export class CollectorCollectionsMilkPriceComponent extends BaseComponent implem
     .set("month", this.chartParametersForm.value.month)
    
     this.analyticsService.getCollectorCollectionSPerMonth(params).pipe(takeUntil(this.subject)).subscribe(res => {
-      console.log("Response", res);
 
       if(res.entity.length > 0){
 
@@ -197,6 +196,7 @@ export class CollectorCollectionsMilkPriceComponent extends BaseComponent implem
       this.isLoading = false;
     }, err => {
       console.log(err)
+      this.isLoading = false
     })
   }
 }

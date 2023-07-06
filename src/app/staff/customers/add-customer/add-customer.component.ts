@@ -73,7 +73,6 @@ export class AddCustomerComponent implements OnInit {
         this.pLoading = false
         this.routes = res.entity;
 
-        console.log("Routes ", this.routes)
       } else {
         this.pLoading = false
         this.routes = [];

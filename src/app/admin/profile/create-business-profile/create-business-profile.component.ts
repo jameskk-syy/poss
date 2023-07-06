@@ -12,7 +12,7 @@ import { Location } from '@angular/common';
 })
 export class CreateBusinessProfileComponent implements OnInit {
   subscription!: Subscription;
-  loading = false;
+  loading = true;
   profileForm!: FormGroup;
   state:boolean = false;
   data:any
@@ -82,9 +82,10 @@ export class CreateBusinessProfileComponent implements OnInit {
 
   getProfile() {
     this.createForm();
-    this.loading = true;
+    this.loading = false;
     this.subscription = this.service.getProfile().subscribe(res => {
       this.data = res;
+      console.log(this.data)
       this.profile = this.data.entity[0].logo;
       console.log(this.profile)
         this.loading = false;

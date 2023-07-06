@@ -93,7 +93,7 @@ export class CollectorCollectionsComponent extends BaseComponent implements OnIn
     return this.fb.group({
       year: [this.currentYear],
       month: [this.currentMonth.value],
-      collectorId: [""]
+      collectorId: ["2"]
     });
   }
 
@@ -117,9 +117,9 @@ export class CollectorCollectionsComponent extends BaseComponent implements OnIn
     params = new HttpParams()
     .set('year', this.chartParametersForm.value.year)
     .set("month", this.chartParametersForm.value.month)
+    .set("collectorId", this.chartParametersForm.value.collectorId)
    
     this.analyticsService.getCollectorCollectionSPerMonth(params).pipe(takeUntil(this.subject)).subscribe(res => {
-      console.log("Response", res);
 
       if(res.entity.length > 0){
         res.entity.forEach(item => {
@@ -137,11 +137,6 @@ export class CollectorCollectionsComponent extends BaseComponent implements OnIn
         amounts = [];
       }
 
-      console.log("QUANTITIES ", quanties);
-
-      console.log("COLLECTORS ", collectors);
-
-      console.log("AMOUNTS ", amounts)
 
       this.barChartOptions = {
         series: [
@@ -206,6 +201,7 @@ export class CollectorCollectionsComponent extends BaseComponent implements OnIn
       this.isLoading = false;
     }, err => {
       console.log(err)
+      this.isLoading = false
     })
   }
 }

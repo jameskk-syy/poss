@@ -74,7 +74,6 @@ export class CollectionsComponent implements OnInit {
     "session",
     "collection_date",
     "route",
-    "pickUpLocation",
     'action',
   ];
 
@@ -209,7 +208,6 @@ export class CollectionsComponent implements OnInit {
   getCoordinates() {
     this.subscription = this.service.getCollectorLocationsByDate(this.mapForm.value.collectorId, this.datePipe.transform(this.mapForm.value.date, 'yyyy-MM-dd')).subscribe(res => {
       this.locations = res;
-      console.log(this.locations)
       if (this.locations.entity.length > 0) {
         this.isCoordinates = true;
         this.markers = this.locations.entity;
@@ -228,7 +226,6 @@ export class CollectionsComponent implements OnInit {
     this.subscription = this.service.getAllCollections().subscribe(res => {
       this.data = res;
       if (this.data.entity.length > 0) {
-        console.log(this.data.entity)
         this.isLoading = false;
         this.isdata = true;
         // Binding with the datasource
@@ -250,7 +247,6 @@ export class CollectionsComponent implements OnInit {
       this.subscription = this.service.getTodaysCollections(this.currentDate).subscribe(res => {
       this.data = res;
       if (this.data.entity.length > 0) {
-        console.log(this.data.entity)
         this.isLoading = false;
         this.isdata = true;
         // Binding with the datasource
@@ -303,18 +299,16 @@ export class CollectionsComponent implements OnInit {
   }
 
   viewFarmerCollections(row) {
+    console.log(row)
     this.router.navigate(['/staff/sales/farmer', row.farmerId]);
   }
   getDateSummary(date) {
     this.isLoading = true
     // this.date = this.datePipe.transform(this.form.value.date, 'yyyy-MM-dd');
-    console.log("Formated date is ", date)
     this.subscription = this.dashboard.getDateCollections(date).subscribe(res => {
       this.data = res;
       if (this.data) {
         this.isLoading = false
-        console.log(this.data)
-        this.isLoading = true;
         this.dquantity = this.data.entity[0].quantity;
         this.damount = this.data.entity[0].amount;
         this.dcount = this.data.entity[0].count
@@ -330,8 +324,6 @@ export class CollectionsComponent implements OnInit {
       this.data = res;
       if (this.data) {
         this.isLoading = false
-        console.log(this.data)
-        this.isLoading = true;
         this.dquantity = this.data.entity[0].quantity;
         this.damount = this.data.entity[0].amount;
         this.dcount = this.data.entity[0].count
@@ -347,8 +339,6 @@ export class CollectionsComponent implements OnInit {
       this.data = res;
       if (this.data) {
         this.isLoading = false
-        console.log(this.data)
-        this.isLoading = true;
         this.dquantity = this.data.entity[0].quantity;
         this.damount = this.data.entity[0].amount;
         this.dcount = this.data.entity[0].count
@@ -359,13 +349,25 @@ export class CollectionsComponent implements OnInit {
   }
   getSummaryPerRoute(routeId) {
     this.isLoading = true
-  console.log("Route id"+ routeId)
     this.subscription = this.dashboard.getRouteCollections(routeId).subscribe(res => {
       this.data = res;
       if (this.data) {
         this.isLoading = false
-        console.log("Route collection summary",this.data)
-        this.isLoading = true;
+        this.dquantity = this.data.entity[0].quantity;
+        this.damount = this.data.entity[0].amount;
+        this.dcount = this.data.entity[0].count
+      }
+    });
+
+
+  }
+  getSummaryPerFarmerNo(farmer_no) {
+    this.isLoading = true
+    
+    this.subscription = this.dashboard.getFarmerNoCollections(farmer_no).subscribe(res => {
+      this.data = res;
+      if (this.data) {
+        this.isLoading = false
         this.dquantity = this.data.entity[0].quantity;
         this.damount = this.data.entity[0].amount;
         this.dcount = this.data.entity[0].count
@@ -381,8 +383,6 @@ export class CollectionsComponent implements OnInit {
       this.data = res;
       if (this.data) {
         this.isLoading = false
-        console.log(this.data)
-        this.isLoading = true;
         this.dquantity = this.data.entity[0].quantity;
         this.damount = this.data.entity[0].amount;
         this.dcount = this.data.entity[0].count
@@ -396,7 +396,6 @@ export class CollectionsComponent implements OnInit {
     this.subscription = this.service.getAllFarmers().subscribe(res => {
       this.data = res;
       if (this.data) {
-        console.log(this.data)
         this.isLoading = false
         this.farmers = this.data.entity.length
 
@@ -461,13 +460,11 @@ export class CollectionsComponent implements OnInit {
     this.getSummaryPerPickUpLocatins(id)
 
     // let pickUpLocationId = this.form.value.pickUpLocationId
-    console.log("Passed Id is ", id)
 
     this.subscription = this.service.getCollectionsPerPickUpLocation(id).subscribe(res => {
       this.data = res;
       if (this.data) {
         this.isdata = true
-        console.log(this.data)
         this.isLoading = false;
         this.datasize=this.data.entity.length
         this.dataSource = new MatTableDataSource(this.data.entity);
@@ -484,7 +481,6 @@ export class CollectionsComponent implements OnInit {
   filterByFarmerNo(id: any) {
     this.isLoading = true;
     let farmerNo = this.form.value.farmer_no
-    console.log(this.form.value.farmer_no)
 
     if (farmerNo != null && farmerNo != undefined) {
 
@@ -508,11 +504,11 @@ export class CollectionsComponent implements OnInit {
       //     this.dataSource = new MatTableDataSource(null);
       //   }
       // })
+      this.getSummaryPerFarmerNo(farmerNo)
       this.subscription = this.service.getCollectionsByFarmerNo(farmerNo).subscribe(res => {
         this.data = res;
         if (this.data) {
           this.isLoading = false
-          console.log(this.data.entity.size > 0)
           this.isdata = true;
           this.datasize=this.data.entity.length
           this.dataSource = new MatTableDataSource(this.data.entity);
@@ -532,13 +528,11 @@ export class CollectionsComponent implements OnInit {
     this.getSummaryPerRoute(id)
 
     // let pickUpLocationId = this.form.value.pickUpLocationId
-    console.log("Passed ROute Id is ", id)
 
     this.subscription = this.service.getCollectionsPerPRoute(id).subscribe(res => {
       this.data = res;
       if (this.data.entity.length > 0) {
         this.isLoading = false
-        console.log("Route collections"+ this.data)
         this.isdata = true;
         this.datasize=this.data.entity.length
         this.dataSource = new MatTableDataSource(this.data.entity);

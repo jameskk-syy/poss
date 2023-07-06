@@ -47,7 +47,7 @@ farmerNo:any
       collectionNumber:[this.collection.collectionCode,[Validators.required]],
       route:[this.collection.route,[Validators.required]],
       // route:[""],
-      canNo: [this.collection.canNo,[Validators.required]],
+      // canNo: [this.collection.canNo,[Validators.required]],
       originalQuantity:[this.collection.originalQuantity,[Validators.required]],
       farmer_no:[this.collection.farmer_no,[Validators.required]]
       

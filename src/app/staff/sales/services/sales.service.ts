@@ -29,7 +29,7 @@ export class SalesService {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/pickupLocations?pickUpLocation=`+id, httpOptions);
   }
   getCollectionsByFarmerNo(id:any): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/collections/per/farmer?farmerId=` +id,httpOptions);
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/per/farmer/by-farmer-no?farmerNo=` +id,httpOptions);
   }
   getCollectionsPerPRoute(id:any) {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/route?routeId=`+id, httpOptions);
@@ -78,7 +78,7 @@ export class SalesService {
   }
 
   getAllCollectors(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/collections/analytics/roleUsers?roleId=3`, httpOptions);
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/analytics/roleUsers?roleId=2`, httpOptions);
   }
 
   getCollectorLocationsByDate(collectorId: any, date: any): Observable<any> {

@@ -57,12 +57,15 @@ export class SigninComponent
         this.tokenStorage.saveToken(res.token);
         this.tokenStorage.saveUser(res);
         const role = res.roles[0].name;
+
         if (role == Role.Admin) {
           this.router.navigate(['/admin/dashboard'])
         } else if (role == Role.Staff) {
           this.router.navigate(['/staff/dashboard'])
         } else if (role == Role.Collector) {
-          this.router.navigate(['sales/dashboard'])
+          this.router.navigate(['/collections/dashboard'])
+        } else if (role == Role.SalesPerson) {
+          this.router.navigate(['/sales-person/dashboard'])
         } else {
           this.error = "Invalid Login";
         }

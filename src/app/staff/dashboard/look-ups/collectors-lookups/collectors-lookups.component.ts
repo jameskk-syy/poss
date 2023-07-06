@@ -49,7 +49,6 @@ export class CollectorsLookupsComponent extends BaseComponent implements OnInit 
     this.userService.getAllCollectors().subscribe(res => {
       this.colData = res;
       if (this.colData.entity.length > 0) {
-        console.log("Collectors found"+ res)
         this.collectors = this.colData.entity;
         this.isLoading = false;
 
