@@ -149,7 +149,7 @@
                                     <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
                                         (click)="viewSalesPersonDetails(row)"
                                          class="tbl-action-btn">
-                                        <app-feather-icons matTooltip="View Customer" [icon]="'book'"
+                                        <app-feather-icons matTooltip="View {{row.username}}'s sales" [icon]="'book'"
                                             [class]="'tbl-fav-eye'"></app-feather-icons>
                                     </button>
                                 </mat-cell>

@@ -13,6 +13,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AddProductSaleComponent } from './add-product-sale/add-product-sale.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ViewSalesPersonComponent } from './view-sales-person/view-sales-person.component';
+import { CdkColumnDef, CdkTableModule } from '@angular/cdk/table';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,13 @@ import { ViewSalesPersonComponent } from './view-sales-person/view-sales-person.
     MatTableModule,
     MatCardModule,
     MatDialogModule,
-    SharedModule
+    SharedModule,
+    CdkTableModule,
+  MatSortModule,
+  ],
+  providers: [
+    CdkColumnDef
   ]
+  
 })
 export class ProductSalesModule { }

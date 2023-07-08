@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,7 +17,7 @@ import { MilkAllocationComponent } from '../milk-allocation/milk-allocation.comp
   templateUrl: './collectors-float-allocations.component.html',
   styleUrls: ['./collectors-float-allocations.component.sass']
 })
-export class CollectorsFloatAllocationsComponent implements OnInit {
+export class CollectorsFloatAllocationsComponent implements OnInit,AfterViewInit {
 
 
   displayedColumns: string[] = [
@@ -45,6 +45,12 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
   isdata: boolean = false;
   isLoading: boolean = false;
   constructor(private router: Router, private dialog: MatDialog, private service: SalesService,) { }
+  ngAfterViewInit(): void {
+    this.service.event$.subscribe(ev=>{
+      this.fetchMilkAllocations()
+      
+     })
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -77,7 +83,9 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
 
   ngOnInit(): void {
     // this.getData();
+
     this.fetchMilkAllocations()
+    
   }
 
 
@@ -99,8 +107,9 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
   fetchMilkAllocations(){
     this.isLoading = true;
     this.service.fetchMilkAllocations().subscribe(res => {
+      
       this.data = res;
-      if (this.data.entity.length > 0) {
+      if (this.data && this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;
         // Binding with the datasource
@@ -125,6 +134,7 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
       allocation: row
     }
     this.dialog.open(DeleteFloatAllocationComponent, dialogConfig)
+    this.fetchMilkAllocations()
   }
 
 
@@ -180,5 +190,6 @@ export class CollectorsFloatAllocationsComponent implements OnInit {
       float: row
     }
     this.dialog.open(DeleteFloatAllocationComponent, dialogConfig)
+   
   }
 }

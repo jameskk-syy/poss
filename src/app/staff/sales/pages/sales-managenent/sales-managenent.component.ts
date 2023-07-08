@@ -48,7 +48,6 @@ export class SalesManagenentComponent implements OnInit {
     this.isLoading = true;
     this.subscription = this.service.getFarmersPaymentRecords().subscribe(res => {
       this.data = res;
-      console.log(this.data)
       if (this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;

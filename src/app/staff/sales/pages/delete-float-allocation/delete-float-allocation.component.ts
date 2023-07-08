@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { CollectorsFloatAllocationsComponent } from '../collectors-float-allocations/collectors-float-allocations.component';
@@ -17,6 +17,7 @@ export class DeleteFloatAllocationComponent implements OnInit {
   isloading: boolean = false
 
   subscription: Subscription
+  @Output() deleteEvent = new EventEmitter<any>();
 
   constructor(
     public dialogRef: MatDialogRef<CollectorsFloatAllocationsComponent>,
@@ -27,23 +28,24 @@ export class DeleteFloatAllocationComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log("The sales person delete data", this.data)
     this.salesPersonName = this.data.allocation.salesPersonName
     this.allocatedMilkQuantity = this.data.allocation.allocatedMilkQuantity
   }
 
   onDelete(){
     this.isloading = true
-    this.subscription = this.service.deleteCustomer(this.data.allocation.id)
+    this.subscription = this.service.deleteAllocation(this.data.allocation.id)
     .subscribe((res)=> {
       this.isloading = false;
       this.snackbar.showNotification("snackbar-success", "Successful!");
       this.dialogRef.close();
+      this.deleteEvent.emit()
     },
     (err)=> {
       this.isloading = false;
       this.snackbar.showNotification("snackbar-danger", err);
       this.dialogRef.close();
+      this.deleteEvent.emit()
     })
   }
 

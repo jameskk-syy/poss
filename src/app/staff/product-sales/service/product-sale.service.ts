@@ -11,6 +11,9 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ProductSaleService {
+  public fetchAllSalesBySalesPersonFk(salesPersonFk:any):Observable<any>{
+    return this.http.get(`${this.baseUrl}/sales/fetch-sales-by-sales-person/${salesPersonFk}`,httpOptions)
+  }
   fetchSalesBySalesCode(code: any):Observable<any> {
     return this.http.get(`${this.baseUrl}/sales/fetch-sale/${code}`);
   }

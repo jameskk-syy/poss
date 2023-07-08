@@ -96,7 +96,6 @@ export class ProductsAllocationComponent implements OnInit {
     this.service.getSalesPerType(type).subscribe(
       (res) => {
         this.services = res.entity;
-        console.log("services"+ this.service)
         if (this.services != null) {
           this.isLoading = false;
           this.dataSource1 = new MatTableDataSource<any>(this.services);
