@@ -2,8 +2,7 @@
     <div class="content-block">
         <div class="block-header">
             <!-- breadcrumb -->
-            <app-breadcrumb [title]="'All farmers / Milk Suppliers'" [items]="['Farmers']"
-                [active_item]="'All Farmers'">
+            <app-breadcrumb [title]="'Payment Records'" [items]="['Routes']" [active_item]="'All Routes'">
             </app-breadcrumb>
         </div>
 
@@ -15,15 +14,21 @@
                         <div class="table-responsive">
                             <div class="materialTableHeader">
                                 <div class="row">
-                                    <div class="col-10">
+                                    <div class="col-8">
                                         <ul class="header-buttons-left ms-0">
                                             <li class="dropdown">
-                                                <h2>Farmers</h2>
+                                                <h2>Routes</h2>
                                             </li>
-
+                                            <li class="dropdown m-l-20">
+                                                <label for="search-input"><i
+                                                        class="material-icons search-icon">search</i></label>
+                                                <input placeholder="Search" type="text"
+                                                    style="text-transform: capitalize;" (keyup)="applyFilter($event)"
+                                                    class="browser-default search-field" aria-label="Search box" />
+                                            </li>
                                             <li>
                                                 <div class="m-l-10" matTooltip="Add">
-                                                    <button mat-mini-fab color="primary" (click)="addCall()">
+                                                    <button mat-mini-fab color="primary" (click)="addRouteCall()">
                                                         <mat-icon class="col-white">add</mat-icon>
                                                     </button>
                                                 </div>
@@ -35,37 +40,15 @@
                                                     </button>
                                                 </div>
                                             </li>
-                                            <li class="dropdown m-l-5">
-                                                <mat-form-field>
-                                                    <mat-label>Filter By </mat-label>
-                                                    <mat-select [(value)]="selected">
-                                                        <mat-option value="fn"><b>Farmer Number</b></mat-option>
-
-
-                                                    </mat-select>
-                                                </mat-form-field>
-                                            </li>
-                                            <li class="dropdown">
-                                                <form [formGroup]="filterform">
-                                                    <mat-form-field class="m-l-3" *ngIf="selected == 'fn'">
-                                                        <input matInput (dateChange)="filterFarmers()"
-                                                            placeholder="Enter Farmer Number"
-                                                            formControlName="farmer_no">
-                                                        <mat-icon matSuffix (click)="getFarmerByFarmerNo()">search
-                                                        </mat-icon>
-                                                    </mat-form-field>
-
-                                                </form>
-                                            </li>
                                         </ul>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-4">
                                         <ul class="header-buttons">
                                             <li>
                                                 <div class="export-button m-l-10" matTooltip="XLSX">
                                                     <img src="assets/images/icons/xlsx.png" alt="" (click)="
                                 exporter.exportTable('xlsx', {
-                                  fileName: 'all-counties',
+                                  fileName: 'routes',
                                   sheet: 'sheet1'
                                 })
                               " />
@@ -77,18 +60,18 @@
                                                         (click)="exporter.exportTable('csv')" />
                                                 </div>
                                             </li>
-                                            <!-- <li>
+                                            <li>
                                                 <div class="export-button m-l-10" matTooltip="JSON">
                                                     <img src="assets/images/icons/json.png" alt=""
                                                         (click)="exporter.exportTable('json')" />
                                                 </div>
-                                            </li> -->
-                                            <!-- <li>
+                                            </li>
+                                            <li>
                                                 <div class="export-button m-l-10" matTooltip="TXT">
                                                     <img src="assets/images/icons/txt.png" alt=""
                                                         (click)="exporter.exportTable('txt')" />
                                                 </div>
-                                            </li> -->
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -119,102 +102,59 @@
                                         *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="farmer_no">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Farmer No.
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.farmer_no}}
-                                    </mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="username">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Farmer
+                                <ng-container matColumnDef="name">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Route
                                         Name</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
+                                    <mat-cell *matCellDef="let route;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.username}}
+                                        {{route.route}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="mobile_no">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">Phone.</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
+
+                                <ng-container matColumnDef="collectors">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Collectors</mat-header-cell>
+                                    <mat-cell *matCellDef="let route;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.mobile_no}}
+                                        {{route.collectors.length}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="ID No.">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">ID
-                                        No.</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
+
+                                <ng-container matColumnDef="farmers">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Farmers</mat-header-cell>
+                                    <mat-cell *matCellDef="let route;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.id_number}}
+                                        {{route.numberOfFarmers}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="route">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">Route</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.route }}
-                                    </mat-cell>
-                                </ng-container>
-                                <!-- <ng-container matColumnDef="pickUpLocation">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">PickUp
-                                        Location
-                                        on</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{farmer.pickUpLocation }}
-                                    </mat-cell>
-                                </ng-container> -->
 
                                 <ng-container matColumnDef="action">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, farmer)">
+                                    <mat-cell *matCellDef="let route;let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, route)">
                                         <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                            (click)="editCall(farmer)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="Edit farmer"
+                                            (click)="viewRouteCall(route)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="View route collections"
+                                                [icon]="'eye'"></app-feather-icons>
+                                        </button>
+                                        <!-- <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                            (click)="editRouteCall(route)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="Edit route"
                                                 [icon]="'edit'"></app-feather-icons>
                                         </button>
                                         <button mat-icon-button color="accent" (click)="$event.stopPropagation()"
-                                            (click)="deleteCall(farmer)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="Delete farmer" [icon]="'trash-2'"
+                                            (click)="deleteRouteCall(route)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="Delete route" [icon]="'trash-2'"
                                                 [class]="'tbl-fav-delete'"></app-feather-icons>
-                                        </button>
-                                        <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                            (click)="viewFarmerDetails(farmer)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="View Farmer Details" [icon]="'eye'"
-                                                [class]="'tbl-fav-eye'"></app-feather-icons>
-                                        </button>
-                                        <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                            (click)="viewFarmerCollections(farmer)" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="View Delivery Statements" [icon]="'book'"
-                                                [class]="'tbl-fav-eye'"></app-feather-icons>
-                                        </button>
+                                        </button> -->
                                     </mat-cell>
                                 </ng-container>
 
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                 <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                                 <mat-row *matRowDef="let row; columns: displayedColumns"
-                                    (click)="farmerDetailsCall(farmer)" [style.cursor]="'pointer'" matRipple>
+                                    (click)="routeDetailsCall(route)" [style.cursor]="'pointer'" matRipple>
                                 </mat-row>
-                                <mat-cell *matNoDataRow colspan="4">
-                                    No data matching the filter "{{ input.value }}"</mat-cell>
                             </mat-table>
-
-                            <!-- Loading spinner -->
-                            <div *ngIf="isLoading" class="tbl-spinner">
-                                <mat-progress-spinner color="primary" [diameter]="50" mode="indeterminate">
-                                </mat-progress-spinner>
-                            </div>
-
-                            <div class="tbl-spinner" *ngIf="isdata==false && !isLoading">
-                                <h4>0 Records Found</h4>
-                            </div>
-
                             <mat-paginator #paginator [pageIndex]="0" [pageSize]="5"
                                 [pageSizeOptions]="[5, 10, 25, 100]">
                             </mat-paginator>

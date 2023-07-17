@@ -295,11 +295,9 @@ export class CollectionsComponent implements OnInit {
       date: ["", [Validators.required]],
     });
 
-    console.log("The current date is", this.currentDate)
   }
 
   viewFarmerCollections(row) {
-    console.log(row)
     this.router.navigate(['/staff/sales/farmer', row.farmerId]);
   }
   getDateSummary(date) {
@@ -444,7 +442,6 @@ export class CollectionsComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(RoutesLookUpComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
-      console.log("Routes", result)
       this.dialogData = result;
       this.form.patchValue({
         route: this.dialogData.data.route,

@@ -14,7 +14,7 @@
                             <div class="body">
                                 <div class="row">
 
-                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
                                         <div class="card card-statistic-2">
                                             <div class="clearfix">
                                                 <div class="card-right">
@@ -34,7 +34,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
                                         <div class="card card-statistic-2">
                                             <div class="clearfix">
                                                 <div class="card-right">
@@ -53,7 +53,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
                                         <div class="card card-statistic-2">
                                             <div class="clearfix">
                                                 <div class="card-right">
@@ -72,7 +72,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                                    <!-- <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
                                         <div class="card card-statistic-2">
                                             <div class="clearfix">
                                                 <div class="card-right">
@@ -90,7 +90,7 @@
                                                 </canvas>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                 </div>
                                 <div class="table-responsive">
@@ -245,7 +245,10 @@
                                                 class="column-nowrap tbl-col-width-per-8">Session</mat-header-cell>
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-8">
-                                                {{response.session}}
+                                                {{
+                                                    response.session=='Session 1'?'Morning':
+                                                    (response.session=='Session 2'?'Afternoon':'Evening')
+                                                }}
                                             </mat-cell>
                                         </ng-container>
                                         <ng-container matColumnDef="collection_date">

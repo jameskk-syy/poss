@@ -5,7 +5,7 @@
             <app-breadcrumb [title]="'Milk Collection Statements'" [items]="['Collections']" [active_item]="'Farmer'">
             </app-breadcrumb>
         </div>
-        <!-- <div class="row">
+         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="body p-2">
@@ -14,14 +14,14 @@
                                 <div class="col-2" *ngIf="present==true">
                                     <div style="display: flex; align-items: center;" matTooltip="Farmer Name">
                                         <mat-icon class="align">supervised_user_circle</mat-icon>
-                                        <div class="p-1"><b>{{farmer.first_name +" "+ farmer.last_name}}</b></div>
+                                        <div class="p-1"><b>{{farmer.username}}</b></div>
                                     </div>
                                 </div>
 
                                 <div class="col-2" *ngIf="present==true">
                                     <div style="display: flex; align-items: center;" matTooltip="Farmer Number">
                                         <mat-icon class="align">credit_card</mat-icon>
-                                        <div class="p-1"><b>{{farmer.member_code}}</b></div>
+                                        <div class="p-1"><b>{{farmer.member_type}}</b></div>
                                     </div>
                                 </div>
 
@@ -33,9 +33,9 @@
                                 </div>
 
                                 <div class="col-2" *ngIf="present==true">
-                                    <div style="display: flex; align-items: center;" matTooltip="Subcounty">
+                                    <div style="display: flex; align-items: center;" matTooltip="Route">
                                         <mat-icon class="align">location_on</mat-icon>
-                                        <div class="p-1"><b>{{farmer.subcounty}}</b></div>
+                                        <div class="p-1"><b>{{farmer.route}}</b></div>
                                     </div>
                                 </div>
 
@@ -47,15 +47,16 @@
                                     </div>
                                 </div>
                                 <div class="col-2" *ngIf="present==true">
-                                    <div style="display: flex; align-items: center;" matTooltip="# Of Cows">
-                                        <mat-icon class="align">pie_chart</mat-icon>
-                                        <div class="p-1"><b>{{farmer.no_of_cows +" Cows"}}</b></div>
+                                    <div style="display: flex; align-items: center;" matTooltip="Account Number">
+                                        <mat-icon class="align">money</mat-icon>
+                                        <div class="p-1"><b>{{farmer.account_number=='N/A'?farmer.payment_mode:farmer.account_number}}</b></div>
                                     </div>
                                 </div>
+                                
                             </div>
 
                         </mat-card>
-                        <div class="table-responsive">
+                        <!-- <div class="table-responsive">
                             <div class="materialTableHeader">
                                 <div class="row">
                                     <div class="col-10">
@@ -213,16 +214,17 @@
                             <mat-paginator #paginator [pageIndex]="0" [pageSize]="5"
                                 [pageSizeOptions]="[5, 10, 25, 100]">
                             </mat-paginator>
-                        </div>
+                        </div> 
                         <div class="text-end p-3">
                             <button (click)="navigateBackToFarmers()" mat-raised-button class="msr-2" color="accent">
                               Back
                             </button>
                           </div>
+                          -->
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div> 
 
         <div class="row clearfix">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -238,14 +240,14 @@
                                         <div class="row mt-2">
                                             <div class="col-lg-2 col-sm-6">
                                                 <div matTooltip="" class="chat-about" *ngIf="present==true">
-                                                    <div class="chat-with">Lastname </div>
-                                                    <div class="chat-num-messages">{{farmer.last_name}}</div>
+                                                    <div class="chat-with">Name </div>
+                                                    <div class="chat-num-messages">{{farmer.username}}</div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 col-sm-6">
                                                 <div matTooltip="" class="chat-about" *ngIf="present==true">
-                                                    <div class="chat-with">Member code </div>
-                                                    <div class="chat-num-messages">{{farmer.farmerNo }}</div>
+                                                    <div class="chat-with">Farmer No </div>
+                                                    <div class="chat-num-messages">{{farmer.farmer_no }}</div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 col-sm-6">
@@ -258,11 +260,11 @@
                                             <div class="col-lg-2 col-sm-6">
                                                 <div matTooltip="Subcounty" class="chat-about"
                                                     *ngIf="present==true">
-                                                    <div class="chat-with">Subcounty</div>
-                                                    <div class="chat-num-messages">{{farmer.subcounty}}</div>
+                                                    <div class="chat-with">Route</div>
+                                                    <div class="chat-num-messages">{{farmer.route}}</div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2 col-sm-6">
+                                            <!-- <div class="col-lg-2 col-sm-6">
 
                                                 <div matTooltip="" class="chat-about" *ngIf="present==true">
                                                     <div class="chat-with">Lastname </div>
@@ -274,7 +276,7 @@
                                                     <div class="chat-with">No of cows </div>
                                                     <div class="chat-num-messages">{{farmer.last_name}}</div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>

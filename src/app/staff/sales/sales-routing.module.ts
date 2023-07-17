@@ -6,11 +6,12 @@ import { CollectionsComponent } from './pages/collections/collections.component'
 import { CollectorsFloatAllocationsComponent } from './pages/collectors-float-allocations/collectors-float-allocations.component';
 import { ProductsAllocationComponent } from './pages/products-allocation/products-allocation.component';
 import { SalesManagenentComponent } from './pages/sales-managenent/sales-managenent.component';
+import { ManageRoutesComponent } from './pages/manage-routes/manage-routes.component';
 
 const routes: Routes = [
   {
     path: "sales",
-    component: SalesManagenentComponent,
+    component: ManageRoutesComponent,
   },
   {
     path: "collections",

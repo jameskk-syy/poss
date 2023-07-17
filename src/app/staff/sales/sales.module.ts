@@ -37,6 +37,8 @@ import { RoutesLookUpComponent } from './pages/routes-look-up/routes-look-up.com
 import { VerifyproductAllocationsComponent } from './verifyproduct-allocations/verifyproduct-allocations.component';
 import { MilkAllocationComponent } from './pages/milk-allocation/milk-allocation.component';
 import { SalesPersonsLookupComponent } from './pages/sales-persons-lookup/sales-persons-lookup.component';
+import { ManageRoutesComponent } from './pages/manage-routes/manage-routes.component';
+import { RouteDetailsComponent } from './pages/route-details/route-details.component';
 
 
 @NgModule({
@@ -57,7 +59,9 @@ import { SalesPersonsLookupComponent } from './pages/sales-persons-lookup/sales-
         RoutesLookUpComponent,
         VerifyproductAllocationsComponent,
         MilkAllocationComponent,
-        SalesPersonsLookupComponent
+        SalesPersonsLookupComponent,
+        ManageRoutesComponent,
+        RouteDetailsComponent
     ],
     imports: [
         CommonModule,

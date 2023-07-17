@@ -20,6 +20,9 @@ export class RoutesService {
   public getRoutes(): Observable<any> {
     return this.http.get<any>(this.routesUrl + 'get');
   }
+  public fetchRoutes(): Observable<any> {
+    return this.http.get<any>(this.routesUrl + 'fetch');
+  }
 
   addNewRoute(data: any): Observable<any> {
     return this.http.post(this.routesUrl + 'add', data, httpOptions);
