@@ -1,10 +1,3 @@
-<section class="content">
-    <div class="content-block">
-        <div class="block-header">
-            <!-- breadcrumb -->
-            <app-breadcrumb [title]="'Payment Records'" [items]="['Payments']" [active_item]="'Payment Records'">
-            </app-breadcrumb>
-        </div>
 
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -14,79 +7,62 @@
                             <div class="materialTableHeader">
                                 <div class="row">
                                     <div class="col-8">
-                                        <ul class="header-buttons-left ms-0">
-                                            <li class="dropdown">
-                                                <h2>Counties</h2>
-                                            </li>
-                                            <li class="dropdown m-l-20">
-                                                <label for="search-input"><i
-                                                        class="material-icons search-icon">search</i></label>
-                                                <input placeholder="Search" type="text"
-                                                    style="text-transform: capitalize;" (keyup)="applyFilter($event)"
-                                                    class="browser-default search-field" aria-label="Search box" />
-                                            </li>
-
-                                            <li>
-                                                <div class="m-l-10" matTooltip="Refresh">
-                                                    <button mat-mini-fab color="primary" (click)="getData()">
-                                                        <mat-icon class="col-white">refresh</mat-icon>
-                                                    </button>
-                                                </div>
-                                            </li>
-                                        </ul>
+                                      <ul class="header-buttons ms-0 list-unstyled d-flex">
+                                        <li class="dropdown">
+                                          <h2>{{route.route}} <i>records</i></h2>
+                                        </li>
+                                        <li class="dropdown mx-2">
+                                          <h2>{{confirmed}} records confirmed</h2>
+                                        </li>
+                                        <li class="dropdown mx-2">
+                                          <div matTooltip="Approve">
+                                            <button mat-mini-fab color="primary" (click)="handleApprove()">
+                                              <mat-icon class="col-white">check</mat-icon>
+                                            </button>
+                                          </div>
+                                        </li>
+                                        <li class="dropdown mx-2">
+                                          <div matTooltip="Payment Options">
+                                            <form [formGroup]="paymentOption">
+                                              <div class="col-sm-6">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                  <mat-select formControlName="method" [(value)]="method" required (selectionChange)="handleChange(method)">
+                                                    <mat-option value="bank"><b>BANK</b></mat-option>
+                                                    <mat-option value="mpesa"><b>MPESA</b></mat-option>
+                                                    <mat-option value="sacco"><b>SACCO</b></mat-option>
+                                                  </mat-select>
+                                                </mat-form-field>
+                                              </div>
+                                            </form>
+                                          </div>
+                                        </li>
+                                        
+                                      </ul>
                                     </div>
                                     <div class="col-4">
-                                        <ul class="header-buttons">
-                                            <li>
-                                                <div class="export-button m-l-10" matTooltip="XLSX">
-                                                    <img src="assets/images/icons/xlsx.png" alt="" (click)="
-                                exporter.exportTable('xlsx', {
-                                  fileName: 'all-counties',
-                                  sheet: 'sheet1'
-                                })
-                              " />
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="export-button m-l-10" matTooltip="CSV">
-                                                    <img src="assets/images/icons/csv.png" alt=""
-                                                        (click)="exporter.exportTable('csv')" />
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="export-button m-l-10" matTooltip="JSON">
-                                                    <img src="assets/images/icons/json.png" alt=""
-                                                        (click)="exporter.exportTable('json')" />
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="export-button m-l-10" matTooltip="TXT">
-                                                    <img src="assets/images/icons/txt.png" alt=""
-                                                        (click)="exporter.exportTable('txt')" />
-                                                </div>
-                                            </li>
-                                        </ul>
+                                      <ul class="header-buttons list-unstyled d-flex align-items-center">
+                                        <li>
+                                          <div class="export-button m-l-10" matTooltip="XLSX">
+                                            <img src="assets/images/icons/xlsx.png" alt=""
+                                              (click)="exporter.exportTable('xlsx', { fileName: route.route + '-' + method + '--records', sheet: 'sheet1' })" />
+                                          </div>
+                                        </li>
+                                        <li>
+                                          <div class="export-button m-l-10" matTooltip="CSV">
+                                            <img src="assets/images/icons/csv.png" alt="" (click)="exporter.exportTable('csv')" />
+                                          </div>
+                                        </li>
+                                      </ul>
                                     </div>
-                                </div>
+                                  </div>
+                                                                    
                             </div>
-                            <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell"
+                            <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell text-smaller"
                                 #exporter="matTableExporter">
                                 <!-- Checkbox Column -->
-                                <ng-container matColumnDef="select">
-                                    <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                                        <mat-checkbox (change)="$event ? masterToggle() : null"
-                                            [checked]="selection.hasValue() && isAllSelected()"
-                                            [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                            [ngClass]="'tbl-checkbox'">
-                                        </mat-checkbox>
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
-                                        <mat-checkbox (click)="$event.stopPropagation()"
-                                            (change)="$event ? selection.toggle(row) : null"
-                                            [checked]="selection.isSelected(row)" [ngClass]="'tbl-checkbox'">
-                                        </mat-checkbox>
-                                    </mat-cell>
-                                </ng-container>
+                                <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+
+                              
                                 <!-- ID Column -->
                                 <ng-container matColumnDef="id">
                                     <mat-header-cell class="table-img tbl-col-width-per-8" *matHeaderCellDef
@@ -94,6 +70,23 @@
                                     <mat-cell class="table-img tbl-col-width-per-8"
                                         *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="status">
+                                        <mat-header-cell class="table-img tbl-col-width-per-8" *matHeaderCellDef>
+                                            <mat-checkbox
+                                            [checked]="allSelected"
+                                            (change)="selectAll($event.checked)">
+                                            </mat-checkbox>
+                                        </mat-header-cell>
+                                        <mat-cell class="table-img tbl-col-width-per-8"
+                                        *matCellDef="let data; let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)">
+                                            <mat-checkbox 
+                                            [(ngModel)]="data.selected"
+                                            (change)="handleCheck($event.checked,data)" 
+                                            >
+                                            </mat-checkbox>
+                                        </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="farmer_no">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Farmer
@@ -105,38 +98,38 @@
                                 </ng-container>
                                 <ng-container matColumnDef="username">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">username</mat-header-cell>
+                                        class="column-nowrap overflow-auto">Username</mat-header-cell>
                                     <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
+                                        [class.even-row]="!(i % 2)" class="column-nowrap px-2">
                                         {{request.username}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="payment_mode">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">payment_mode</mat-header-cell>
+                                        class="column-nowrap">Pay via</mat-header-cell>
                                     <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
                                         {{request.payment_mode}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="freequency">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">freequency</mat-header-cell>
-                                    <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{request.freequency}}
-                                    </mat-cell>
-                                </ng-container>
                                 <ng-container matColumnDef="mobileNo">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">mobileNo</mat-header-cell>
+                                        class="column-nowrap">Mobile</mat-header-cell>
                                     <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
                                         {{request.mobileNo}}
                                     </mat-cell>
                                 </ng-container>
+                                <ng-container matColumnDef="quantity">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                        class="column-nowrap">Quantity</mat-header-cell>
+                                    <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)" class="column-nowrap">
+                                        {{request.quantity}}
+                                    </mat-cell>
+                                </ng-container>
                                 <ng-container matColumnDef="allocationAmount">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Expenses
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Advance Payment
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
@@ -161,25 +154,17 @@
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="action">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Waiting Approval</mat-header-cell>
                                     <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, request)">
-                                        <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                            (click)="pay()" class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="Pay"
-                                                [icon]="'send'"></app-feather-icons>
-                                        </button>
-                                        <!-- <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-                                            <mat-icon>payment</mat-icon>
-                                          </button>
-                                         -->
+                                       {{request.waitingApproval}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                 <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                                 <mat-row *matRowDef="let row; columns: displayedColumns"
-                                    (click)="requestDetailsCall(request)" [style.cursor]="'pointer'" matRipple>
+                                    [style.cursor]="'pointer'" matRipple>
                                 </mat-row>
                                 <mat-cell *matNoDataRow colspan="4">
                                     No data matching the filter "{{ input.value }}"</mat-cell>
@@ -203,5 +188,3 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>

@@ -245,7 +245,10 @@
                                                 class="column-nowrap tbl-col-width-per-8">Session</mat-header-cell>
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-8">
-                                                {{response.session}}
+                                                {{
+                                                    response.session=='Session 1'?'Morning':
+                                                    (response.session=='Session 2'?'Afternoon':'Evening')
+                                                }}
                                             </mat-cell>
                                         </ng-container>
                                         <ng-container matColumnDef="collection_date">

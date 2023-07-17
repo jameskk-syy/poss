@@ -10,6 +10,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class SalesService {
+  
   private eventSource = new Subject<any>();
   event$ = this.eventSource.asObservable();
 
@@ -19,7 +20,7 @@ export class SalesService {
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient) { }
 
-
+  
   getCollections(date: string) {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/specific/date?date=` + date, httpOptions);
   }
@@ -150,7 +151,12 @@ export class SalesService {
   getFarmersPaymentRecords(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/payments/records`, httpOptions);
   }
-
+  getFarmersPaymentRecordsPerRoute(routeId:number): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/payments/records/route?routeId=${routeId}`, httpOptions);
+  }
+  updateApprovalStatus(confirmedRecords: any[],routeId):Observable<any> {
+    return this.http.put(`${environment.apiUrl}/api/v1/payments/records/update/route?routeId=${routeId}`,confirmedRecords, httpOptions);
+  }
   fetchSalesPersons(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/admin/api/v1/users/users-by-role-name?roleName=SALES_PERSON`, httpOptions);
   }
