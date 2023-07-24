@@ -133,7 +133,7 @@ export class AddRoleComponent extends BaseComponent implements OnInit {
     if (this.function_type == "ADD") {
       this.displayArray = this.getLocalAccessRights();
 
-      if (this.displayArray.length > 0) {
+      if (this.displayArray && this.displayArray.length > 0) {
         this.accessRightsLoaded = true;
       } else {
         this.accessRightsLoaded = false;

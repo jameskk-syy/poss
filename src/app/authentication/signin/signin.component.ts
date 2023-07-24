@@ -66,6 +66,8 @@ export class SigninComponent
           this.router.navigate(['/collections/dashboard'])
         } else if (role == Role.SalesPerson) {
           this.router.navigate(['/sales-person/dashboard'])
+        } else if (role == Role.Manager) {
+          this.router.navigate(['/manager/dashboard'])
         } else {
           this.error = "Invalid Login";
         }
