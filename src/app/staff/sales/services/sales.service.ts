@@ -11,6 +11,7 @@ const httpOptions = {
 })
 export class SalesService {
   
+  
   private eventSource = new Subject<any>();
   event$ = this.eventSource.asObservable();
 
@@ -147,15 +148,18 @@ export class SalesService {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/amount?farmerNo=` + farmerId + `&paymentFlag=` + paymentStatus, httpOptions);
   }
 
+  getApprovedPaymentRecords(staffId: any):Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/payments/records/approved?staffId=${staffId}`, httpOptions);
+  }
 
   getFarmersPaymentRecords(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/payments/records`, httpOptions);
   }
-  getFarmersPaymentRecordsPerRoute(routeId:number): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/payments/records/route?routeId=${routeId}`, httpOptions);
+  getFarmersPaymentRecordsPerRoute(routeId:number,staffId?:any): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/payments/records/route?routeId=${routeId}${staffId?'&staffId='+staffId:''}`, httpOptions);
   }
-  updateApprovalStatus(confirmedRecords: any[],routeId):Observable<any> {
-    return this.http.put(`${environment.apiUrl}/api/v1/payments/records/update/route?routeId=${routeId}`,confirmedRecords, httpOptions);
+  updateApprovalStatus(confirmedRecords: any[],routeId:any,staffId:any):Observable<any> {
+    return this.http.put(`${environment.apiUrl}/api/v1/payments/records/update/route?routeId=${routeId}&staffId=${staffId}`,confirmedRecords, httpOptions);
   }
   fetchSalesPersons(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/admin/api/v1/users/users-by-role-name?roleName=SALES_PERSON`, httpOptions);

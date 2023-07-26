@@ -1,22 +1,20 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Component, ElementRef, Inject, NgModule, OnInit, ViewChild } from '@angular/core';
+import { ProductSaleService } from './service/product-sale.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { SalesService } from '../../services/sales.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { SalesService } from 'src/app/staff/sales/services/sales.service';
 
 @Component({
-  selector: 'app-sales-managenent',
-  templateUrl: './sales-managenent.component.html',
-  styleUrls: ['./sales-managenent.component.sass']
+  selector: 'app-main-management',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.scss']
 })
-export class SalesManagenentComponent implements OnInit {
-
-
+export class MainComponent implements OnInit {
+ 
   displayedColumns: string[] = [
     'id',
     "farmer_no",
@@ -26,7 +24,6 @@ export class SalesManagenentComponent implements OnInit {
     "allocationAmount",
     "collectionAmount",
     "netPay",
-    'action',
     'status',
   ];
 
@@ -41,10 +38,9 @@ export class SalesManagenentComponent implements OnInit {
   confirmed: number = 0;
   confirmedRecords = []
   totalQuantity: number = 0.0;
-  constructor(private router: Router, private dialog: MatDialog, private service: SalesService,
-    private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) private routeData:any) {
-      this.route = routeData.route
+  constructor(private service: SalesService,
+    private fb: FormBuilder) {
+      // this.route = routeData.route
      }
 
   applyFilter(event: Event) {
@@ -55,23 +51,7 @@ export class SalesManagenentComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  allSelected: boolean = false;
-
-  selectAll(checked: boolean) {
-  this.allSelected = checked;
-  this.confirmed = 0
-  this.dataSource.data.forEach((element,i) => {
-  element.selected = checked;
-  if(checked){
-    this.confirmed += 1
-  }else{
-    this.confirmed = 0
-  }
-  });
-
-
-
-  }
+ 
 
   handleApprove(){
     this.isLoading = true;
@@ -105,14 +85,14 @@ export class SalesManagenentComponent implements OnInit {
 
   getData() {
     this.isLoading = true;
-    const routeId = this.route.id;
     const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
 
-    this.subscription = this.service.getFarmersPaymentRecordsPerRoute(routeId,staffId).subscribe(res => {
+    this.subscription = this.service.getApprovedPaymentRecords(staffId).subscribe(res => {
       this.data = res;
       if (this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;
+        this.confirmed = res.entity.length;
         // Binding with the datasource
         this.totalQuantity = this.data.entity.reduce((val:number,object:any)=>object.quantity+val,0.0)
         this.dataSource = new MatTableDataSource(this.data.entity);
@@ -152,12 +132,7 @@ export class SalesManagenentComponent implements OnInit {
   }
 
   pay(){
-    
+    console.log('PAY')
   }
 
-
-
-
 }
-
-

@@ -36,8 +36,6 @@ export class AdminUpdateUserPasswordComponent extends BaseComponent implements O
   }
 
   ngOnInit(): void {
-    console.log("User Data", this.data)
-    console.log(this.data.user.roles[0].name);
     this.updateAccountForm();
     // this.getRoles();
     

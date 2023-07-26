@@ -11,11 +11,6 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ProductSaleService {
-  getPushNotificationStatus(CheckoutRequestID: any):Observable<any> {
-    return this.http.post(`${this.baseUrl}/mobile-money/stk-transaction-status`,{
-      CheckoutRequestID
-    },httpOptions)
-  }
  
   baseUrl = `${environment.apiUrl}/api/v1`
   constructor(private http: HttpClient) { }
@@ -23,9 +18,9 @@ export class ProductSaleService {
     return this.http.get(`${this.baseUrl}/sales/fetch-sales-by-sales-person/${salesPersonFk}`,httpOptions)
   }
   pushNotification(arg0: { amount: number; mpesa_number: string; }) {
-    return this.http.post(`${this.baseUrl}/mobile-money/stk-transaction-request`,{
-      Amount:arg0.amount,
-      PhoneNumber:arg0.mpesa_number
+    return this.http.post(`${this.baseUrl}/transactions/stk-push`,{
+      amount:arg0.amount,
+      phoneNumber:arg0.mpesa_number
     },httpOptions)
   }
   generateReceipt(arg0: { salesCode: any; salesPersonFk: any; }):Observable<any> {

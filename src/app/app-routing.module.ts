@@ -41,6 +41,15 @@ const routes: Routes = [
           import("./sales_person/sales-person.module").then((m)=>m.SalesPerson),
       },
       {
+        path: "manager",
+        canActivate: [AuthGuard],
+        data: {
+          role: Role.Manager,
+        },
+        loadChildren: () =>
+          import("./manager/manager.module").then((m)=>m.Manager)
+      },
+      {
         path: "user",
         canActivate: [AuthGuard],
         data: {

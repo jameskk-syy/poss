@@ -1,4 +1,13 @@
+<section class="content">
+  <div class="content-block">
+      <div class="block-header">
+          <!-- breadcrumb -->
+          <app-breadcrumb [title]="'Payment Records'" [items]="['Records']"
+              [active_item]="[method | uppercase]">
+          </app-breadcrumb>
+      </div>
 
+            
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
@@ -7,54 +16,53 @@
                             <div class="materialTableHeader">
                                 <div class="row">
                                     <div class="col-8">
-                                      <ul class="header-buttons ms-0 list-unstyled d-flex">
+                                    <ul class="header-buttons ms-0 list-unstyled d-flex">
                                         <li class="dropdown">
-                                          <h2>{{route.route}} <i>records</i></h2>
                                         </li>
                                         <li class="dropdown mx-2">
-                                          <h2>{{confirmed}} records confirmed</h2>
+                                            <h2>Initiate Payment of Records: {{confirmed}}</h2>
                                         </li>
-                                        <li class="dropdown mx-2">
-                                          <div matTooltip="Approve">
-                                            <button mat-mini-fab color="primary" (click)="handleApprove()">
-                                              <mat-icon class="col-white">check</mat-icon>
+                                        <li class="dropdown mx-2" [ngStyle]="{'display':confirmed?'inherit':'none'}">
+                                        <div matTooltip="Initiate Payment">
+                                            <button mat-mini-fab color="primary" (click)="pay()">
+                                            <mat-icon class="col-white">send</mat-icon>
                                             </button>
-                                          </div>
+                                        </div>
                                         </li>
                                         <li class="dropdown mx-2">
-                                          <div matTooltip="Payment Options">
+                                        <div matTooltip="Payment Options">
                                             <form [formGroup]="paymentOption">
-                                              <div class="col-sm-6">
+                                            <div class="col-sm-6">
                                                 <mat-form-field class="example-full-width" appearance="outline">
-                                                  <mat-select formControlName="method" [(value)]="method" required (selectionChange)="handleChange(method)">
+                                                <mat-select formControlName="method" [(value)]="method" required (selectionChange)="handleChange(method)">
                                                     <mat-option value="bank"><b>BANK</b></mat-option>
                                                     <mat-option value="mpesa"><b>MPESA</b></mat-option>
                                                     <mat-option value="sacco"><b>SACCO</b></mat-option>
-                                                  </mat-select>
+                                                </mat-select>
                                                 </mat-form-field>
-                                              </div>
+                                            </div>
                                             </form>
-                                          </div>
+                                        </div>
                                         </li>
                                         
-                                      </ul>
+                                    </ul>
                                     </div>
                                     <div class="col-4">
-                                      <ul class="header-buttons list-unstyled d-flex align-items-center">
+                                    <ul class="header-buttons list-unstyled d-flex align-items-center">
                                         <li>
-                                          <div class="export-button m-l-10" matTooltip="XLSX">
+                                        <div class="export-button m-l-10" matTooltip="XLSX">
                                             <img src="assets/images/icons/xlsx.png" alt=""
-                                              (click)="exporter.exportTable('xlsx', { fileName: route.route + '-' + method + '--records', sheet: 'sheet1' })" />
-                                          </div>
+                                            (click)="exporter.exportTable('xlsx', { fileName: method + '--records', sheet: 'sheet1' })" />
+                                        </div>
                                         </li>
                                         <li>
-                                          <div class="export-button m-l-10" matTooltip="CSV">
+                                        <div class="export-button m-l-10" matTooltip="CSV">
                                             <img src="assets/images/icons/csv.png" alt="" (click)="exporter.exportTable('csv')" />
-                                          </div>
+                                        </div>
                                         </li>
-                                      </ul>
+                                    </ul>
                                     </div>
-                                  </div>
+                                </div>
                                                                     
                             </div>
                             <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell text-smaller"
@@ -62,31 +70,14 @@
                                 <!-- Checkbox Column -->
                                 <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 
-                              
+                            
                                 <!-- ID Column -->
-                                <ng-container matColumnDef="id">
+                                 <ng-container matColumnDef="id">
                                     <mat-header-cell class="table-img tbl-col-width-per-8" *matHeaderCellDef
-                                        mat-sort-header>#</mat-header-cell>
+                                        mat-sort-header>#</mat-header-cell>chec
                                     <mat-cell class="table-img tbl-col-width-per-8"
                                         *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
-                                </ng-container>
-                                <ng-container matColumnDef="status">
-                                        <mat-header-cell class="table-img tbl-col-width-per-8" *matHeaderCellDef>
-                                            <mat-checkbox
-                                            [checked]="allSelected"
-                                            (change)="selectAll($event.checked)">
-                                            </mat-checkbox>
-                                        </mat-header-cell>
-                                        <mat-cell class="table-img tbl-col-width-per-8"
-                                        *matCellDef="let data; let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)">
-                                            <mat-checkbox 
-                                            [(ngModel)]="data.selected"
-                                            (change)="handleCheck($event.checked,data)" 
-                                            >
-                                            </mat-checkbox>
-                                        </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="farmer_no">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Farmer
@@ -153,11 +144,11 @@
                                         {{request.netPay | number : '1.2-2'}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="action">
+                                <ng-container matColumnDef="status">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
                                     <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, request)">
-                                       {{request.status}}
+                                    {{request.status}}
                                     </mat-cell>
                                 </ng-container>
 
@@ -189,3 +180,6 @@
                 </div>
             </div>
         </div>
+
+  </div>
+</section>

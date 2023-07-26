@@ -156,14 +156,22 @@ export class AddProductSaleComponent implements OnInit {
     this.salesservice.getPrices(routeFk).subscribe(res=>{
       this.prices = {buying_price:res.entity.buying_price,
         selling_price:res.entity.selling_price};
-        this.amountToPay = quantity * this.prices.selling_price;
-        this.salesservice.pushNotification({amount:this.amountToPay,mpesa_number}).subscribe((r:any)=>{
+        // this.amountToPay = quantity * this.prices.selling_price;
+        this.salesservice.pushNotification({amount:1,mpesa_number}).subscribe((r:any)=>{
           this.isLoading = false;
-          if(r.customerMessage.indexOf('Success')){
-            this.snackBar.showNotification('success','Notification sent')
-          }else{
-            this.snackBar.showNotification('error','Pending transaction')
+          // console.log(r)
+          if(r && r.CheckoutRequestID){
+            setTimeout(()=>{
+              this.salesservice.getPushNotificationStatus(r.CheckoutRequestID).subscribe((rs: any)=>{
+                console.log(rs)
+              })
+            },1000)
           }
+          // if(r.customerMessage.indexOf('Success')){
+          //   this.snackBar.showNotification('success','Notification sent')
+          // }else{
+          //   this.snackBar.showNotification('error','Pending transaction')
+          // }
           
         })
     })
