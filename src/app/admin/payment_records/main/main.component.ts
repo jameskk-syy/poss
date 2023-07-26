@@ -132,7 +132,15 @@ export class MainComponent implements OnInit {
   }
 
   pay(){
-    console.log('PAY')
+    this.isLoading = true;
+    const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
+    console.log(this.data.entity)
+    this.service.initiatePayment(this.data.entity).subscribe(res=>{
+      console.log(res)
+      // if(res.entity && res.entity.length){
+      //   location.reload()
+      // }
+    })
   }
 
 }

@@ -10,7 +10,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class SalesService {
-  
+ 
   
   private eventSource = new Subject<any>();
   event$ = this.eventSource.asObservable();
@@ -161,6 +161,11 @@ export class SalesService {
   updateApprovalStatus(confirmedRecords: any[],routeId:any,staffId:any):Observable<any> {
     return this.http.put(`${environment.apiUrl}/api/v1/payments/records/update/route?routeId=${routeId}&staffId=${staffId}`,confirmedRecords, httpOptions);
   }
+
+  initiatePayment(entity: any):Observable<any> {
+    return this.http.put(`${environment.apiUrl}/api/v1/payments/records/initiate`,entity, httpOptions);
+  }
+  
   fetchSalesPersons(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/admin/api/v1/users/users-by-role-name?roleName=SALES_PERSON`, httpOptions);
   }

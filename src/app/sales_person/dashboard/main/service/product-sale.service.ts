@@ -57,6 +57,9 @@ export class ProductSaleService {
     data.deletedFlag = 'N';
     data.salesCode = ''
     data.id = 0;
+    data.isReceiptGeneratedFag="N"
+    delete data.paymentMethod
+    console.log(data)
 
     return this.http.post(`${this.baseUrl}/sales/add`, data, httpOptions);
   }
