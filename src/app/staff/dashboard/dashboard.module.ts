@@ -34,6 +34,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { CollectionsPerMonthComponent } from './components/collections-per-month/collections-per-month.component';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     CollectionsPriceComponent,
     CollectorCollectionsPerDateComponent,
     CollectorsLookupsComponent,
+    CollectionsPerMonthComponent,
   ],
   imports: [
     CommonModule,

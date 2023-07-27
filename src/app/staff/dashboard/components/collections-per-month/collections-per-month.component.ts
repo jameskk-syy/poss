@@ -1,21 +1,17 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs';
 import { AnalyticsService } from 'src/app/data/services/analytics.service';
 import { UserService } from 'src/app/data/services/user.service';
-import { BaseComponent } from 'src/app/shared/components/base/base.component';
-import { CollectorsLookupsComponent } from '../../look-ups/collectors-lookups/collectors-lookups.component';
 
 @Component({
-  selector: 'app-collector-collections-in-price-per-session',
-  templateUrl: './collector-collections-in-price-per-session.component.html',
-  styleUrls: ['./collector-collections-in-price-per-session.component.sass']
+  selector: 'app-collections-per-month',
+  templateUrl: './collections-per-month.component.html',
+  styleUrls: ['./collections-per-month.component.sass']
 })
-export class CollectorCollectionsInPricePerSessionComponent extends BaseComponent implements OnInit {
-  // public barChartOptions: Partial<ChartOptions>;
-
+export class CollectionsPerMonthComponent implements OnInit {
   chartDispType: number[] = [2020, 2022, 2023, 2024, 2025];
 
   monthsArray: any = [
@@ -77,11 +73,11 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
     private fb: FormBuilder,
     private userService: UserService
   ) {
-    super();
+    // super();
   }
 
   ngOnInit(): void {
-    this.getAllUsers();
+    // this.getAllUsers();
 
     this.chartParametersForm = this.createChartParamtersForm();
     this.getCollectorSessionData()
@@ -92,7 +88,6 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
     return this.fb.group({
       year: [this.currentYear],
       month: [this.currentMonth.value],
-      collectorId: ["2"]
     });
   }
 
@@ -106,78 +101,81 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
   }
 
 
-  collectorsLookup(){
-    const dialogRef = this.dialog.open(CollectorsLookupsComponent, {
-      width: "600px",
-      data: {
-        action: "Meeting Categories Lookup",
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(
-      (result) => {
-        this.chartParametersForm.patchValue({
-          collectorId: result.data.id,
-        });
-
-        this.getCollectorSessionData()
-      },
-      (err) => {
-        console.log(err);
+ groupBy(array:any[], property:any) {
+    return array.reduce((result, obj) => {
+      const key = obj[property];
+            if (!result[key]) {
+        result[key] = [];
       }
-    );
-
+  
+      result[key].push(obj);
+  
+      return result;
+    }, {});
   }
-
   getCollectorSessionData() {
     this.isLoading = true;
 
     let sessionOne: any[] = [];
     let sessionTwo: any[] = [];
     let sessionThree: any[] = [];
+    this.sessionOne = 0;
+    this.sessionTwo = 0;
+    this.sessionThree = 0;
 
     // this.currentMeeting = this.chartParametersForm.controls.meetingid.value;
 
-    let params = new HttpParams()
-    .set("year", this.chartParametersForm.value.year)
-    .set("month", this.chartParametersForm.value.month)
-    .set("collectorId", this.chartParametersForm.value.collectorId)
-
     this.analyticsService
-      .getCollectorSessionData(params)
-      .pipe(takeUntil(this.subject))
+      .fetchAllCollections()
       .subscribe(
         (res) => {
           this.doughnutChartData = [];
+          // console.log(res)
+          
+        const newData = res.entity.filter((data)=>{
+          const d = new Date(data.collection_date)
+          const dt = {
+              month: d.getMonth()+1,
+              year: d.getFullYear(),
+              date: d.getDate()
+          } 
+          // console.log(data.session)
+          if(dt.year === this.chartParametersForm.value.year && dt.month == this.chartParametersForm.value.month){
+            return data
+          }
+        })
 
-          res.entity.forEach((item) => {
+        // console.log(newData)
 
-            if(item.session == "Session 1"){
-              sessionOne.push(item.amount)
-              
-              this.sessionOne = parseInt(sessionOne[0]);
+        newData.forEach((item) => {
 
-
-              this.doughnutChartData.push(this.sessionOne);
-            }
-
-            if(item.session == "Session 2"){
-              sessionTwo.push(item.amount);
-             
-              this.sessionTwo = parseInt(sessionTwo[0]);
-
-              this.doughnutChartData.push(this.sessionTwo);
-            }
+          if(item.session == "Session 1"){
+            sessionOne.push(item.quantity)
+            
+            this.sessionOne += parseInt(item.quantity);
 
 
-            if(item.session == "Session 3"){
-              sessionThree.push(item.amount);
+            // this.doughnutChartData.push(this.sessionOne);
+          }else if(item.session == "Session 2"){
+            sessionTwo.push(item.quantity);
+           
+            this.sessionTwo += parseInt(item.quantity);
 
-              this.sessionThree = parseInt(sessionThree[0]);
 
-              this.doughnutChartData.push(this.sessionThree);
-            }
-          });
+            // this.doughnutChartData.push(this.sessionTwo);
+          }else if(item.session == "Session 3"){
+            sessionThree.push(item.quantity);
+
+            this.sessionThree += parseInt(item.quantity);
+
+
+            // this.doughnutChartData.push(this.sessionThree);
+          }
+        });
+        this.doughnutChartData.push(this.sessionOne)
+        this.doughnutChartData.push(this.sessionTwo)
+        this.doughnutChartData.push(this.sessionThree)
+       
           this.isLoading = false;
         },
         (err) => {
@@ -188,7 +186,7 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
   }
 
   getAllUsers(){
-    this.userService.fetchAllActiveAccounts().pipe(takeUntil(this.subject)).subscribe(res => {
+    this.userService.fetchAllActiveAccounts().subscribe(res => {
       let users = res.userData;
 
       users.forEach(user => {
@@ -211,3 +209,4 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
     })
   }
 }
+
