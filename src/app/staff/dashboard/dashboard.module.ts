@@ -35,6 +35,10 @@ import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CollectionsPerMonthComponent } from './components/collections-per-month/collections-per-month.component';
+import { CollectorsDailyCollectionsComponent } from './components/collectors-daily-collections/collectors-daily-collections.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MonthlyCollectiosChartComponent } from './components/monthly-collectios-chart/monthly-collectios-chart.component';
 
 
 @NgModule({
@@ -56,6 +60,8 @@ import { CollectionsPerMonthComponent } from './components/collections-per-month
     CollectorCollectionsPerDateComponent,
     CollectorsLookupsComponent,
     CollectionsPerMonthComponent,
+    CollectorsDailyCollectionsComponent,
+    MonthlyCollectiosChartComponent,
   ],
   imports: [
     CommonModule,
@@ -75,6 +81,9 @@ import { CollectionsPerMonthComponent } from './components/collections-per-month
     MatTableExporterModule,
     MatSortModule,
     MatPaginatorModule,
+    MatDatepickerModule,
+    MatInputModule,MatNativeDateModule,
+
    
   ],
   exports: [

@@ -30,6 +30,7 @@ export class SalesService {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/all`, httpOptions);
   }
   getTodaysCollections(date: any) {
+    console.log(date)
     return this.http.get(`${environment.apiUrl}/api/v1/collections/specific/date?date=${date}`, httpOptions);
   }
   getCollectionsPerPickUpLocation(id:any) {

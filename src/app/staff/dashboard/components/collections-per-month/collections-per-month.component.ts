@@ -139,13 +139,11 @@ export class CollectionsPerMonthComponent implements OnInit {
               year: d.getFullYear(),
               date: d.getDate()
           } 
-          // console.log(data.session)
           if(dt.year === this.chartParametersForm.value.year && dt.month == this.chartParametersForm.value.month){
             return data
           }
         })
 
-        // console.log(newData)
 
         newData.forEach((item) => {
 
@@ -154,22 +152,16 @@ export class CollectionsPerMonthComponent implements OnInit {
             
             this.sessionOne += parseInt(item.quantity);
 
-
-            // this.doughnutChartData.push(this.sessionOne);
           }else if(item.session == "Session 2"){
             sessionTwo.push(item.quantity);
            
             this.sessionTwo += parseInt(item.quantity);
 
-
-            // this.doughnutChartData.push(this.sessionTwo);
           }else if(item.session == "Session 3"){
             sessionThree.push(item.quantity);
 
             this.sessionThree += parseInt(item.quantity);
 
-
-            // this.doughnutChartData.push(this.sessionThree);
           }
         });
         this.doughnutChartData.push(this.sessionOne)
