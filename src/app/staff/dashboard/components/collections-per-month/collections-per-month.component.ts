@@ -131,42 +131,44 @@ export class CollectionsPerMonthComponent implements OnInit {
         (res) => {
           this.doughnutChartData = [];
           // console.log(res)
-          
-        const newData = res.entity.filter((data)=>{
-          const d = new Date(data.collection_date)
-          const dt = {
-              month: d.getMonth()+1,
-              year: d.getFullYear(),
-              date: d.getDate()
-          } 
-          if(dt.year === this.chartParametersForm.value.year && dt.month == this.chartParametersForm.value.month){
-            return data
-          }
-        })
+          if (res.entity && res.entity.length>0) {
+               
+          const newData = res.entity.filter((data)=>{
+            const d = new Date(data.collection_date)
+            const dt = {
+                month: d.getMonth()+1,
+                year: d.getFullYear(),
+                date: d.getDate()
+            } 
+            if(dt.year === this.chartParametersForm.value.year && dt.month == this.chartParametersForm.value.month){
+              return data
+            }
+          })
 
 
-        newData.forEach((item) => {
+          newData.forEach((item) => {
 
-          if(item.session == "Session 1"){
-            sessionOne.push(item.quantity)
+            if(item.session == "Session 1"){
+              sessionOne.push(item.quantity)
+              
+              this.sessionOne += parseInt(item.quantity);
+
+            }else if(item.session == "Session 2"){
+              sessionTwo.push(item.quantity);
             
-            this.sessionOne += parseInt(item.quantity);
+              this.sessionTwo += parseInt(item.quantity);
 
-          }else if(item.session == "Session 2"){
-            sessionTwo.push(item.quantity);
-           
-            this.sessionTwo += parseInt(item.quantity);
+            }else if(item.session == "Session 3"){
+              sessionThree.push(item.quantity);
 
-          }else if(item.session == "Session 3"){
-            sessionThree.push(item.quantity);
+              this.sessionThree += parseInt(item.quantity);
 
-            this.sessionThree += parseInt(item.quantity);
-
+            }
+          });
+          this.doughnutChartData.push(this.sessionOne)
+          this.doughnutChartData.push(this.sessionTwo)
+          this.doughnutChartData.push(this.sessionThree)
           }
-        });
-        this.doughnutChartData.push(this.sessionOne)
-        this.doughnutChartData.push(this.sessionTwo)
-        this.doughnutChartData.push(this.sessionThree)
        
           this.isLoading = false;
         },

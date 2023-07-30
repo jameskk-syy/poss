@@ -76,7 +76,7 @@ export class ManageCustomersComponent implements OnInit {
       this.data = res
 
       this.isLoading = false
-      if (res.entity.length > 0) {
+      if (res.entity && res.entity.length > 0) {
         this.isdata = true
         // Binding with the datasource
         this.dataSource = new MatTableDataSource(res.entity);
@@ -89,6 +89,10 @@ export class ManageCustomersComponent implements OnInit {
         this.dataSource = new MatTableDataSource<any>(this.data);
       }
 
+    },err=>{
+        this.isLoading = false
+        this.isdata = false
+        this.dataSource = new MatTableDataSource<any>(this.data);
     })
   }
 

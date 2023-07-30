@@ -96,7 +96,7 @@ export class ProductsAllocationComponent implements OnInit {
     this.service.getSalesPerType(type).subscribe(
       (res) => {
         this.services = res.entity;
-        if (this.services != null) {
+        if (res.entity && res.entity.length>0) {
           this.isLoading = false;
           this.dataSource1 = new MatTableDataSource<any>(this.services);
           this.dataSource1.paginator = this.paginator;
@@ -104,7 +104,8 @@ export class ProductsAllocationComponent implements OnInit {
         }
       },
       (err) => {
-        console.log(err);
+        this.dataSource1 = new MatTableDataSource<any>([]);
+        this.dataSource1.paginator = this.paginator;
       }
     );
   }

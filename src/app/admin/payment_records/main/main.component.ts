@@ -89,7 +89,7 @@ export class MainComponent implements OnInit {
 
     this.subscription = this.service.getApprovedPaymentRecords(staffId).subscribe(res => {
       this.data = res;
-      if (this.data.entity.length > 0) {
+      if (this.data.entity && this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;
         this.confirmed = res.entity.length;
@@ -106,6 +106,12 @@ export class MainComponent implements OnInit {
         this.isdata = false;
         this.dataSource = new MatTableDataSource<any>(this.data);
       }
+    },err=>{
+      this.isdata = false;
+      this.isLoading = false;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;      
+      this.dataSource = new MatTableDataSource<any>(null);
     })
   }
 

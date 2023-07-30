@@ -40,8 +40,10 @@ export class ManageRoutesComponent implements OnInit {
 
 
   getData() {
+    this.isLoading = true
       this.subscription = this.service.getRoutes().subscribe(res => {
         this.data = res.entity;
+        this.isLoading = false;
         // Binding with the datasource
         this.dataSource = new MatTableDataSource(this.data);
         this.dataSource.paginator = this.paginator;

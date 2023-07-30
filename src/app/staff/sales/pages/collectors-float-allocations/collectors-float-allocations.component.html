@@ -178,7 +178,7 @@
                                         <mat-row *matRowDef="let row; columns: displayedColumns1"
                                             [style.cursor]="'pointer'" matRipple>
                                         </mat-row>
-                                        <mat-cell *matNoDataRow colspan="4">
+                                        <mat-cell [hidden]="!displayedColumns1.length" *matNoDataRow colspan="4">
                                             No data matching the filter "{{ input.value }}"</mat-cell>
                                     </mat-table>
         

@@ -25,7 +25,7 @@
     </form>
 </div>
   <div class="body" *ngIf="!isLoading">
-    <apx-chart [series]="barChartOptions.series" [chart]="barChartOptions.chart"
+    <apx-chart [hidden]="isEmpty" [series]="barChartOptions.series" [chart]="barChartOptions.chart"
       [dataLabels]="barChartOptions.dataLabels" [plotOptions]="barChartOptions.plotOptions"
       [responsive]="barChartOptions.responsive" [xaxis]="barChartOptions.xaxis"
       [tooltip]="barChartOptions.tooltip" [legend]="barChartOptions.legend" [fill]="barChartOptions.fill">

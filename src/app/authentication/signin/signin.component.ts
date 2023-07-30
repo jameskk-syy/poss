@@ -69,14 +69,14 @@ export class SigninComponent
         } else if (role == Role.Manager) {
           this.router.navigate(['/manager/dashboard'])
         } else {
-          this.error = "Invalid Login";
+          this.error = "Username or Password are invalid";
         }
 
         this.submitted = false;
         this.loading = false;
 
       }, err => {
-        this.error = err;
+        this.error = 'Username or Password are invalid';
         this.submitted = false;
         this.loading = false;
       })
