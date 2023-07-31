@@ -39,6 +39,8 @@ import { CollectorsDailyCollectionsComponent } from './components/collectors-dai
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MonthlyCollectiosChartComponent } from './components/monthly-collectios-chart/monthly-collectios-chart.component';
+import { MonthlyMilkCollectionPerRouteComponent } from './monthly-milk-collection-per-route/monthly-milk-collection-per-route.component';
+import { DailyMilkCollectionComponent } from './components/daily-milk-collection/daily-milk-collection.component';
 
 
 @NgModule({
@@ -62,6 +64,8 @@ import { MonthlyCollectiosChartComponent } from './components/monthly-collectios
     CollectionsPerMonthComponent,
     CollectorsDailyCollectionsComponent,
     MonthlyCollectiosChartComponent,
+    MonthlyMilkCollectionPerRouteComponent,
+    DailyMilkCollectionComponent,
   ],
   imports: [
     CommonModule,
@@ -102,6 +106,8 @@ import { MonthlyCollectiosChartComponent } from './components/monthly-collectios
     CollectionsPriceComponent,
     CollectorCollectionsPerDateComponent,
     CollectorsLookupsComponent,
+    MonthlyMilkCollectionPerRouteComponent,
+    DailyMilkCollectionComponent
   ],
   providers: [DatePipe]
 })

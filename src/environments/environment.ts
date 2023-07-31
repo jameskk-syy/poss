@@ -10,6 +10,7 @@ export const environment = {
   // API: "http://18.219.121.50:9700",  
   // apiUrl: "http://localhost:9700",
   // API: "http://localhost:9700",  
+  
 };
 
 /*
