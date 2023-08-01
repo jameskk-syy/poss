@@ -142,6 +142,7 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
     array = array.filter(d=>d.route==route)
     const groupedData = groupBy(array, "monthly");
     const monthly = groupedData[month];
+    if(!monthly) return []
     const res = monthly.map(d=>({
       x: d.date,
       y: d.quantity
