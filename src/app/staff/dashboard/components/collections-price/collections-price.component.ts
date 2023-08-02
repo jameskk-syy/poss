@@ -139,7 +139,7 @@ export class CollectionsPriceComponent extends BaseComponent implements OnInit {
    
     this.analyticsService.getCollectionsPerMonth(params).pipe(takeUntil(this.subject)).subscribe(res => {
 
-      if(res.entity.length > 0){
+      if(res.entity && res.entity.length > 0){
         res.entity.forEach(item => {
           months.push(item.month);
           amounts.push(item.amount);

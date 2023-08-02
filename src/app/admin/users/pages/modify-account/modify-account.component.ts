@@ -37,8 +37,6 @@ export class ModifyAccountComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("User Data", this.data);
-
     this.updateAccountForm();
     // this.getRoles();
   }
@@ -86,7 +84,6 @@ export class ModifyAccountComponent extends BaseComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       (result) => {
-        console.log("Result ", result);
         this.accountForm.patchValue({
           roleId: result.data.id,
         });

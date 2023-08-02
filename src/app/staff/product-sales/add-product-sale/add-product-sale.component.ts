@@ -46,7 +46,7 @@ export class AddProductSaleComponent implements OnInit {
   getRoutes() {
     this.pLoading = true
     this.subscription = this.salesservice.fetchRoutes().subscribe((res) => {
-      if (res.entity.length > 0) {
+      if (res.entity && res.entity.length > 0) {
         this.pLoading = false
         this.routes = res.entity;
       } else {

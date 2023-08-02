@@ -246,7 +246,7 @@ export class CollectionsComponent implements OnInit {
      this.getDateSummary(this.currentDate)
       this.subscription = this.service.getTodaysCollections(this.currentDate).subscribe(res => {
       this.data = res;
-      if (this.data.entity.length > 0) {
+      if (this.data.entity && this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;
         // Binding with the datasource

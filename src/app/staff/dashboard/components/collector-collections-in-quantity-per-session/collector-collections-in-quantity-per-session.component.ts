@@ -93,7 +93,7 @@ export class CollectorCollectionsInQuantityPerSessionComponent extends BaseCompo
   public doughnutChartLegend = false;
   public doughnutChartColors: any[] = [
     {
-      backgroundColor: ["#2D7152", "#4F7161", "#66716C", "#22714D"],
+      backgroundColor: ["#22714D", "#FFA500", "#800080", "#22714D"],
     },
   ];
   public doughnutChartType = "doughnut";

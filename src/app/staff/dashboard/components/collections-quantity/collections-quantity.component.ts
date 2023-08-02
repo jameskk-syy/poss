@@ -146,7 +146,7 @@ export class CollectionsQuantityComponent
       .subscribe(
         (res) => {
 
-          if (res.entity.length > 0) {
+          if (res.entity && res.entity.length > 0) {
             res.entity.forEach((item) => {
               months.push(item.month);
 

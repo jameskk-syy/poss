@@ -68,7 +68,8 @@ export class FarmerManagenentComponent implements OnInit {
       }
     },error => {
       console.log('An error occurred:', error)
-      
+      this.isdata = false;
+      this.isLoading = false
     })
   }
 

@@ -57,6 +57,7 @@ export class ManageSubCountiesComponent implements OnInit {
       }
       else {
         this.isdata = false;
+        this.isLoading = false;
         this.dataSource = new MatTableDataSource<any>(this.data);
       }
     })

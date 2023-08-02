@@ -62,7 +62,7 @@ export class ProductSalesManagementComponent implements OnInit {
       this.data = res
       this.isLoading = false
 
-      if (res.userData.length > 0) {
+      if (res.userData && res.userData.length > 0) {
         this.isdata = true
        
         // Binding with the datasource
@@ -76,6 +76,10 @@ export class ProductSalesManagementComponent implements OnInit {
         this.dataSource = new MatTableDataSource<any>(this.data);
       }
   
+    },(err)=>{
+      console.log(err.message)
+      this.isLoading = false
+      this.isdata = false
     })
   }
 
