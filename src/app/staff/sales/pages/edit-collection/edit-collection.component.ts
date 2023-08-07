@@ -46,8 +46,6 @@ farmerNo:any
       session:[this.collection.session,[Validators.required]],
       collectionNumber:[this.collection.collectionCode,[Validators.required]],
       route:[this.collection.route,[Validators.required]],
-      // route:[""],
-      // canNo: [this.collection.canNo,[Validators.required]],
       originalQuantity:[this.collection.quantity,[Validators.required]],
       farmer_no:[this.collection.farmer_no,[Validators.required]]
       
@@ -57,7 +55,6 @@ farmerNo:any
   }
 
   onSubmit() {
-    console.log(this.editForm.value)
     this.loading = true;
     this.subscription = this.service.updateCollections(this.editForm.value).subscribe(res => {
       this.snackbar.showNotification("snackbar-success", "Successful!");
@@ -66,7 +63,7 @@ farmerNo:any
       this.dialogRef.close();
     }, err => {
       this.loading = false;
-      this.snackbar.showNotification("snackbar-success", err.message);
+      this.snackbar.showNotification("snackbar-danger", err);
       this.dialogRef.close();
     })
   }
