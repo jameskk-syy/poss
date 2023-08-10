@@ -180,9 +180,27 @@ export class SalesService {
   }
 
   deleteAllocation(id: any): Observable<any> {
-    this.eventSource.next("RELOAD");
     return this.http.delete(`${environment.apiUrl}/api/v1/milk_allocation/delete?allocationId=${id}`, httpOptions)
   }
   
+  getAdvance(data:any):Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/advance-payments/all`,httpOptions);
 
+
+   }
+
+  getFarmerByFarmerNo(farmerNo: string): Observable<any> {
+    const apiUrl = `http://52.15.152.26:9701/api/v1/advance-payments/get-by-farmer-number/${farmerNo}`;
+    return this.http.get(apiUrl);
+  }
+  allocateAdvance(data: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/v1/advance-payments/add`,
+    {
+      farmerNo: data.farmerNo,
+      date: data.date,
+      advanceAmount: data.advanceAmount,
+      paymentMode: data.paymentMode,
+      username: data.username
+    },httpOptions);
+   }
 }

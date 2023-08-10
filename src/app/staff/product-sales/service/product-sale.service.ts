@@ -12,16 +12,16 @@ const httpOptions = {
 })
 export class ProductSaleService {
   public fetchAllSalesBySalesPersonFk(salesPersonFk:any):Observable<any>{
-    return this.http.get(`${this.baseUrl}/sales/fetch-sales-by-sales-person/${salesPersonFk}`,httpOptions)
+    return this.http.get(`${this.baseUrl}/sales/fetch-sales-by-sales-person/3`,httpOptions)
   }
   fetchSalesBySalesCode(code: any):Observable<any> {
     return this.http.get(`${this.baseUrl}/sales/fetch-sale/${code}`);
   }
   baseUrl = `${environment.apiUrl}/api/v1`
   constructor(private http: HttpClient) { }
-  public fetchAllSales():Observable<any>{
-    return this.http.get(`${this.baseUrl}/sales/fetch/all`,httpOptions)
-  }
+  // public fetchAllSales():Observable<any>{
+  //   return this.http.get(`${this.baseUrl}/sales/fetch/all`,httpOptions)
+  // }
 
   public fetchRoutes():Observable<any>{
     return this.http.get(`${this.baseUrl}/routes/get`,httpOptions)
@@ -42,5 +42,8 @@ export class ProductSaleService {
     console.log(data)
 
     return this.http.post(`${this.baseUrl}/sales/add`, data, httpOptions);
+  }
+  fetchAllSales(params: any):Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/sales/fetch/all`,httpOptions);
   }
 }
