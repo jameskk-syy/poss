@@ -53,7 +53,6 @@ export class FarmerManagenentComponent implements OnInit {
     this.isLoading = true;
     this.subscription = this.service.getFarmers().subscribe(res => {
       this.data = res;
-      console.log(res)
       if (this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;
@@ -145,7 +144,6 @@ export class FarmerManagenentComponent implements OnInit {
   getFarmerByFarmerNo(){
     this.isLoading = true;
     let farmerNo=this.filterform.value.farmer_no
-    console.log(this.filterform.value.farmer_no)
     // {}
       
     if (farmerNo != null && farmerNo != undefined ) {

@@ -1,0 +1,150 @@
+<div class="content-block bg">
+    <div class="row clearfix bg">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="modalHeader">
+                    <div class="editRowModal">
+                        <div class="modalHeader clearfix">
+                            <div class="modalHeader clearfix">
+                                <div class="modal-about">
+                                    <div class="font-weight-bold p-t-5 font-17">
+                                        Advance Payment  Details
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+                <div mat-dialog-content>
+                    <form class="advance-form m-4" [formGroup]="advancePaymentForm">
+                        <div class="row">
+                            <mat-card>
+                                <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+            
+                                <mat-card-title style="font-size: x-small;">Advance Payment Details</mat-card-title>
+                                <mat-card-content>
+                                    <div class="row">
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                            <mat-form-field class="example-full-width" appearance="outline">
+                                                <mat-label>username</mat-label>
+                                                <input matInput formControlName="username" required />
+                                                <mat-error *ngIf="advancePaymentForm.get('username').hasError('required')">
+                                                    username name is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                            <mat-form-field class="example-full-width" appearance="outline">
+                                                <mat-label>Farmer Number</mat-label>
+                                                <input matInput formControlName="farmerNo" required />
+                                                <mat-error *ngIf="advancePaymentForm.get('farmerNo').hasError('required')">
+                                                    Farmer Number name is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                            <mat-form-field class="example-full-width" appearance="outline">
+                                                <mat-label>paymentMode</mat-label>
+                                                <input matInput formControlName="paymentMode" required />
+                                                <mat-error *ngIf="advancePaymentForm.get('paymentMode').hasError('required')">
+                                                    paymentMode is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+            
+                                        <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                            <mat-form-field class="example-full-width" appearance="outline">
+                                                <mat-label>mobileNo</mat-label>
+                                                <input matInput formControlName="mobileNo" required />
+                                                <mat-error
+                                                    *ngIf="advancePaymentForm.get('mobileNo').hasError('required')">
+                                                    mobileNo name is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div> -->
+                                        <!-- <div class="row"> -->
+                                        <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                            <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                                <mat-label>Collections Routes</mat-label>
+                                                <mat-select formControlName="route" required>
+                                                    <mat-option *ngFor="let route of routes" [value]="route.id">
+                                                        {{ route.route }}
+                                                    </mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="advancePaymentForm.get('route').hasError('required')">
+                                                    Route is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div> -->
+                                        
+                                            <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                                <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                                    <mat-label>Select Farmer Category</mat-label>
+                                                    <mat-select formControlName="memberType" required>
+                                                        <mat-option value="Individual">Individual</mat-option>
+                                                        <mat-option value="Group">Farmers Group</mat-option>
+                                                        <mat-option value="Co-Operative">Co-Operative Society</mat-option>
+                                                    </mat-select>
+                                                    <mat-error *ngIf="advancePaymentForm.get('memberType').hasError('required')">
+                                                        Farmer Category Is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div> -->
+                                            
+                                                <div class="row">
+                                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                                    <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Advance</mat-label>
+                                                        <input matInput formControlName="advanceAmount" type="number" required />
+                                                        <mat-error *ngIf="advancePaymentForm.get('advanceAmount').hasError('required')">
+                                                            Input is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                                    <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                                        <mat-label>Payment Date</mat-label>
+                                                            <input matInput formControlName="date" type="date" required/>
+
+                                                        <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
+                                                            [class.even-row]="!(i % 2)">
+                                                            {{ row.date | date}}
+                                                        </mat-cell>
+                                                        
+                                                        <mat-error *ngIf="advancePaymentForm.get('date').hasError('required')">
+                                                            Payment Date Is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+            
+                                                <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                                                <div class="example-button-row">
+                                                    <button mat-raised-button color="warn" (click)="onClick()" tabindex="-1">
+                                                        Cancel
+                                                    </button>
+                                                    <button mat-raised-button color="primary" [disabled]="!advancePaymentForm.valid"
+                                                        (click)="onSubmit()">
+                                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                                        <b>Submit</b>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    <!-- </div> -->
+              
+                                          
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        </form>
+                </div>
+            </div>
+        </div>

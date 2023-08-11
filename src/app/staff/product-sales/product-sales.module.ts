@@ -15,12 +15,19 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ViewSalesPersonComponent } from './view-sales-person/view-sales-person.component';
 import { CdkColumnDef, CdkTableModule } from '@angular/cdk/table';
 import { MatSortModule } from '@angular/material/sort';
+import { SalesPerMonthComponent } from './sales-per-month/sales-per-month.component';
+import { SalespersonsMonthlyPerformanceComponent } from './salespersons-monthly-performance/salespersons-monthly-performance.component';
+import { SalespersonsSalesComponent } from './salespersons-sales/salespersons-sales.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
     ProductSalesManagementComponent,
     AddProductSaleComponent,
-    ViewSalesPersonComponent
+    ViewSalesPersonComponent,
+    SalesPerMonthComponent,
+    SalespersonsMonthlyPerformanceComponent,
+    SalespersonsSalesComponent
   ],
   imports: [
     CommonModule,
@@ -35,6 +42,7 @@ import { MatSortModule } from '@angular/material/sort';
     SharedModule,
     CdkTableModule,
   MatSortModule,
+  NgApexchartsModule
   ],
   providers: [
     CdkColumnDef

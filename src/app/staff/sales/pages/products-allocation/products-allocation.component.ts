@@ -7,109 +7,141 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-import { SendSmsComponent } from 'src/app/staff/sms/send-sms/send-sms.component';
 import { SalesService } from '../../services/sales.service';
-import { AddAllocationComponent } from '../add-allocation/add-allocation.component';
-import { VerifyAccountComponent } from 'src/app/admin/users/pages/verify-account/verify-account.component';
-import { VerifyproductAllocationsComponent } from '../../verifyproduct-allocations/verifyproduct-allocations.component';
+import { AdvanceDetailsComponent } from '../advance-details/advance-details.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { FarmerData } from 'src/app/staff/sms/initiate-bulk-sms/initiate-bulk-sms.component';
+import { HttpParams } from '@angular/common/http';
 
+  
 @Component({
   selector: 'app-products-allocation',
   templateUrl: './products-allocation.component.html',
   styleUrls: ['./products-allocation.component.scss']
 })
 export class ProductsAllocationComponent implements OnInit {
+filterform:FormGroup
+selected="";
 
   displayedColumns: string[] = [
-    "id",
+    "farmerNo",
     "username",
-    "product",
-    "quantity",
-    "amount",
-    "allocationDate",
-    "type",
-    "status",
-    "paymentStatus",
-    "Actions",
+    "paymentMode",
+    "advanceAmount",
+    "date",
+    
   ];
-  displayedColumns1: string[] = [
-    "id",
-    "username",
-    "product",
-    "quantity",
-    "amount",
-    "allocationDate",
-    "type",
-    "status",
-    "paymentStatus",
-    "Actions",
-  ];
+  
+subscription!: Subscription;
   dataSource!: MatTableDataSource<any>;
   dataSource1!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: "0px", y: "0px" };
+  // fb: any;
+  isLoading: boolean;
+  // service: any;
+  data: any;
+  isdata: boolean;
+  salesservice: any;
 
-  selection = new SelectionModel<any>(true, []);
-  goods: any;
-  services: any;
-  error: any;
-  isLoading: boolean = true;
-  currentUser: any;
-
+ 
   constructor(
     public dialog: MatDialog,
     private router: Router,
     private snackbar: SnackbarService,
+    private fb: FormBuilder,
     private service: SalesService,
   ) { }
 
   ngOnInit(): void {
-    this.getGoods("Good");
-    this.getallcataionPerType("Service");
+    this.filterform= this.fb.group({
+      farmerNo: [""],
+      // farmer: ["", Validators.required],
+      // paymentMode: ["", Validators.required],
+      // advance: ["", Validators.required],
+      // paymentDate: ["", Validators.required],
+    })
+    this.getData();
+  }
+  getData() {
+    this.selected = "";
+    this.isLoading = true;
+    // this.subscription = this.service.getFarmerByFarmerNo(FarmerData).subscribe(res => {
+      this.service.getAdvance(this.data).subscribe(res => {
+        // this.subscription=this.service.getAdvance().subscribe(res =>{
+
+      this.data = res;
+      if (this.data.entity.length > 0) {
+        this.isLoading = false;
+        this.isdata = true;
+        this.dataSource = new MatTableDataSource(this.data.entity);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+      else {
+        this.isdata = false;
+        this.dataSource = new MatTableDataSource<any>(this.data);
+      }
+    },error => {
+      console.log('An error occurred:', error)
+      
+    })
   }
 
-  refresh() {
-    this.getGoods("Good");
-  }
 
   
-  getGoods(type) {
-    this.service.getSalesPerType(type).subscribe(
-      (res) => {
-        this.goods = res.entity;
-        console.log("Goods"+ res.entity)
-        if (this.goods != null) {
+ 
+
+  addCall() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "65%"
+    dialogConfig.data = {
+      test: ""
+    }
+    // this.dialog.open(AdvanceDetailsComponent, dialogConfig)
+    const dialogRef = this.dialog.open(AdvanceDetailsComponent, dialogConfig)
+    dialogRef.afterClosed().subscribe((res)=> {
+      this.getData()
+    })
+  }
+  
+  getFarmerByFarmerNo(){
+    this.isLoading = true;
+    let farmerNo=this.filterform.value.farmerNo
+    console.log(this.filterform.value.farmerNo)
+      
+    if (farmerNo != null && farmerNo != undefined ) {
+  
+      const params = new HttpParams().set('farmerNo', farmerNo);
+      this.subscription = this.service.getFarmerByFarmerNo(farmerNo).subscribe(res => {
+              this.data = res;
+        console.log(this.data.entity)
+        if (this.data.entity!=null) {
+          let result = []
+          result.push(this.data.entity)
+         
           this.isLoading = false;
-          this.dataSource = new MatTableDataSource<any>(this.goods);
+          this.isdata = true;
+          // Binding with the datasource
+          this.dataSource = new MatTableDataSource(result);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-  getallcataionPerType(type:any) {
-    this.service.getSalesPerType(type).subscribe(
-      (res) => {
-        this.services = res.entity;
-        if (res.entity && res.entity.length>0) {
+        else {
+          this.isdata = false;
           this.isLoading = false;
-          this.dataSource1 = new MatTableDataSource<any>(this.services);
-          this.dataSource1.paginator = this.paginator;
-          this.dataSource1.sort = this.sort;
+          this.dataSource = new MatTableDataSource(null);
         }
-      },
-      (err) => {
-        this.dataSource1 = new MatTableDataSource<any>([]);
-        this.dataSource1.paginator = this.paginator;
-      }
-    );
+      })
+    }
   }
 
+  
 
 
   readMessage(message) {
@@ -125,16 +157,5 @@ export class ProductsAllocationComponent implements OnInit {
     }
   }
 
-  verify(row) {
-    console.log(row)
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false
-    dialogConfig.autoFocus = true
-    dialogConfig.width = "40%"
-    dialogConfig.data = {
-      row: row
-    }
-    this.dialog.open(VerifyproductAllocationsComponent, dialogConfig)
-  }
-
+  
 }

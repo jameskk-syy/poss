@@ -39,6 +39,8 @@ import { MilkAllocationComponent } from './pages/milk-allocation/milk-allocation
 import { SalesPersonsLookupComponent } from './pages/sales-persons-lookup/sales-persons-lookup.component';
 import { ManageRoutesComponent } from './pages/manage-routes/manage-routes.component';
 import { RouteDetailsComponent } from './pages/route-details/route-details.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { AdvanceDetailsComponent } from './pages/advance-details/advance-details.component';
 
 
 @NgModule({
@@ -61,7 +63,8 @@ import { RouteDetailsComponent } from './pages/route-details/route-details.compo
         MilkAllocationComponent,
         SalesPersonsLookupComponent,
         ManageRoutesComponent,
-        RouteDetailsComponent
+        RouteDetailsComponent,
+        AdvanceDetailsComponent
     ],
     imports: [
         CommonModule,
@@ -85,6 +88,7 @@ import { RouteDetailsComponent } from './pages/route-details/route-details.compo
         MatTabsModule,
         MatProgressSpinnerModule,
         MatCheckboxModule,
+        MatFormFieldModule
     ],
     providers: [CdkColumnDef]
 })
