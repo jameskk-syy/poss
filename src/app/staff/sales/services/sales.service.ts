@@ -190,7 +190,7 @@ export class SalesService {
    }
 
   getFarmerByFarmerNo(farmerNo: string): Observable<any> {
-    const apiUrl = `http://52.15.152.26:9701/api/v1/advance-payments/get-by-farmer-number/${farmerNo}`;
+    const apiUrl = `${environment.apiUrl}/api/v1/advance-payments/get-by-farmer-number/${farmerNo}`;
     return this.http.get(apiUrl);
   }
   allocateAdvance(data: any): Observable<any> {
