@@ -31,7 +31,7 @@ export class UserWidgetsComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.getActiveUserAccounts();
-    
+    this.getTotalAccounts();
   }
 
   getActiveUserAccounts() {
@@ -42,6 +42,7 @@ export class UserWidgetsComponent extends BaseComponent implements OnInit {
           this.activeAccountsArray = res.userData;          
 
           this.activeAccounts = this.activeAccountsArray.length;
+          this.totalAccounts += this.activeAccounts;
           
           this.getLockedAccounts();
         },
@@ -64,11 +65,13 @@ export class UserWidgetsComponent extends BaseComponent implements OnInit {
           this.deletedAccountsArray = res.userData;
 
           this.deletedAccounts = this.deletedAccountsArray.length;
-
+          this.totalAccounts += this.deletedAccounts;
           this.getTotalAccounts();
         },
         (err) => {
-          console.log(err);
+          this.deletedAccountsArray=[]
+          this.deletedAccounts = 0;
+          
         }
       );
   }
@@ -82,11 +85,12 @@ export class UserWidgetsComponent extends BaseComponent implements OnInit {
           this.lockedAccountsArray = res.userData;
 
           this.lockedAccounts = this.lockedAccountsArray.length;
-
+          this.totalAccounts += this.lockedAccounts;
           this.getDeletedAccounts();
         },
         (err) => {
-          console.log(err);
+          this.lockedAccountsArray=[]
+          this.lockedAccounts = 0
         }
       );
   }

@@ -11,7 +11,7 @@
       <div class="col-lg-3 col-sm-4">
         <div class="info-box7 bg1 order-info-box7" matTooltip="System Users" routerLink="/staff/sales/collections">
           <div class="info-box7-block">
-            <h4 class="m-b-20">Total Qty (Kgs)</h4>
+            <h4 class="m-b-20">Total Qty (Ltr)</h4>
             <!-- <h2 class="text-end"><span class="float-start">{{quantity | number : '1.2-2' }}</span><i -->
               <h2 class="text-end"><span class="float-start">{{quantity}}</span><i
                 class="fas fa-th"></i></h2>
@@ -53,15 +53,25 @@
 
 
     </div>
-
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+        <app-monthly-milk-collection-per-route></app-monthly-milk-collection-per-route>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+        <app-daily-milk-collection></app-daily-milk-collection>
+      </div>
+    </div>
 
     <!--Milk Collections Analysis Per Collector-->
     <div class="row">
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-collector-collections></app-collector-collections>
       </div>
-      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+      <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-milk-qauntity-per-location></app-milk-qauntity-per-location>
+      </div> -->
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+        <app-collector-collections-per-date></app-collector-collections-per-date>
       </div>
     </div>
     <div class="row">
@@ -93,10 +103,14 @@
         <app-collections-price></app-collections-price>
       </div>
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <app-collector-collections-per-date></app-collector-collections-per-date>
+        <app-collections-per-month></app-collections-per-month>
       </div>
     </div>
-
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+        <app-monthly-collectios-chart></app-monthly-collectios-chart>
+      </div>
+    </div>
 
     <!-- <div class="row">
       <div class="col-6">

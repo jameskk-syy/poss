@@ -26,6 +26,7 @@ export class ProductsConfigsComponent implements OnInit {
     "quantity",
     "unit_measurement",
     "route",
+
     "effective_from",
     "actions"
   ];
@@ -63,7 +64,6 @@ export class ProductsConfigsComponent implements OnInit {
     this.service.getConfigs()
       .subscribe(
         (res) => {
-          console.log("Configurations LIST::::", res.entity)
           this.configs = res.entity
           if (this.configs.length > 0) {
             this.isLoading = false;

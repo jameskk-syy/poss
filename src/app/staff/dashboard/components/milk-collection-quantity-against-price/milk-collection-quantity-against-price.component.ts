@@ -116,7 +116,6 @@ export class MilkCollectionQuantityAgainstPriceComponent extends BaseComponent i
     .set("month", this.chartParametersForm.value.month)
    
     this.analyticsService.getCollectorCollectionSPerMonth(params).pipe(takeUntil(this.subject)).subscribe(res => {
-      console.log("Response", res);
 
       if(res.entity.length > 0){
         res.entity.forEach(item => {

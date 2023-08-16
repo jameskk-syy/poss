@@ -37,8 +37,6 @@ export class UpdateAccountComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('User Data', this.data);
-    console.log(this.data.user.roles[0].name);
     this.updateAccountForm();
     // this.getRoles();
   }

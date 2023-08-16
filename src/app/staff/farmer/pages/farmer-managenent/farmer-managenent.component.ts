@@ -30,7 +30,6 @@ export class FarmerManagenentComponent implements OnInit {
     "mobile_no",
     "ID No.",
     "route",
-    // 'pickUpLocation',
     'action',
   ];
 
@@ -57,7 +56,6 @@ export class FarmerManagenentComponent implements OnInit {
     this.isLoading = true;
     this.subscription = this.service.getFarmers().subscribe(res => {
       this.data = res;
-      console.log(this.data)
       if (this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;
@@ -72,7 +70,8 @@ export class FarmerManagenentComponent implements OnInit {
       }
     },error => {
       console.log('An error occurred:', error)
-      
+      this.isdata = false;
+      this.isLoading = false
     })
   }
 
@@ -153,14 +152,13 @@ export class FarmerManagenentComponent implements OnInit {
   // }
   getFarmerByFarmerNo(){
     this.isLoading = true;
-    let farmerNo= this.filterform.value.farmer_no;
-    console.log(this.filterform.value.farmer_no)
+    let farmerNo=this.filterform.value.farmer_no
+    // {}
       
     if (farmerNo != null && farmerNo != undefined ) {
   
       this.subscription = this.service.getByFarmersByFarmerNo(farmerNo).subscribe(res => {
         this.data = res;
-        console.log(this.data.entity)
         if (this.data.entity!=null) {
           let result = []
           result.push(this.data.entity)
@@ -168,7 +166,14 @@ export class FarmerManagenentComponent implements OnInit {
           this.isdata = true;
           this.isLoading = false;
           // Binding with the datasource
-          this.dataSource = new MatTableDataSource(this.data.entity);
+          this.dataSource = new MatTableDataSource(result.map(v=>({
+            username:v.username,
+            route:v.routeName,
+            id_number: v.idNumber,
+            farmer_no: v.farmerNo,
+            mobile_no: v.mobileNo
+
+          })));
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }

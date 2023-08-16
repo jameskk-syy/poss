@@ -14,12 +14,12 @@
                             <div class="body">
                                 <div class="row">
 
-                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
                                         <div class="card card-statistic-2">
                                             <div class="clearfix">
                                                 <div class="card-right">
                                                     <div>
-                                                        <h5 class="float-end">Quantity (Kgs)</h5>
+                                                        <h5 class="float-end">Quantity (Ltrs)</h5>
                                                     </div>
                                                     <div class="m-r-10 m-l-10">
                                                         <h3 class="font-weight-bold float-end mb-0">{{dquantity | number
@@ -34,7 +34,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
                                         <div class="card card-statistic-2">
                                             <div class="clearfix">
                                                 <div class="card-right">
@@ -53,7 +53,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
                                         <div class="card card-statistic-2">
                                             <div class="clearfix">
                                                 <div class="card-right">
@@ -72,7 +72,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                                    <!-- <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
                                         <div class="card card-statistic-2">
                                             <div class="clearfix">
                                                 <div class="card-right">
@@ -90,7 +90,7 @@
                                                 </canvas>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                 </div>
                                 <div class="table-responsive">
@@ -157,14 +157,7 @@
                                                                     [for]="picker3"></mat-datepicker-toggle>
                                                                 <mat-datepicker #picker3></mat-datepicker>
                                                             </mat-form-field>
-                                                            <mat-form-field class="m-l-5" *ngIf="selected == 'pul'">
-                                                                <input matInput (dateChange)="filterByDate()"
-                                                                    placeholder="select pick up location"
-                                                                    formControlName="pickuplocation">
-                                                                <mat-icon matSuffix
-                                                                    (click)="selectpickUpLocation()">search
-                                                                </mat-icon>
-                                                            </mat-form-field>
+                                                    
                                                             <mat-form-field class="m-l-5" *ngIf="selected == 'route'">
                                                                 <input matInput placeholder="select route"
                                                                     formControlName="route">
@@ -233,15 +226,15 @@
                                         </ng-container>
                                         <ng-container matColumnDef="farmer">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                class="column-nowrap tbl-col-width-per-11">Farmer</mat-header-cell>
+                                                class="column-nowrap tbl-col-width-per-15">Farmer</mat-header-cell>
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
-                                                [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-11">
+                                                [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-15">
                                                 {{response.farmer}}
                                             </mat-cell>
                                         </ng-container>
                                         <ng-container matColumnDef="quantity">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                class="column-nowrap tbl-col-width-per-9">Qty (kgs)</mat-header-cell>
+                                                class="column-nowrap tbl-col-width-per-9">Qty (Ltrs)</mat-header-cell>
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-9">
                                                 {{response.quantity | number :'1.2-2'}}
@@ -252,7 +245,10 @@
                                                 class="column-nowrap tbl-col-width-per-8">Session</mat-header-cell>
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-8">
-                                                {{response.session == 'Session 1'? 'Morning': (response.session == 'Session 2'? 'Afternoon': 'Evening')}}
+                                                {{
+                                                    response.session=='Session 1'?'Morning':
+                                                    (response.session=='Session 2'?'Afternoon':'Evening')
+                                                }}
                                             </mat-cell>
                                         </ng-container>
                                         <ng-container matColumnDef="collection_date">
@@ -272,16 +268,7 @@
                                                 {{response.route}}
                                             </mat-cell>
                                         </ng-container>
-                                        <ng-container matColumnDef="pickUpLocation">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                class="column-nowrap tbl-col-width-per-20">MCC
-                                            </mat-header-cell>
-                                            <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
-                                                [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-20">
-                                                {{response.pickUpLocation }}
-                                            </mat-cell>
-                                        </ng-container>
-
+                                
 
                                         <ng-container matColumnDef="action">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
@@ -311,8 +298,7 @@
                                         <mat-row *matRowDef="let row; columns: displayedColumns"
                                             (click)="countyDetailsCall(county)" [style.cursor]="'pointer'" matRipple>
                                         </mat-row>
-                                        <!-- <mat-cell *matNoDataRow colspan="4">
-                                            No data matching the filter "{{ input.value }}"</mat-cell> -->
+                                        
                                     </mat-table>
 
                                     <!-- Loading spinner -->

@@ -21,7 +21,7 @@ export class MainLayoutComponent implements OnInit {
             this.direction = "ltr";
           }
         } else {
-          if (this.config.layout.rtl == true) {
+          if (this.config.layout && this.config.layout.rtl == true) {
             this.direction = "rtl";
           } else {
             this.direction = "ltr";

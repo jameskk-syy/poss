@@ -33,21 +33,30 @@ export class EditProductConfigComponent extends BaseComponent implements OnInit 
   ngOnInit(): void {
     let productId = this.data.configs.id
     // console.log("Product id "+productId)
+    this.configsForm = this.fb.group({
+      productName: ['', [Validators.required]],
+      buyingPrice: ['', [Validators.required]],
+      sellingPrice: ['', [Validators.required]],
+      unitMeasurement: ['', [Validators.required]],
+      quantity: ['', [Validators.required]],
+      memberType: ['', [Validators.required]],
+      effectiveFrom: ['', [Validators.required]],
+      routeFk: ['', [Validators.required]]
+    });
 
     this.service.getConfigsById(productId).subscribe(res => {
       this.data = res;
       this.loading = false;
       this.productConfig = this.data.entity
-      console.log("Product Config details ", this.data.entity)
-
 
       this.configsForm = this.fb.group({
-        id: [this.productConfig.id, [Validators.required]],
+        id: [this.productConfig.id],
         productName: [this.productConfig.productName, [Validators.required]],
         buyingPrice: [this.productConfig.buyingPrice, [Validators.required]],
         sellingPrice: [this.productConfig.sellingPrice, [Validators.required]],
         unitMeasurement: [this.productConfig.unitMeasurement, [Validators.required]],
         quantity: [this.productConfig.quantity, [Validators.required]],
+        memberType: [this.productConfig.memberType, [Validators.required]],
         effectiveFrom: [this.productConfig.effectiveFrom, [Validators.required]],
         routeFk: [this.productConfig.routeFk, [Validators.required]]
       });

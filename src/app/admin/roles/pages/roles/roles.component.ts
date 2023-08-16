@@ -58,10 +58,8 @@ export class RolesComponent implements OnInit {
   getRoles() {
     this.roleService.getAllRoles().subscribe(
       (res) => {
-        console.log(res);
         this.Roles = res.roleData;
 
-        console.log(this.Roles);
 
         if (this.Roles) {
           this.isLoading = false;

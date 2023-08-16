@@ -93,7 +93,7 @@ export class CollectorCollectionsInQuantityPerSessionComponent extends BaseCompo
   public doughnutChartLegend = false;
   public doughnutChartColors: any[] = [
     {
-      backgroundColor: ["#2D7152", "#4F7161", "#66716C", "#22714D"],
+      backgroundColor: ["#22714D", "#FFA500", "#800080", "#22714D"],
     },
   ];
   public doughnutChartType = "doughnut";
@@ -120,14 +120,14 @@ export class CollectorCollectionsInQuantityPerSessionComponent extends BaseCompo
     this.getAllUsers();
 
     this.chartParametersForm = this.createChartParamtersForm();
-
+    this.getCollectorSessionData()
   }
 
   createChartParamtersForm() {
     return this.fb.group({
       year: [this.currentYear],
       month: [this.currentMonth.value],
-      collectorId: [""]
+      collectorId: ["2"]
     });
   }
 
@@ -183,7 +183,6 @@ export class CollectorCollectionsInQuantityPerSessionComponent extends BaseCompo
       .pipe(takeUntil(this.subject))
       .subscribe(
         (res) => {
-          console.log("RESPONCE ", res)
           this.doughnutChartData = [];
 
           res.entity.forEach((item) => {
@@ -193,7 +192,6 @@ export class CollectorCollectionsInQuantityPerSessionComponent extends BaseCompo
               
               this.sessionOne = parseInt(sessionOne[0]);
 
-              console.log("SESSION ONE ", this.sessionOne);
 
               this.doughnutChartData.push(this.sessionOne);
             }
@@ -203,7 +201,6 @@ export class CollectorCollectionsInQuantityPerSessionComponent extends BaseCompo
              
               this.sessionTwo = parseInt(sessionTwo[0]);
 
-              console.log("SESSION TWO ", this.sessionTwo)
 
               this.doughnutChartData.push(this.sessionTwo);
             }
@@ -214,13 +211,11 @@ export class CollectorCollectionsInQuantityPerSessionComponent extends BaseCompo
 
               this.sessionThree = parseInt(sessionThree[0]);
 
-              console.log("SESSION THREE ", this.sessionThree);
 
               this.doughnutChartData.push(this.sessionThree);
             }
           });
 
-          console.log("DOUGHNUT CHAT ", this.doughnutChartData)
 
           this.isLoading = false;
         },
@@ -235,13 +230,11 @@ export class CollectorCollectionsInQuantityPerSessionComponent extends BaseCompo
       let users = res.userData;
 
       users.forEach(user => {
-        console.log(user)
         if(user.roles[0].name == "ROLE_COLLECTOR"){
           this.collectors.push(user);
         }
       })
 
-      console.log("COLLECTORS ", this.collectors)
 
       if(this.collectors.length > 0){
         this.chartParametersForm.patchValue({

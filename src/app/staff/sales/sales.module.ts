@@ -38,6 +38,10 @@ import { VerifyproductAllocationsComponent } from './verifyproduct-allocations/v
 import { MilkAllocationComponent } from './pages/milk-allocation/milk-allocation.component';
 import { SalesPersonsLookupComponent } from './pages/sales-persons-lookup/sales-persons-lookup.component';
 import { DeleteCollectionComponent } from './pages/delete-collection/delete-collection.component';
+import { ManageRoutesComponent } from './pages/manage-routes/manage-routes.component';
+import { RouteDetailsComponent } from './pages/route-details/route-details.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { AdvanceDetailsComponent } from './pages/advance-details/advance-details.component';
 
 
 @NgModule({
@@ -59,7 +63,9 @@ import { DeleteCollectionComponent } from './pages/delete-collection/delete-coll
         VerifyproductAllocationsComponent,
         MilkAllocationComponent,
         SalesPersonsLookupComponent,
-        DeleteCollectionComponent
+        ManageRoutesComponent,
+        RouteDetailsComponent,
+        AdvanceDetailsComponent
     ],
     imports: [
         CommonModule,
@@ -83,6 +89,7 @@ import { DeleteCollectionComponent } from './pages/delete-collection/delete-coll
         MatTabsModule,
         MatProgressSpinnerModule,
         MatCheckboxModule,
+        MatFormFieldModule
     ],
     providers: [CdkColumnDef]
 })

@@ -69,7 +69,6 @@ export class MilkAllocationComponent implements OnInit {
       this.snackbar.showNotification("snackbar-danger", err);
       this.dialogRef.close();
     })
-    console.log("THe sales Person milk allocation details", this.allocationForm.value)
   }
 
   onClick() {

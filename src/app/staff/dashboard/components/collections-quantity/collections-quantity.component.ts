@@ -90,15 +90,15 @@ export class CollectionsQuantityComponent
   }
 
   ngOnInit(): void {
-    this.chartParametersForm = this.createChartParamtersForm();
-
     this.getAllUsers();
+    this.chartParametersForm = this.createChartParamtersForm();
+  this.getCollectorCollectionSPerMonth()
   }
 
   createChartParamtersForm() {
     return this.fb.group({
       year: [this.currentYear],
-      collectorId: [''],
+      collectorId: ['2'],
     });
   }
 
@@ -124,6 +124,7 @@ export class CollectionsQuantityComponent
       },
       (err) => {
         console.log(err);
+        this.isLoading = false;
       }
     );
   }
@@ -144,9 +145,8 @@ export class CollectionsQuantityComponent
       .pipe(takeUntil(this.subject))
       .subscribe(
         (res) => {
-          console.log('Response', res);
 
-          if (res.entity.length > 0) {
+          if (res.entity && res.entity.length > 0) {
             res.entity.forEach((item) => {
               months.push(item.month);
 
@@ -223,7 +223,7 @@ export class CollectionsQuantityComponent
           }
         },
         (err) => {
-          console.log(err);
+          this.isLoading = false
         }
       );
   }
@@ -237,13 +237,10 @@ export class CollectionsQuantityComponent
           let users = res.userData;
 
           users.forEach((user) => {
-            console.log(user);
             if (user.roles[0].name == 'ROLE_COLLECTOR') {
               this.collectors.push(user);
             }
           });
-
-          console.log('COLLECTORS ', this.collectors);
 
           if (this.collectors.length > 0) {
             this.chartParametersForm.patchValue({
@@ -257,6 +254,7 @@ export class CollectionsQuantityComponent
         },
         (err) => {
           console.log(err);
+          this.isLoading = false
         }
       );
   }

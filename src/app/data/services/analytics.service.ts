@@ -7,6 +7,16 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AnalyticsService {
+  fetchAllCollections() {
+    const getCollectionSPerMonthUrl = `${environment.apiUrl}/api/v1/collections/all`;
+
+    return this.http.get<any>(getCollectionSPerMonthUrl)
+  }
+  getCollectionsPerRoute(params: any) {
+    const getCollectionSPerMonthUrl = `${environment.apiUrl}/api/v1/collections/analytics/collection/routes/month`;
+
+    return this.http.get<any>(getCollectionSPerMonthUrl, { params })
+  }
 
   constructor(private http: HttpClient) { }
 

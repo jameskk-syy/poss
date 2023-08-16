@@ -57,7 +57,7 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
   public doughnutChartLegend = false;
   public doughnutChartColors: any[] = [
     {
-      backgroundColor: ["#2D7152", "#4F7161", "#66716C", "#22714D"],
+      backgroundColor: ["#22714D", "#FFA500", "#800080", "#22714D"],
     },
   ];
   public doughnutChartType = "doughnut";
@@ -84,6 +84,7 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
     this.getAllUsers();
 
     this.chartParametersForm = this.createChartParamtersForm();
+    this.getCollectorSessionData()
    
   }
 
@@ -91,7 +92,7 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
     return this.fb.group({
       year: [this.currentYear],
       month: [this.currentMonth.value],
-      collectorId: [""]
+      collectorId: ["2"]
     });
   }
 
@@ -147,7 +148,6 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
       .pipe(takeUntil(this.subject))
       .subscribe(
         (res) => {
-          console.log("RESPONCE ", res)
           this.doughnutChartData = [];
 
           res.entity.forEach((item) => {
@@ -182,6 +182,7 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
         },
         (err) => {
           console.log(err);
+          this.isLoading = false
         }
       );
   }
@@ -191,13 +192,11 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
       let users = res.userData;
 
       users.forEach(user => {
-        console.log(user)
         if(user.roles[0].name == "ROLE_COLLECTOR"){
           this.collectors.push(user);
         }
       })
 
-      console.log("COLLECTORS ", this.collectors)
 
       if(this.collectors.length > 0){
         this.chartParametersForm.patchValue({
@@ -207,6 +206,7 @@ export class CollectorCollectionsInPricePerSessionComponent extends BaseComponen
         this.getCollectorSessionData();
       }
     }, err => {
+      this.isLoading = false
       console.log(err)
     })
   }

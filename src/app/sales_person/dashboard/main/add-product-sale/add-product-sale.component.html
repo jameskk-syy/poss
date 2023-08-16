@@ -1,0 +1,228 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modalHeader clearfix">
+                    <div class="modal-about">
+                        <div class="font-weight-bold p-t-5 ms-2 me-2 font-17">
+                            Add Sales
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <!-- <mat-progress-bar mode="indeterminate" *ngIf="pLoading"></mat-progress-bar>
+        <form [formGroup]="productSalesAssignment" class="register-form">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Customer Type</mat-label>
+                        <mat-select formControlName="paymentMethod"
+                         [(value)]="customertype" required>
+                                <mat-option value="walkin"><b>WALKIN</b></mat-option>
+                                <mat-option value="corporate"><b>CORPORATE</b></mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form> -->
+        <form class="register-form m-4" [formGroup]="productSalesAssignment" *ngIf="customertype=='corporate'">
+             <div class="row">
+                <mat-card>
+                    <mat-card-title style="font-size: x-small;">Sales Details</mat-card-title>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Customer</mat-label>
+                                    <mat-select formControlName="customerFk" (selectionChange)="customerSelected($event)" required>
+                                        <mat-option *ngFor="let customer of customers" [value]="customer.id">
+                                            {{ customer.firstname +' '+customer.lastname}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="productSalesAssignment.get('customerFk').hasError('required')">
+                                        customer is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0" hidden>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Product Fk</mat-label>
+                                    <input matInput formControlName="productFk" [value]="39" value="39" required />
+                                    <mat-error *ngIf="productSalesAssignment.get('productFk').hasError('required')">
+                                        product fk is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Quantity</mat-label>
+                                    <input matInput formControlName="quantity" (input)="updateQuantity()" required />
+                                    <mat-error *ngIf="productSalesAssignment.get('quantity').hasError('required')">
+                                        quantity is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                    <mat-label>Routes</mat-label>
+                                    <mat-select formControlName="routeFk" (selectionChange)="getRoutePrice($event)" required>
+                                        <mat-option *ngFor="let route of routes" [value]="route.id">
+                                            {{ route.route }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="productSalesAssignment.get('routeFk').hasError('required')">
+                                        route is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Payment Method</mat-label>
+                                    <mat-select formControlName="paymentMethod"
+                                     [(value)]="method" required>
+                                            <mat-option value="cash"><b>CASH</b></mat-option>
+                                            <mat-option value="mpesa"><b>MPESA</b></mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <div *ngIf="method == 'cash'">
+                                    <!-- <button mat-raised-button color="primary" [disabled]="!productSalesAssignment.valid" (click)="computeAmount()">
+                                      <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                                      <b>Calculate</b>
+                                    </button> -->
+                                    <p>Kindly pay: Ksh <b>{{ amountToPay }}</b></p>
+                                  </div>
+                                  
+                                <form [formGroup]="filterForm">
+                                    <mat-form-field class="m-l-3" *ngIf="method == 'mpesa'">
+                                        <input matInput
+                                            placeholder="Enter MPESA number"
+                                            formControlName="mpesa_number"
+                                            [value]="selectedCustomer.contact"
+                                            >
+                                            <mat-icon matSuffix (click)="mpesaPayment()" [hidden]="!productSalesAssignment.valid">send
+                                            </mat-icon>
+                                    </mat-form-field>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-0">
+                                <div class="example-button-row">
+                                    <button mat-raised-button color="warn" (click)="onCancel()" tabindex="-1">
+                                        Cancel
+                                    </button>
+                                    <button mat-raised-button color="primary"
+                                        [disabled]="!productSalesAssignment.valid" (click)="onSubmit()">
+                                        <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        <b>Confirm</b>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </form>
+        <form class="register-form m-4" [formGroup]="productSalesAssignment" *ngIf="customertype=='walkin'">
+            <div class="row">
+               <mat-card>
+                   <mat-card-title style="font-size: x-small;">Sales Details</mat-card-title>
+                   <mat-card-content>
+                       <div class="row">
+                           <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                               <mat-form-field class="example-full-width" appearance="outline">
+                                   <mat-label>Product Fk</mat-label>
+                                   <input matInput formControlName="productFk" required />
+                                   <mat-error *ngIf="productSalesAssignment.get('productFk').hasError('required')">
+                                       product fk is required
+                                   </mat-error>
+                               </mat-form-field>
+                           </div>
+                           <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                               <mat-form-field class="example-full-width" appearance="outline">
+                                   <mat-label>Quantity</mat-label>
+                                   <input matInput formControlName="quantity" required />
+                                   <mat-error *ngIf="productSalesAssignment.get('quantity').hasError('required')">
+                                       quantity is required
+                                   </mat-error>
+                               </mat-form-field>
+                           </div>
+                       </div>
+
+                       <div class="row">
+                           <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                               <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                   <mat-label>Routes</mat-label>
+                                   <mat-select formControlName="routeFk" required>
+                                       <mat-option *ngFor="let route of routes" [value]="route.id">
+                                           {{ route.route }}
+                                       </mat-option>
+                                   </mat-select>
+                                   <mat-error *ngIf="productSalesAssignment.get('routeFk').hasError('required')">
+                                       route is required
+                                   </mat-error>
+                               </mat-form-field>
+                           </div>
+                           <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                               <mat-form-field class="example-full-width" appearance="outline">
+                                   <mat-label>Payment Method</mat-label>
+                                   <mat-select formControlName="paymentMethod"
+                                    [(value)]="method" required>
+                                           <mat-option value="cash"><b>CASH</b></mat-option>
+                                           <mat-option value="mpesa"><b>MPESA</b></mat-option>
+                                   </mat-select>
+                               </mat-form-field>
+                           </div>
+                           <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                               <div *ngIf="method == 'cash'">
+                                   <button mat-raised-button color="primary" [disabled]="!productSalesAssignment.valid" (click)="computeAmount()">
+                                     <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                                     <b>Calculate</b>
+                                   </button>
+                                   <p [hidden]="!productSalesAssignment.valid">Kindly pay: Ksh <b>{{ amountToPay }}</b></p>
+                                 </div>
+                                 
+                               <form [formGroup]="filterForm">
+                                   <mat-form-field class="m-l-3" *ngIf="method == 'mpesa'">
+                                       <input matInput
+                                           placeholder="Enter MPESA number"
+                                           formControlName="mpesa_number">
+                                           <mat-icon matSuffix (click)="mpesaPayment()" [hidden]="!productSalesAssignment.valid">send
+                                           </mat-icon>
+                                   </mat-form-field>
+                               </form>
+                           </div>
+                       </div>
+                       <div class="row">
+
+                           <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-0">
+                               <div class="example-button-row">
+                                   <button mat-raised-button color="warn" (click)="onCancel()" tabindex="-1">
+                                       Cancel
+                                   </button>
+                                   <button mat-raised-button color="primary"
+                                       [disabled]="!productSalesAssignment.valid" (click)="onSubmit()">
+                                       <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                                       <b>Confirm</b>
+                                   </button>
+                               </div>
+                           </div>
+                       </div>
+                   </mat-card-content>
+               </mat-card>
+           </div>
+       </form>
+    </div>
+</div>

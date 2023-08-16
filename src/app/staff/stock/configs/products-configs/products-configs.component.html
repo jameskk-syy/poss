@@ -132,7 +132,7 @@
 
                                 <ng-container matColumnDef="quantity">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">Unit</mat-header-cell>
+                                        class="column-nowrap">Qty</mat-header-cell>
                                     <mat-cell *matCellDef="let configs;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">{{configs.quantity
                                         }}</mat-cell>
@@ -140,7 +140,7 @@
 
                                 <ng-container matColumnDef="unit_measurement">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">Qtty</mat-header-cell>
+                                        class="column-nowrap">Unit</mat-header-cell>
                                     <mat-cell *matCellDef="let configs;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">{{
                                         configs.unit_measurement}}</mat-cell>

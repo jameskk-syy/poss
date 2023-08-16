@@ -1,11 +1,13 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
+*.zip
 /dist
 /tmp
 /out-tsc
 /bazel-out
-
+JUFREDDAIRY_FE_MIRROR
+JUFRED_MIRROR_CODES
 # Node
 /node_modules
 npm-debug.log

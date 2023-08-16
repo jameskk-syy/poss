@@ -51,7 +51,6 @@ export class MainComponent implements OnInit {
       this.data = res;
       if (this.data) {
         this.isloading = false
-        console.log("All collections Summary"+ this.data.entity[0])
         this.isloading = true;
         this.quantity = this.data.entity[0].quantity;
         this.amount = this.data.entity[0].amount;
@@ -66,10 +65,8 @@ export class MainComponent implements OnInit {
     this.subscription = this.service.getAllFarmers().subscribe(res => {
       this.data = res;
       if (this.data) {
-        console.log(this.data)
         this.loaded = true;
         this.farmers = this.data.entity.length
-
 
       }
     });

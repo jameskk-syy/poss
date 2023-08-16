@@ -100,7 +100,6 @@ export class AddRoleComponent extends BaseComponent implements OnInit {
     this.getAccessRights();
     
     this.currentUserName = this.tokenStorage.getUser().username;
-    console.log("this.function_typ: ", this.function_type);
     // this.getAccessRights();
 
     this.getPage();
@@ -134,7 +133,7 @@ export class AddRoleComponent extends BaseComponent implements OnInit {
     if (this.function_type == "ADD") {
       this.displayArray = this.getLocalAccessRights();
 
-      if (this.displayArray.length > 0) {
+      if (this.displayArray && this.displayArray.length > 0) {
         this.accessRightsLoaded = true;
       } else {
         this.accessRightsLoaded = false;
@@ -382,8 +381,6 @@ export class AddRoleComponent extends BaseComponent implements OnInit {
           privileges.push(this.fb.control(this.displayArray[i].accessRights));
         }
       }
-
-      console.log("Form Value ", this.apiFormData.value);
 
       
       if (this.apiFormData.valid) {

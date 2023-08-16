@@ -3,15 +3,50 @@ import { CommonModule } from '@angular/common';
 
 import { ProductSalesRoutingModule } from './product-sales-routing.module';
 import { ProductSalesManagementComponent } from './product-sales-management/product-sales-management.component';
-
+import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AddProductSaleComponent } from './add-product-sale/add-product-sale.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { ViewSalesPersonComponent } from './view-sales-person/view-sales-person.component';
+import { CdkColumnDef, CdkTableModule } from '@angular/cdk/table';
+import { MatSortModule } from '@angular/material/sort';
+import { SalesPerMonthComponent } from './sales-per-month/sales-per-month.component';
+import { SalespersonsMonthlyPerformanceComponent } from './salespersons-monthly-performance/salespersons-monthly-performance.component';
+import { SalespersonsSalesComponent } from './salespersons-sales/salespersons-sales.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
-    ProductSalesManagementComponent
+    ProductSalesManagementComponent,
+    AddProductSaleComponent,
+    ViewSalesPersonComponent,
+    SalesPerMonthComponent,
+    SalespersonsMonthlyPerformanceComponent,
+    SalespersonsSalesComponent
   ],
   imports: [
     CommonModule,
-    ProductSalesRoutingModule
+    ProductSalesRoutingModule,
+    ComponentsModule,
+    MatIconModule,
+    MatSelectModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatCardModule,
+    MatDialogModule,
+    SharedModule,
+    CdkTableModule,
+  MatSortModule,
+  NgApexchartsModule
+  ],
+  providers: [
+    CdkColumnDef
   ]
+  
 })
 export class ProductSalesModule { }

@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SalesService } from '../../services/sales.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-sales-managenent',
@@ -21,18 +22,30 @@ export class SalesManagenentComponent implements OnInit {
     "farmer_no",
     'username',
     'payment_mode',
-    'freequency',
+    "quantity",
     "allocationAmount",
     "collectionAmount",
     "netPay",
     'action',
+    'status',
   ];
+
+  paymentOption: FormGroup;
+  method:string ='mpesa';
 
   subscription!: Subscription;
   data: any;
   isdata: boolean = false;
   isLoading:boolean = false;
-  constructor(private router: Router, private dialog: MatDialog, private service: SalesService,) { }
+  route: any;
+  confirmed: number = 0;
+  confirmedRecords = []
+  totalQuantity: number = 0.0;
+  constructor(private router: Router, private dialog: MatDialog, private service: SalesService,
+    private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) private routeData:any) {
+      this.route = routeData.route
+     }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -42,20 +55,72 @@ export class SalesManagenentComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  allSelected: boolean = false;
+
+  selectAll(checked: boolean) {
+  this.allSelected = checked;
+  this.confirmed = 0
+  this.dataSource.data.forEach((element,i) => {
+  element.selected = checked;
+  if(checked){
+    this.confirmed += 1
+  }else{
+    this.confirmed = 0
+  }
+  });
+
+
+
+  }
+
+  handleApprove(){
+    this.isLoading = true;
+    const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
+    this.service.updateApprovalStatus(this.confirmedRecords,this.route.id,staffId).subscribe(res=>{
+      console.log(res)
+      // if(res.entity && res.entity.length){
+      //   location.reload()
+      // }
+    })
+    console.log(this.confirmedRecords)
+  }
+  handleChange(selected:string){
+    this.method = selected;
+    const data = this.data.entity.filter((v:any)=> v.payment_mode.toLowerCase()==this.method.toLowerCase())
+    this.totalQuantity = data.reduce((val:number,object:any)=>object.quantity+val,0.0)
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  handleCheck(checked:boolean,req:any){
+    if (checked) {
+      this.confirmedRecords.push(req)
+    }else{
+      this.confirmedRecords = this.confirmedRecords.filter(r=>r.farmer_no != req.farmer_no)
+    }
+    this.confirmed = this.confirmedRecords.length;
+  }
 
 
   getData() {
     this.isLoading = true;
-    this.subscription = this.service.getFarmersPaymentRecords().subscribe(res => {
+    const routeId = this.route.id;
+    const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
+
+    this.subscription = this.service.getFarmersPaymentRecordsPerRoute(routeId,staffId).subscribe(res => {
       this.data = res;
-      console.log(this.data)
       if (this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;
         // Binding with the datasource
+        this.totalQuantity = this.data.entity.reduce((val:number,object:any)=>object.quantity+val,0.0)
         this.dataSource = new MatTableDataSource(this.data.entity);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+
+        this.handleChange(this.method)
+
       }
       else {
         this.isdata = false;
@@ -76,7 +141,14 @@ export class SalesManagenentComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
+    this.paymentOption = this.fb.group({
+      method:[this.method,[Validators.required]]
+    })
     this.getData();
+  }
+
+  isStage1Verified(row:any){
+    return row.clerk1.startsWith('Y') || row.clerk2.startsWith('Y')
   }
 
   pay(){
@@ -84,7 +156,6 @@ export class SalesManagenentComponent implements OnInit {
   }
 
 
- 
 
 
 }

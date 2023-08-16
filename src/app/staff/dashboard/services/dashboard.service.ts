@@ -10,6 +10,10 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class DashboardService {
+  getFarmerNoCollections(farmerNo: any):Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/records/by-farmer-no?farmerNo=`+farmerNo,httpOptions);
+
+  }
 
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient) { }
@@ -21,7 +25,6 @@ export class DashboardService {
     return this.http.get(`${environment.apiUrl}/api/v1/farmer/get`,httpOptions);
   }
   public getDateCollections(date:any): Observable<any> {
-    console.log("Calling api..")
     return this.http.get(`${environment.apiUrl}/api/v1/collections/day/records?date=`+date,httpOptions);
   }
 
@@ -33,7 +36,6 @@ export class DashboardService {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/record/pickupLocations?pickUpLocation=`+pickUpLocationId,httpOptions);
   }
   public getRouteCollections(routeId:any): Observable<any> {
-    console.log("Calling api route d=id ,"+ routeId)
     return this.http.get(`${environment.apiUrl}/api/v1/collections/records/route?routeId=`+routeId,httpOptions);
   }
 

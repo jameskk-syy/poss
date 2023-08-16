@@ -97,9 +97,9 @@ export class CollectionDetailsComponent implements OnInit {
 
     this.getFarmerDetails(this.farmerid);
     this.getFarmerCollections(this.farmerid);
-    this.getFarmerAllocations(this.farmerid);
-    this.getPayedFarmerAccruals(this.farmerid);
-    this.getNonPayedFarmerAccruals(this.farmerid);
+    // this.getFarmerAllocations(this.farmerid);
+    // this.getPayedFarmerAccruals(this.farmerid);
+    // this.getNonPayedFarmerAccruals(this.farmerid);
     this.getFarmerAmountOnNotPayedCollections(this.farmerid);
     this.getFarmerAmountOnPayedCollections(this.farmerid)
   }
