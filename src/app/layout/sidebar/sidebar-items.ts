@@ -502,10 +502,10 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: '/staff/sales/products/sales',
-    title: 'Products Allocations',
+    title: 'Advance Payments',
     moduleName: 'sales',
     iconType: 'feather',
-    icon: 'shopping-bag',
+    icon: 'dollar-sign',
     class: '',
     groupTitle: false,
     badge: '',

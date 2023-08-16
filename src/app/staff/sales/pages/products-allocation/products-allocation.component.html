@@ -2,11 +2,11 @@
     <div class="content-block">
         <div class="block-header">
             <!-- breadcrumb -->
-            <app-breadcrumb [title]="'Farmer Product Allocations'" [items]="['Home', 'Inventory']" [active_item]="'Sales'">
+            <app-breadcrumb [title]="'Advance Payments'" [items]="['Home', 'Inventory']" [active_item]="'Sales'">
             </app-breadcrumb>
         </div>
         <mat-tab-group>
-            <mat-tab label="Goods">
+            <mat-tab label="Advances">
         <div class="card">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="boxs mail_listing">
@@ -19,7 +19,7 @@
                                             <div class="col-8">
                                                 <ul class="header-buttons-left ms-0">
                                                     <li class="dropdown">
-                                                        <h2>Sales</h2>
+                                                        <!-- <h2>Sales</h2> -->
                                                     </li>
                                                     <li class="dropdown m-l-20">
                                                         <label for="search-input"><i
@@ -51,7 +51,7 @@
                                                         <div class="export-button m-l-10" matTooltip="XLSX">
                                                             <img src="assets/images/icons/xlsx.png" alt="" (click)="
                                       exporter.exportTable('xlsx', {
-                                        fileName: 'sales',
+                                        fileName: 'advance payments',
                                         sheet: 'sheet1'
                                       })
                                     " />

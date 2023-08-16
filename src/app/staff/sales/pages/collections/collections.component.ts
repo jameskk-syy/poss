@@ -15,6 +15,7 @@ import { EditCollectionComponent } from '../edit-collection/edit-collection.comp
 import { LookupPickUpLocationsComponent } from '../lookup-pick-up-locations/lookup-pick-up-locations.component';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { RoutesLookUpComponent } from '../routes-look-up/routes-look-up.component';
+import { DeleteCollectionComponent } from '../delete-collection/delete-collection.component';
 
 @Component({
   selector: 'app-collections',
@@ -74,7 +75,7 @@ export class CollectionsComponent implements OnInit {
     "session",
     "collection_date",
     "route",
-    "pickUpLocation",
+    // "pickUpLocation",
     'action',
   ];
 
@@ -167,7 +168,7 @@ export class CollectionsComponent implements OnInit {
           this.dataSource.sort = this.sort;
         }
         else {
-          this.isdata = false;
+          // this.isdata = false;
           this.isLoading = false;
           this.dataSource = new MatTableDataSource(null);
         }
@@ -510,9 +511,10 @@ export class CollectionsComponent implements OnInit {
       // })
       this.subscription = this.service.getCollectionsByFarmerNo(farmerNo).subscribe(res => {
         this.data = res;
-        if (this.data) {
+        if (this.data.entity.size > 0) {
           this.isLoading = false
           console.log(this.data.entity.size > 0)
+          console.log(this.data.entity)
           this.isdata = true;
           this.datasize=this.data.entity.length
           this.dataSource = new MatTableDataSource(this.data.entity);
@@ -520,7 +522,7 @@ export class CollectionsComponent implements OnInit {
           this.dataSource.sort = this.sort;
         }
         else {
-          this.isdata = false;
+          // this.isdata = false;
           this.isLoading = false;
           this.dataSource = new MatTableDataSource(null);
         }
@@ -532,7 +534,7 @@ export class CollectionsComponent implements OnInit {
     this.getSummaryPerRoute(id)
 
     // let pickUpLocationId = this.form.value.pickUpLocationId
-    console.log("Passed ROute Id is ", id)
+    console.log("Passed Route Id is ", id)
 
     this.subscription = this.service.getCollectionsPerPRoute(id).subscribe(res => {
       this.data = res;
@@ -546,7 +548,7 @@ export class CollectionsComponent implements OnInit {
         this.dataSource.sort = this.sort;
       }
       else {
-        this.isdata = false;
+        // this.isdata = false;
         this.isLoading = false
         this.dataSource = new MatTableDataSource(null);
       }
@@ -564,6 +566,22 @@ export class CollectionsComponent implements OnInit {
     }
     this.dialog.open(EditCollectionComponent, dialogConfig)
   }
+
+  delete(id) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      id: id
+    }
+    const dialogRef = this.dialog.open(DeleteCollectionComponent, {
+      width: '400px',
+      autoFocus: false,
+      panelClass: 'delete-dialog'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("dialog was closed")
+    });
+  }
+
   private smallChart2() {
     this.cardChart2 = {
       responsive: true,

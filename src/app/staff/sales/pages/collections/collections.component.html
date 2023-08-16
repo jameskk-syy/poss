@@ -252,7 +252,7 @@
                                                 class="column-nowrap tbl-col-width-per-8">Session</mat-header-cell>
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-8">
-                                                {{response.session}}
+                                                {{response.session == 'Session 1'? 'Morning': (response.session == 'Session 2'? 'Afternoon': 'Evening')}}
                                             </mat-cell>
                                         </ng-container>
                                         <ng-container matColumnDef="collection_date">
@@ -300,6 +300,9 @@
                                                     <app-feather-icons matTooltip="Edit Collections" [icon]="'edit'"
                                                         [class]="'tbl-fav-edit'"></app-feather-icons>
                                                 </button>
+                                                <button mat-icon-button color="primary" (click)="$event.stopPropagation()" (click)="delete(response)" class="tbl-action-btn">
+                                                    <app-feather-icons matTooltip="delete collection" [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                                                </button>
                                             </mat-cell>
                                         </ng-container>
 
@@ -308,8 +311,8 @@
                                         <mat-row *matRowDef="let row; columns: displayedColumns"
                                             (click)="countyDetailsCall(county)" [style.cursor]="'pointer'" matRipple>
                                         </mat-row>
-                                        <mat-cell *matNoDataRow colspan="4">
-                                            No data matching the filter "{{ input.value }}"</mat-cell>
+                                        <!-- <mat-cell *matNoDataRow colspan="4">
+                                            No data matching the filter "{{ input.value }}"</mat-cell> -->
                                     </mat-table>
 
                                     <!-- Loading spinner -->
