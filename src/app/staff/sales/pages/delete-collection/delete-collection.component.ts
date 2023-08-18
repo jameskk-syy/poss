@@ -14,7 +14,6 @@ import { Subscription } from 'rxjs';
 })
 export class DeleteCollectionComponent implements OnInit {
 
-  editForm: FormGroup
   loading = false
   collection: any
 
@@ -30,18 +29,27 @@ export class DeleteCollectionComponent implements OnInit {
     farmer: any
     farmerNo: any
     id: any
+    date: any
+    quantity: any
+    session: any
+    route: any
 
   ngOnInit(): void {
     this.collection = this.data.collection
     this.farmer = this.collection.farmer
     this.farmerNo = this.collection.farmerNo
     this.id = this.collection.id
+    this.date = this.collection.collection_date
+    this.quantity = this.collection.quantity
+    this.session = this.collection.quantity
+    this.route = this.collection.route
     
     console.log(this.collection = this.data.collection)
   }
 
   onSubmit() {
     this.loading = true
+    console.log(this.id)
     this.subscription = this.service.deleteCollections(this.id).subscribe(res => {
       this.snackBar.showNotification("snackbar-success", "collection deleted successfully.")
       this.loading = false

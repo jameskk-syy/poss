@@ -8,7 +8,11 @@ import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
+import { MatIconModule } from "@angular/material/icon";
+import { MatDialog, MatDialogModule } from "@angular/material/dialog";
+import { MatButton, MatButtonModule } from "@angular/material/button";
 import { HeaderComponent } from "./layout/header/header.component";
+import { DeleteCollectionComponent } from "./staff/sales/pages/delete-collection/delete-collection.component";
 import { PageLoaderComponent } from "./layout/page-loader/page-loader.component";
 import { SidebarComponent } from "./layout/sidebar/sidebar.component";
 import { RightSidebarComponent } from "./layout/right-sidebar/right-sidebar.component";
@@ -56,6 +60,7 @@ export function createTranslateLoader(http: HttpClient): any {
     AuthLayoutComponent,
     MainLayoutComponent,
     FooterComponent,
+    DeleteCollectionComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +70,9 @@ export function createTranslateLoader(http: HttpClient): any {
     PerfectScrollbarModule,
     ClickOutsideModule,
     NgApexchartsModule,
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

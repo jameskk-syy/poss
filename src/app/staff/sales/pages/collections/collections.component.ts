@@ -557,16 +557,14 @@ export class CollectionsComponent implements OnInit {
     this.dialog.open(EditCollectionComponent, dialogConfig)
   }
 
-  delete(id) {
+  onDelete(collection) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
-      id: id
+      collection: collection
     }
-    const dialogRef = this.dialog.open(DeleteCollectionComponent, {
-      width: '400px',
-      autoFocus: false,
-      panelClass: 'delete-dialog'
-    });
+    dialogConfig.width = '60%',
+    dialogConfig.autoFocus = false;
+    const dialogRef = this.dialog.open(DeleteCollectionComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(result => {
       console.log("dialog was closed")
     });
