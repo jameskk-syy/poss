@@ -350,8 +350,8 @@ export class FarmerDetailsComponent implements OnInit {
       },
     ],
   };
-  mpesaDetails: FormGroup;
-  nextOfKinForm: FormGroup;
+  // mpesaDetails: FormGroup;
+  // nextOfKinForm: FormGroup;
   
   constructor(public dialogRef: MatDialogRef<FarmerManagenentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,

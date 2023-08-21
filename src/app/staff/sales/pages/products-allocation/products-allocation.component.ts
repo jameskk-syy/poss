@@ -15,13 +15,6 @@ import { FarmerData } from 'src/app/staff/sms/initiate-bulk-sms/initiate-bulk-sm
 import { HttpParams } from '@angular/common/http';
 
   
-import { AdvanceDetailsComponent } from '../advance-details/advance-details.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { FarmerData } from 'src/app/staff/sms/initiate-bulk-sms/initiate-bulk-sms.component';
-import { HttpParams } from '@angular/common/http';
-
-  
 @Component({
   selector: 'app-products-allocation',
   templateUrl: './products-allocation.component.html',
@@ -30,8 +23,7 @@ import { HttpParams } from '@angular/common/http';
 export class ProductsAllocationComponent implements OnInit {
 filterform:FormGroup
 selected="";
-filterform:FormGroup
-selected="";
+
 
   displayedColumns: string[] = [
     "farmerNo",
@@ -49,7 +41,7 @@ selected="";
   
 subscription!: Subscription;
   
-subscription!: Subscription;
+
   dataSource!: MatTableDataSource<any>;
   dataSource1!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -63,19 +55,13 @@ subscription!: Subscription;
   isdata: boolean;
   salesservice: any;
   // fb: any;
-  isLoading: boolean;
-  // service: any;
-  data: any;
-  isdata: boolean;
-  salesservice: any;
-
+  
  
  
   constructor(
     public dialog: MatDialog,
     private router: Router,
     private snackbar: SnackbarService,
-    private fb: FormBuilder,
     private fb: FormBuilder,
     private service: SalesService,
   ) { }
@@ -130,12 +116,12 @@ subscription!: Subscription;
     })
   }
   
-  getFarmerByFarmerNo(){
-    this.isLoading = true;
-    let farmerNo=this.filterform.value.farmerNo
-    console.log(this.filterform.value.farmerNo)
+  // getFarmerByFarmerNo(){
+  //   this.isLoading = true;
+  //   let farmerNo=this.filterform.value.farmerNo
+  //   console.log(this.filterform.value.farmerNo)
       
-    if (farmerNo != null && farmerNo != undefined ) {
+  //   if (farmerNo != null && farmerNo != undefined ) {
   
   getFarmerByFarmerNo(){
     this.isLoading = true;
@@ -166,8 +152,8 @@ subscription!: Subscription;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }
-        else {
-          this.isdata = false;
+        // else {
+        //   this.isdata = false;
         else {
           this.isdata = false;
           this.isLoading = false;

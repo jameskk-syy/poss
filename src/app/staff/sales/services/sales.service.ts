@@ -10,10 +10,15 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class SalesService {
-  getCollectorByName(collectorId: any) {
-    return this.http.get(`${environment.apiUrl}/api/v1/collectors/all`,httpOptions);
+  
+  private eventSource = new Subject<any>();
+  event$ = this.eventSource.asObservable();
+
+  emitEvent(event: any) {
+    this.eventSource.next(event);
   }
- 
+  headers = new HttpHeaders().set('Content-Type', 'application/json');
+  constructor(private http: HttpClient) { }
   addAccumulation(value: any):Observable<any> {
     return this.http.post(`${environment.apiUrl}/api/v1/accumulation/add`,
     {
@@ -24,10 +29,7 @@ export class SalesService {
       routeFk: value.routeFk,
     },httpOptions); 
   }
-  getAccumulationsByAccumulatorId(accumulatorId: any): Observable<any> {
-    const url = `${environment.apiUrl}/api/v1/accumulation/by-accumulator/${accumulatorId}`;
-    return this.http.get(url);
-  }
+  
   // getAccumulationsPerDate(collectorId: number, date: string): Observable<any> {
   //   const url = `${environment.apiUrl}/accumulation/${collectorId}/${date}`;
   //   return this.http.get(url);
@@ -42,16 +44,10 @@ export class SalesService {
     return this.http.get(`${environment.apiUrl}/api/v1/accumulation/all`,httpOptions); 
    }
  
-  
-  
-  private eventSource = new Subject<any>();
-  event$ = this.eventSource.asObservable();
-
-  emitEvent(event: any) {
-    this.eventSource.next(event);
+  getAccumulationsByAccumulatorId(accumulatorId: any): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/accumulation/by-accumulator/${accumulatorId}`;
+    return this.http.get(url);
   }
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
-  constructor(private http: HttpClient) { }
 
   getAdvance(data:any):Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/advance-payments/all`,httpOptions);
@@ -251,24 +247,24 @@ export class SalesService {
     return this.http.delete(`${environment.apiUrl}/api/v1/milk_allocation/delete?allocationId=${id}`, httpOptions)
   }
   
-  getAdvance(data:any):Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/advance-payments/all`,httpOptions);
+  // getAdvance(data:any):Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/api/v1/advance-payments/all`,httpOptions);
 
 
-   }
+  //  }
 
-  getFarmerByFarmerNo(farmerNo: string): Observable<any> {
-    const apiUrl = `${environment.apiUrl}/api/v1/advance-payments/get-by-farmer-number/${farmerNo}`;
-    return this.http.get(apiUrl);
-  }
-  allocateAdvance(data: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/api/v1/advance-payments/add`,
-    {
-      farmerNo: data.farmerNo,
-      date: data.date,
-      advanceAmount: data.advanceAmount,
-      paymentMode: data.paymentMode,
-      username: data.username
-    },httpOptions);
-   }
+  // getFarmerByFarmerNo(farmerNo: string): Observable<any> {
+  //   const apiUrl = `${environment.apiUrl}/api/v1/advance-payments/get-by-farmer-number/${farmerNo}`;
+  //   return this.http.get(apiUrl);
+  // }
+  // allocateAdvance(data: any): Observable<any> {
+  //   return this.http.post(`${environment.apiUrl}/api/v1/advance-payments/add`,
+  //   {
+  //     farmerNo: data.farmerNo,
+  //     date: data.date,
+  //     advanceAmount: data.advanceAmount,
+  //     paymentMode: data.paymentMode,
+  //     username: data.username
+  //   },httpOptions);
+  //  }
 }

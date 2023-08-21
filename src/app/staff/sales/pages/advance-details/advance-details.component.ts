@@ -31,11 +31,7 @@ subscription!: Subscription;
     this.isLoading = true;
     this.advancePaymentForm = this.fb.group({
       farmerNo: ['',Validators.required],
-<<<<<<< HEAD
       // username: ['',Validators.required],
-=======
-      username: ['',Validators.required],
->>>>>>> 28cf69070a46ac567c687af2f3265e7950660e7e
       // mobileNo: ['',Validators.required],
       paymentMode: ['',Validators.required],
     //  route: ['',Validators.required],
@@ -89,15 +85,8 @@ subscription!: Subscription;
   // }
   
   onSubmit() {
-<<<<<<< HEAD
     this.loading = true;
     this.subscription = this.service.allocateAdvance(this.advancePaymentForm.value).subscribe(res => {
-=======
-    console.log(this.advancePaymentForm)
-    this.loading = true;
-    this.subscription = this.service.allocateAdvance(this.advancePaymentForm.value).subscribe(res => {
-      // console.log(res)
->>>>>>> 28cf69070a46ac567c687af2f3265e7950660e7e
       this.snackbar.showNotification("snackbar-success", "Successful!");
       this.loading = false;
       this.advancePaymentForm.reset();

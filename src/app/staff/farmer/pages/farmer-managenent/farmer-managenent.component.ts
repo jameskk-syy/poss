@@ -46,6 +46,7 @@ export class FarmerManagenentComponent implements OnInit {
   farmerForm: any;
   col: any;
   activity: string;
+  form: any;
   constructor(private router: Router, private dialog: MatDialog, private service: FarmerService,private fb:FormBuilder) { }
 
   applyFilter(event: Event) {
@@ -230,7 +231,13 @@ export class FarmerManagenentComponent implements OnInit {
       farmer_no: [""],
       // noDeliveries: [""],
       activity: [""],
-      status: [""]
+      status: [""],
+      route: [""],
+      routeId: [""]
+    })
+    this.form = this.fb.group({
+      route: [""],
+      routeId: [""]
     })
     this.getData();
   }
@@ -456,6 +463,86 @@ export class FarmerManagenentComponent implements OnInit {
   
   
 
+  
+
+
+
+  onInputChange() {
+    const inputValue = this.filterform.get("farmer_no").value;
+    let farmerNo = inputValue;
+    this.isLoading = true;
   }
 
+  selectRoute() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "40%";
+    dialogConfig.data = {
+      data: "",
+    };
+    const dialogRef = this.dialog.open(RoutesLookUpComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log("Routes", result)
+      this.dialogData = result;
+      this.form.patchValue({
+        route: this.dialogData.data.route,
+        routeId: this.dialogData.data.id
+      });
+      let rid = this.form.value.routeId
+      console.log(rid)
+      // this.getfarmersPerRoute(rid)
+      this.filterByRoute(rid)
+    });
+  }
+  filterByRoute(id: any) {
+    this.isLoading = true
+    // this.getfarmersPerRoute(id)
+    console.log("passed route id is " + id)
 
+    this.subscription = this.service.getFarmersByRoutes(id).subscribe(res => {
+      this.data = res
+      console.log("data: "+ this.data.entity)
+      if (this.data.entity.length > 0) {
+        this.isLoading = false
+        this.data = true
+        let result = []
+        result.push(this.data.entity)
+        console.log(result)
+        this.dataSource = new MatTableDataSource(result)
+        this.dataSource.paginator = this.paginator
+        this.dataSource.sort = this.sort
+      } else {
+        this.isLoading = false;
+        this.data = false
+        this.dataSource = new MatTableDataSource(null)
+      }
+    })
+  }
+
+  getfarmersPerRoute(routeId) {
+    this.isLoading = true
+  console.log("Route id "+ routeId)
+    this.subscription = this.service.getFarmersByRoutes(routeId).subscribe(res => {
+      this.data = res;
+      if (this.data > 0) {
+        this.isLoading = false
+        console.log("Farmer Routes",this.data)
+        let result = []
+        result.push(this.data.entity)
+        this.isLoading = false;
+        this.data = true;
+
+        //bind the data
+        this.dataSource = new MatTableDataSource(result);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort
+      } else {
+        this.isdata = false;
+        this.isLoading = false;
+        this.dataSource = new MatTableDataSource(null)
+      }
+    });
+
+  }
+}
