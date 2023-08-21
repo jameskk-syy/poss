@@ -44,12 +44,10 @@ export class DeleteCollectionComponent implements OnInit {
     this.session = this.collection.quantity
     this.route = this.collection.route
     
-    console.log(this.collection = this.data.collection)
   }
 
   onSubmit() {
     this.loading = true
-    console.log(this.id)
     this.subscription = this.service.deleteCollections(this.id).subscribe(res => {
       this.snackBar.showNotification("snackbar-success", "collection deleted successfully.")
       this.loading = false
