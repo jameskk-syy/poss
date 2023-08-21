@@ -40,11 +40,17 @@
                                                     <mat-label>Filter By </mat-label>
                                                     <mat-select [(value)]="selected">
                                                         <mat-option value="fn"><b>Farmer Number</b></mat-option>
-
-
+                                                        <mat-option value="r"><b>Route</b></mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
                                             </li>
+                                            <!-- <li>
+                                                <form [formGroup]="filterform">
+                                                    <mat-form-field class="m-l-3">
+                                                        <input mat-input placeholder="Enter Farmer Number" formControlName="farmer_no" (input)="onInputChange">
+                                                    </mat-form-field>
+                                                </form>
+                                            </li> -->
                                             <li class="dropdown">
                                                 <form [formGroup]="filterform">
                                                     <mat-form-field class="m-l-3" *ngIf="selected == 'fn'">
@@ -54,10 +60,16 @@
                                                         <mat-icon matSuffix (click)="getFarmerByFarmerNo()">search
                                                         </mat-icon>
                                                     </mat-form-field>
-
+                                                    <mat-form-field class="m-l-3" *ngIf="selected == 'r'">
+                                                        <input matInput (dateChange)="filterFarmers()" placeholder="select route"
+                                                        formControlName="routeId">
+                                                        <mat-icon matSuffix (click)="selectRoute()">search</mat-icon>
+                                                    </mat-form-field>
+ 
                                                 </form>
                                             </li>
                                         </ul>
+                                        
                                     </div>
                                     <div class="col-2">
                                         <ul class="header-buttons">
@@ -65,7 +77,7 @@
                                                 <div class="export-button m-l-10" matTooltip="XLSX">
                                                     <img src="assets/images/icons/xlsx.png" alt="" (click)="
                                 exporter.exportTable('xlsx', {
-                                  fileName: 'all-counties',
+                                  fileName: 'Jufred Farmers',
                                   sheet: 'sheet1'
                                 })
                               " />

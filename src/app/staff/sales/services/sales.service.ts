@@ -115,6 +115,10 @@ export class SalesService {
     return this.http.put(`${environment.apiUrl}/api/v1/collections/update`, data, httpOptions);
   }
 
+  deleteCollections(id: any): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/v1/collections/delete/`+id, httpOptions)
+  }
+
 
   getAllFarmers(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/farmer/get`, httpOptions);

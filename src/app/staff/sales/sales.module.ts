@@ -37,6 +37,7 @@ import { RoutesLookUpComponent } from './pages/routes-look-up/routes-look-up.com
 import { VerifyproductAllocationsComponent } from './verifyproduct-allocations/verifyproduct-allocations.component';
 import { MilkAllocationComponent } from './pages/milk-allocation/milk-allocation.component';
 import { SalesPersonsLookupComponent } from './pages/sales-persons-lookup/sales-persons-lookup.component';
+import { DeleteCollectionComponent } from './pages/delete-collection/delete-collection.component';
 import { ManageRoutesComponent } from './pages/manage-routes/manage-routes.component';
 import { RouteDetailsComponent } from './pages/route-details/route-details.component';
 import { MatFormFieldModule } from '@angular/material/form-field';

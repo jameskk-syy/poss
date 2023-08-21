@@ -1,0 +1,13 @@
+<h2 mat-dialog-title class="header">
+    <h2>Delete Milk Delivery Record</h2>
+    <button mat-icon-button class="close-button" [ngStyle]="{'color': 'red'}" (click)="onClose()"><mat-icon>close</mat-icon></button>
+</h2>
+<mat-dialog-content>
+    <p>Delete Collection Record for {{route}} farmer, {{farmer}} of {{quantity}} Litres collected on {{date |date}}, {{session == "Session 1"? "Morning" :(session == "Session 2" ? "Afternoon" : "Evening")}} Session</p>
+    <div></div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button class="cancel-button" [ngStyle]="{'color': 'red'}" (click)="onClose()">Cancel</button>
+    <button mat-raised-button class="submit-button" [ngStyle]="{'color' : 'green'}" (click)="onSubmit()">Confirm</button>
+</mat-dialog-actions>
+

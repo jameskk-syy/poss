@@ -517,7 +517,7 @@ export const ROUTES: RouteInfo[] = [
     title: 'Advanced Payments',
     moduleName: 'sales',
     iconType: 'feather',
-    icon: 'shopping-bag',
+    icon: 'dollar-sign',
     class: '',
     groupTitle: false,
     badge: '',
