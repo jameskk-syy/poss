@@ -9,8 +9,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AnalyticsService {
-<<<<<<< Updated upstream
-=======
+ 
   getCollectorsTotalsPerMonth(collectorId: any): Observable<any> {
     const url = `${environment.apiUrl}/api/v1/accumulation/${collectorId}`;
     return this.http.get(url, httpOptions);  
@@ -25,7 +24,6 @@ export class AnalyticsService {
 
     return this.http.get<any>(getCollectionSPerMonthUrl)
   }
->>>>>>> Stashed changes
   getCollectionsPerRoute(params: any) {
     const getCollectionSPerMonthUrl = `${environment.apiUrl}/api/v1/collections/analytics/collection/routes/month`;
 

@@ -15,7 +15,9 @@ import { FarmerManagenentComponent } from '../farmer-managenent/farmer-managenen
   styleUrls: ['./update-farmer.component.sass']
 })
 export class UpdateFarmerComponent implements OnInit {
-
+  method: string = 'BANK';
+  showBankForm: boolean = true;
+  showMpesaForm: boolean = false;
   farmerEditForm: FormGroup;
   bankDetailsForm: FormGroup;
   mpesaDetails: FormGroup;
@@ -350,7 +352,7 @@ export class UpdateFarmerComponent implements OnInit {
       },
     ],
   };
-  method="BANK"
+  // method="BANK"
 
   constructor(public dialogRef: MatDialogRef<FarmerManagenentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -361,6 +363,19 @@ export class UpdateFarmerComponent implements OnInit {
     private service: FarmerService,
     private routeService: RoutesService
   ) {}
+
+  onPaymentModeChange() {
+    if (this.method === 'BANK' || this.method === 'SACCO') {
+      this.showBankForm = true;
+      this.showMpesaForm = false;
+    } else if (this.method === 'MPESA') {
+      this.showBankForm = false;
+      this.showMpesaForm = true;
+    } else {
+      this.showBankForm = false;
+      this.showMpesaForm = false;
+    }
+  }
   subscription!: Subscription;
 
   ngOnInit(): void {
@@ -477,7 +492,6 @@ export class UpdateFarmerComponent implements OnInit {
   }
 
   getWards(id: any) {
-    console.log("Getting wards  from subcounty id ...",id)
     this.subscription = this.service.getSubCountyById(id).subscribe(res => {
       this.data = res;
       if (this.data.entity.wards.length > 0) {

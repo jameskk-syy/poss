@@ -41,11 +41,9 @@ export class TotalsCollectionsComponent implements OnInit {
     'id',
     "collectorId",
     'milkQuantity',
-    // "amount",
     "accumulatorId",
     "routeFk",
     "collectionDate",
-    // 'action',
   ];
 
   currentDate: any
@@ -107,7 +105,6 @@ export class TotalsCollectionsComponent implements OnInit {
   }
 
   getData() {
-    // this.selected = "all";
     this.isLoading = true;
     this.getAllCollectionsSummary()
     this.subscription = this.service.getAllAccumulations().subscribe(res => {
@@ -115,7 +112,6 @@ export class TotalsCollectionsComponent implements OnInit {
       if (this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;
-        // Binding with the datasource
         this.datasize=this.data.entity.length
         this.dataSource = new MatTableDataSource(this.data.entity);
         this.dataSource.paginator = this.paginator;
@@ -160,7 +156,6 @@ export class TotalsCollectionsComponent implements OnInit {
     
       this.subscription = this.service.getCollectorsIdAccumulations(collectorId).subscribe(res => {
         this.data = res;
-        console.log(this.data)
         if (this.data.entity.length > 0) {
           this.isLoading = false
           this.isdata = true;
@@ -182,7 +177,6 @@ export class TotalsCollectionsComponent implements OnInit {
     this.isLoading = true;
     this.subscription = this.dashboard.getCollectorsIdAccumulations(collectorId).subscribe(res => {
       this.data = res;
-      console.log(res);
       if (this.data && this.data.entity.length > 0) {
         this.isLoading = false;
                 let totalMilkQuantity = 0;
@@ -207,7 +201,6 @@ export class TotalsCollectionsComponent implements OnInit {
     
       this.subscription = this.service.getAccumulationsByAccumulatorId(accumulatorId).subscribe(res => {
         this.data = res;
-        console.log(this.data)
         if (this.data.entity.length > 0) {
           this.isLoading = false
           this.isdata = true;
@@ -229,7 +222,6 @@ export class TotalsCollectionsComponent implements OnInit {
     
     this.subscription = this.dashboard.getAccumulationsByAccumulatorId(accumulatorId).subscribe(res => {
       this.data = res;
-      console.log(res);
       if (this.data && this.data.entity.length > 0) {
         this.isLoading = false;
           let totalMilkQuantity = 0;

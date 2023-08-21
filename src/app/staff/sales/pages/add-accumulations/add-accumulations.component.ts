@@ -61,15 +61,12 @@ subscription!: Subscription;
 
 
   onSubmit() {
-    console.log(this.addAccumulationForm)
     const authUser = JSON.parse(localStorage.getItem('auth-user'));
     const accumulatorid = authUser.id;
     this.addAccumulationForm.patchValue({
       accumulatorId: accumulatorid
       
     });
-    console.log('accumulatorId:', accumulatorid);
-    console.log(this.addAccumulationForm) 
     this.loading = true;
 
     this.subscription = this.service.addAccumulation(this.addAccumulationForm.value).subscribe(res => {

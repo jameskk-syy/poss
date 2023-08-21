@@ -39,8 +39,6 @@ import { MilkAllocationComponent } from './pages/milk-allocation/milk-allocation
 import { SalesPersonsLookupComponent } from './pages/sales-persons-lookup/sales-persons-lookup.component';
 import { ManageRoutesComponent } from './pages/manage-routes/manage-routes.component';
 import { RouteDetailsComponent } from './pages/route-details/route-details.component';
-<<<<<<< Updated upstream
-=======
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AdvanceDetailsComponent } from './pages/advance-details/advance-details.component';
 import { TotalsCollectionsComponent } from './pages/totals-collections/totals-collections.component';
@@ -48,7 +46,6 @@ import { AddAccumulationsComponent } from './pages/add-accumulations/add-accumul
 import { MilkAccumulationComponent } from './pages/milk-accumulation/milk-accumulation.component';
 import { CollectorsTotalsPerMonthComponent } from './pages/collectors-totals-per-month/collectors-totals-per-month.component';
 
->>>>>>> Stashed changes
 
 
 @NgModule({
@@ -71,16 +68,12 @@ import { CollectorsTotalsPerMonthComponent } from './pages/collectors-totals-per
         MilkAllocationComponent,
         SalesPersonsLookupComponent,
         ManageRoutesComponent,
-<<<<<<< Updated upstream
-        RouteDetailsComponent
-=======
         RouteDetailsComponent,
         AdvanceDetailsComponent,
         TotalsCollectionsComponent,
         AddAccumulationsComponent,
         MilkAccumulationComponent,
         CollectorsTotalsPerMonthComponent,
->>>>>>> Stashed changes
     ],
     imports: [
         CommonModule,

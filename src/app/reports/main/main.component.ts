@@ -202,7 +202,6 @@ export class MainComponent implements OnInit {
   }
 
   generateCollectionsPerCollector() {
-    // console.log(this.reportCollectionForm.value)
     this.date = this.datePipe.transform(this.reportCollectionForm2.value.date, 'yyyy-MM-dd');
     this.isloading = true
     this.service.collectionsPerCollectorByDate(this.reportCollectionForm2.value.date,this.reportCollectionForm2.value.session)
@@ -211,7 +210,6 @@ export class MainComponent implements OnInit {
           console.log(response)
           let url = window.URL.createObjectURL(response.data);
 
-          // if you want to open PDF in new tab
           console.log(url)
           window.open(url);
 
@@ -245,7 +243,6 @@ export class MainComponent implements OnInit {
 
   }
   generateCollectionsPerCollectorm() {
-    // console.log(this.reportCollectionForm.value)
     
     
     this.isloading = true
@@ -255,7 +252,6 @@ export class MainComponent implements OnInit {
           console.log(response)
           let url = window.URL.createObjectURL(response.data);
 
-          // if you want to open PDF in new tab
           window.open(url);
 
           let a = document.createElement("a");
@@ -291,7 +287,6 @@ export class MainComponent implements OnInit {
   }
 
   generateCollectionsPerLocations() {
-    // console.log(this.reportCollectionForm.value)
     this.date = this.datePipe.transform(this.reportCollectionForm3.value.date, 'yyyy-MM-dd');
     console.log("Formated date is ", this.date)
     this.isloading = true
@@ -301,7 +296,6 @@ export class MainComponent implements OnInit {
           console.log(response)
           let url = window.URL.createObjectURL(response.data);
 
-          // if you want to open PDF in new tab
           window.open(url);
 
           let a = document.createElement("a");
@@ -381,7 +375,6 @@ export class MainComponent implements OnInit {
 
   // }
   generateCollectionsPerLocationsm() {
-    // console.log(this.reportCollectionForm.value)
     
     
     this.isloading = true
@@ -391,7 +384,6 @@ export class MainComponent implements OnInit {
           console.log(response)
           let url = window.URL.createObjectURL(response.data);
 
-          // if you want to open PDF in new tab
           window.open(url);
 
           let a = document.createElement("a");

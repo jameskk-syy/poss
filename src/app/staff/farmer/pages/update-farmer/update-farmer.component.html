@@ -191,7 +191,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                             <mat-form-field class="example-full-width mb-1" appearance="outline">
                                 <mat-label>Mode Of Payment</mat-label>
-                                <mat-select formControlName="paymentMode" [(value)]="method" required>
+                                <mat-select [(value)]="method" (selectionChange)="onPaymentModeChange()" required>
                                     <mat-option value="BANK">BANK</mat-option>
                                     <mat-option value="MPESA">MPESA</mat-option>
                                     <mat-option value="SACCO">SACCO</mat-option>
@@ -199,7 +199,7 @@
                             </mat-form-field>
 
                         </div>
-                        <form [formGroup]="bankDetailsForm" *ngIf="method=='BANK' || method=='SACCO'">
+                        <form [formGroup]="bankDetailsForm" *ngIf="showBankForm">
                             <div class="row">
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                     <mat-form-field class="example-full-width mb-1" appearance="outline">
@@ -247,7 +247,7 @@
                                 </div>
                             </div>
                         </form>
-                        <form [formGroup]="mpesaDetails" *ngIf="method=='MPESA'">
+                        <form [formGroup]="mpesaDetails" *ngIf="showMpesaForm">
                             <div class="row">
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                     <mat-form-field class="example-full-width" appearance="outline">

@@ -19,26 +19,15 @@
         <form class="register-form m-4" [formGroup]="farmerApprovalForm" *ngIf="farmerApprovalForm">
             <div class="row">
                 <mat-card>
-<<<<<<< Updated upstream
-                    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-
-                    <mat-card-title style="font-size: x-small;">Supplier/Farmer Details</mat-card-title>
-=======
                     <mat-card-title style="font-size: x-small;">Farmer Details</mat-card-title>
->>>>>>> Stashed changes
                     <mat-card-content>
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>First Name</mat-label>
                                     <input matInput formControlName="firstName" required />
-<<<<<<< Updated upstream
-                                    <mat-error *ngIf="farmerRegirstartionForm.get('firstName').hasError('required')">
-                                        firstName name is required
-=======
                                     <mat-error *ngIf="farmerApprovalForm.get('firstName').hasError('required')">
                                         First name is required
->>>>>>> Stashed changes
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -46,13 +35,8 @@
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Last Name</mat-label>
                                     <input matInput formControlName="lastName" required />
-<<<<<<< Updated upstream
-                                    <mat-error *ngIf="farmerRegirstartionForm.get('lastName').hasError('required')">
-                                        Last Name name is required
-=======
                                     <mat-error *ngIf="farmerApprovalForm.get('lastName').hasError('required')">
                                         Last name is required
->>>>>>> Stashed changes
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -60,13 +44,8 @@
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>idNumber</mat-label>
                                     <input matInput formControlName="idNumber" required />
-<<<<<<< Updated upstream
-                                    <mat-error *ngIf="farmerRegirstartionForm.get('idNumber').hasError('required')">
-                                        idNumber name is required
-=======
                                     <mat-error *ngIf="farmerApprovalForm.get('idNumber').hasError('required')">
                                         National ID is required
->>>>>>> Stashed changes
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -77,13 +56,8 @@
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>mobileNo</mat-label>
                                     <input matInput formControlName="mobileNo" required />
-<<<<<<< Updated upstream
-                                    <mat-error *ngIf="farmerRegirstartionForm.get('mobileNo').hasError('required')">
-                                        mobileNo name is required
-=======
                                     <mat-error *ngIf="farmerApprovalForm.get('mobileNo').hasError('required')">
                                         Mobile No. is required
->>>>>>> Stashed changes
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -93,7 +67,7 @@
                                     <mat-label>Alternative MobileNo</mat-label>
                                     <input matInput formControlName="alternativeMobileNo" required />
                                     <mat-error
-                                        *ngIf="farmerRegirstartionForm.get('alternativeMobileNo').hasError('required')">
+                                        *ngIf="farmerApprovalForm.get('alternativeMobileNo').hasError('required')">
                                         alternativeMobileNo name is required
                                     </mat-error>
                                 </mat-form-field>
@@ -108,13 +82,8 @@
                                         <mat-option value="Group">Farmers Group</mat-option>
                                         <mat-option value="Co-Operative">Co-Operative Society</mat-option>
                                     </mat-select>
-<<<<<<< Updated upstream
-                                    <mat-error *ngIf="farmerRegirstartionForm.get('memberType').hasError('required')">
-                                        Farmer Category Is required
-=======
                                     <mat-error *ngIf="farmerApprovalForm.get('memberType').hasError('required')">
                                         Member Type is required
->>>>>>> Stashed changes
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -189,42 +158,16 @@
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Location</mat-label>
-<<<<<<< Updated upstream
-                                    <input matInput formControlName="location" required />
-                                    <mat-error *ngIf="farmerRegirstartionForm.get('location').hasError('required')">
-                                        Location is required
-                                    </mat-error>
-=======
                                     <input matInput formControlName="location"/>
->>>>>>> Stashed changes
                                 </mat-form-field>
                             </div>
 
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Sub Location</mat-label>
-<<<<<<< Updated upstream
-                                    <input matInput formControlName="subLocation" required />
-                                    <mat-error *ngIf="farmerRegirstartionForm.get('subLocation').hasError('required')">
-                                        Sub Location is required
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                                <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Village</mat-label>
-                                    <input matInput formControlName="village" required />
-                                    <mat-error *ngIf="farmerRegirstartionForm.get('village').hasError('required')">
-                                        Village is required
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-=======
                                     <input matInput formControlName="subLocation" />
                                 </mat-form-field>
                             </div>
->>>>>>> Stashed changes
                         </div>
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
@@ -305,53 +248,6 @@
                 </mat-card>
             </div>
 
-<<<<<<< Updated upstream
-            <!--Transportation & Payment Frequency-->
-            <div class="row">
-                <mat-card>
-                    <mat-card-title style="font-size: x-small;">Transportation & Payment Frequency</mat-card-title>
-                    <mat-card-content>
-                        <div class="row">
-                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                                <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                    <mat-label>Select Payment Frequency</mat-label>
-                                    <mat-select formControlName="paymentFreequency">
-                                        <mat-option value="Monthly">Monthly</mat-option>
-                                        <mat-option value="Weekly">Weekly</mat-option>
-                                    </mat-select>
-                                    <mat-error
-                                        *ngIf="farmerRegirstartionForm.get('paymentFreequency').hasError('required')">
-                                        Payment Frequency is required
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                                <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                    <mat-label>Select Payment Mode</mat-label>
-                                    <mat-select formControlName="paymentMode">
-                                        <mat-option value="M-Pesa">M-Pesa Payments</mat-option>
-                                        <mat-option value="Bank">Bank</mat-option>
-                                        <mat-option value="Cash">Cash</mat-option>
-                                        <mat-option value="Pesalink">Pesalink</mat-option>
-                                        <mat-option value="cooperative saccos">Cooperative Saccos</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-
-                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                                <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                    <mat-label>Select Means Of Transportation</mat-label>
-                                    <mat-select formControlName="transportMeans">
-                                        <mat-option value="Truck">Truck</mat-option>
-                                        <mat-option value="Motor-Bike">Motor-Bike</mat-option>
-                                        <mat-option value="Bicycle">Bicycle</mat-option>
-                                    </mat-select>
-                                    <mat-error
-                                        *ngIf="farmerRegirstartionForm.get('transportMeans').hasError('required')">
-                                        Means of transportation is required
-                                    </mat-error>
-=======
            
             <form [formGroup]="nextOfKinForm">
             <div class="row">
@@ -388,18 +284,14 @@
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
                                     <mat-label>Address</mat-label>
                                     <input matInput formControlName="address" />
->>>>>>> Stashed changes
                                 </mat-form-field>
                             </div>
                         </div>
                     </mat-card-content>
                 </mat-card>
             </div>
-<<<<<<< Updated upstream
-=======
         </form>
 
->>>>>>> Stashed changes
             <div class="row">
                 <mat-card>
                     <mat-card-content>

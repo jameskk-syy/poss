@@ -94,14 +94,10 @@ export class CollectionDetailsComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.farmerid = params['id'];
       this.farmer_no = params['id'];
-      // Use the id parameter in your component logic
     });
-// console.log(this.farmerid,this.farmerNo)
     this.getFarmerDetails(this.farmerid);
     this.getFarmerCollections(this.farmer_no);
-    // this.getFarmerAllocations(this.farmerid);
-    // this.getPayedFarmerAccruals(this.farmerid);
-    // this.getNonPayedFarmerAccruals(this.farmerid);
+   
     this.getFarmerAmountOnNotPayedCollections(this.farmerid);
     this.getFarmerAmountOnPayedCollections(this.farmerid)
   }
@@ -127,28 +123,24 @@ export class CollectionDetailsComponent implements OnInit {
     this.isLoading = true;
     this.service.getFarmerNoCollections(farmer_no).subscribe((res) => {
       this.data = res;
-      console.log(res)
 
       if (this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;
 
       
-        // Binding with the datasource
         this.dataSource = new MatTableDataSource(this.data.entity);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
         this.isdata = false;
         this.isLoading = false;
-        // this.dataSource = new MatTableDataSource<any>(this.data);
       }
     });
     (error) => {
       console.error('API Error:', error);
       this.isLoading = false;
       this.isdata = false;
-      // Handle API error
     }
   }
 
@@ -184,7 +176,6 @@ export class CollectionDetailsComponent implements OnInit {
         console.log(response);
         let url = window.URL.createObjectURL(response.data);
 
-        // if you want to open PDF in new tab
         window.open(url);
 
         let a = document.createElement('a');
@@ -216,15 +207,7 @@ export class CollectionDetailsComponent implements OnInit {
     );
   }
 
-  // accruals: any;
-  // getAccruals() {
-  //   this.service.getFarmerAccruals(this.farmerid).subscribe((res) => {
-  //     this.accruals = res.entity;
-  //     if (this.accruals != null) {
-  //       this.found = true;
-  //     }
-  //   });
-  // }
+
 
   getPayedFarmerAccruals(id){
     this.service.getFarmerAllocationAccruals(id, "Y").subscribe((res) => {
@@ -236,10 +219,7 @@ export class CollectionDetailsComponent implements OnInit {
             this.payedAccruals = 0;
           }
 
-          console.log("Payed Accruals", res)
-          // if (this.accruals != null) {
-          //   this.found = true;
-          // }
+          
         });    
   }
 
