@@ -69,12 +69,8 @@ subscription!: Subscription;
   getData() {
     this.selected = "";
     this.isLoading = true;
-    // this.subscription = this.service.getFarmerByFarmerNo(FarmerData).subscribe(res => {
       this.service.getAdvance(this.data).subscribe(res => {
-        // this.subscription=this.service.getAdvance().subscribe(res =>{
-
       this.data = res;
-      console.log(this.data)
       if (this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;
@@ -104,7 +100,6 @@ subscription!: Subscription;
     dialogConfig.data = {
       test: ""
     }
-    // this.dialog.open(AdvanceDetailsComponent, dialogConfig)
     const dialogRef = this.dialog.open(AdvanceDetailsComponent, dialogConfig)
     dialogRef.afterClosed().subscribe((res)=> {
       this.getData()
@@ -128,7 +123,6 @@ subscription!: Subscription;
          
           this.isLoading = false;
           this.isdata = true;
-          // Binding with the datasource
           this.dataSource = new MatTableDataSource(result);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
