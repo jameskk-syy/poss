@@ -7,6 +7,7 @@ import { CollectorsFloatAllocationsComponent } from './pages/collectors-float-al
 import { ProductsAllocationComponent } from './pages/products-allocation/products-allocation.component';
 import { SalesManagenentComponent } from './pages/sales-managenent/sales-managenent.component';
 import { ManageRoutesComponent } from './pages/manage-routes/manage-routes.component';
+import { TotalsCollectionsComponent } from './pages/totals-collections/totals-collections.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: "products/sales",
     component: ProductsAllocationComponent,
+  },
+  {
+    path: "totals-collections",
+    component: TotalsCollectionsComponent,
   },
 ];
 

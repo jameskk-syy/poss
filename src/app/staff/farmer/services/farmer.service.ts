@@ -11,6 +11,15 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class FarmerService {
+  fetchFarmers() {
+    return this.http.get(`${environment.apiUrl}/api/v1/farmer/get`,httpOptions);
+  }
+  farmersByActivity(activity:any): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/farmer/activity?activity=`+activity,httpOptions)
+  }
+  farmersWithNoDeliveries() {
+    return this.http.get(`${environment.apiUrl}/api/v1/farmer/no-deliveries`,httpOptions)
+  }
 
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient) { }

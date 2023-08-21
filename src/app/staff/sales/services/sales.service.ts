@@ -10,6 +10,36 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class SalesService {
+<<<<<<< Updated upstream
+=======
+  getFarmerNoCollections(farmer_no: any):Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/per/farmer/by-farmer-no?farmerNo=${farmer_no}`,httpOptions);
+
+  }
+  addAccumulation(value: any):Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/v1/accumulation/add`,
+    {
+     collectorId:value.collectorId,
+      milkQuantity:value.milkQuantity,
+      session: value.session,
+      accumulatorId:value.accumulatorId,
+      routeFk: value.routeFk,
+    },httpOptions); 
+  }
+  getAccumulationsByAccumulatorId(accumulatorId: any): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/accumulation/by-accumulator/${accumulatorId}`;
+    return this.http.get(url);
+  }
+  getCollectorsIdAccumulations(collectorId: any): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/accumulation/${collectorId}`;
+    return this.http.get(url, httpOptions);
+  }
+
+  getAllAccumulations(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/accumulation/all`,httpOptions); 
+   }
+ 
+>>>>>>> Stashed changes
   
   private eventSource = new Subject<any>();
   event$ = this.eventSource.asObservable();

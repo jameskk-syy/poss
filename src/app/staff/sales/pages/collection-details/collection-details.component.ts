@@ -36,6 +36,7 @@ export class CollectionDetailsComponent implements OnInit {
   isdata: boolean = false;
   isLoading: boolean = false;
   farmerid: any;
+  farmer_no
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -92,11 +93,12 @@ export class CollectionDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       this.farmerid = params['id'];
+      this.farmer_no = params['id'];
       // Use the id parameter in your component logic
     });
-
+// console.log(this.farmerid,this.farmerNo)
     this.getFarmerDetails(this.farmerid);
-    this.getFarmerCollections(this.farmerid);
+    this.getFarmerCollections(this.farmer_no);
     // this.getFarmerAllocations(this.farmerid);
     // this.getPayedFarmerAccruals(this.farmerid);
     // this.getNonPayedFarmerAccruals(this.farmerid);
@@ -104,6 +106,7 @@ export class CollectionDetailsComponent implements OnInit {
     this.getFarmerAmountOnPayedCollections(this.farmerid)
   }
 
+  farmerNo:any;
   farmer: any;
   present: boolean = false;
   found: boolean = false;
@@ -120,10 +123,11 @@ export class CollectionDetailsComponent implements OnInit {
     });
   }
 
-  getFarmerCollections(id) {
+  getFarmerCollections(farmer_no:any) {
     this.isLoading = true;
-    this.service.getFarmerCollections(id).subscribe((res) => {
+    this.service.getFarmerNoCollections(farmer_no).subscribe((res) => {
       this.data = res;
+      console.log(res)
 
       if (this.data.entity.length > 0) {
         this.isLoading = false;
@@ -140,6 +144,12 @@ export class CollectionDetailsComponent implements OnInit {
         // this.dataSource = new MatTableDataSource<any>(this.data);
       }
     });
+    (error) => {
+      console.error('API Error:', error);
+      this.isLoading = false;
+      this.isdata = false;
+      // Handle API error
+    }
   }
 
   getFarmerAllocations(id) {

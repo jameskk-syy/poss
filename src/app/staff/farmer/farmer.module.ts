@@ -20,6 +20,7 @@ import { UpdateFarmerComponent } from './pages/update-farmer/update-farmer.compo
 import { DeleteFarmerComponent } from './pages/delete-farmer/delete-farmer.component'; 
 import { FarmerLookupComponent } from './pages/farmer-lookup/farmer-lookup.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar'; 
+import { MatRadioModule } from '@angular/material/radio';
 @NgModule({
     declarations: [
         FarmerManagenentComponent,
@@ -43,7 +44,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
         MatDialogModule,
         MatDatepickerModule,
         MatSelectModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatRadioModule,
     ]
 })
 export class FarmerModule { }

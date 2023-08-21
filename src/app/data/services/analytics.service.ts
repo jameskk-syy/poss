@@ -1,12 +1,31 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders,HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 @Injectable({
   providedIn: 'root'
 })
 export class AnalyticsService {
+<<<<<<< Updated upstream
+=======
+  getCollectorsTotalsPerMonth(collectorId: any): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/accumulation/${collectorId}`;
+    return this.http.get(url, httpOptions);  
+  }
+  getMilkAccumulation(params: any):Observable<any> {
+    const getMilkAccumulkationUrl = `${environment.apiUrl}/api/v1/accumulation/all`;
+    return this.http.get<any>(getMilkAccumulkationUrl, { params })
+
+  }
+  fetchAllCollections() {
+    const getCollectionSPerMonthUrl = `${environment.apiUrl}/api/v1/collections/all`;
+
+    return this.http.get<any>(getCollectionSPerMonthUrl)
+  }
+>>>>>>> Stashed changes
   getCollectionsPerRoute(params: any) {
     const getCollectionSPerMonthUrl = `${environment.apiUrl}/api/v1/collections/analytics/collection/routes/month`;
 
