@@ -73,9 +73,13 @@ export class CollectorCollectionsPerDateComponent
   chartParametersForm: FormGroup;
   quantityChartSelected: boolean = false;
   priceChartSelected: boolean = true;
-
+  collectors: any[] = [];
+  amounts: any[] = [];
   currentYear = new Date().getFullYear();
   currentMonth = this.monthsArray[new Date().getMonth()];
+  isEmpty: boolean = false;
+  quantities: any[] = [];
+  routes: any[] = [];
 
   constructor(private analyticsService: AnalyticsService, private datePipe: DatePipe, private fb: FormBuilder) {
     super();
@@ -117,9 +121,68 @@ export class CollectorCollectionsPerDateComponent
   getCollectionsAmountAnalysisPerDate() {
     this.isLoading = true;
 
-    let collectors: any[] = [];
-    let amounts: any[] = [];
+    this.collectors = [];
+    this.amounts = [];
     let params;
+
+    this.barChartOptions = {
+      series: [
+        {
+          name: 'Price (KES)',
+          data: this.amounts,
+        },
+      ],
+      chart: {
+        type: 'bar',
+        height: 350,
+        foreColor: '#9aa0ac',
+        stacked: false,
+        toolbar: {
+          show: false,
+        },
+      },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            legend: {
+              position: 'bottom',
+              offsetX: -10,
+              offsetY: 0,
+            },
+          },
+        },
+      ],
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '30%',
+        },
+      },
+      // dataLabels: {
+      //   enabled: false,
+      // },
+      xaxis: {
+        type: 'category',
+        categories: this.collectors,
+      },
+      legend: {
+        show: false,
+      },
+      fill: {
+        opacity: 1,
+        colors: ['#177147', '#397157', '#2D7152', '#22714D'],
+      },
+      tooltip: {
+        theme: 'dark',
+        marker: {
+          show: true,
+        },
+        x: {
+          show: true,
+        },
+      },
+    };
 
     params = new HttpParams()
       .set('date', this.datePipe.transform(this.chartParametersForm.value.date, "yyyy-MM-dd"))
@@ -132,74 +195,15 @@ export class CollectorCollectionsPerDateComponent
 
           if(res.entity.length > 0){
             res.entity.forEach((item) => {
-              collectors.push(item.collector);
+              this.collectors.push(item.collector);
   
-              amounts.push(item.amount);
+              this.amounts.push(item.amount);
             });
           }else {
-            collectors = [];
+            this.collectors = [];
 
-            amounts = [];
+            this.amounts = [];
           }
-
-          this.barChartOptions = {
-            series: [
-              {
-                name: 'Price (KES)',
-                data: amounts,
-              },
-            ],
-            chart: {
-              type: 'bar',
-              height: 350,
-              foreColor: '#9aa0ac',
-              stacked: false,
-              toolbar: {
-                show: false,
-              },
-            },
-            responsive: [
-              {
-                breakpoint: 480,
-                options: {
-                  legend: {
-                    position: 'bottom',
-                    offsetX: -10,
-                    offsetY: 0,
-                  },
-                },
-              },
-            ],
-            plotOptions: {
-              bar: {
-                horizontal: false,
-                columnWidth: '30%',
-              },
-            },
-            // dataLabels: {
-            //   enabled: false,
-            // },
-            xaxis: {
-              type: 'category',
-              categories: collectors,
-            },
-            legend: {
-              show: false,
-            },
-            fill: {
-              opacity: 1,
-              colors: ['#177147', '#397157', '#2D7152', '#22714D'],
-            },
-            tooltip: {
-              theme: 'dark',
-              marker: {
-                show: true,
-              },
-              x: {
-                show: true,
-              },
-            },
-          };
 
           this.isLoading = false;
         },
@@ -213,93 +217,95 @@ export class CollectorCollectionsPerDateComponent
 
     this.isLoading = true;
 
-    let quanties: any[] = [];
-    let routes: any[] = [];
-    let amounts: any[] = []
+    this.quantities = [];
+    this.routes = [];
+    this.amounts = []
     let params;
 
+    this.barChartOptions = {
+      series: [
+        {
+          name: "Quantity",
+          data: this.quantities,
+        },
+        
+      ],
+      chart: {
+        type: "bar",
+        height: 350,
+        foreColor: "#9aa0ac",
+        stacked: false,
+        toolbar: {
+          show: false,
+        },
+      },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            legend: {
+              position: "bottom",
+              offsetX: -10,
+              offsetY: 0,
+            },
+          },
+        },
+      ],
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "30%",
+        },
+      },
+      // dataLabels: {
+      //   enabled: false,
+      // },
+      xaxis: {
+        type: "category",
+        categories: this.routes,
+      },
+      legend: {
+        show: false,
+      },
+      fill: {
+        opacity: 1,
+        colors: ["#177147", "#397157", "#2D7152", "#22714D"],
+      },
+      tooltip: {
+        theme: "dark",
+        marker: {
+          show: true,
+        },
+        x: {
+          show: true,
+        },
+      },
+    };
     params = new HttpParams()
     .set('year', this.chartParametersForm.value.year)
     .set("month", this.chartParametersForm.value.month)
    
     this.analyticsService.getCollectionsPerRoute(params).pipe(takeUntil(this.subject)).subscribe(res => {
       this.isLoading = false
-      if(res.entity.length > 0){
+      if(res.entity && res.entity.length > 0){
+        this.isEmpty = false
         res.entity.forEach(item => {
-          routes.push(item.route);
+          this.routes.push(item.route);
   
-          quanties.push(item.quantity);
+          this.quantities.push(item.quantity);
   
-          amounts.push(item.amount);
+          this.amounts.push(item.amount);
         })
       }else {
-        quanties = [];
+        this.quantities = [];
+        this.isEmpty = true
 
-        routes = [];
+        this.routes = [];
 
-        amounts = [];
+        this.amounts = [];
       }
 
 
-      this.barChartOptions = {
-        series: [
-          {
-            name: "Quantity",
-            data: quanties,
-          },
-          
-        ],
-        chart: {
-          type: "bar",
-          height: 350,
-          foreColor: "#9aa0ac",
-          stacked: false,
-          toolbar: {
-            show: false,
-          },
-        },
-        responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              legend: {
-                position: "bottom",
-                offsetX: -10,
-                offsetY: 0,
-              },
-            },
-          },
-        ],
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: "30%",
-          },
-        },
-        // dataLabels: {
-        //   enabled: false,
-        // },
-        xaxis: {
-          type: "category",
-          categories: routes,
-        },
-        legend: {
-          show: false,
-        },
-        fill: {
-          opacity: 1,
-          colors: ["#177147", "#397157", "#2D7152", "#22714D"],
-        },
-        tooltip: {
-          theme: "dark",
-          marker: {
-            show: true,
-          },
-          x: {
-            show: true,
-          },
-        },
-      };
 
       this.isLoading = false;
     }, err => {

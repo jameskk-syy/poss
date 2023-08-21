@@ -154,17 +154,18 @@
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="action">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Waiting Approval</mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
                                     <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, request)">
-                                       {{request.waitingApproval}}
+                                       {{request.status}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                 <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                                 <mat-row *matRowDef="let row; columns: displayedColumns"
-                                    [style.cursor]="'pointer'" matRipple>
+                                    [style.cursor]="'pointer'" 
+                                    [ngStyle]="{'border-left': isStage1Verified(row) ? '5px solid orange' : 'inherit'}" matRipple>
                                 </mat-row>
                                 <mat-cell *matNoDataRow colspan="4">
                                     No data matching the filter "{{ input.value }}"</mat-cell>

@@ -50,10 +50,10 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0" hidden>
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Product Fk</mat-label>
-                                    <input matInput formControlName="productFk" required />
+                                    <input matInput formControlName="productFk" [value]="39" value="39" required />
                                     <mat-error *ngIf="productSalesAssignment.get('productFk').hasError('required')">
                                         product fk is required
                                     </mat-error>

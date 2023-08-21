@@ -75,10 +75,12 @@ export class SalesManagenentComponent implements OnInit {
 
   handleApprove(){
     this.isLoading = true;
-    this.service.updateApprovalStatus(this.confirmedRecords,this.route.id).subscribe(res=>{
-      if(res.entity && res.entity.length){
-        location.reload()
-      }
+    const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
+    this.service.updateApprovalStatus(this.confirmedRecords,this.route.id,staffId).subscribe(res=>{
+      console.log(res)
+      // if(res.entity && res.entity.length){
+      //   location.reload()
+      // }
     })
     console.log(this.confirmedRecords)
   }
@@ -104,7 +106,9 @@ export class SalesManagenentComponent implements OnInit {
   getData() {
     this.isLoading = true;
     const routeId = this.route.id;
-    this.subscription = this.service.getFarmersPaymentRecordsPerRoute(routeId).subscribe(res => {
+    const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
+
+    this.subscription = this.service.getFarmersPaymentRecordsPerRoute(routeId,staffId).subscribe(res => {
       this.data = res;
       if (this.data.entity.length > 0) {
         this.isLoading = false;
@@ -141,6 +145,10 @@ export class SalesManagenentComponent implements OnInit {
       method:[this.method,[Validators.required]]
     })
     this.getData();
+  }
+
+  isStage1Verified(row:any){
+    return row.clerk1.startsWith('Y') || row.clerk2.startsWith('Y')
   }
 
   pay(){

@@ -29,6 +29,7 @@ export class AddProductSaleComponent implements OnInit {
   prices: Record<string,number>
   amountToPay: number
   mpesa_number:string;
+  CheckoutRequestID: string;
   
 
   constructor(
@@ -42,7 +43,7 @@ export class AddProductSaleComponent implements OnInit {
   ngOnInit(): void {
     this.productSalesAssignment = this.fb.group({
       customerFk: ['', [Validators.required]],
-      productFk: ['', [Validators.required]],
+      productFk: ['39', [Validators.required]],
       quantity: ['', [Validators.required]],
       routeFk: ['', [Validators.required]],
       paymentMethod: [''],
@@ -65,6 +66,7 @@ export class AddProductSaleComponent implements OnInit {
         this.routePrice = res.entity.selling_price;
         this.amountToPay = isNaN(Number(quantity)* this.routePrice) ?0:
     Number(quantity)* this.routePrice
+    // console.log(res)
     })
   }
   updateQuantity(){
@@ -106,7 +108,7 @@ export class AddProductSaleComponent implements OnInit {
     this.isLoading = true
     const salesPersonFk = JSON.parse(localStorage.getItem('auth-user')).id;
     const data = {...this.productSalesAssignment.value,salesPersonFk}
-
+    
     this.subscription = this.salesservice.addSale(data)
       .subscribe((res) => {
         this.snackBar.showNotification('snackbar-success', 'Successful!');
@@ -127,14 +129,16 @@ export class AddProductSaleComponent implements OnInit {
   }
 
   computeAmount(){
-    this.isLoading = true;
     const routeFk:number = this.productSalesAssignment.value.routeFk;
     const quantity:number = this.productSalesAssignment.value.quantity;
+    this.isLoading = true;
+    console.log(routeFk)
     this.salesservice.getPrices(routeFk).subscribe(res=>{
       this.isLoading = false;
       this.prices = {buying_price:res.entity.buying_price,
         selling_price:res.entity.selling_price};
         this.amountToPay = quantity * this.prices.selling_price;
+        console.log(this.amountToPay)
     })
   }
 
@@ -157,13 +161,23 @@ export class AddProductSaleComponent implements OnInit {
       this.prices = {buying_price:res.entity.buying_price,
         selling_price:res.entity.selling_price};
         this.amountToPay = quantity * this.prices.selling_price;
+        console.log(this.amountToPay)
         this.salesservice.pushNotification({amount:this.amountToPay,mpesa_number}).subscribe((r:any)=>{
           this.isLoading = false;
-          if(r.customerMessage.indexOf('Success')){
-            this.snackBar.showNotification('success','Notification sent')
-          }else{
-            this.snackBar.showNotification('error','Pending transaction')
+          if(r && r.CheckoutRequestID){
+            console.log(r.CheckoutRequestID)
+          //   this.CheckoutRequestID =r.CheckoutRequestID
+          //   setTimeout(()=>{
+          //     this.salesservice.getPushNotificationStatus(r.CheckoutRequestID).subscribe((rs: any)=>{
+          //       console.log(rs)
+          //     })
+          //   },1000)
           }
+          // if(r.customerMessage.indexOf('Success')){
+          //   this.snackBar.showNotification('success','Notification sent')
+          // }else{
+          //   this.snackBar.showNotification('error','Pending transaction')
+          // }
           
         })
     })

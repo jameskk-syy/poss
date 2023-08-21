@@ -15,6 +15,7 @@ import { UpdateFarmerComponent } from '../update-farmer/update-farmer.component'
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FarmerLookupComponent } from '../farmer-lookup/farmer-lookup.component';
 import { Activity } from 'angular-feather/icons';
+import { RoutesLookUpComponent } from 'src/app/staff/sales/pages/routes-look-up/routes-look-up.component';
 
 @Component({
   selector: 'app-farmer-managenent',
@@ -188,7 +189,8 @@ export class FarmerManagenentComponent implements OnInit {
       }
     },error => {
       console.log('An error occurred:', error)
-      
+      this.isdata = false;
+      this.isLoading = false
     })
   }
   // getCollections() {
@@ -307,8 +309,8 @@ export class FarmerManagenentComponent implements OnInit {
           let result = []
           result.push(this.data.entity)
          
-          this.isLoading = false;
           this.isdata = true;
+          this.isLoading = false;
           // Binding with the datasource
           this.dataSource = new MatTableDataSource(result.map(v=>({
             username:v.username,
@@ -322,8 +324,8 @@ export class FarmerManagenentComponent implements OnInit {
           this.dataSource.sort = this.sort;
         }
         else {
-          this.isdata = false;
           this.isLoading = false;
+          this.isdata = false;
           this.dataSource = new MatTableDataSource(null);
         }
       })

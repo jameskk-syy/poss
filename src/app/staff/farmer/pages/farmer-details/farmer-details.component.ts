@@ -18,6 +18,8 @@ export class FarmerDetailsComponent implements OnInit {
 
   farmerApprovalForm: FormGroup;
   bankDetailsForm: FormGroup;
+  nextOfKinForm: FormGroup;
+  mpesaDetails: FormGroup;
   farmer: any
   loading = false;
   isLoading: Boolean

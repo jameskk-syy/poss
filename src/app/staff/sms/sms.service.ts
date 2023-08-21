@@ -51,7 +51,7 @@ export class SmsService {
   }
 
   getBulkSMSByCode(code:any): Observable<any> {
-    const url = `${environment.apiUrl}/api/v1/bulkSMS/findBy?code=`+code;
+    const url = `${environment.apiUrl}/api/v1/bulkSMS/findBy?bulkCode=`+code;
     return this.http.get<any>(url)
   }
 

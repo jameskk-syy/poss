@@ -11,6 +11,11 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ProductSaleService {
+  getPushNotificationStatus(CheckoutRequestID: any):Observable<any> {
+    return this.http.post(`${this.baseUrl}/mobile-money/stk-transaction-status`,{
+      CheckoutRequestID
+    },httpOptions)
+  }
  
   baseUrl = `${environment.apiUrl}/api/v1`
   constructor(private http: HttpClient) { }
@@ -52,6 +57,9 @@ export class ProductSaleService {
     data.deletedFlag = 'N';
     data.salesCode = ''
     data.id = 0;
+    data.isReceiptGeneratedFag="N"
+    delete data.paymentMethod
+    console.log(data)
 
     return this.http.post(`${this.baseUrl}/sales/add`, data, httpOptions);
   }

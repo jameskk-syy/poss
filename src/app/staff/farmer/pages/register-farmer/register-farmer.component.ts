@@ -17,6 +17,8 @@ import { RoutesService } from 'src/app/admin/routes/routes.service';
 export class RegisterFarmerComponent implements OnInit {
   farmerRegirstartionForm: FormGroup;
   bankDetailsForm: FormGroup;
+  mpesaDetails: FormGroup;
+  nextOfKinForm: FormGroup;
   loading = false;
   isLoading: Boolean;
   isdata: Boolean;
@@ -345,7 +347,7 @@ export class RegisterFarmerComponent implements OnInit {
       },
     ],
   };
-
+  method="BANK"
   constructor(
     public dialogRef: MatDialogRef<FarmerManagenentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -371,6 +373,19 @@ export class RegisterFarmerComponent implements OnInit {
       accountName: ['', [Validators.required]],
     });
 
+    this.mpesaDetails = this.fb.group({
+      mpesaNumber: ['', [Validators.required]],
+      alternativeNumber: [''],
+    });
+
+    this.nextOfKinForm = this.fb.group({
+      name:[''],
+      idNo:[''],            
+      relationship:[''],            
+      address:[''],
+      tel:['']    
+    });
+
     this.farmerRegirstartionForm = this.fb.group({
       bankDetails: [''],
       transportMeans: [''],
@@ -382,24 +397,22 @@ export class RegisterFarmerComponent implements OnInit {
       wardFk: ['', [Validators.required]],
       memberType: ['', [Validators.required]],
       alternativeMobileNo: [''],
-      noOfCows: ['', [Validators.required]],
       paymentMode:['',[Validators.required]],
       county_fk: [''],
       location: [''],
       subLocation: [''],
       village: [''],
-      paymentFreequency: ['',[Validators.required]],
       gender: [''],
       routeFk: [''],
-      
+      nextOfKin:['']
     });
   }
 
   onSubmit() {
     this.loading = true;
     this.farmerRegirstartionForm.value.bankDetails = this.bankDetailsForm.value;
+    this.farmerRegirstartionForm.value.nextOfKin = this.nextOfKinForm.value;
 
-    console.log("Farmer Registration Details ", this.farmerRegirstartionForm.value)
     this.subscription = this.service
       .registerFarmer(this.farmerRegirstartionForm.value)
       .subscribe(
@@ -458,7 +471,6 @@ export class RegisterFarmerComponent implements OnInit {
       if (res.entity.length > 0) {
         this.routes = res.entity;
 
-        console.log("Routes ", this.routes)
       } else {
         this.routes = [];
       }

@@ -54,6 +54,7 @@ export class ManageCountiesComponent implements OnInit {
       }
       else {
         this.isdata = false;
+        this.isLoading = false
         this.dataSource = new MatTableDataSource<any>(this.data);
       }
     })

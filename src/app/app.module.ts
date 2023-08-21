@@ -2,12 +2,17 @@ import { NgModule } from "@angular/core";
 
 import { CoreModule } from "./core/core.module";
 import { SharedModule } from "./shared/shared.module";
+import { CdkColumnDef } from "@angular/cdk/table";
 
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
+import { MatIconModule } from "@angular/material/icon";
+import { MatDialog, MatDialogModule } from "@angular/material/dialog";
+import { MatButton, MatButtonModule } from "@angular/material/button";
 import { HeaderComponent } from "./layout/header/header.component";
+import { DeleteCollectionComponent } from "./staff/sales/pages/delete-collection/delete-collection.component";
 import { PageLoaderComponent } from "./layout/page-loader/page-loader.component";
 import { SidebarComponent } from "./layout/sidebar/sidebar.component";
 import { RightSidebarComponent } from "./layout/right-sidebar/right-sidebar.component";
@@ -34,6 +39,7 @@ import {
 import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
 import { FooterComponent } from "./layout/footer/footer.component";
 import { NgApexchartsModule } from "ng-apexcharts";
+import { MatTableExporterModule } from "mat-table-exporter";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -54,6 +60,7 @@ export function createTranslateLoader(http: HttpClient): any {
     AuthLayoutComponent,
     MainLayoutComponent,
     FooterComponent,
+    DeleteCollectionComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +70,9 @@ export function createTranslateLoader(http: HttpClient): any {
     PerfectScrollbarModule,
     ClickOutsideModule,
     NgApexchartsModule,
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -74,10 +84,11 @@ export function createTranslateLoader(http: HttpClient): any {
     // core & shared
     CoreModule,
     SharedModule, 
-    
+    MatTableExporterModule
   
   ],
   providers: [
+    CdkColumnDef,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     {
       provide: PERFECT_SCROLLBAR_CONFIG,

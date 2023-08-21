@@ -4,4 +4,5 @@ export enum Role {
   Staff = "ROLE_STAFF",
   Collector = "MILK_COLLECTOR",
   SalesPerson = "SALES_PERSON",
+  Manager = "MANAGER",
 }

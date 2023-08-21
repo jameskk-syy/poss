@@ -25,9 +25,3 @@ export function groupBy(array, property) {
   }, {});
 }
 
-
-// module.exports = {
-//     formatDate,
-//     sum,
-//     groupBy
-// }

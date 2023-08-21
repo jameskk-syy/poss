@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>idNumber</mat-label>
+                                    <mat-label>National ID</mat-label>
                                     <input matInput formControlName="idNumber" required />
                                     <mat-error *ngIf="farmerApprovalForm.get('idNumber').hasError('required')">
                                         National ID is required
@@ -54,7 +54,7 @@
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>mobileNo</mat-label>
+                                    <mat-label>Mobile No.</mat-label>
                                     <input matInput formControlName="mobileNo" required />
                                     <mat-error *ngIf="farmerApprovalForm.get('mobileNo').hasError('required')">
                                         Mobile No. is required
@@ -76,11 +76,10 @@
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                    <mat-label>Select Farmer/Supplier Category</mat-label>
+                                    <mat-label>Select Member Type</mat-label>
                                     <mat-select formControlName="memberType" required>
-                                        <mat-option value="Individual">Individual</mat-option>
-                                        <mat-option value="Group">Farmers Group</mat-option>
-                                        <mat-option value="Co-Operative">Co-Operative Society</mat-option>
+                                        <mat-option value="SPECIAL">SPECIAL</mat-option>
+                                        <mat-option value="STANDARD">STANDARD</mat-option>
                                     </mat-select>
                                     <mat-error *ngIf="farmerApprovalForm.get('memberType').hasError('required')">
                                         Member Type is required
@@ -191,39 +190,50 @@
             <!--Bank Details-->
             <div class="row">
                 <mat-card>
-                    <mat-card-title style="font-size: x-small;">Bank Details & Payment Frequency</mat-card-title>
+                    <mat-card-title style="font-size: x-small;">Bank Details</mat-card-title>
                     <mat-card-content>
-                        <form [formGroup]="bankDetailsForm">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                            <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                <mat-label>Mode Of Payment</mat-label>
+                                <mat-select formControlName="paymentMode" [(value)]="method" required>
+                                    <mat-option value="BANK">BANK</mat-option>
+                                    <mat-option value="MPESA">MPESA</mat-option>
+                                    <mat-option value="SACCO">SACCO</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </div>
+                        <form [formGroup]="bankDetailsForm" *ngIf="method=='BANK' || method=='SACCO'">
                             <div class="row">
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                     <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                        <mat-label>Select Bank Name</mat-label>
+                                        <mat-label>Bank/Sacco Name</mat-label>
                                         <mat-select formControlName="bankName" required>
                                             <mat-option *ngFor="let bank of banks.list" [value]="bank.name">
                                                 {{ bank.name }}
                                             </mat-option>
                                         </mat-select>
                                         <mat-error *ngIf="bankDetailsForm.get('bankName').hasError('required')">
-                                            Bank Name is required
+                                            Bank/Sacco Name is required
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                     <mat-form-field class="example-full-width" appearance="outline">
-                                        <mat-label>Bank Account Number</mat-label>
+                                        <mat-label>Bank/Sacco Account Number</mat-label>
                                         <input matInput formControlName="accountNumber" required />
                                         <mat-error *ngIf="bankDetailsForm.get('accountNumber').hasError('required')">
-                                            Bank Account No is required
+                                            Bank/Sacco Account No is required
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
 
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                     <mat-form-field class="example-full-width" appearance="outline">
-                                        <mat-label>Bank Account Name</mat-label>
+                                        <mat-label>Bank/Sacco Account Name</mat-label>
                                         <input matInput formControlName="accountName" required />
                                         <mat-error *ngIf="bankDetailsForm.get('accountName').hasError('required')">
-                                            Bank Account name is required
+                                            Bank/Sacco Account name is required
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -239,10 +249,27 @@
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
-
                             </div>
+                        </form>
+                        <form [formGroup]="mpesaDetails" *ngIf="method=='MPESA'">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-label>Mpesa Number</mat-label>
+                                        <input matInput formControlName="mpesaNumber" required />
+                                        <mat-error *ngIf="mpesaDetails.get('mpesaNumber').hasError('required')">
+                                            Mpesa Number is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
 
-
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-label>Alternative Mpesa Number</mat-label>
+                                        <input matInput formControlName="alternativeNumber" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
                         </form>
                     </mat-card-content>
                 </mat-card>

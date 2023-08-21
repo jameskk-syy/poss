@@ -124,7 +124,6 @@ export class UsersComponent extends BaseComponent implements OnInit {
       this.getAllUsers();
     })
 
-    console.log(user);
   }
 
   detailsCall(account) {
