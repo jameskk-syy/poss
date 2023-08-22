@@ -215,14 +215,14 @@
                                                 {{response.id}}
                                             </mat-cell>
                                             </ng-container>
-                                        <ng-container matColumnDef="collectorId">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                class="column-wrap tbl-col-width-per-13">Collector Id</mat-header-cell>
-                                            <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
-                                                [class.even-row]="!(i % 2)" class="column-nonwrap tbl-col-width-per-13">
-                                                {{response.collectorId}}
-                                            </mat-cell>
-                                        </ng-container>
+                                            <ng-container matColumnDef="collectorUsername">
+                                                <mat-header-cell *matHeaderCellDef mat-sort-header
+                                             class="column-nowrap tbl-col-width-per-13"> Collector </mat-header-cell>
+                                             <mat-cell *matCellDef="let item;let i = index" [class.odd-row]="i % 2"
+                                             [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
+                                              {{ item.collectorUsername }}
+                                               </mat-cell>
+                                              </ng-container>
                                         <ng-container matColumnDef="milkQuantity">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                 class="column-nowrap tbl-col-width-per-13">Milk Quantity</mat-header-cell>
@@ -239,22 +239,22 @@
                                                 {{response.amount | number :'1.2-2'}}
                                             </mat-cell>
                                         </ng-container> -->
-                                        <ng-container matColumnDef="accumulatorId">
+                                        <ng-container matColumnDef="accumulatorName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                class="column-nowrap tbl-col-width-per-13">Accumulator Id</mat-header-cell>
-                                            <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
-                                                [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
-                                                {{response.accumulatorId}}
-                                            </mat-cell>
-                                        </ng-container>
-                                        <ng-container matColumnDef="routeFk">
+                                         class="column-nowrap tbl-col-width-per-13">Accumulator </mat-header-cell>
+                                         <mat-cell *matCellDef="let item;let i = index" [class.odd-row]="i % 2"
+                                         [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
+                                          {{ item.accumulatorName }}
+                                           </mat-cell>
+                                          </ng-container>
+                                        <ng-container matColumnDef="routeName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                class="column-nowrap tbl-col-width-per-12">Route Fk</mat-header-cell>
-                                            <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
-                                                [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-12">
-                                                {{response.routeFk}}
-                                            </mat-cell>
-                                        </ng-container>
+                                         class="column-nowrap tbl-col-width-per-13"> Route </mat-header-cell>
+                                         <mat-cell *matCellDef="let item;let i = index" [class.odd-row]="i % 2"
+                                         [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
+                                          {{ item.routeName }}
+                                           </mat-cell>
+                                          </ng-container>
                                        
                                         <ng-container matColumnDef="collectionDate">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header

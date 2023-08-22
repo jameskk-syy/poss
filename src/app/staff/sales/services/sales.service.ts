@@ -10,15 +10,33 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class SalesService {
+ 
+
   
   private eventSource = new Subject<any>();
   event$ = this.eventSource.asObservable();
+  baseUrl: any;
 
   emitEvent(event: any) {
     this.eventSource.next(event);
   }
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient) { }
+  getAllAccumulatorNames(roleName:string): Observable<any> {
+    // return this.http.get(`${environment.apiUrl}/api/v1/users/users-by-role-name?roleName/${roleName}`, httpOptions);
+    return this.http.get(`${environment.apiUrl}/admin/api/v1/users/users-by-role-name?roleName=` + roleName, httpOptions);
+
+
+  }
+ 
+
+  getAllRouteNames():Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/routes/fetch`,httpOptions); 
+  }
+
+  getAllCollectorByNames(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/collectors/all`,httpOptions); 
+  }
   addAccumulation(value: any):Observable<any> {
     return this.http.post(`${environment.apiUrl}/api/v1/accumulation/add`,
     {
@@ -83,7 +101,6 @@ export class SalesService {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/all`, httpOptions);
   }
   getTodaysCollections(date: any) {
-    console.log(date)
     return this.http.get(`${environment.apiUrl}/api/v1/collections/specific/date?date=${date}`, httpOptions);
   }
   getCollectionsPerPickUpLocation(id:any) {

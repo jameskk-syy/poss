@@ -505,7 +505,7 @@ export class CollectionsComponent implements OnInit {
       this.getSummaryPerFarmerNo(farmerNo)
       this.subscription = this.service.getCollectionsByFarmerNo(farmerNo).subscribe(res => {
         this.data = res;
-        if (this.data.entity.size > 0) {
+        if (this.data) {
           this.isLoading = false
           this.isdata = true;
           this.datasize=this.data.entity.length
@@ -514,7 +514,7 @@ export class CollectionsComponent implements OnInit {
           this.dataSource.sort = this.sort;
         }
         else {
-          // this.isdata = false;
+          this.isdata = false;
           this.isLoading = false;
           this.dataSource = new MatTableDataSource(null);
         }
