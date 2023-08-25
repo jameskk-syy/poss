@@ -39,10 +39,10 @@ export class TotalsCollectionsComponent implements OnInit {
 
   displayedColumns: string[] = [
     'id',
-    "collectorId",
+    "collectorUsername",
     'milkQuantity',
-    "accumulatorId",
-    "routeFk",
+    "accumulatorName",
+    "routeName",
     "collectionDate",
   ];
 
@@ -54,6 +54,7 @@ export class TotalsCollectionsComponent implements OnInit {
   isLoading: boolean = false;
   accumulatorId: any;
   collectorId: any;
+  MILK_COLLECTOR: string;
   constructor(
     private router: Router, private datePipe: DatePipe, private fb: FormBuilder, private dialog: MatDialog, private service: SalesService, private dashboard: DashboardService,
     private snackbar: SnackbarService) {
@@ -106,23 +107,63 @@ export class TotalsCollectionsComponent implements OnInit {
 
   getData() {
     this.isLoading = true;
-    this.getAllCollectionsSummary()
-    this.subscription = this.service.getAllAccumulations().subscribe(res => {
-      this.data = res;
-      if (this.data.entity.length > 0) {
-        this.isLoading = false;
-        this.isdata = true;
-        this.datasize=this.data.entity.length
-        this.dataSource = new MatTableDataSource(this.data.entity);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
-      else {
-        this.isdata = false;
-        this.dataSource = new MatTableDataSource(null);
-      }
-    })
+      this.service.getAllCollectorByNames().subscribe ( response => {
+      const collectors = response.entity; 
+      const collectorIdToUsername = {};
+      collectors.forEach(collector => {
+        collectorIdToUsername[collector.id] = collector.username;
+      });
+      this.service.getAllRouteNames().subscribe ( response => {
+        const routes = response.entity;
+        const routeIdToName = {};
+        routes.forEach(route => {
+          routeIdToName[route.id] = route.route;
+        });
+        const roleName = 'TOTALS_COLLECTOR';
+
+        this.service.getAllAccumulatorNames(roleName).subscribe(response => {
+          const accumulators = response.userData;
+          const accumulatorIdToName = {};
+          accumulators.forEach(accumulator => {
+            accumulatorIdToName[accumulator.id] = accumulator.username;
+          });
+  
+      this.subscription = this.service.getAllAccumulations().subscribe(res => {
+        this.data = res;
+  
+        if (this.data.entity.length > 0) {
+          this.isLoading = false;
+          this.isdata = true;
+          this.datasize = this.data.entity.length;
+  
+          this.data.entity.forEach(item => {
+            const collectorId = item.collectorId;
+            if (collectorIdToUsername.hasOwnProperty(collectorId)) {
+              item.collectorUsername = collectorIdToUsername[collectorId];
+            }
+            const routeId = item.routeFk;
+              if (routeIdToName.hasOwnProperty(routeId)) {
+                item.routeName = routeIdToName[routeId];
+              }
+              const accumulatorId = item.accumulatorId;
+              if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
+                item.accumulatorName = accumulatorIdToName[accumulatorId];
+              }
+          });
+  
+          this.dataSource = new MatTableDataSource(this.data.entity);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        } else {
+          this.isdata = false;
+          this.dataSource = new MatTableDataSource(null);
+        }
+      });
+    });
+    });
+    });
   }
+  
 
 
   dataSource!: MatTableDataSource<any>;
@@ -147,31 +188,71 @@ export class TotalsCollectionsComponent implements OnInit {
   }
  
 
-  filterByCollectorId(Id:any) {
-    let collectorId = this.form.value.collectorId
-
+  filterByCollectorId(Id: any) {
+    let collectorId = this.form.value.collectorId;
+  
     if (collectorId != null && collectorId != undefined) {
       this.isLoading = true;
-      this.getSummaryPerCollector(collectorId)
-    
-      this.subscription = this.service.getCollectorsIdAccumulations(collectorId).subscribe(res => {
-        this.data = res;
-        if (this.data.entity.length > 0) {
-          this.isLoading = false
-          this.isdata = true;
-          this.datasize=this.data.entity.length
-          this.dataSource = new MatTableDataSource(this.data.entity);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        }
-        else {
-          this.isdata = false;
-          this.isLoading = false
-          this.dataSource = new MatTableDataSource(null);
-        }
-      })
+  
+      this.service.getAllCollectorByNames().subscribe(response => {
+        const collectors = response.entity; 
+        const collectorIdToUsername = {};
+        collectors.forEach(collector => {
+          collectorIdToUsername[collector.id] = collector.username;
+        });
+        this.service.getAllRouteNames().subscribe ( response => {
+          const routes = response.entity;
+          const routeIdToName = {};
+          routes.forEach(route => {
+            routeIdToName[route.id] = route.route;
+          });
+          const roleName = 'TOTALS_COLLECTOR';
+  
+          this.service.getAllAccumulatorNames(roleName).subscribe(response => {
+            const accumulators = response.userData;
+            const accumulatorIdToName = {};
+            accumulators.forEach(accumulator => {
+              accumulatorIdToName[accumulator.id] = accumulator.username;
+            });
+  
+        this.subscription = this.service.getCollectorsIdAccumulations(collectorId).subscribe(res => {
+          this.data = res;
+  
+          if (this.data.entity.length > 0) {
+            this.isLoading = false;
+            this.isdata = true;
+            this.datasize = this.data.entity.length;
+  
+            this.data.entity.forEach(item => {
+              const itemCollectorId = item.collectorId;
+              if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
+                item.collectorUsername = collectorIdToUsername[itemCollectorId];
+              }
+              const routeId = item.routeFk;
+              if (routeIdToName.hasOwnProperty(routeId)) {
+                item.routeName = routeIdToName[routeId];
+              }
+              const accumulatorId = item.accumulatorId;
+              if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
+                item.accumulatorName = accumulatorIdToName[accumulatorId];
+              }
+            });
+            
+  
+            this.dataSource = new MatTableDataSource(this.data.entity);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          } else {
+            this.isdata = false;
+            this.dataSource = new MatTableDataSource(null);
+          }
+        });
+      });
+    });
+      });
     }
   }
+  
   
   getSummaryPerCollector(collectorId) {
     this.isLoading = true;
@@ -192,31 +273,69 @@ export class TotalsCollectionsComponent implements OnInit {
   }
   
 
-  filterByAccumulatorId(Id:any) {
-    let accumulatorId = this.form.value.accumulatorId
-
+  filterByAccumulatorId(Id: any) {
+    let accumulatorId = this.form.value.accumulatorId;
+  
     if (accumulatorId != null && accumulatorId != undefined) {
       this.isLoading = true;
-      this.getSummaryPerAccumulator(accumulatorId)
-    
-      this.subscription = this.service.getAccumulationsByAccumulatorId(accumulatorId).subscribe(res => {
-        this.data = res;
-        if (this.data.entity.length > 0) {
-          this.isLoading = false
-          this.isdata = true;
-          this.datasize=this.data.entity.length
-          this.dataSource = new MatTableDataSource(this.data.entity);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        }
-        else {
-          this.isdata = false;
-          this.isLoading = false
-          this.dataSource = new MatTableDataSource(null);
-        }
-      })
+        this.service.getAllCollectorByNames().subscribe(response => {
+        const collectors = response.entity;
+        const collectorIdToUsername = {};
+        collectors.forEach(collector => {
+          collectorIdToUsername[collector.id] = collector.username;
+        });
+        this.service.getAllRouteNames().subscribe ( response => {
+          const routes = response.entity;
+          const routeIdToName = {};
+          routes.forEach(route => {
+            routeIdToName[route.id] = route.route;
+          });
+          const roleName = 'TOTALS_COLLECTOR';
+  
+          this.service.getAllAccumulatorNames(roleName).subscribe(response => {
+            const accumulators = response.userData;
+            const accumulatorIdToName = {};
+            accumulators.forEach(accumulator => {
+              accumulatorIdToName[accumulator.id] = accumulator.username;
+            });
+  
+        this.subscription = this.service.getAccumulationsByAccumulatorId(accumulatorId).subscribe(res => {
+          this.data = res;
+  
+          if (this.data.entity.length > 0) {
+            this.isLoading = false;
+            this.isdata = true;
+            this.datasize = this.data.entity.length;
+  
+            this.data.entity.forEach(item => {
+              const itemCollectorId = item.collectorId;
+              if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
+                item.collectorUsername = collectorIdToUsername[itemCollectorId];
+              }
+              const routeId = item.routeFk;
+              if (routeIdToName.hasOwnProperty(routeId)) {
+                item.routeName = routeIdToName[routeId];
+              }
+              const accumulatorId = item.accumulatorId;
+              if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
+                item.accumulatorName = accumulatorIdToName[accumulatorId];
+              }
+            });
+  
+            this.dataSource = new MatTableDataSource(this.data.entity);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          } else {
+            this.isdata = false;
+            this.dataSource = new MatTableDataSource(null);
+          }
+        });
+      });
+    });
+      });
     }
   }
+  
   getSummaryPerAccumulator(accumulatorId) {
     this.isLoading = true;
     
