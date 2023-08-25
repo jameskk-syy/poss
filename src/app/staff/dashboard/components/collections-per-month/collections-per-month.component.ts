@@ -77,7 +77,6 @@ export class CollectionsPerMonthComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getAllUsers();
 
     this.chartParametersForm = this.createChartParamtersForm();
     this.getCollectorSessionData()
@@ -123,45 +122,30 @@ export class CollectionsPerMonthComponent implements OnInit {
     this.sessionTwo = 0;
     this.sessionThree = 0;
 
-    // this.currentMeeting = this.chartParametersForm.controls.meetingid.value;
 
     this.analyticsService
-      .fetchAllCollections()
+      .fetchMonthlyCollectionsPerSession(this.chartParametersForm.value.year,this.chartParametersForm.value.month)
       .subscribe(
         (res) => {
           this.doughnutChartData = [];
-          // console.log(res)
           if (res.entity && res.entity.length>0) {
-               
-          const newData = res.entity.filter((data)=>{
-            const d = new Date(data.collection_date)
-            const dt = {
-                month: d.getMonth()+1,
-                year: d.getFullYear(),
-                date: d.getDate()
-            } 
-            if(dt.year === this.chartParametersForm.value.year && dt.month == this.chartParametersForm.value.month){
-              return data
-            }
-          })
 
+          res.entity.forEach((item) => {
 
-          newData.forEach((item) => {
-
-            if(item.session == "Session 1"){
-              sessionOne.push(item.quantity)
+            if(item.x == "Session 1"){
+              sessionOne.push(item.y)
               
-              this.sessionOne += parseInt(item.quantity);
+              this.sessionOne += parseInt(item.y);
 
-            }else if(item.session == "Session 2"){
-              sessionTwo.push(item.quantity);
+            }else if(item.x == "Session 2"){
+              sessionTwo.push(item.y);
             
-              this.sessionTwo += parseInt(item.quantity);
+              this.sessionTwo += parseInt(item.y);
 
-            }else if(item.session == "Session 3"){
-              sessionThree.push(item.quantity);
+            }else if(item.x == "Session 3"){
+              sessionThree.push(item.y);
 
-              this.sessionThree += parseInt(item.quantity);
+              this.sessionThree += parseInt(item.y);
 
             }
           });

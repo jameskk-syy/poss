@@ -18,7 +18,6 @@ import {
   ApexTitleSubtitle,
 } from 'ng-apexcharts';
 import { AnalyticsService } from 'src/app/data/services/analytics.service';
-import { formatDate,groupBy,sum } from 'src/app/data/services/utils';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
 
 type ChartOptions = {
@@ -72,7 +71,9 @@ export class MonthlyCollectiosChartComponent extends BaseComponent implements On
   ];
   currentYear = new Date().getFullYear();
   currentMonth = this.monthsArray[new Date().getMonth()];
-  monthlyStr = formatDate(Date.now(),'MONTH')
+  // monthlyStr = formatDate(Date.now(),'MONTH')
+  year: number = new Date(Date.now()).getFullYear()
+  month: number = new Date(Date.now()).getMonth()+1
 
   constructor(
     private service: AnalyticsService,
@@ -93,56 +94,32 @@ export class MonthlyCollectiosChartComponent extends BaseComponent implements On
     });
   }
     onSelectYear(event: any){
-      const arr = this.monthlyStr.split('-')
-      this.monthlyStr = `${event.value}-${arr[1]}`
+      this.year = event.value
       this.getData()
     }
 
     onSelectMonth(event: any){
-      const arr = this.monthlyStr.split('-')
-      this.monthlyStr = `${arr[0]}-${event.value}`
+      this.month = event.value
       this.getData()
     }
-  formatCollections(array=[],month= formatDate(Date.now(),'MONTH')){
-    if(!array.length)return []
-    array = array.map(({collection_date,session,farmer_no,quantity,route,collector,id})=>{
-        const d = new Date(collection_date)
-        const dstr = formatDate(d,'')
-        const monthly = formatDate(d,'MONTH')
-        return {session,farmer_no,quantity,route,collector,id,date:dstr,monthly}
-    })
-    const groupedData = groupBy(array, "monthly");
-    const monthly = groupedData[month];
-  
-    const res = monthly.map(d=>({
-      x: d.date,
-      y: d.quantity
-    }))
-    const data = groupBy(res,'x')
-    const arr = []
-    for (const k in data) {
-      arr.push({
-        x: k,
-        y: sum(data[k].map(a=>a.y))
-      })
-    }
-    return arr;
-  }
   getData(){
    
     this.isLoading = true
-    this.service.fetchAllCollections().subscribe(res=>{
+    this.service.fetchCollectionsPerGivenMonth(this.year,this.month).subscribe(res=>{
       if(res.entity && res.entity.length>0){
 
-        this.data  = this.formatCollections(res.entity,this.monthlyStr)
+        this.data  = res.entity;
       }else{
         this.data = []
       }
-      console.log(this.monthlyStr)
 
       this.isLoading = false
       this.renderChart()
       
+    },(err)=>{
+      this.isLoading = false
+      this.data = []
+      this.renderChart()
     })
     // return data;
   }
