@@ -47,6 +47,8 @@ export class FarmerManagenentComponent implements OnInit {
   col: any;
   activity: string;
   form: any;
+  id: any;
+  selectedStatus: string;
   constructor(private router: Router, private dialog: MatDialog, private service: FarmerService,private fb:FormBuilder) { }
 
   applyFilter(event: Event) {
@@ -96,7 +98,7 @@ export class FarmerManagenentComponent implements OnInit {
             const mappedFarmer = {};
             for (const column of this.displayedColumns) {
               const property = columnToPropertyMap[column] || column;
-              mappedFarmer[column] = farmer[property];
+              mappedFarmer[column] = farmer[property] || "N/A";
             }
             return mappedFarmer;
           });
@@ -108,6 +110,8 @@ export class FarmerManagenentComponent implements OnInit {
           this.isdata = false;
           this.dataSource = new MatTableDataSource([]);
         }
+        this.selected = '';
+
       },
       (error) => {
         console.log('An error occurred:', error);
@@ -149,7 +153,7 @@ export class FarmerManagenentComponent implements OnInit {
             const mappedFarmer = {};
             for (const column of this.displayedColumns) {
               const property = columnToPropertyMap[column] || column;
-              mappedFarmer[column] = farmer[property];
+              mappedFarmer[column] = farmer[property] || "N/A";
             }
             return mappedFarmer;
           });
@@ -160,6 +164,47 @@ export class FarmerManagenentComponent implements OnInit {
           this.isdata = false;
           this.dataSource = new MatTableDataSource([]);
         }
+        this.selected = '';
+
+      },
+      (error) => {
+        console.log('An error occurred:', error);
+        this.isdata = false;
+        this.isLoading = false;
+      }
+
+    );
+  }
+  
+
+
+  getData() {
+    this.selected = "";
+    this.isLoading = true;
+    this.subscription = this.service.getFarmers().subscribe(
+      (res) => {
+        this.data = res;
+        if (this.data.entity.length > 0) {
+          this.isLoading = false;
+          this.isdata = true;
+  
+          const sanitizedData = this.data.entity.map((item) => ({
+            id: item.id || "N/A",
+            farmer_no: item.farmer_no || "N/A",
+            username: item.username || "N/A",
+            mobile_no: item.mobile_no || "N/A",
+            id_number: item.id_number || "N/A",
+            route: item.route || "N/A",
+            action: item.action || "N/A",
+          }));
+  
+          this.dataSource = new MatTableDataSource(sanitizedData);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        } else {
+          this.isdata = false;
+          this.dataSource = new MatTableDataSource<any>(this.data);
+        }
       },
       (error) => {
         console.log('An error occurred:', error);
@@ -169,31 +214,6 @@ export class FarmerManagenentComponent implements OnInit {
     );
   }
   
-
-
-  getData() {
-    this.selected = "";
-    this.isLoading = true;
-    this.subscription = this.service.getFarmers().subscribe(res => {
-      this.data = res;
-      if (this.data.entity.length > 0) {
-        this.isLoading = false;
-        this.isdata = true;
-        // Binding with the datasource
-        this.dataSource = new MatTableDataSource(this.data.entity);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
-      else {
-        this.isdata = false;
-        this.dataSource = new MatTableDataSource<any>(this.data);
-      }
-    },error => {
-      console.log('An error occurred:', error)
-      this.isdata = false;
-      this.isLoading = false
-    })
-  }
   // getCollections() {
   //   this.selected = "";
   //   this.isLoading = true;
@@ -295,7 +315,7 @@ export class FarmerManagenentComponent implements OnInit {
 
   viewFarmerCollections(row) {
 
-    this.router.navigate(['/staff/sales/farmer', row.id]);
+    this.router.navigate(['/staff/sales/farmer', row.farmer_no]);
   }
 
   // filterFarmers() {
@@ -307,26 +327,26 @@ export class FarmerManagenentComponent implements OnInit {
     this.isLoading = true;
     let farmerNo=this.filterform.value.farmer_no
     // {}
-      
     if (farmerNo != null && farmerNo != undefined ) {
   
       this.subscription = this.service.getByFarmersByFarmerNo(farmerNo).subscribe(res => {
-        this.data = res;
+        this.data = res
         if (this.data.entity!=null) {
-          let result = []
-          result.push(this.data.entity)
-         
+          let v = this.data.entity         
           this.isdata = true;
           this.isLoading = false;
           // Binding with the datasource
-          this.dataSource = new MatTableDataSource(result.map(v=>({
-            username:v.username,
-            route:v.routeName,
-            id_number: v.idNumber,
-            farmer_no: v.farmerNo,
-            mobile_no: v.mobileNo
+          this.dataSource = new MatTableDataSource([{
+            username:v.username || "N/A",
+            route:v.routeName || "N/A",
+            id_number: v.idNumber || "N/A",
+            farmer_no: v.farmerNo || "N/A",
+            mobile_no: v.mobileNo || "N/A",
 
-          })));
+            action:'',
+            id:v.id,
+
+          }]);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }
@@ -335,6 +355,7 @@ export class FarmerManagenentComponent implements OnInit {
           this.isdata = false;
           this.dataSource = new MatTableDataSource(null);
         }
+        
       })
     }
   }
@@ -350,12 +371,17 @@ export class FarmerManagenentComponent implements OnInit {
   
         this.isLoading = false;
         this.isdata = true;
+        // console.log(res)
   
         this.dataSource = new MatTableDataSource(result.map(v => ({
-          username: v.username,
-          farmer_no: v.farmerNo,
-          mobile_no: v.mobileNo,
-          actions:''
+          username: v.username || "N/A",
+          farmer_no: v.farmerNo || "N/A",
+          mobile_no: v.mobileNo || "N/A",
+          route:v.routeName || "N/A",
+          id_number:v.idNumber || "N/A",
+          actions:'',
+          id:v.id,
+
         })));
   
         this.dataSource.paginator = this.paginator;
@@ -369,7 +395,7 @@ export class FarmerManagenentComponent implements OnInit {
   }
   
   onStatusChanged(selectedActivity: string) {
-    this.activityFilter = selectedActivity; // Update the activityFilter property
+    this.activityFilter = selectedActivity; 
     if (selectedActivity === 'active') {
       this.getActiveFarmers();
     } else if (selectedActivity === 'inactive') {
@@ -395,11 +421,11 @@ export class FarmerManagenentComponent implements OnInit {
        
         this.dataSource = new MatTableDataSource(result.map(v => ({
           id: v.id,
-          farmer_no: v.farmerNo,
-          username: v.username,
-          mobile_no: v.mobileNo,
-          id_number: v.idNumber,
-          route: v.route,
+          farmer_no: v.farmerNo || "N/A",
+          username: v.username || "N/A",
+          mobile_no: v.mobileNo || "N/A",
+          id_number: v.idNumber || "N/A",
+          route: v.route || "N/A",
           action: ''
           
         })));
@@ -411,6 +437,8 @@ export class FarmerManagenentComponent implements OnInit {
         this.isLoading = false;
         this.dataSource = new MatTableDataSource([]);
       }
+      this.selected='';
+
     });
   }
   
@@ -424,6 +452,7 @@ export class FarmerManagenentComponent implements OnInit {
           this.isLoading = false;
           this.isdata = false;
           this.dataSource = new MatTableDataSource([]);
+          this.selected='';
           return;
         }
   
@@ -437,11 +466,11 @@ export class FarmerManagenentComponent implements OnInit {
   
           this.dataSource = new MatTableDataSource(result.map(v => ({
             id: v.id,
-            farmer_no: v.farmerNo,
-            username: v.username,
-            mobile_no: v.mobileNo,
-            id_number: v.idNumber,
-            route: v.route,
+            farmer_no: v.farmerNo || "N/A",
+            username: v.username || "N/A",
+            mobile_no: v.mobileNo || "N/A",
+            id_number: v.idNumber || "N/A",
+            route: v.route || "N/A",
             action: ''
           })));
   
@@ -452,11 +481,14 @@ export class FarmerManagenentComponent implements OnInit {
           this.isLoading = false;
           this.dataSource = new MatTableDataSource([]);
         }
+        this.selected='';
       },
       (error) => {
         console.log('An error occurred:', error);
         this.isdata = false;
         this.isLoading = false;
+        this.selected='';
+
       }
     );
   }

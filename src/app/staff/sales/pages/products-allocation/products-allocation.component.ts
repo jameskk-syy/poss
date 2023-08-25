@@ -27,15 +27,12 @@ selected="";
 
   displayedColumns: string[] = [
     "farmerNo",
-    "farmerNo",
     "username",
     "paymentMode",
     "advanceAmount",
     "date",
     
-    "paymentMode",
-    "advanceAmount",
-    "date",
+   
     
   ];
   

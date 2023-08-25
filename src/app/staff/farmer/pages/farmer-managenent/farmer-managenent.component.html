@@ -40,8 +40,11 @@
                                                     <mat-label>Filter By </mat-label>
                                                     <mat-select [(value)]="selected">
                                                         <mat-option value="fn"><b>Farmer Number</b></mat-option>
-                                                        <mat-option value="nd"><b>No Deliveries</b></mat-option>
-                                                        <mat-option value="a"><b>Activity</b></mat-option>
+                                                        <mat-option value="nd" (click)="getFarmersWithNoDeliveries()"> 
+                                                            <b>No Deliveries</b>          
+                                                            </mat-option>
+                                                            
+                                                     <mat-option value="a"><b>Activity</b></mat-option>
                                                         <mat-option value="st"><b>Status</b></mat-option>
 
                                                     </mat-select>
@@ -61,7 +64,7 @@
                                                         </mat-icon>
                                                     </mat-form-field>
 
-                                                    <mat-icon class="m-l-3" *ngIf="selected == 'nd'" (click)="getFarmersWithNoDeliveries()">search</mat-icon>
+                                                    <!-- <mat-icon class="m-l-3" *ngIf="selected == 'nd'" (click)="getFarmersWithNoDeliveries()">search</mat-icon> -->
 
                                                     
                                                 
@@ -198,7 +201,7 @@
                                             <app-feather-icons matTooltip="View Farmer Details" [icon]="'eye'"
                                                 [class]="'tbl-fav-eye'"></app-feather-icons>
                                         </button>
-                                        <button mat-icon-button color="primary" (click)="getCollections()"
+                                        <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
                                             (click)="viewFarmerCollections(farmer)" class="tbl-action-btn">
                                             <app-feather-icons matTooltip="View Delivery Statements" [icon]="'book'"
                                                 [class]="'tbl-fav-eye'"></app-feather-icons>
@@ -209,7 +212,7 @@
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                 <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                                 <mat-row *matRowDef="let row; columns: displayedColumns"
-                                    (click)="farmerDetailsCall(farmer)" [style.cursor]="'pointer'" matRipple>
+                                    [style.cursor]="'pointer'" matRipple>
                                 </mat-row>
                                 <mat-cell *matNoDataRow colspan="4">
                                     No data matching the filter "{{ input.value }}"</mat-cell>

@@ -39,6 +39,7 @@ export class FarmerService {
   public getFarmersById(id:any): Observable<any> {
     
     return this.http.get(`${environment.apiUrl}/api/v1/farmer/farmer/id?farmerId=`+id,httpOptions);
+
   }
   registerFarmer(farmer:any){
     return this.http.post(`${environment.apiUrl}/api/v1/farmer/add`,farmer);

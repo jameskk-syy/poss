@@ -362,9 +362,11 @@ export class UpdateFarmerComponent implements OnInit {
     private routesService: PickupService,
     private service: FarmerService,
     private routeService: RoutesService
-  ) {}
+  ) {
+  }
 
   onPaymentModeChange() {
+
     if (this.method === 'BANK' || this.method === 'SACCO') {
       this.showBankForm = true;
       this.showMpesaForm = false;
@@ -381,13 +383,21 @@ export class UpdateFarmerComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.service.getFarmersById(this.data.farmer.id).subscribe(res => {
-      this.data = res;
+      this.data = res.entity;
+      // console.log(this.data)
       this.isLoading = false;
-      this.farmer = this.data.entity
+      this.farmer = res.entity
+    //  console.log(this.farmer)
+
+      // this.getWards(this.farmer.subcounty_fk)
      
-
-      this.getWards(this.farmer.subcounty_fk)
-
+  // console.log(this.farmer)
+{
+    this.mpesaDetails = this.fb.group({
+      mpesaNumber: ['', [Validators.required]],
+      alternativeNumber: [''],
+    });
+  }{
     this.bankDetailsForm = this.fb.group({
      
       branch: [this.farmer.bankDetails.branch, [Validators.required]],
@@ -395,11 +405,8 @@ export class UpdateFarmerComponent implements OnInit {
       accountNumber: [this.farmer.bankDetails.accountNumber, [Validators.required]],
       accountName: [this.farmer.bankDetails.accountName, [Validators.required]],
     });
-
-    this.mpesaDetails = this.fb.group({
-      mpesaNumber: ['', [Validators.required]],
-      alternativeNumber: [''],
-    });
+  }
+  if(this.farmer && this.farmer.nextOfKin !=null){
 
     this.nextOfKinForm = this.fb.group({
       name:[this.farmer.nextOfKin.name],
@@ -408,11 +415,12 @@ export class UpdateFarmerComponent implements OnInit {
       address:[this.farmer.nextOfKin.address],
       tel:[this.farmer.nextOfKin.tel]    
     });
+  }
 
     this.farmerEditForm = this.fb.group({
       id: [this.farmer.id],
 
-      bankDetails: [""],
+      bankDetails: [this.farmer.bankDetails??null],
       // transportMeans: [this.farmer.transportMeans],
       firstName: [this.farmer.firstName, [Validators.required]],
       lastName: [this.farmer.lastName, [Validators.required]],
@@ -430,13 +438,14 @@ export class UpdateFarmerComponent implements OnInit {
       gender: [this.farmer.gender],
       routeFk: [this.farmer.routeFk],
       nextOfKin:[this.farmer.nextOfKin]
-    })});
+    })
+  });
+  
   }
 
   onSubmit() {
     this.loading = true;
     this.farmerEditForm.value.bankDetails = this.bankDetailsForm.value;
-    console.log("Farmer updated details "+ this.farmerEditForm.value)
     this.subscription = this.service.updateFarmer(this.farmerEditForm.value).subscribe(res => {
       this.snackbar.showNotification("snackbar-success", "Successful!");
       this.loading = false;
