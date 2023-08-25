@@ -139,11 +139,15 @@ export class SalesService {
   
   getFarmerNoCollections(farmer_no: any):Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/per/farmer/by-farmer-no?farmerNo=${farmer_no}`,httpOptions);
+    // return this.http.get(`${environment.apiUrl}/api/v1/collections/per/farmer/by-farmer-no?farmerNo=` +farmer_no,httpOptions);
+
 
   }
 
   getFarmerDetails(id: any): Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/farmer/farmers/details?farmerId=` + id, httpOptions);
+    // return this.http.get(`${environment.apiUrl}/api/v1/farmer/membernumber?farmer_number=` + farmer_no, httpOptions);
+
   }
 
   deleteFarmerDetails(id: any): Observable<any> {

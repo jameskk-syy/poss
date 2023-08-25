@@ -18,11 +18,14 @@ export class DeleteFarmerComponent implements OnInit {
     private service: SalesService) { }
 
   farmer: any;
+  firstName: any;
+  lastName: any;
   subscription!: Subscription;
   loading = false;
 
   ngOnInit(): void {
     this.farmer = this.data.farmer.firstName + " " + this.data.farmer.lastName;
+    
   }
 
   onDelete() {

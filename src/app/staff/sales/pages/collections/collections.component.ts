@@ -225,6 +225,7 @@ export class CollectionsComponent implements OnInit {
     this.isLoading = true;
     this.getAllColectionsSummary()
     this.subscription = this.service.getAllCollections().subscribe(res => {
+      // console.log(res)
       this.data = res;
       if (this.data.entity.length > 0) {
         this.isLoading = false;
@@ -299,7 +300,7 @@ export class CollectionsComponent implements OnInit {
   }
 
   viewFarmerCollections(row) {
-    this.router.navigate(['/staff/sales/farmer', row.farmerId]);
+    this.router.navigate(['/staff/sales/farmer', row.farmer_no]);
   }
   getDateSummary(date) {
     this.isLoading = true

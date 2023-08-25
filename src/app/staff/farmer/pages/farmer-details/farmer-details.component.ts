@@ -18,6 +18,8 @@ export class FarmerDetailsComponent implements OnInit {
 
   farmerApprovalForm: FormGroup;
   bankDetailsForm: FormGroup;
+  showBankForm: boolean = true;
+  showMpesaForm: boolean = false;
   nextOfKinForm: FormGroup;
   mpesaDetails: FormGroup;
   farmer: any
@@ -28,7 +30,7 @@ export class FarmerDetailsComponent implements OnInit {
   wards: any;
   counties: any;
   routes: any;
-  method='BANK'
+  method="BANK"
   banks: any = {
     count: 45,
     list: [
@@ -361,41 +363,64 @@ export class FarmerDetailsComponent implements OnInit {
     private routeService: PickupService,
     private service: FarmerService,
     private routesService: RoutesService) { }
+
+    onPaymentModeChange() {
+      if (this.method === 'BANK' || this.method === 'SACCO') {
+        this.showBankForm = true;
+        this.showMpesaForm = false;
+      } else if (this.method === 'MPESA') {
+        this.showBankForm = false;
+        this.showMpesaForm = true;
+      } else {
+        this.showBankForm = false;
+        this.showMpesaForm = false;
+      }
+    }
   subscription!: Subscription;
 
   ngOnInit(): void {
     this.isLoading = true;
+    // console.log(this.data)
+    // const farmerIdentifier = this.data.farmer.farmer_no ? this.data.farmer.farmer_no : this.data.farmer.farmerNo;
     this.service.getFarmersById(this.data.farmer.id).subscribe(res => {
       this.data = res;
       this.isLoading = false;
       this.farmer = this.data.entity 
 
-      this.getWards(this.farmer.subcounty_fk)
+      // this.getWards(this.farmer.subcounty_fk)
 
-      this.mpesaDetails = this.fb.group({
-        mpesaNumber: ['', [Validators.required]],
-        alternativeNumber: [''],
-      });
-  
-      this.nextOfKinForm = this.fb.group({
-        name:[this.farmer.nextOfKin.name],
-        idNo:[this.farmer.nextOfKin.idNo],            
-        relationship:[this.farmer.nextOfKin.relationship],            
-        address:[this.farmer.nextOfKin.address],
-        tel:[this.farmer.nextOfKin.tel]    
-      });
-  
-      this.bankDetailsForm = this.fb.group({
      
-        branch: [this.farmer.bankDetails.branch, [Validators.required]],
-        bankName: [this.farmer.bankDetails.bankName, [Validators.required]],
-        accountNumber: [this.farmer.bankDetails.accountNumber, [Validators.required]],
-        accountName: [this.farmer.bankDetails.accountName, [Validators.required]],
-      });
+  
+      if(this.farmer && this.farmer.nextOfKin !=null){
+
+        this.nextOfKinForm = this.fb.group({
+          name:[this.farmer.nextOfKin.name],
+          idNo:[this.farmer.nextOfKin.idNo],            
+          relationship:[this.farmer.nextOfKin.relationship],            
+          address:[this.farmer.nextOfKin.address],
+          tel:[this.farmer.nextOfKin.tel]    
+        });
+      }
+  {
+        this.mpesaDetails = this.fb.group({
+          mpesaNumber: ['', [Validators.required]],
+          alternativeNumber: [''],
+        });
+      }
+      {
+        this.bankDetailsForm = this.fb.group({
+          bankName: [this.farmer.bankDetails.bankName, [Validators.required]],
+          accountNumber: [this.farmer.bankDetails.accountNumber, [Validators.required]],
+          accountName: [this.farmer.bankDetails.accountName, [Validators.required]],
+          branch: [this.farmer.bankDetails.branch, [Validators.required]],
+         
+        });
+      }
+
+
       this.farmerApprovalForm = this.fb.group({
         id: [this.farmer.id],
-        bankDetails: [""],
-        // transportMeans: [this.farmer.transportMeans],
+        bankDetails: [this.farmer.bankDetails??null],     
         firstName: [this.farmer.firstName, [Validators.required]],
         lastName: [this.farmer.lastName, [Validators.required]],
         idNumber: [this.farmer.idNumber, [Validators.required]],
@@ -412,10 +437,10 @@ export class FarmerDetailsComponent implements OnInit {
         gender: [this.farmer.gender],
         routeFk: [this.farmer.routeFk],
         nextOfKin:[this.farmer.nextOfKin]
-      })
+      })}
 
-    })
-    this.getSubcounties();
+    )
+    // this.getSubcounties();
     this.getCounties();
     this.geRoutes();
   }
