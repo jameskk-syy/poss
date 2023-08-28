@@ -138,7 +138,7 @@ export class MonthlyCollectiosChartComponent extends BaseComponent implements On
       }else{
         this.data = []
       }
-      console.log(this.monthlyStr)
+      // console.log(this.monthlyStr)
 
       this.isLoading = false
       this.renderChart()

@@ -50,6 +50,15 @@ const routes: Routes = [
           import("./manager/manager.module").then((m)=>m.Manager)
       },
       {
+       path: "totals-collector",
+       canActivate: [AuthGuard],
+       data: {
+        role: Role.TotalsCollector,
+       },
+       loadChildren: () =>
+       import("./totals-collector/totals-collector.module").then((m)=>m.TotalsCollectorModule)
+      },
+      {
         path: "user",
         canActivate: [AuthGuard],
         data: {

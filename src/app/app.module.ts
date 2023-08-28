@@ -40,6 +40,8 @@ import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
 import { FooterComponent } from "./layout/footer/footer.component";
 import { NgApexchartsModule } from "ng-apexcharts";
 import { MatTableExporterModule } from "mat-table-exporter";
+// import { MainComponent } from './totals-collector/dashboard/main/main/main.component';
+
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -60,7 +62,10 @@ export function createTranslateLoader(http: HttpClient): any {
     AuthLayoutComponent,
     MainLayoutComponent,
     FooterComponent,
-    DeleteCollectionComponent
+    DeleteCollectionComponent,
+    // MainComponent,
+    // DashboardComponent,
+    // MainComponent
   ],
   imports: [
     BrowserModule,

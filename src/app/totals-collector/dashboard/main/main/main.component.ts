@@ -8,17 +8,16 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { SalesService } from '../../services/sales.service';
-import { DashboardService } from 'src/app/staff/dashboard/services/dashboard.service';
+import { DashboardService } from 'src/app/totals-collector/dashboard.service';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-import { AddAccumulationsComponent } from '../add-accumulations/add-accumulations.component';
-
+import { TotalsCollectionService } from 'src/app/totals-collector/services/totals-collection.service';
+import { AddTotalsCollectionsComponent } from '../add-totals-collections/add-totals-collections.component';
 @Component({
-  selector: 'app-totals-collections',
-  templateUrl: './totals-collections.component.html',
-  styleUrls: ['./totals-collections.component.sass']
+  selector: 'app-main',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.sass']
 })
-export class TotalsCollectionsComponent implements OnInit {
+export class MainComponent implements OnInit {
   filterform: FormGroup
   today: Date = new Date();
   formattedDate: string = this.today.toISOString().slice(0, 10);
@@ -45,7 +44,6 @@ export class TotalsCollectionsComponent implements OnInit {
     "routeName",
     "collectionDate",
   ];
-
   currentDate: any
 
   subscription!: Subscription;
@@ -55,23 +53,27 @@ export class TotalsCollectionsComponent implements OnInit {
   accumulatorId: any;
   collectorId: any;
   MILK_COLLECTOR: string;
+
   constructor(
-    private router: Router, private datePipe: DatePipe, private fb: FormBuilder, private dialog: MatDialog, private service: SalesService, private dashboard: DashboardService,
-    private snackbar: SnackbarService) {
+    private router: Router, private datePipe: DatePipe, private fb: FormBuilder, private dialog: MatDialog, private service: TotalsCollectionService, private dashboard: DashboardService,
+    private snackbar: SnackbarService
+  ) { }
+ 
+  
+
+  addCall() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "65%"
+    dialogConfig.data = {
+      test: ""
+    }
+    const dialogRef = this.dialog.open(AddTotalsCollectionsComponent, dialogConfig)
+    dialogRef.afterClosed().subscribe((res)=> {
+      this.getData()
+    })
   }
-  // addCall() {
-  //   const dialogConfig = new MatDialogConfig();
-  //   dialogConfig.disableClose = false
-  //   dialogConfig.autoFocus = true
-  //   dialogConfig.width = "65%"
-  //   dialogConfig.data = {
-  //     test: ""
-  //   }
-  //   const dialogRef = this.dialog.open(AddAccumulationsComponent, dialogConfig)
-  //   dialogRef.afterClosed().subscribe((res)=> {
-  //     this.getData()
-  //   })
-  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -92,6 +94,7 @@ export class TotalsCollectionsComponent implements OnInit {
     return formattedDate;
   }
 
+  
   onSelectionChange() {
     switch (this.selected) {
       case 'current_date':
@@ -107,10 +110,12 @@ export class TotalsCollectionsComponent implements OnInit {
         break;
     }
   }
+  
 
   getData() {
     this.isLoading = true;
     this.getAllCollectionsSummary()
+
       this.service.getAllCollectorByNames().subscribe ( response => {
       const collectors = response.entity; 
       const collectorIdToUsername = {};
@@ -161,6 +166,8 @@ export class TotalsCollectionsComponent implements OnInit {
         } else {
           this.isdata = false;
           this.dataSource = new MatTableDataSource(null);
+          // this.resetFilter();
+
         }
         this.selected=""
       });
@@ -198,7 +205,8 @@ export class TotalsCollectionsComponent implements OnInit {
   
     if (collectorId != null && collectorId != undefined) {
       this.isLoading = true;
-    this.getSummaryPerCollector(collectorId)
+      this.getSummaryPerCollector(collectorId)
+  
       this.service.getAllCollectorByNames().subscribe(response => {
         const collectors = response.entity; 
         const collectorIdToUsername = {};
@@ -250,6 +258,9 @@ export class TotalsCollectionsComponent implements OnInit {
           } else {
             this.isdata = false;
             this.dataSource = new MatTableDataSource(null);
+            
+            // this.resetFilter();
+
           }
           this.selected="";
           this.filterform.patchValue({ farmer_no: "" });
@@ -262,7 +273,6 @@ export class TotalsCollectionsComponent implements OnInit {
           this.selected = "";
           this.filterform.patchValue({ collectorId: "" }); 
         
-
         });
       });
     });
@@ -296,6 +306,7 @@ export class TotalsCollectionsComponent implements OnInit {
     if (accumulatorId != null && accumulatorId != undefined) {
       this.isLoading = true;
       this.getSummaryPerAccumulator(accumulatorId)
+
         this.service.getAllCollectorByNames().subscribe(response => {
         const collectors = response.entity;
         const collectorIdToUsername = {};
@@ -345,9 +356,6 @@ export class TotalsCollectionsComponent implements OnInit {
             this.dataSource.sort = this.sort;
           } else {
             this.isdata = false;
-            this.isLoading=false;
-            // this.snackbar.showSnackbar('No accumulations found for the given accumulator.');
-
             this.dataSource = new MatTableDataSource(null);
           }
           this.selected="";
@@ -406,8 +414,5 @@ export class TotalsCollectionsComponent implements OnInit {
         }
       });
     }
-    
-  
-
 
 }

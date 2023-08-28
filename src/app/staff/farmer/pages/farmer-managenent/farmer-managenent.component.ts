@@ -181,6 +181,13 @@ export class FarmerManagenentComponent implements OnInit {
   getData() {
     this.selected = "";
     this.isLoading = true;
+    this.filterform.reset({
+      farmer_no: "",
+      activity: "",
+      status: "",
+      route: "",
+      routeId: ""
+    });
     this.subscription = this.service.getFarmers().subscribe(
       (res) => {
         this.data = res;
@@ -205,12 +212,15 @@ export class FarmerManagenentComponent implements OnInit {
           this.isdata = false;
           this.dataSource = new MatTableDataSource<any>(this.data);
         }
+        this.selected=""
       },
       (error) => {
         console.log('An error occurred:', error);
         this.isdata = false;
         this.isLoading = false;
       }
+      
+
     );
   }
   
@@ -355,8 +365,18 @@ export class FarmerManagenentComponent implements OnInit {
           this.isdata = false;
           this.dataSource = new MatTableDataSource(null);
         }
-        
-      })
+        this.selected="";
+        this.filterform.patchValue({ farmer_no: "" });
+      },
+      (error) => {
+        console.error(error);
+        this.isLoading = false;
+        this.isdata = false;
+        this.dataSource = new MatTableDataSource(null);
+        this.selected = "";
+        this.filterform.patchValue({ farmer_no: "" }); 
+      }
+      )
     }
   }
   getFarmersWithNoDeliveries() {
@@ -391,17 +411,27 @@ export class FarmerManagenentComponent implements OnInit {
         this.isLoading = false;
         this.dataSource = new MatTableDataSource([]);
       }
+      this.selected="";
     });
   }
   
   onStatusChanged(selectedActivity: string) {
     this.activityFilter = selectedActivity; 
+    this.filterform.patchValue({
+      active: '',
+      inactive: ''
+    });
     if (selectedActivity === 'active') {
       this.getActiveFarmers();
     } else if (selectedActivity === 'inactive') {
       this.getInactiveFarmers();
     }
+    this.form.patchValue({
+      active:'',
+      inactive: ''
+    })
   }
+  
   getActiveFarmers() {
     this.isLoading = true;
     const activity = this.activityFilter; 

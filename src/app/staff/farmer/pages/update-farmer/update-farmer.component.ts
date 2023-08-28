@@ -381,6 +381,10 @@ export class UpdateFarmerComponent implements OnInit {
   subscription!: Subscription;
 
   ngOnInit(): void {
+    this.getSubcounties();
+    this.getCounties();
+    this.getRoutes();
+
     this.isLoading = true;
     this.service.getFarmersById(this.data.farmer.id).subscribe(res => {
       this.data = res.entity;
@@ -426,8 +430,8 @@ export class UpdateFarmerComponent implements OnInit {
       lastName: [this.farmer.lastName, [Validators.required]],
       idNumber: [this.farmer.idNumber, [Validators.required]],
       mobileNo: [this.farmer.mobileNo, [Validators.required]],
-      subcounty_fk: [this.farmer.subcounty_fk, [Validators.required]],
-      wardFk: [this.farmer.wardFk, [Validators.required]],
+      subcounty_fk: [this.farmer.subcounty_fk],
+      wardFk: [this.farmer.wardFk],
       memberType: [this.farmer.memberType, [Validators.required]],
       alternativeMobileNo: [this.farmer.alternativeMobileNo],
       paymentMode:[this.farmer.paymentMode,[Validators.required]],
@@ -456,9 +460,7 @@ export class UpdateFarmerComponent implements OnInit {
       this.snackbar.showNotification("snackbar-danger", err);
       this.dialogRef.close();
     })
-    this.getSubcounties();
-    this.getCounties();
-    this.getRoutes();
+  
   }
 
   onClick() {
@@ -500,15 +502,16 @@ export class UpdateFarmerComponent implements OnInit {
     })
   }
 
-  getWards(id: any) {
-    this.subscription = this.service.getSubCountyById(id).subscribe(res => {
-      this.data = res;
-      if (this.data.entity.wards.length > 0) {
-        this.wards = this.data.entity.wards;
-      }
-      else {
-      }
-    })
+   getWards(id: any) {
+    this.subscription = this.service
+      .getSubCountyById(id.value)
+      .subscribe((res) => {
+        this.data = res;
+        if (this.data.entity.wards.length > 0) {
+          this.wards = this.data.entity.wards;
+        } else {
+        }
+      });
   }
 }
 

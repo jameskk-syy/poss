@@ -68,9 +68,15 @@ export class SigninComponent
           this.router.navigate(['/sales-person/dashboard'])
         } else if (role == Role.Manager) {
           this.router.navigate(['/manager/dashboard'])
-        } else {
+         }
+         else if (role== Role.TotalsCollector){
+          this.router.navigate(['/totals-collector/dashboard'])
+         }
+        
+         else {
           this.error = "Username or Password are invalid";
         }
+        console.log(this.error)
 
         this.submitted = false;
         this.loading = false;

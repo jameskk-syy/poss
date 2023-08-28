@@ -332,21 +332,21 @@ export class CollectionsComponent implements OnInit {
 
 
   }
-  getSummaryPerPickUpLocatins(pickUpLocationId) {
-    this.isLoading = true
+  // getSummaryPerPickUpLocatins(pickUpLocationId) {
+  //   this.isLoading = true
   
-    this.subscription = this.dashboard.getPickUpLocationCollections(pickUpLocationId).subscribe(res => {
-      this.data = res;
-      if (this.data) {
-        this.isLoading = false
-        this.dquantity = this.data.entity[0].quantity;
-        this.damount = this.data.entity[0].amount;
-        this.dcount = this.data.entity[0].count
-      }
-    });
+  //   this.subscription = this.dashboard.getPickUpLocationCollections(pickUpLocationId).subscribe(res => {
+  //     this.data = res;
+  //     if (this.data) {
+  //       this.isLoading = false
+  //       this.dquantity = this.data.entity[0].quantity;
+  //       this.damount = this.data.entity[0].amount;
+  //       this.dcount = this.data.entity[0].count
+  //     }
+  //   });
 
 
-  }
+  // }
   getSummaryPerRoute(routeId) {
     this.isLoading = true
     this.subscription = this.dashboard.getRouteCollections(routeId).subscribe(res => {
@@ -429,7 +429,7 @@ export class CollectionsComponent implements OnInit {
         pickuplocationId: this.dialogData.data.id
       });
       let pid = this.form.value.pickuplocationId
-      this.filterByPickUpLoction(pid)
+      // this.filterByPickUpLoction(pid)
       
 
     });
@@ -454,29 +454,29 @@ export class CollectionsComponent implements OnInit {
 
     });
   }
-  filterByPickUpLoction(id: any) {
-    this.isLoading = true;
-    this.getSummaryPerPickUpLocatins(id)
+  // filterByPickUpLoction(id: any) {
+  //   this.isLoading = true;
+  //   this.getSummaryPerPickUpLocatins(id)
 
-    // let pickUpLocationId = this.form.value.pickUpLocationId
+  //   // let pickUpLocationId = this.form.value.pickUpLocationId
 
-    this.subscription = this.service.getCollectionsPerPickUpLocation(id).subscribe(res => {
-      this.data = res;
-      if (this.data) {
-        this.isdata = true
-        this.isLoading = false;
-        this.datasize=this.data.entity.length
-        this.dataSource = new MatTableDataSource(this.data.entity);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
-      else {
-        this.isdata = false;
-        this.isLoading = false
-        this.dataSource = new MatTableDataSource(null);
-      }
-    })
-  }
+  //   this.subscription = this.service.getCollectionsPerPickUpLocation(id).subscribe(res => {
+  //     this.data = res;
+  //     if (this.data) {
+  //       this.isdata = true
+  //       this.isLoading = false;
+  //       this.datasize=this.data.entity.length
+  //       this.dataSource = new MatTableDataSource(this.data.entity);
+  //       this.dataSource.paginator = this.paginator;
+  //       this.dataSource.sort = this.sort;
+  //     }
+  //     else {
+  //       this.isdata = false;
+  //       this.isLoading = false
+  //       this.dataSource = new MatTableDataSource(null);
+  //     }
+  //   })
+  // }
   filterByFarmerNo(id: any) {
     this.isLoading = true;
     let farmerNo = this.form.value.farmer_no
@@ -506,10 +506,13 @@ export class CollectionsComponent implements OnInit {
       this.getSummaryPerFarmerNo(farmerNo)
       this.subscription = this.service.getCollectionsByFarmerNo(farmerNo).subscribe(res => {
         this.data = res;
+
         if (this.data) {
           this.isLoading = false
           this.isdata = true;
           this.datasize=this.data.entity.length
+          this.data.entity.sort((a, b) => new Date(b.collection_date).getTime() - new Date(a.collection_date).getTime());
+
           this.dataSource = new MatTableDataSource(this.data.entity);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -529,6 +532,7 @@ export class CollectionsComponent implements OnInit {
     // let pickUpLocationId = this.form.value.pickUpLocationId
 
     this.subscription = this.service.getCollectionsPerPRoute(id).subscribe(res => {
+      console.log(res)
       this.data = res;
       if (this.data.entity.length > 0) {
         this.isLoading = false

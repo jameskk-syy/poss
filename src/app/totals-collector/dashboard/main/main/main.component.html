@@ -2,12 +2,15 @@
     <div class="content-block">
         <div class="block-header">
             <!-- breadcrumb -->
-            <app-breadcrumb [title]="'Totals-Collections'" [items]="['Accumulations']" [active_item]="'Totals-Collections'">
+          
+            <app-breadcrumb [title]="'Dashboard'" [items]="['Home']" [active_item]="'Dashboard'">
             </app-breadcrumb>
+          
         </div>
         
+        
         <mat-tab-group>
-            <mat-tab label="Milk Accumulations Records">
+            <mat-tab label="Totals Collections">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
@@ -90,13 +93,13 @@
                                                             class="browser-default search-field"
                                                             aria-label="Search box" />
                                                     </li> -->
-                                                    <!-- <li>
+                                                    <li>
                                                         <div class="m-l-10" matTooltip="Add">
                                                             <button mat-mini-fab color="primary" (click)="addCall()">
                                                                 <mat-icon class="col-white">add</mat-icon>
                                                             </button>
                                                         </div>
-                                                    </li> -->
+                                                    </li>
 
                                                     <li>
                                                         <div class="m-l-10" matTooltip="Refresh">
@@ -124,37 +127,6 @@
                                                     </li>
                                                     <li class="dropdown">
                                                         <form [formGroup]="form">
-                                                            <!-- <mat-form-field class="m-l-5" *ngIf="selected == 'sd'">
-                                                                <input matInput [matDatepicker]="picker1"
-                                                                    (dateChange)="filterByDate()"
-                                                                    placeholder="Choose a date" formControlName="date">
-                                                                <mat-datepicker-toggle matSuffix
-                                                                    [for]="picker1"></mat-datepicker-toggle>
-                                                                <mat-datepicker #picker1></mat-datepicker>
-                                                            </mat-form-field> -->
-
-                                                            <!-- <mat-form-field class="m-l-5" *ngIf="selected == 'dr'">
-                                                                <input matInput [matDatepicker]="picker2"
-                                                                    placeholder="From Date" formControlName="fromDate">
-                                                                <mat-datepicker-toggle matSuffix
-                                                                    [for]="picker2"></mat-datepicker-toggle>
-                                                                <mat-datepicker #picker2></mat-datepicker>
-                                                            </mat-form-field> -->
-                                                            <!-- <mat-form-field class="m-l-5" *ngIf="selected == 'dr'">
-                                                                <input matInput [matDatepicker]="picker3"
-                                                                    (dateChange)="filterByDate()" placeholder="To Date"
-                                                                    formControlName="toDate">
-                                                                <mat-datepicker-toggle matSuffix
-                                                                    [for]="picker3"></mat-datepicker-toggle>
-                                                                <mat-datepicker #picker3></mat-datepicker>
-                                                            </mat-form-field> -->
-                                                    
-                                                            <!-- <mat-form-field class="m-l-5" *ngIf="selected == 'route'">
-                                                                <input matInput placeholder="select route"
-                                                                    formControlName="route">
-                                                                <mat-icon matSuffix (click)="selectRoute()">search
-                                                                </mat-icon>
-                                                            </mat-form-field> -->
                                                             <mat-form-field class="m-l-5" *ngIf="selected == 'collectorId'">
                                                                 <input matInput
                                                                     placeholder="Enter Collector Id"
@@ -266,26 +238,6 @@
                                             </mat-cell>
                                         </ng-container>
                                     
-                                        <!-- <ng-container matColumnDef="action">
-                                            <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                                            <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
-                                                [class.even-row]="!(i % 2)"
-                                                (contextmenu)="onContextMenu($event, response)">
-                                                <button mat-icon-button color="primary"
-                                                    (click)="$event.stopPropagation()"
-                                                    (click)="viewFarmerCollections(response)" class="tbl-action-btn">
-                                                    <app-feather-icons matTooltip="View Farmer Collections"
-                                                        [icon]="'eye'" [class]="'tbl-fav-eye'"></app-feather-icons>
-                                                </button>
-                                                <button mat-icon-button color="primary"
-                                                    (click)="$event.stopPropagation()" (click)="edit(response)"
-                                                    class="tbl-action-btn">
-                                                    <app-feather-icons matTooltip="Edit Collections" [icon]="'edit'"
-                                                        [class]="'tbl-fav-edit'"></app-feather-icons>
-                                                </button>
-                                            </mat-cell>
-                                        </ng-container> -->
-
                                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                         <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                                         <mat-row *matRowDef="let row; columns: displayedColumns"
@@ -314,55 +266,15 @@
                 </div>
             </mat-tab>
             
-            <!-- <mat-tab label="Milk Collection Map" class="m-3">
-                <form [formGroup]="mapForm">
-                    <div class="row card down">
-                        <div class="row col-8">
-                            <div class="col-4 m-2">
-                                <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Select Collector</mat-label>
-                                    <mat-select formControlName="collectorId" required>
-                                        <mat-option *ngFor="let collector of collectors" [value]="collector.id">
-                                            {{ collector.username }}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error *ngIf="mapForm.get('collectorId').hasError('required')">
-                                        Milk Collector is required
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-4 m-2">
-                                <mat-form-field class="m-l-10" appearance="outline">
-                                    <mat-label>Collection Date</mat-label>
-                                    <input matInput [matDatepicker]="picker4" formControlName="date"
-                                        (dateChange)="getCoordinates()">
-                                    <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker4></mat-datepicker>
-                                </mat-form-field>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <div class="row body">
-                    <agm-map #map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom"
-                        [restriction]="restriction" *ngIf="isCoordinates">
-                        <agm-marker *ngFor="let marker of markers" [latitude]="marker.latitude"
-                            [longitude]="marker.longitude" [label]="marker.route+' - '+marker.quantity"></agm-marker>
-                    </agm-map>
-
-                    <agm-map #map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom"
-                        [restriction]="restriction" *ngIf="!isCoordinates">
-                    </agm-map>
-                </div>
-            </mat-tab> -->
+            
         </mat-tab-group>
-        <div class="row">
+        <!-- <div class="row">
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
             <app-milk-accumulation></app-milk-accumulation>
           </div>
-          <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
             <app-collectors-totals-per-month></app-collectors-totals-per-month>
-          </div> -->
-        </div>
+          </div>
+        </div> -->
     </div>
 </section>
