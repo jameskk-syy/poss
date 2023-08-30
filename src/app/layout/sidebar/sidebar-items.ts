@@ -630,5 +630,18 @@ export const ROUTES: RouteInfo[] = [
     role: ['MANAGER'],
     submenu: [],
   },
+  {
+  path: '/totals-collector/dashboard/main',
+    title: 'Dashboard',
+    moduleName: 'dashboard',
+    iconType: 'feather',
+    icon: 'monitor',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['TOTALS_COLLECTOR'],
+    submenu: [],
+  },
 
 ];
