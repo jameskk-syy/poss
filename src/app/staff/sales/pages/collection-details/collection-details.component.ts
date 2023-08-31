@@ -36,6 +36,7 @@ export class CollectionDetailsComponent implements OnInit {
   isdata: boolean = false;
   isLoading: boolean = false;
   farmerid: any;
+  farmer_no
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -92,18 +93,16 @@ export class CollectionDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       this.farmerid = params['id'];
-      // Use the id parameter in your component logic
+      this.farmer_no = params['id'];
     });
-
     this.getFarmerDetails(this.farmerid);
-    this.getFarmerCollections(this.farmerid);
-    // this.getFarmerAllocations(this.farmerid);
-    // this.getPayedFarmerAccruals(this.farmerid);
-    // this.getNonPayedFarmerAccruals(this.farmerid);
+    this.getFarmerCollections(this.farmer_no);
+   
     this.getFarmerAmountOnNotPayedCollections(this.farmerid);
     this.getFarmerAmountOnPayedCollections(this.farmerid)
   }
 
+  farmerNo:any;
   farmer: any;
   present: boolean = false;
   found: boolean = false;
@@ -120,9 +119,9 @@ export class CollectionDetailsComponent implements OnInit {
     });
   }
 
-  getFarmerCollections(id) {
+  getFarmerCollections(farmer_no:any) {
     this.isLoading = true;
-    this.service.getFarmerCollections(id).subscribe((res) => {
+    this.service.getFarmerNoCollections(farmer_no).subscribe((res) => {
       this.data = res;
 
       if (this.data.entity.length > 0) {
@@ -130,16 +129,19 @@ export class CollectionDetailsComponent implements OnInit {
         this.isdata = true;
 
       
-        // Binding with the datasource
         this.dataSource = new MatTableDataSource(this.data.entity);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       } else {
         this.isdata = false;
         this.isLoading = false;
-        // this.dataSource = new MatTableDataSource<any>(this.data);
       }
     });
+    (error) => {
+      console.error('API Error:', error);
+      this.isLoading = false;
+      this.isdata = false;
+    }
   }
 
   getFarmerAllocations(id) {
@@ -174,7 +176,6 @@ export class CollectionDetailsComponent implements OnInit {
         console.log(response);
         let url = window.URL.createObjectURL(response.data);
 
-        // if you want to open PDF in new tab
         window.open(url);
 
         let a = document.createElement('a');
@@ -206,15 +207,7 @@ export class CollectionDetailsComponent implements OnInit {
     );
   }
 
-  // accruals: any;
-  // getAccruals() {
-  //   this.service.getFarmerAccruals(this.farmerid).subscribe((res) => {
-  //     this.accruals = res.entity;
-  //     if (this.accruals != null) {
-  //       this.found = true;
-  //     }
-  //   });
-  // }
+
 
   getPayedFarmerAccruals(id){
     this.service.getFarmerAllocationAccruals(id, "Y").subscribe((res) => {
@@ -226,10 +219,7 @@ export class CollectionDetailsComponent implements OnInit {
             this.payedAccruals = 0;
           }
 
-          console.log("Payed Accruals", res)
-          // if (this.accruals != null) {
-          //   this.found = true;
-          // }
+          
         });    
   }
 

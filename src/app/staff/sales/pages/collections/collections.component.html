@@ -124,8 +124,9 @@
                                                                 <mat-option value="farmer_no"><b>Farmer Number</b></mat-option>
                                                                 <mat-option value="sd"><b>Specific Date</b></mat-option>
                                                                 <mat-option value="dr"><b>Date Range</b>
-                                                                </mat-option><mat-option value="pul"><b>Pick-Up
-                                                                        Location</b></mat-option>
+                                                                </mat-option>
+                                                                <!-- <mat-option value="pul"><b>Pick-Up
+                                                                        Location</b></mat-option> -->
                                                                 <mat-option value="route"><b>Route
                                                                     </b></mat-option>
                                                             </mat-select>
@@ -297,7 +298,7 @@
                                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                         <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                                         <mat-row *matRowDef="let row; columns: displayedColumns"
-                                            (click)="countyDetailsCall(county)" [style.cursor]="'pointer'" matRipple>
+                                        [style.cursor]="'pointer'" matRipple>
                                         </mat-row>
                                         
                                     </mat-table>

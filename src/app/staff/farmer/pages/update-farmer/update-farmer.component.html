@@ -17,20 +17,17 @@
     </div>
     <div mat-dialog-content>
         <form class="register-form m-4" [formGroup]="farmerEditForm" *ngIf="farmerEditForm">
-            <!--Supplier Details-->
             <div class="row">
                 <mat-card>
-                    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
                     <mat-card-title style="font-size: x-small;">Farmer Details</mat-card-title>
                     <mat-card-content>
                         <div class="row">
-
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>First Name</mat-label>
                                     <input matInput formControlName="firstName" required />
                                     <mat-error *ngIf="farmerEditForm.get('firstName').hasError('required')">
-                                        firstName name is required
+                                        First name is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -39,16 +36,16 @@
                                     <mat-label>Last Name</mat-label>
                                     <input matInput formControlName="lastName" required />
                                     <mat-error *ngIf="farmerEditForm.get('lastName').hasError('required')">
-                                        lastName name is required
+                                        Last name is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Id Number</mat-label>
+                                    <mat-label>National ID</mat-label>
                                     <input matInput formControlName="idNumber" required />
                                     <mat-error *ngIf="farmerEditForm.get('idNumber').hasError('required')">
-                                        ID Number name is required
+                                        National ID is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -57,43 +54,31 @@
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>mobile Number</mat-label>
+                                    <mat-label>Mobile No.</mat-label>
                                     <input matInput formControlName="mobileNo" required />
                                     <mat-error *ngIf="farmerEditForm.get('mobileNo').hasError('required')">
-                                        Mobile Number name is required
+                                        Mobile No. is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Alternative MobileNo</mat-label>
-                                    <input matInput formControlName="alternativeMobileNo" required />
-
-                                </mat-form-field>
-                            </div>
-
-                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                                <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Number of Cows</mat-label>
-                                    <input matInput formControlName="noOfCows" type="number" required />
-                                    <mat-error *ngIf="farmerEditForm.get('noOfCows').hasError('required')">
-                                        Input is required
-                                    </mat-error>
+                                    <mat-label>Alternative Mobile No.</mat-label>
+                                    <input matInput formControlName="alternativeMobileNo" />
                                 </mat-form-field>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                    <mat-label>Select Farmer/Supplier Category</mat-label>
+                                    <mat-label>Select Member Type</mat-label>
                                     <mat-select formControlName="memberType" required>
-                                        <mat-option value="Individual">Individual</mat-option>
-                                        <mat-option value="Group">Farmers Group</mat-option>
-                                        <mat-option value="Co-Operative">Co-Operative Society</mat-option>
+                                        <mat-option value="SPECIAL">SPECIAL</mat-option>
+                                        <mat-option value="STANDARD">STANDARD</mat-option>
                                     </mat-select>
                                     <mat-error *ngIf="farmerEditForm.get('memberType').hasError('required')">
-                                        Farmer Category Is required
+                                        Member Type is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>
@@ -124,43 +109,42 @@
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
                                     <mat-label>Select County</mat-label>
-                                    <mat-select formControlName="county_fk" required>
+                                    <mat-select formControlName="county_fk">
                                         <mat-option *ngFor="let county of counties" [value]="county.id">
                                             {{ county.name }}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-error *ngIf="farmerEditForm.get('county_fk').hasError('required')">
+                                    <!-- <mat-error *ngIf="farmerEditForm.get('county_fk').hasError('required')">
                                         County is required
-                                    </mat-error>
+                                    </mat-error> -->
                                 </mat-form-field>
                             </div>
 
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
                                     <mat-label>Select Subcounty</mat-label>
-                                    <mat-select formControlName="subcounty_fk" (selectionChange)="getWards($event)"
-                                        required>
+                                    <mat-select formControlName="subcounty_fk" (selectionChange)="getWards($event)">
                                         <mat-option *ngFor="let subcounty of subcounties" [value]="subcounty.id">
                                             {{ subcounty.subcounty }}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-error *ngIf="farmerEditForm.get('subcounty_fk').hasError('required')">
+                                    <!-- <mat-error *ngIf="farmerEditForm.get('subcounty_fk').hasError('required')">
                                         Subcounty name is required
-                                    </mat-error>
+                                    </mat-error> -->
                                 </mat-form-field>
                             </div>
 
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
                                     <mat-label>Select Ward</mat-label>
-                                    <mat-select formControlName="wardFk" required>
+                                    <mat-select formControlName="wardFk">
                                         <mat-option *ngFor="let ward of wards" [value]="ward.id">
                                             {{ ward.name }}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-error *ngIf="farmerEditForm.get('wardFk').hasError('required')">
+                                    <!-- <mat-error *ngIf="farmerEditForm.get('wardFk').hasError('required')">
                                         Ward is required
-                                    </mat-error>
+                                    </mat-error> -->
                                 </mat-form-field>
                             </div>
                         </div>
@@ -168,48 +152,30 @@
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Location</mat-label>
-                                    <input matInput formControlName="location" required />
-                                    <mat-error *ngIf="farmerEditForm.get('location').hasError('required')">
-                                        Location is required
-                                    </mat-error>
+                                    <input matInput formControlName="location"/>
                                 </mat-form-field>
                             </div>
 
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Sub Location</mat-label>
-                                    <input matInput formControlName="subLocation" required />
-                                    <mat-error *ngIf="farmerEditForm.get('subLocation').hasError('required')">
-                                        Sub Location is required
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                                <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Village</mat-label>
-                                    <input matInput formControlName="village" required />
-                                    <mat-error *ngIf="farmerEditForm.get('village').hasError('required')">
-                                        Village is required
-                                    </mat-error>
+                                    <input matInput formControlName="subLocation" />
                                 </mat-form-field>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="row">
-                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                                    <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                        <mat-label>Collections Routes</mat-label>
-                                        <mat-select formControlName="routeFk" required>
-                                            <mat-option *ngFor="let route of routes" [value]="route.id">
-                                                {{ route.route }}
-                                            </mat-option>
-                                        </mat-select>
-                                        <mat-error *ngIf="farmerEditForm.get('route').hasError('required')">
-                                            Route is required
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                    <mat-label>Route</mat-label>
+                                    <mat-select formControlName="routeFk" required>
+                                        <mat-option *ngFor="let route of routes" [value]="route.id">
+                                            {{ route.route }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="farmerEditForm.get('routeFk').hasError('required')">
+                                        Kindly choose a route
+                                    </mat-error>
+                                </mat-form-field>
                             </div>
                         </div>
                     </mat-card-content>
@@ -219,39 +185,50 @@
             <!--Bank Details-->
             <div class="row">
                 <mat-card>
-                    <mat-card-title style="font-size: x-small;">Bank Details & Payment Frequency</mat-card-title>
+                    <mat-card-title style="font-size: x-small;">Bank Details</mat-card-title>
                     <mat-card-content>
-                        <form [formGroup]="bankDetailsForm">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                            <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                <mat-label>Mode Of Payment</mat-label>
+                                <mat-select [(value)]="method" (selectionChange)="onPaymentModeChange()" required>
+                                    <mat-option value="BANK">BANK</mat-option>
+                                    <mat-option value="MPESA">MPESA</mat-option>
+                                    <mat-option value="SACCO">SACCO</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                        </div>
+                        <form [formGroup]="bankDetailsForm" *ngIf="showBankForm">
                             <div class="row">
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                     <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                        <mat-label>Select Bank Name</mat-label>
+                                        <mat-label>Bank/Sacco Name</mat-label>
                                         <mat-select formControlName="bankName" required>
                                             <mat-option *ngFor="let bank of banks.list" [value]="bank.name">
                                                 {{ bank.name }}
                                             </mat-option>
                                         </mat-select>
                                         <mat-error *ngIf="bankDetailsForm.get('bankName').hasError('required')">
-                                            Bank Name is required
+                                            Bank/Sacco Name is required
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                     <mat-form-field class="example-full-width" appearance="outline">
-                                        <mat-label>Bank Account Number</mat-label>
+                                        <mat-label>Bank/Sacco Account Number</mat-label>
                                         <input matInput formControlName="accountNumber" required />
                                         <mat-error *ngIf="bankDetailsForm.get('accountNumber').hasError('required')">
-                                            Bank Account No is required
+                                            Bank/Sacco Account No is required
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
 
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                     <mat-form-field class="example-full-width" appearance="outline">
-                                        <mat-label>Bank Account Name</mat-label>
+                                        <mat-label>Bank/Sacco Account Name</mat-label>
                                         <input matInput formControlName="accountName" required />
                                         <mat-error *ngIf="bankDetailsForm.get('accountName').hasError('required')">
-                                            Bank Account name is required
+                                            Bank/Sacco Account name is required
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -267,70 +244,75 @@
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
-
-
-
-
                             </div>
+                        </form>
+                        <form [formGroup]="mpesaDetails" *ngIf="showMpesaForm">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-label>Mpesa Number</mat-label>
+                                        <input matInput formControlName="mpesaNumber" required />
+                                        <mat-error *ngIf="mpesaDetails.get('mpesaNumber').hasError('required')">
+                                            Mpesa Number is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
 
-
+                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-label>Alternative Mpesa Number</mat-label>
+                                        <input matInput formControlName="alternativeNumber" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
                         </form>
                     </mat-card-content>
                 </mat-card>
             </div>
 
-            <!--Transportation & Payment Frequency-->
+           
+            <form [formGroup]="nextOfKinForm">
             <div class="row">
                 <mat-card>
-                    <mat-card-title style="font-size: x-small;">Transportation & Payment Frequency</mat-card-title>
+                    <mat-card-title style="font-size: x-small;">Next Of Kin</mat-card-title>
                     <mat-card-content>
                         <div class="row">
+
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                    <mat-label>Select Payment Frequency</mat-label>
-                                    <mat-select formControlName="paymentFreequency">
-                                        <mat-option value="Monthly">Monthly</mat-option>
-                                        <mat-option value="Weekly">Weekly</mat-option>
-                                        <mat-option value="2Weeks">Two Weeks</mat-option>
-                                    </mat-select>
-                                    <mat-error
-                                        *ngIf="farmerEditForm.get('paymentFreequency').hasError('required')">
-                                        Payment Frequency is required
-                                    </mat-error>
+                                    <mat-label>Name</mat-label>
+                                    <input matInput formControlName="name" />
                                 </mat-form-field>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                    <mat-label>Select Payment Mode</mat-label>
-                                    <mat-select formControlName="paymentMode" required>
-                                        <mat-option value="M-Pesa">M-Pesa Payments</mat-option>
-                                        <mat-option value="Bank">Bank</mat-option>
-                                        <mat-option value="Cash">Cash</mat-option>
-                                        <mat-option value="Pesalink">Pesalink</mat-option>
-                                        <mat-option value="cooperative saccos">Cooperative Saccos</mat-option>
-                                    </mat-select>
+                                    <mat-label>National ID Number</mat-label>
+                                    <input matInput formControlName="idNo" />
                                 </mat-form-field>
                             </div>
-
-
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                    <mat-label>Select Means Of Transportation</mat-label>
-                                    <mat-select formControlName="transportMeans">
-                                        <mat-option value="Truck">Truck</mat-option>
-                                        <mat-option value="Motor-Bike">Motor-Bike</mat-option>
-                                        <mat-option value="Bicycle">Bicycle</mat-option>
-                                    </mat-select>
-                                    <mat-error
-                                        *ngIf="farmerEditForm.get('transportMeans').hasError('required')">
-                                        Means of transportation is required
-                                    </mat-error>
+                                    <mat-label>Relationship</mat-label>
+                                    <input matInput formControlName="relationship" />
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                    <mat-label>Phone Number</mat-label>
+                                    <input matInput formControlName="tel" />
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                    <mat-label>Address</mat-label>
+                                    <input matInput formControlName="address" />
                                 </mat-form-field>
                             </div>
                         </div>
                     </mat-card-content>
                 </mat-card>
             </div>
+        </form>
 
             <div class="row">
                 <mat-card>
@@ -340,7 +322,7 @@
                                 <button mat-raised-button color="warn" (click)="onClick()" tabindex="-1">
                                     Cancel
                                 </button>
-                                <button mat-raised-button color="primary" [disabled]="!farmerEditForm.valid"
+                                <button mat-raised-button color="primary" [disabled]="!farmerEditForm.valid "
                                     (click)="onSubmit()">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     <b>Submit</b>

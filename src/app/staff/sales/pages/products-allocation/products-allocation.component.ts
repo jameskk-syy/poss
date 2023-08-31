@@ -24,6 +24,7 @@ export class ProductsAllocationComponent implements OnInit {
 filterform:FormGroup
 selected="";
 
+
   displayedColumns: string[] = [
     "farmerNo",
     "username",
@@ -31,9 +32,13 @@ selected="";
     "advanceAmount",
     "date",
     
+   
+    
   ];
   
 subscription!: Subscription;
+  
+
   dataSource!: MatTableDataSource<any>;
   dataSource1!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -46,7 +51,9 @@ subscription!: Subscription;
   data: any;
   isdata: boolean;
   salesservice: any;
-
+  // fb: any;
+  
+ 
  
   constructor(
     public dialog: MatDialog,
@@ -69,10 +76,7 @@ subscription!: Subscription;
   getData() {
     this.selected = "";
     this.isLoading = true;
-    // this.subscription = this.service.getFarmerByFarmerNo(FarmerData).subscribe(res => {
       this.service.getAdvance(this.data).subscribe(res => {
-        // this.subscription=this.service.getAdvance().subscribe(res =>{
-
       this.data = res;
       if (this.data.entity.length > 0) {
         this.isLoading = false;
@@ -103,12 +107,18 @@ subscription!: Subscription;
     dialogConfig.data = {
       test: ""
     }
-    // this.dialog.open(AdvanceDetailsComponent, dialogConfig)
     const dialogRef = this.dialog.open(AdvanceDetailsComponent, dialogConfig)
     dialogRef.afterClosed().subscribe((res)=> {
       this.getData()
     })
   }
+  
+  // getFarmerByFarmerNo(){
+  //   this.isLoading = true;
+  //   let farmerNo=this.filterform.value.farmerNo
+  //   console.log(this.filterform.value.farmerNo)
+      
+  //   if (farmerNo != null && farmerNo != undefined ) {
   
   getFarmerByFarmerNo(){
     this.isLoading = true;
@@ -125,21 +135,35 @@ subscription!: Subscription;
           let result = []
           result.push(this.data.entity)
          
+      const params = new HttpParams().set('farmerNo', farmerNo);
+      this.subscription = this.service.getFarmerByFarmerNo(farmerNo).subscribe(res => {
+              this.data = res;
+        console.log(this.data.entity)
+        if (this.data.entity!=null) {
+          let result = []
+          result.push(this.data.entity)
+         
           this.isLoading = false;
           this.isdata = true;
-          // Binding with the datasource
           this.dataSource = new MatTableDataSource(result);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }
+        // else {
+        //   this.isdata = false;
         else {
           this.isdata = false;
           this.isLoading = false;
           this.dataSource = new MatTableDataSource(null);
+          this.dataSource = new MatTableDataSource(null);
         }
       })
     }
+      })
+    }
   }
+
+  
 
   
 
@@ -157,5 +181,6 @@ subscription!: Subscription;
     }
   }
 
+  
   
 }

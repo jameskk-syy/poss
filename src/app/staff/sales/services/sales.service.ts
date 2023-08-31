@@ -1,4 +1,4 @@
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -11,15 +11,86 @@ const httpOptions = {
 })
 export class SalesService {
  
+
   
   private eventSource = new Subject<any>();
   event$ = this.eventSource.asObservable();
+  baseUrl: any;
 
   emitEvent(event: any) {
     this.eventSource.next(event);
   }
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient) { }
+  getAllAccumulatorNames(roleName:string): Observable<any> {
+    // return this.http.get(`${environment.apiUrl}/api/v1/users/users-by-role-name?roleName/${roleName}`, httpOptions);
+    return this.http.get(`${environment.apiUrl}/admin/api/v1/users/users-by-role-name?roleName=` + roleName, httpOptions);
+
+
+  }
+ 
+
+  getAllRouteNames():Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/routes/fetch`,httpOptions); 
+  }
+
+  getAllCollectorByNames(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/collectors/all`,httpOptions); 
+  }
+  addAccumulation(value: any):Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/v1/accumulation/add`,
+    {
+     collectorId:value.collectorId,
+      milkQuantity:value.milkQuantity,
+      session: value.session,
+      accumulatorId:value.accumulatorId,
+      routeFk: value.routeFk,
+    },httpOptions); 
+  }
+  
+  // getAccumulationsPerDate(collectorId: number, date: string): Observable<any> {
+  //   const url = `${environment.apiUrl}/accumulation/${collectorId}/${date}`;
+  //   return this.http.get(url);
+  // }
+  getCollectorsIdAccumulations(collectorId: any): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/accumulation/${collectorId}`;
+    return this.http.get(url, httpOptions);
+  }
+
+
+  getAllAccumulations(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/accumulation/all`,httpOptions); 
+   }
+ 
+  getAccumulationsByAccumulatorId(accumulatorId: any): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/accumulation/by-accumulator/${accumulatorId}`;
+    return this.http.get(url);
+  }
+
+  getAdvance(data:any):Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/advance-payments/all`,httpOptions);
+
+
+   }
+
+  // getFarmerByFarmerNo(farmerNo: string): Observable<any> {
+  //   const apiUrl = `http://52.15.152.26:9701/api/v1/advance-payments/get-by-farmer-number/${farmerNo}`;
+  //   return this.http.get(apiUrl);
+  // }
+  getFarmerByFarmerNo(farmerNo: string):Observable<any>{
+    return this.http.get(`${environment.apiUrl}/api/v1/advance-payments/get-by-farmer-number/${farmerNo}`, httpOptions);
+
+  }
+  allocateAdvance(data: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/v1/advance-payments/add`,
+    {
+      farmerNo: data.farmerNo,
+      date: data.date,
+      advanceAmount: data.advanceAmount,
+      paymentMode: data.paymentMode,
+      username: data.username
+    },httpOptions);
+   }
 
   
   getCollections(date: string) {
@@ -30,7 +101,6 @@ export class SalesService {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/all`, httpOptions);
   }
   getTodaysCollections(date: any) {
-    console.log(date)
     return this.http.get(`${environment.apiUrl}/api/v1/collections/specific/date?date=${date}`, httpOptions);
   }
   getCollectionsPerPickUpLocation(id:any) {
@@ -61,12 +131,23 @@ export class SalesService {
     return this.http.get(`${environment.apiUrl}/api/v1/float/get/allocations`, httpOptions);
 
   }
-  getFarmerCollections(id: any) {
-    return this.http.get(`${environment.apiUrl}/api/v1/collections/per/farmer?farmerId=` + id, httpOptions);
+  
+
+  getFarmerCollections(farmerid) {
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/all`,httpOptions);
+  }   
+  
+  getFarmerNoCollections(farmer_no: any):Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/per/farmer/by-farmer-no?farmerNo=${farmer_no}`,httpOptions);
+    // return this.http.get(`${environment.apiUrl}/api/v1/collections/per/farmer/by-farmer-no?farmerNo=` +farmer_no,httpOptions);
+
+
   }
 
   getFarmerDetails(id: any): Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/farmer/farmers/details?farmerId=` + id, httpOptions);
+    // return this.http.get(`${environment.apiUrl}/api/v1/farmer/membernumber?farmer_number=` + farmer_no, httpOptions);
+
   }
 
   deleteFarmerDetails(id: any): Observable<any> {
@@ -187,24 +268,24 @@ export class SalesService {
     return this.http.delete(`${environment.apiUrl}/api/v1/milk_allocation/delete?allocationId=${id}`, httpOptions)
   }
   
-  getAdvance(data:any):Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/advance-payments/all`,httpOptions);
+  // getAdvance(data:any):Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/api/v1/advance-payments/all`,httpOptions);
 
 
-   }
+  //  }
 
-  getFarmerByFarmerNo(farmerNo: string): Observable<any> {
-    const apiUrl = `${environment.apiUrl}/api/v1/advance-payments/get-by-farmer-number/${farmerNo}`;
-    return this.http.get(apiUrl);
-  }
-  allocateAdvance(data: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/api/v1/advance-payments/add`,
-    {
-      farmerNo: data.farmerNo,
-      date: data.date,
-      advanceAmount: data.advanceAmount,
-      paymentMode: data.paymentMode,
-      username: data.username
-    },httpOptions);
-   }
+  // getFarmerByFarmerNo(farmerNo: string): Observable<any> {
+  //   const apiUrl = `${environment.apiUrl}/api/v1/advance-payments/get-by-farmer-number/${farmerNo}`;
+  //   return this.http.get(apiUrl);
+  // }
+  // allocateAdvance(data: any): Observable<any> {
+  //   return this.http.post(`${environment.apiUrl}/api/v1/advance-payments/add`,
+  //   {
+  //     farmerNo: data.farmerNo,
+  //     date: data.date,
+  //     advanceAmount: data.advanceAmount,
+  //     paymentMode: data.paymentMode,
+  //     username: data.username
+  //   },httpOptions);
+  //  }
 }

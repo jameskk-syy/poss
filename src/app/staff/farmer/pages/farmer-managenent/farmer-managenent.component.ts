@@ -2,16 +2,19 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatRadioButton } from '@angular/material/radio';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, identity } from 'rxjs';
 import { FarmerService } from '../../services/farmer.service';
 import { DeleteFarmerComponent } from '../delete-farmer/delete-farmer.component';
 import { FarmerDetailsComponent } from '../farmer-details/farmer-details.component';
 import { RegisterFarmerComponent } from '../register-farmer/register-farmer.component';
 import { UpdateFarmerComponent } from '../update-farmer/update-farmer.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { FarmerLookupComponent } from '../farmer-lookup/farmer-lookup.component';
+import { Activity } from 'angular-feather/icons';
 import { RoutesLookUpComponent } from 'src/app/staff/sales/pages/routes-look-up/routes-look-up.component';
 
 @Component({
@@ -22,13 +25,15 @@ import { RoutesLookUpComponent } from 'src/app/staff/sales/pages/routes-look-up/
 export class FarmerManagenentComponent implements OnInit {
   filterform:FormGroup
   selected = "";
+  statusFilter="";
+  activityFilter="";
 
   displayedColumns: string[] = [
     'id',
     "farmer_no",
     "username",
     "mobile_no",
-    "ID No.",
+    "id_number",
     "route",
     'action',
   ];
@@ -38,7 +43,12 @@ export class FarmerManagenentComponent implements OnInit {
   isdata: boolean = false;
   isLoading: boolean = false;
   dialogData: any;
+  farmerForm: any;
+  col: any;
+  activity: string;
   form: any;
+  id: any;
+  selectedStatus: string;
   constructor(private router: Router, private dialog: MatDialog, private service: FarmerService,private fb:FormBuilder) { }
 
   applyFilter(event: Event) {
@@ -49,31 +59,194 @@ export class FarmerManagenentComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  onStatusChange(selectedStatus: string) {
+    if (selectedStatus === 'ap') {
+      this.getApprovedFarmers();
+    } else if (selectedStatus === 'pe') {
+      this.getPendingFarmers();
+    }
+  }
+  getPendingFarmers() {
+    this.isLoading = true;
+    this.subscription = this.service.fetchFarmers().subscribe(
+      (res) => {
+        this.data = res;
+        const pendingFarmers = this.data.entity.filter((farmer) => farmer.status === 'Pending');
+  
+        if (pendingFarmers.length > 0) {
+          this.isLoading = false;
+          this.isdata = true;
+          this.displayedColumns = [
+            'id',
+            'farmer_no',
+            'username',
+            'mobile_no',
+            'id_number',
+            'route', 
+            'action'
+          ];
+          const columnToPropertyMap = {
+            'id':'id',
+            'farmer_no': 'farmerNo', 
+            'username': 'username',
+            'mobile_no': 'mobileNo',
+            'id_number': 'idNumber',
+            'route':'routeFk',
+            'action':''
+          };
+          const mappedPendingFarmers = pendingFarmers.map((farmer) => {
+            const mappedFarmer = {};
+            for (const column of this.displayedColumns) {
+              const property = columnToPropertyMap[column] || column;
+              mappedFarmer[column] = farmer[property] || "N/A";
+            }
+            return mappedFarmer;
+          });
+          this.dataSource = new MatTableDataSource(mappedPendingFarmers);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+         
+        } else {
+          this.isdata = false;
+          this.dataSource = new MatTableDataSource([]);
+        }
+        this.selected = '';
+
+      },
+      (error) => {
+        console.log('An error occurred:', error);
+        this.isdata = false;
+        this.isLoading = false;
+      }
+    );
+   }
+
+   getApprovedFarmers() {
+    this.isLoading = true;
+    this.subscription = this.service.fetchFarmers().subscribe(
+      (res) => {
+        this.data = res;
+        const approvedFarmers = this.data.entity.filter((farmer) => farmer.status === 'Approved');
+  
+        if (approvedFarmers.length > 0) {
+          this.isLoading = false;
+          this.isdata = true;
+          this.displayedColumns = [
+            'id',
+            'farmer_no',
+            'username',
+            'mobile_no',
+            'id_number',
+            'route', 
+            'action'
+          ];
+          const columnToPropertyMap = {
+            'id':'id',
+            'farmer_no': 'farmerNo', 
+            'username': 'username',
+            'mobile_no': 'mobileNo',
+            'id_number': 'idNumber',
+            'route':'routeFk',
+            'action':''
+          };
+          const mappedApprovedFarmers = approvedFarmers.map((farmer) => {
+            const mappedFarmer = {};
+            for (const column of this.displayedColumns) {
+              const property = columnToPropertyMap[column] || column;
+              mappedFarmer[column] = farmer[property] || "N/A";
+            }
+            return mappedFarmer;
+          });
+          this.dataSource = new MatTableDataSource(mappedApprovedFarmers);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        } else {
+          this.isdata = false;
+          this.dataSource = new MatTableDataSource([]);
+        }
+        this.selected = '';
+
+      },
+      (error) => {
+        console.log('An error occurred:', error);
+        this.isdata = false;
+        this.isLoading = false;
+      }
+
+    );
+  }
+  
 
 
   getData() {
     this.selected = "";
     this.isLoading = true;
-    this.subscription = this.service.getFarmers().subscribe(res => {
-      this.data = res;
-      if (this.data.entity.length > 0) {
-        this.isLoading = false;
-        this.isdata = true;
-        // Binding with the datasource
-        this.dataSource = new MatTableDataSource(this.data.entity);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
-      else {
+    this.filterform.reset({
+      farmer_no: "",
+      activity: "",
+      status: "",
+      route: "",
+      routeId: ""
+    });
+    this.subscription = this.service.getFarmers().subscribe(
+      (res) => {
+        this.data = res;
+        if (this.data.entity.length > 0) {
+          this.isLoading = false;
+          this.isdata = true;
+  
+          const sanitizedData = this.data.entity.map((item) => ({
+            id: item.id || "N/A",
+            farmer_no: item.farmer_no || "N/A",
+            username: item.username || "N/A",
+            mobile_no: item.mobile_no || "N/A",
+            id_number: item.id_number || "N/A",
+            route: item.route || "N/A",
+            action: item.action || "N/A",
+          }));
+  
+          this.dataSource = new MatTableDataSource(sanitizedData);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        } else {
+          this.isdata = false;
+          this.dataSource = new MatTableDataSource<any>(this.data);
+        }
+        this.selected=""
+      },
+      (error) => {
+        console.log('An error occurred:', error);
         this.isdata = false;
-        this.dataSource = new MatTableDataSource<any>(this.data);
+        this.isLoading = false;
       }
-    },error => {
-      console.log('An error occurred:', error)
-      this.isdata = false;
-      this.isLoading = false
-    })
+      
+
+    );
   }
+  
+  // getCollections() {
+  //   this.selected = "";
+  //   this.isLoading = true;
+  //   this.subscription = this.service.farmerCollections().subscribe(res => {
+  //     this.col = res;
+  //     console.log(res)
+  //     if (this.col.entity.length > 0) {
+  //       this.isLoading = false;
+  //       this.col = true;
+  //       // Binding with the datasource
+  //       this.dataSource = new MatTableDataSource(this.col.entity);
+  //       this.dataSource.paginator = this.paginator;
+  //       this.dataSource.sort = this.sort;
+  //     }
+  //     else {
+  //       this.col = false;
+  //       this.dataSource = new MatTableDataSource<any>(this.col);
+  //     }
+  //   },error => {
+  //     console.log('An error occurred:', error)
+      
+  //   })
+  // }
 
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -86,6 +259,9 @@ export class FarmerManagenentComponent implements OnInit {
   ngOnInit(): void {
     this.filterform= this.fb.group({
       farmer_no: [""],
+      // noDeliveries: [""],
+      activity: [""],
+      status: [""],
       route: [""],
       routeId: [""]
     })
@@ -115,7 +291,13 @@ export class FarmerManagenentComponent implements OnInit {
     dialogConfig.data = {
       farmer: data
     }
+    // const dialogRef = this.dialog.open(FarmerCollectionsComponent, dialogConfig)
     this.dialog.open(FarmerDetailsComponent, dialogConfig)
+    // dialogRef.afterClosed().subscribe((res)=> {
+    //   this.getData()
+    // })
+
+
   }
 
   editCall(data: any) {
@@ -127,6 +309,7 @@ export class FarmerManagenentComponent implements OnInit {
       farmer: data
     }
     this.dialog.open(UpdateFarmerComponent, dialogConfig)
+    
   }
 
   deleteCall(data: any) {
@@ -142,7 +325,7 @@ export class FarmerManagenentComponent implements OnInit {
 
   viewFarmerCollections(row) {
 
-    this.router.navigate(['/staff/sales/farmer', row.id]);
+    this.router.navigate(['/staff/sales/farmer', row.farmer_no]);
   }
 
   // filterFarmers() {
@@ -154,26 +337,26 @@ export class FarmerManagenentComponent implements OnInit {
     this.isLoading = true;
     let farmerNo=this.filterform.value.farmer_no
     // {}
-      
     if (farmerNo != null && farmerNo != undefined ) {
   
       this.subscription = this.service.getByFarmersByFarmerNo(farmerNo).subscribe(res => {
-        this.data = res;
+        this.data = res
         if (this.data.entity!=null) {
-          let result = []
-          result.push(this.data.entity)
-         
+          let v = this.data.entity         
           this.isdata = true;
           this.isLoading = false;
           // Binding with the datasource
-          this.dataSource = new MatTableDataSource(result.map(v=>({
-            username:v.username,
-            route:v.routeName,
-            id_number: v.idNumber,
-            farmer_no: v.farmerNo,
-            mobile_no: v.mobileNo
+          this.dataSource = new MatTableDataSource([{
+            username:v.username || "N/A",
+            route:v.routeName || "N/A",
+            id_number: v.idNumber || "N/A",
+            farmer_no: v.farmerNo || "N/A",
+            mobile_no: v.mobileNo || "N/A",
 
-          })));
+            action:'',
+            id:v.id,
+
+          }]);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
         }
@@ -182,9 +365,169 @@ export class FarmerManagenentComponent implements OnInit {
           this.isdata = false;
           this.dataSource = new MatTableDataSource(null);
         }
-      })
+        this.selected="";
+        this.filterform.patchValue({ farmer_no: "" });
+      },
+      (error) => {
+        console.error(error);
+        this.isLoading = false;
+        this.isdata = false;
+        this.dataSource = new MatTableDataSource(null);
+        this.selected = "";
+        this.filterform.patchValue({ farmer_no: "" }); 
+      }
+      )
     }
   }
+  getFarmersWithNoDeliveries() {
+    this.selected = "";
+    this.isLoading = true;
+  
+    this.subscription = this.service.farmersWithNoDeliveries().subscribe(res => {
+      this.data = res;
+  
+      if (this.data.entity != null) {
+        const result = this.data.entity; 
+  
+        this.isLoading = false;
+        this.isdata = true;
+        // console.log(res)
+  
+        this.dataSource = new MatTableDataSource(result.map(v => ({
+          username: v.username || "N/A",
+          farmer_no: v.farmerNo || "N/A",
+          mobile_no: v.mobileNo || "N/A",
+          route:v.routeName || "N/A",
+          id_number:v.idNumber || "N/A",
+          actions:'',
+          id:v.id,
+
+        })));
+  
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      } else {
+        this.isdata = false;
+        this.isLoading = false;
+        this.dataSource = new MatTableDataSource([]);
+      }
+      this.selected="";
+    });
+  }
+  
+  onStatusChanged(selectedActivity: string) {
+    this.activityFilter = selectedActivity; 
+    this.filterform.patchValue({
+      active: '',
+      inactive: ''
+    });
+    if (selectedActivity === 'active') {
+      this.getActiveFarmers();
+    } else if (selectedActivity === 'inactive') {
+      this.getInactiveFarmers();
+    }
+    this.form.patchValue({
+      active:'',
+      inactive: ''
+    })
+  }
+  
+  getActiveFarmers() {
+    this.isLoading = true;
+    const activity = this.activityFilter; 
+    
+    this.subscription = this.service.farmersByActivity(activity).subscribe(
+      (res) => {
+  
+        this.data = res;
+  
+        if (this.data.entity != null) {
+          
+          const result = this.data.entity;
+
+  
+        this.isLoading = false;
+        this.isdata = true;
+       
+        this.dataSource = new MatTableDataSource(result.map(v => ({
+          id: v.id,
+          farmer_no: v.farmerNo || "N/A",
+          username: v.username || "N/A",
+          mobile_no: v.mobileNo || "N/A",
+          id_number: v.idNumber || "N/A",
+          route: v.route || "N/A",
+          action: ''
+          
+        })));
+  
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      } else {
+        this.isdata = false;
+        this.isLoading = false;
+        this.dataSource = new MatTableDataSource([]);
+      }
+      this.selected='';
+
+    });
+  }
+  
+  getInactiveFarmers() {
+    this.isLoading = true;
+    const activity = this.activityFilter;
+  
+    this.subscription = this.service.farmersByActivity(activity).subscribe(
+      (res) => {
+        if (res === null) {
+          this.isLoading = false;
+          this.isdata = false;
+          this.dataSource = new MatTableDataSource([]);
+          this.selected='';
+          return;
+        }
+  
+        this.data = res;
+  
+        if (this.data.entity !== null) {
+          const result = this.data.entity;
+  
+          this.isLoading = false;
+          this.isdata = true;
+  
+          this.dataSource = new MatTableDataSource(result.map(v => ({
+            id: v.id,
+            farmer_no: v.farmerNo || "N/A",
+            username: v.username || "N/A",
+            mobile_no: v.mobileNo || "N/A",
+            id_number: v.idNumber || "N/A",
+            route: v.route || "N/A",
+            action: ''
+          })));
+  
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        } else {
+          this.isdata = false;
+          this.isLoading = false;
+          this.dataSource = new MatTableDataSource([]);
+        }
+        this.selected='';
+      },
+      (error) => {
+        console.log('An error occurred:', error);
+        this.isdata = false;
+        this.isLoading = false;
+        this.selected='';
+
+      }
+    );
+  }
+  
+  
+
+  
+
+
 
   onInputChange() {
     const inputValue = this.filterform.get("farmer_no").value;

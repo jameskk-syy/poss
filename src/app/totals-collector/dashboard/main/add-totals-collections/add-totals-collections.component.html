@@ -1,0 +1,136 @@
+<div class="content-block bg">
+    <div class="row clearfix bg">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="modalHeader">
+                    <div class="editRowModal">
+                        <div class="modalHeader clearfix">
+                            <div class="modalHeader clearfix">
+                                <div class="modal-about">
+                                    <div class="font-weight-bold p-t-5 font-17">
+                                        Add Totals-Collections
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+                <div mat-dialog-content>
+                    <form class="advance-form m-4" [formGroup]="addAccumulationForm">
+                        <div class="row">
+                            <mat-card>
+                                <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+            
+                                <mat-card-title style="font-size: x-small;">Add Accumulations</mat-card-title>
+                                <mat-card-content>
+                                    <div class="row">
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                            <mat-form-field class="example-full-width" appearance="outline">
+                                                <mat-label>Select Collector</mat-label>
+                                                <input matInput formControlName="collectorId" required readonly />
+
+                                                <mat-icon matSuffix (click)="selectCollector()">search</mat-icon>
+
+                                                <mat-error *ngIf="addAccumulationForm.get('collectorId').hasError('required')">
+                                                    collector Id is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                       
+                                        
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                            <mat-form-field class="example-full-width" appearance="outline">
+                                                <mat-label>Milk Quantity</mat-label>
+                                                <input matInput formControlName="milkQuantity" required />
+                                                <mat-error *ngIf="addAccumulationForm.get('milkQuantity').hasError('required')">
+                                                    Milk Quantity is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        
+                                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                            <mat-form-field class="example-full-width" appearance="outline">
+                                                <mat-label>Select session</mat-label>
+                                            <mat-select formControlName="session" required> 
+                                                <mat-option value="session 1">Session 1</mat-option>
+                                                <mat-option value="session 2">Session 2</mat-option>
+                                                <mat-option value="session 3">Session 3</mat-option>
+                                            </mat-select>
+                                                <mat-error *ngIf="addAccumulationForm.get('session').hasError('required')">
+                                                    Session is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+            
+                                            
+                                                <div class="row">
+                                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0" *ngIf="showAccumulatorField">
+                                                    <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Accumulator Id</mat-label>
+                                                        <input matInput formControlName="accumulatorId" type="number"  />
+                                                        <!-- <mat-error *ngIf="addAccumulationForm.get('accumulatorId').hasError('required')">
+                                                            accumulatorId is required
+                                                        </mat-error> -->
+                                                    </mat-form-field>
+                                                </div>
+                                                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                                    <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Route Fk</mat-label>
+                                                        <input matInput formControlName="routeFk" type="number" required />
+                                                        <mat-error *ngIf="addAccumulationForm.get('routeFk').hasError('required')">
+                                                            routeFk is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div> -->
+                                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0" *ngIf="showRouteField">
+                                                    <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                                        <mat-label>Route</mat-label>
+                                                        <mat-select formControlName="routeFk">
+                                                            <mat-option *ngFor="let route of data.entity" [value]="route.id">
+                                                                {{ route.route }}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                        <mat-error *ngIf="addAccumulationForm.get('routeFk').hasError('required')">
+                                                            Route is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                                    <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Id</mat-label>
+                                                        <input matInput formControlName="Id" type="number" required />
+                                                        <mat-error *ngIf="addAccumulationForm.get('Id').hasError('required')">
+                                                            Id is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div> -->
+            
+                                                <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                                                <div class="example-button-row">
+                                                    <button mat-raised-button color="warn" (click)="onClick()" tabindex="-1">
+                                                        Cancel
+                                                    </button>
+                                                    <button mat-raised-button color="primary" [disabled]="!addAccumulationForm.valid"
+                                                        (click)="onSubmit()">
+                                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                                        <b>Submit</b>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    <!-- </div> -->
+              
+                                          
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        </form>
+                </div>
+            </div>
+        </div>

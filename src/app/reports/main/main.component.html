@@ -108,6 +108,14 @@
                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                             <mat-datepicker #picker1></mat-datepicker>
                           </mat-form-field>
+
+                          <mat-form-field class="m-l-5">
+                            <mat-label>Session</mat-label>
+                            <input matInput formControlName="session" required />
+                            <mat-error *ngIf="reportCollectionForm2.get('session').hasError('required')">
+                                Session is required
+                            </mat-error>
+                        </mat-form-field>
                           <!-- <mat-error *ngIf="reportCollectionForm2.get('date').hasError('required')">
                             Date is required
                           </mat-error> -->
@@ -124,6 +132,75 @@
 
                             <button mat-raised-button color="primary" [disabled]="!reportCollectionForm2.valid"
                               (click)="generateCollectionsPerCollector()">
+                              <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
+                              <b>Generate</b>
+                            </button>
+                          </div>
+
+                        </div>
+                      </form>
+
+                    </mat-expansion-panel>
+                  </mat-accordion>
+
+                </li>
+
+                <li (click)="collectionsPerCollector('Report For Single User Action Items')" class="d-flex mb-3">
+
+                  <!-- <div class="example-action-buttons">
+                          <button mat-button (click)="accordion.openAll()">Expand All</button>
+                          <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+                        </div> -->
+                  <mat-accordion class="example-headers-align" multi>
+                    <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          Collection per Collector for specific month report
+                        </mat-panel-title>
+                        <!-- <mat-panel-description>
+                              Inform the date you wish to travel
+                              <mat-icon>date_range</mat-icon>
+                            </mat-panel-description> -->
+                      </mat-expansion-panel-header>
+
+                      <form class="register-form" [formGroup]="reportCollectionForm1">
+                        <div class="row">
+
+                          <mat-form-field class="example-full-width mb-1" appearance="outline">
+                            <mat-label>Select Month</mat-label>
+                            <mat-select formControlName="month" required>
+                              <mat-option *ngFor="let month of months" [value]="month.name">{{ month.name
+                                }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="reportCollectionForm1.get('month').hasError('required')">
+                              Month Is required
+                            </mat-error>
+                          </mat-form-field>
+
+                          <mat-form-field class="m-l-5">
+                            <mat-label>Session</mat-label>
+                            <input matInput formControlName="session" required />
+                            <mat-error *ngIf="reportCollectionForm1.get('session').hasError('required')">
+                                Session is required
+                            </mat-error>
+                        </mat-form-field>
+                          <!-- <mat-error *ngIf="reportCollectionForm2.get('date').hasError('required')">
+                            Date is required
+                          </mat-error> -->
+
+                          <!-- <mat-radio-group aria-label="Select an option" formControlName="format">
+                            <mat-radio-button value="pdf">PDF</mat-radio-button>
+                            <mat-radio-button value="excel">Excel</mat-radio-button>
+                          </mat-radio-group>
+ -->
+
+
+
+                          <div class="example-button-row">
+
+                            <button mat-raised-button color="primary" [disabled]="!reportCollectionForm1.valid"
+                              (click)="generateCollectionsPerCollectorm()">
                               <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
                               <b>Generate</b>
                             </button>
@@ -170,12 +247,10 @@
                             <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                             <mat-datepicker #picker3></mat-datepicker>
                           </mat-form-field>
-                          <!-- <mat-error *ngIf="reportCollectionForm3.get('date').hasError('required')">
+                          <mat-error *ngIf="reportCollectionForm3.get('date').hasError('required')">
                             Date is required
-                          </mat-error> -->
-
-
-
+                          </mat-error>
+                       
                           <div class="example-button-row">
 
                             <button mat-raised-button color="primary" [disabled]="!reportCollectionForm3.valid"
@@ -193,13 +268,13 @@
 
 
                 </li>
-                <li (click)="collectionsPerLocation('Report For Single User Action Items')" class="d-flex mb-3">
+                <!-- <li (click)="collectionsPerLocation('Report For Single User Action Items')" class="d-flex mb-3">
 
 
-                  <!-- <div class="example-action-buttons">
+                  <div class="example-action-buttons">
                             <button mat-button (click)="accordion.openAll()">Expand All</button>
                             <button mat-button (click)="accordion.closeAll()">Collapse All</button>
-                          </div> -->
+                          </div>
                   <mat-accordion class="example-headers-align" multi>
                     <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
                     <mat-expansion-panel>
@@ -207,18 +282,18 @@
                         <mat-panel-title>
                           Total Collection per pick-up Location for specific date report
                         </mat-panel-title>
-                        <!-- <mat-panel-description>
+                        <mat-panel-description>
                                 Inform the date you wish to travel
                                 <mat-icon>date_range</mat-icon>
-                              </mat-panel-description> -->
+                              </mat-panel-description>
                       </mat-expansion-panel-header>
 
                       <form class="register-form" [formGroup]="reportCollectionFormp">
                         <div class="row">
-                          <!-- <mat-radio-group aria-label="Select an option" formControlName="format">
+                          <mat-radio-group aria-label="Select an option" formControlName="format">
                             <mat-radio-button value="pdf">PDF</mat-radio-button>
                             <mat-radio-button value="excel">Excel</mat-radio-button>
-                          </mat-radio-group> -->
+                          </mat-radio-group>
                           
 
                           <mat-form-field class="m-l-5">
@@ -227,9 +302,9 @@
                             <mat-datepicker-toggle matSuffix [for]="pickerp"></mat-datepicker-toggle>
                             <mat-datepicker #pickerp></mat-datepicker>
                           </mat-form-field>
-                          <!-- <mat-error *ngIf="reportCollectionForm3.get('date').hasError('required')">
+                          <mat-error *ngIf="reportCollectionForm3.get('date').hasError('required')">
                             Date is required
-                          </mat-error> -->
+                          </mat-error>
 
 
 
@@ -249,49 +324,48 @@
                   </mat-accordion>
 
 
-                </li>
-                <!--
-                <li (click)="collectionsPerLocation('Report For Single User Action Items')" class="d-flex mb-3">
+                </li> -->
+                <li (click)="collectionsPerLocation('Report For Single User Action Items')" class="d-flex mb-3"> 
 
 
-                   <div class="example-action-buttons">
+                  <!-- <div class="example-action-buttons">
                             <button mat-button (click)="accordion.openAll()">Expand All</button>
                             <button mat-button (click)="accordion.closeAll()">Collapse All</button>
-                          </div> 
+                          </div> -->
                   <mat-accordion class="example-headers-align" multi>
-                    <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
+                    <!-- <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar> -->
                     <mat-expansion-panel>
                       <mat-expansion-panel-header>
                         <mat-panel-title>
-                          Total Collection per pick-up Location for specific month report
+                          Total Collection per route for specific month report
                         </mat-panel-title>
-                         <mat-panel-description>
+                        <!-- <mat-panel-description>
                                 Inform the date you wish to travel
                                 <mat-icon>date_range</mat-icon>
-                              </mat-panel-description> 
+                              </mat-panel-description> -->
                       </mat-expansion-panel-header>
 
                       <form class="register-form" [formGroup]="reportCollectionFormm">
                         <div class="row">
-                          <mat-radio-group aria-label="Select an option" formControlName="format">
+                          <!-- <mat-radio-group aria-label="Select an option" formControlName="format">
                             <mat-radio-button value="pdf">PDF</mat-radio-button>
                             <mat-radio-button value="excel">Excel</mat-radio-button>
-                          </mat-radio-group> 
+                          </mat-radio-group> -->
                           
 
                           <mat-form-field class="example-full-width mb-1" appearance="outline">
                             <mat-label>Select Month</mat-label>
                             <mat-select formControlName="month" required>
-                              <mat-option *ngFor="let month of months" [value]="month.value">{{ month.name
+                              <mat-option *ngFor="let month of months" [value]="month.name">{{ month.name
                                 }}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="reportCollectionFormm.get('month').hasError('required')">
                               Month Is required
                             </mat-error>
                           </mat-form-field>
-                           <mat-error *ngIf="reportCollectionForm3.get('date').hasError('required')">
+                          <!-- <mat-error *ngIf="reportCollectionForm3.get('date').hasError('required')">
                             Date is required
-                          </mat-error> 
+                          </mat-error> -->
 
 
 
@@ -311,26 +385,27 @@
                   </mat-accordion>
 
 
-                </li>-->
-             <!--   <li (click)="collectionsPerLocation('Report For Single User Action Items')" class="d-flex mb-3">
+                </li>
+                <!-- <li (click)="collectionsPerLocation('Report For Single User Action Items')" class="d-flex mb-3"> -->
 
 
-                 <div class="example-action-buttons">
+                  <!-- <div class="example-action-buttons">
                             <button mat-button (click)="accordion.openAll()">Expand All</button>
                             <button mat-button (click)="accordion.closeAll()">Collapse All</button>
-                          </div> 
-                  <mat-accordion class="example-headers-align" multi>
+                          </div> -->
+                  <!-- <mat-accordion class="example-headers-align" multi>
                     <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
                     <mat-expansion-panel>
                       <mat-expansion-panel-header>
                         <mat-panel-title>
                           Collection per Pick-Up Location for specific date report
-                        </mat-panel-title>
-                       <mat-panel-description>
+                        </mat-panel-title> -->
+                        <!-- <mat-panel-description>
                                 Inform the date you wish to travel
                                 <mat-icon>date_range</mat-icon>
-                              </mat-panel-description> 
-                      </mat-expansion-panel-header>
+                              </mat-panel-description> -->
+                      <!-- </mat-expansion-panel-header>
+
                       <form class="register-form" [formGroup]="collectionPerpLocationsForm">
 
                         <div class="row">
@@ -354,30 +429,30 @@
                               formControlName="date">
                             <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
                             <mat-datepicker #picker4></mat-datepicker>
-                          </mat-form-field>
-                           <mat-error *ngIf="collectionPerpLocationsForm.get('date').hasError('required')">
+                          </mat-form-field> -->
+                          <!-- <mat-error *ngIf="collectionPerpLocationsForm.get('date').hasError('required')">
                             Date is required
-                          </mat-error> 
+                          </mat-error> -->
 
 
-                          <div class="example-button-row">
+                          <!-- <div class="example-button-row">
 
                             <button mat-raised-button color="primary" [disabled]="!collectionPerpLocationsForm.valid"
                               (click)="generateCollectionsPerPickUpLocations()">
                               <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
                               <b>Generate</b>
                             </button>
-                          </div>
+                          </div> -->
 
-                        </div>
+                        <!-- </div>
                       </form>
 
                     </mat-expansion-panel>
                   </mat-accordion>
 
 
-                </li>
-              -->
+                </li> -->
+                
 
               </ul>
             </div>
@@ -421,7 +496,7 @@
                     </td>
                   </div>
                 </li>
-                <li (click)="farmerProductReport()" class="d-flex mb-3">
+                <!-- <li (click)="farmerProductReport()" class="d-flex mb-3">
                   <span class="msr-3 align-self-center img-icon info-rgba text-info"><i
                       class="far fa-file-archive"></i></span>
 
@@ -434,14 +509,14 @@
                       <i class="far fa-arrow-alt-circle-down"></i>
                     </td>
                   </div>
-                </li>
+                </li> -->
 
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+      <!-- <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
         <div class="card">
           <br>
           <div class="header">
@@ -450,25 +525,25 @@
           <div class="body">
             <div class="doc-file-type">
               <ul class="list-unstyled" style="position: relative; height: 500px;" [perfectScrollbar]>
-                <li (click)="collectionsPerLocation('Report For Single User Action Items')" class="d-flex mb-3">
+                <li (click)="collectionsPerLocation('Report For Single User Action Items')" class="d-flex mb-3"> -->
 
 
                   <!-- <div class="example-action-buttons">
                             <button mat-button (click)="accordion.openAll()">Expand All</button>
                             <button mat-button (click)="accordion.closeAll()">Collapse All</button>
                           </div> -->
-                  <mat-accordion class="example-headers-align" multi>
+                  <!-- <mat-accordion class="example-headers-align" multi>
                     <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
                     <mat-expansion-panel>
                       <mat-expansion-panel-header>
                         <mat-panel-title>
                           Payment File report
-                        </mat-panel-title>
+                        </mat-panel-title> -->
                         <!-- <mat-panel-description>
                                 Inform the date you wish to travel
                                 <mat-icon>date_range</mat-icon>
                               </mat-panel-description> -->
-                      </mat-expansion-panel-header>
+                      <!-- </mat-expansion-panel-header>
 
                       <form class="register-form" [formGroup]="paymentFileForm">
                         <div class="row">
@@ -526,7 +601,170 @@
             </div>
           </div>
         </div>
+      </div> -->
+
+
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+          <br>
+          <div class="header">
+            <h2>Mpesa,Bank & Sacco Payment Report</h2>
+          </div>
+          <div class="body">
+            <div class="doc-file-type">
+              <ul class="list-unstyled" style="position: relative; height: 500px;" [perfectScrollbar]>
+                <li (click)="collectionsPerLocation('Report For Single User Action Items')" class="d-flex mb-3">
+
+
+                  <!-- <div class="example-action-buttons">
+                            <button mat-button (click)="accordion.openAll()">Expand All</button>
+                            <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+                          </div> -->
+                  <mat-accordion class="example-headers-align" multi>
+                    <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          Bank And Saccos report
+                        </mat-panel-title>
+                        <!-- <mat-panel-description>
+                                Inform the date you wish to travel
+                                <mat-icon>date_range</mat-icon>
+                              </mat-panel-description> -->
+                      </mat-expansion-panel-header>
+
+                      <form class="register-form" [formGroup]="paymentFileForm1">
+                        <div class="row">
+                          <!-- <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Select Route</mat-label>
+                            <input matInput formControlName="pul" required readonly />
+                            <mat-icon matSuffix (click)="choosePickUpLocation()">search</mat-icon>
+                            <mat-error *ngIf="paymentFileForm.get('pul').hasError('required')">
+                             Route is required
+                            </mat-error>
+                          </mat-form-field> -->
+
+                          <mat-form-field class="example-full-width mb-1" appearance="outline">
+                            <mat-label>Select Month</mat-label>
+                            <mat-select formControlName="month" required>
+                              <mat-option *ngFor="let month of months" [value]="month.name">{{ month.name
+                                }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="paymentFileForm1.get('month').hasError('required')">
+                              Month Is required
+                            </mat-error>
+                          </mat-form-field>
+                          <!-- <mat-form-field class="example-full-width mb-1" appearance="outline">
+                            <mat-label>Select Payment Mode</mat-label>
+                            <mat-select formControlName="mode" required>
+                              <mat-option value="M-pesa">MPesa</mat-option>
+                              <mat-option value="Cash">Cash</mat-option>
+                              <mat-option value="Bank">Bank</mat-option>
+                              <mat-option value="cooperative saccos">Cooperative Saccos</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="paymentFileForm.get('mode').hasError('required')">
+                              Payment mode Is required
+                            </mat-error>
+                          </mat-form-field> -->
+                        </div>
+
+                        <div class="example-button-row">
+
+                          <button mat-raised-button color="primary" [disabled]="!paymentFileForm1.valid"
+                            (click)="generateBankAndSaccoPaymentFile()">
+                            <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
+                            <b>Generate</b>
+                          </button>
+                        </div>
+
+
+                      </form>
+
+                    </mat-expansion-panel>
+                  </mat-accordion>
+
+
+                </li>
+              
+                <li (click)="collectionsPerLocation('Report For Single User Action Items')" class="d-flex mb-3">
+
+
+                  <!-- <div class="example-action-buttons">
+                            <button mat-button (click)="accordion.openAll()">Expand All</button>
+                            <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+                          </div> -->
+                  <mat-accordion class="example-headers-align" multi>
+                    <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          Mpesa report
+                        </mat-panel-title>
+                        <!-- <mat-panel-description>
+                                Inform the date you wish to travel
+                                <mat-icon>date_range</mat-icon>
+                              </mat-panel-description> -->
+                      </mat-expansion-panel-header>
+
+                      <form class="register-form" [formGroup]="paymentFileForm2">
+                        <div class="row">
+                          <!-- <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Select Route</mat-label>
+                            <input matInput formControlName="pul" required readonly />
+                            <mat-icon matSuffix (click)="choosePickUpLocation()">search</mat-icon>
+                            <mat-error *ngIf="paymentFileForm.get('pul').hasError('required')">
+                             Route is required
+                            </mat-error>
+                          </mat-form-field> -->
+
+                          <mat-form-field class="example-full-width mb-1" appearance="outline">
+                            <mat-label>Select Month</mat-label>
+                            <mat-select formControlName="month" required>
+                              <mat-option *ngFor="let month of months" [value]="month.name">{{ month.name
+                                }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="paymentFileForm2.get('month').hasError('required')">
+                              Month Is required
+                            </mat-error>
+                          </mat-form-field>
+                          <!-- <mat-form-field class="example-full-width mb-1" appearance="outline">
+                            <mat-label>Select Payment Mode</mat-label>
+                            <mat-select formControlName="mode" required>
+                              <mat-option value="M-pesa">MPesa</mat-option>
+                              <mat-option value="Cash">Cash</mat-option>
+                              <mat-option value="Bank">Bank</mat-option>
+                              <mat-option value="cooperative saccos">Cooperative Saccos</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="paymentFileForm.get('mode').hasError('required')">
+                              Payment mode Is required
+                            </mat-error>
+                          </mat-form-field> -->
+                        </div>
+
+                        <div class="example-button-row">
+
+                          <button mat-raised-button color="primary" [disabled]="!paymentFileForm2.valid"
+                            (click)="generateMpesaPaymentFile()">
+                            <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
+                            <b>Generate</b>
+                          </button>
+                        </div>
+
+
+                      </form>
+
+                    </mat-expansion-panel>
+                  </mat-accordion>
+
+
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
+
+      
     </div>
 
   </div>

@@ -1,15 +1,87 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
+import { formatDate } from 'src/app/data/services/utils';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReportsService {
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
+  getMpesaPaymentFile(month: string):Observable<any> {
+    let headers = new HttpHeaders();
+    headers.append("Content-Type", "application/pdf");
+
+    let requestOptions: any = {
+      params: month, 
+      headers: headers,
+      responseType: "blob",
+      withCredentials: false,
+    };
+    let API_URL = `${environment.apiUrl}/api/v1/reports/MpesaPaymentFile?month=`+month;
+console.log(API_URL)
+    return this.http.get(API_URL, requestOptions).pipe(
+      map((response) => {
+        console.log(response)
+        return {
+          filename: month + "MpesaPaymentFile",
+          data: new Blob([response], { type: "application/pdf" }),
+
+        };
+      })
+    ); 
+  }
+  getBankAndSaccoPaymentFile(month: any):Observable<any> {
+    let headers = new HttpHeaders();
+    headers.append("Content-Type", "application/pdf");
+
+    let requestOptions: any = {
+      params: month, 
+      headers: headers,
+      responseType: "blob",
+      withCredentials: false,
+    };
+    let API_URL = `${environment.apiUrl}/api/v1/reports/BankAndSaccoPaymentFile?month=`+month;
+
+    return this.http.get(API_URL, requestOptions).pipe(
+      map((response) => {
+        return {
+          filename: month + "BankAndSaccoPaymentFile",
+          data: new Blob([response], { type: "application/pdf" }),
+        };
+      })
+    ); 
+   }
+  baseUrl: string;
+
+collectionsPerCollectorByMonth(month: string, session: string): Observable<any> {
+  let headers = new HttpHeaders();
+  headers.append("Content-Type", "application/pdf");
+
+  let requestOptions: any = {
+    params: {
+      month: month,
+      session: session
+    },
+    headers: headers,
+    responseType: "blob",
+    withCredentials: false,
+  };
+  console.log(month)
+
+  let API_URL = `${environment.apiUrl}/api/v1/reports/collections/perCollectors/perMonth`;
+console.log(API_URL)
+  return this.http.get(API_URL, requestOptions).pipe(
+    map((response) => {
+      return {
+        filename:month + "CollectionsPerCollectorsPerMonth",
+        data: new Blob([response], { type: "application/pdf" }),
+      };
+    })
+  );
+  }
+  headers = new HttpHeaders().set('Content-Type', 'application/pdf');
   constructor(private http: HttpClient) { }
 
 
@@ -89,7 +161,7 @@ export class ReportsService {
       responseType: "blob",
       withCredentials: false,
     };
-    let API_URL = `${environment.apiUrl}/api/v1/reports/date?date=` + date;
+    let API_URL = `${environment.apiUrl}/api/v1/reports/collections/perDate?date=` + date;
 
     return this.http.get(API_URL, requestOptions).pipe(
       map((response) => {
@@ -120,50 +192,55 @@ export class ReportsService {
   }
 
 
-  collectionsPerCollectorByDate(date: any): Observable<any> {
+  collectionsPerCollectorByDate(date: any, session: any): Observable<any> {
     let headers = new HttpHeaders();
-    headers.append("Accept", "application/pdf");
-
+    headers.append("Content-Type", "application/pdf");
+  
     let requestOptions: any = {
-      params: date,
+      params: {
+        date: formatDate(date,''),
+        session: session
+      },
       headers: headers,
       responseType: "blob",
       withCredentials: false,
     };
-    let API_URL = `${environment.apiUrl}/api/v1/reports/percollectors?date=` + date;
-
+  
+    let API_URL = `${environment.apiUrl}/api/v1/reports/collections/perCollector/perDate/perSession`;
+  
     return this.http.get(API_URL, requestOptions).pipe(
       map((response) => {
         return {
-          filename: "CollectionsPerCollectors",
+          filename: "CollectionsPerCollectorsPerDate",
           data: new Blob([response], { type: "application/pdf" }),
         };
       })
     );
   }
-  collectionsPerPulByDate(locationId: any, date: any): Observable<any> {
-    let headers = new HttpHeaders();
-    headers.append("Accept", "application/pdf");
+  
+  // collectionsPerPulByDate(locationId: any, date: any): Observable<any> {
+  //   let headers = new HttpHeaders();
+  //   headers.append("Accept", "application/pdf");
 
-    let requestOptions: any = {
-      params: locationId, date,
-      headers: headers,
-      responseType: "blob",
-      withCredentials: false,
-    };
-    let API_URL = `${environment.apiUrl}/api/v1/reports/collections/per/pickUpLocation?pickUpLocationId=` + locationId + `&date=` + date;
+  //   let requestOptions: any = {
+  //     params: locationId, date,
+  //     headers: headers,
+  //     responseType: "blob",
+  //     withCredentials: false,
+  //   };
+  //   let API_URL = `${environment.apiUrl}/api/v1/reports/collections/per/pickUpLocation?pickUpLocationId=` + locationId + `&date=` + date;
 
-    console.log("Calling api == " + API_URL)
+  //   console.log("Calling api == " + API_URL)
 
-    return this.http.get(API_URL, requestOptions).pipe(
-      map((response) => {
-        return {
-          filename: "CollectionsPerCollectors",
-          data: new Blob([response], { type: "application/pdf" }),
-        };
-      })
-    );
-  }
+  //   return this.http.get(API_URL, requestOptions).pipe(
+  //     map((response) => {
+  //       return {
+  //         filename: "CollectionsPerCollectors",
+  //         data: new Blob([response], { type: "application/pdf" }),
+  //       };
+  //     })
+  //   );
+  // }
 
 
   collectionsPerLocationrByDate(date: any): Observable<any> {
@@ -176,7 +253,7 @@ export class ReportsService {
       responseType: "blob",
       withCredentials: false,
     };
-    let API_URL = `${environment.apiUrl}/api/v1/reports/perlocations?date=` + date;
+    let API_URL = `${environment.apiUrl}/api/v1/reports/totalCollections/perRoute/perDate?date=` + date;
 
     return this.http.get(API_URL, requestOptions).pipe(
       map((response) => {
@@ -187,27 +264,27 @@ export class ReportsService {
       })
     );
   }
-  collectionsPerLocationrByDatep(date: any): Observable<any> {
-    let headers = new HttpHeaders();
-    headers.append("Accept", "application/pdf");
+  // collectionsPerLocationrByDatep(date: any): Observable<any> {
+  //   let headers = new HttpHeaders();
+  //   headers.append("Accept", "application/pdf");
 
-    let requestOptions: any = {
-      params: date,
-      headers: headers,
-      responseType: "blob",
-      withCredentials: false,
-    };
-    let API_URL = `${environment.apiUrl}/api/v1/reports/collections/pickuplocations/date?date=` + date;
+  //   let requestOptions: any = {
+  //     params: date,
+  //     headers: headers,
+  //     responseType: "blob",
+  //     withCredentials: false,
+  //   };
+  //   let API_URL = `${environment.apiUrl}/api/v1/reports/collections/pickuplocations/date?date=` + date;
 
-    return this.http.get(API_URL, requestOptions).pipe(
-      map((response) => {
-        return {
-          filename: "TotalCollectionsPerLocation",
-          data: new Blob([response], { type: "application/pdf" }),
-        };
-      })
-    );
-  }
+  //   return this.http.get(API_URL, requestOptions).pipe(
+  //     map((response) => {
+  //       return {
+  //         filename: "TotalCollectionsPerLocation",
+  //         data: new Blob([response], { type: "application/pdf" }),
+  //       };
+  //     })
+  //   );
+  // }
   collectionsPerLocationrByMonth(month: any): Observable<any> {
     let headers = new HttpHeaders();
     headers.append("Accept", "application/pdf");
@@ -218,39 +295,39 @@ export class ReportsService {
       responseType: "blob",
       withCredentials: false,
     };
-    let API_URL = `${environment.apiUrl}/api/v1/reports/collections/pickuplocations/month?month=` + month;
+    let API_URL = `${environment.apiUrl}/api/v1/reports/totalCollections/perRoute/perMonth?month=` + month;
 
     return this.http.get(API_URL, requestOptions).pipe(
       map((response) => {
         return {
-          filename: "TotalCollectionsPerLocation",
+          filename: "TotalCollectionsPerRoutePerMonth",
           data: new Blob([response], { type: "application/pdf" }),
         };
       })
     );
   }
-  getPaymentFile(locationId:any,month: any, mode: any): Observable<any> {
-    console.log("..Calling api  ....")
-    let headers = new HttpHeaders();
-    headers.append("Accept", "application/pdf");
+  // getPaymentFile(locationId:any,month: any, mode: any): Observable<any> {
+  //   console.log("..Calling api  ....")
+  //   let headers = new HttpHeaders();
+  //   headers.append("Accept", "application/pdf");
 
-    let requestOptions: any = {
-      params: month, mode,
-      headers: headers,
-      responseType: "blob",
-      withCredentials: false,
-    };
-    let API_URL = `${environment.apiUrl}/api/v1/reports/paymentfile?pickupLocationId=`+locationId+`&month=` + month + `&paymentMode=` + mode;
-    console.log("Calling api"+ API_URL)
+  //   let requestOptions: any = {
+  //     params: month, mode,
+  //     headers: headers,
+  //     responseType: "blob",
+  //     withCredentials: false,
+  //   };
+  //   let API_URL = `${environment.apiUrl}/api/v1/reports/paymentfile?pickupLocationId=`+locationId+`&month=` + month + `&paymentMode=` + mode;
+  //   console.log("Calling api"+ API_URL)
 
-    return this.http.get(API_URL, requestOptions).pipe(
-      map((response) => {
-        return {
-          filename: month + "-PaymentFile",
-          data: new Blob([response], { type: "application/pdf" }),
-        };
-      })
-    );
-  }
+  //   return this.http.get(API_URL, requestOptions).pipe(
+  //     map((response) => {
+  //       return {
+  //         filename: month + "-PaymentFile",
+  //         data: new Blob([response], { type: "application/pdf" }),
+  //       };
+  //     })
+  //   );
+  // }
 
 }

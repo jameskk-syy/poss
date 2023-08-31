@@ -40,17 +40,20 @@
                                                     <mat-label>Filter By </mat-label>
                                                     <mat-select [(value)]="selected">
                                                         <mat-option value="fn"><b>Farmer Number</b></mat-option>
-                                                        <mat-option value="r"><b>Route</b></mat-option>
+                                                        <mat-option value="nd" (click)="getFarmersWithNoDeliveries()"> 
+                                                            <b>No Deliveries</b>          
+                                                            </mat-option>
+                                                            
+                                                     <mat-option value="a"><b>Activity</b></mat-option>
+                                                        <mat-option value="st"><b>Status</b></mat-option>
+
                                                     </mat-select>
                                                 </mat-form-field>
                                             </li>
-                                            <!-- <li>
-                                                <form [formGroup]="filterform">
-                                                    <mat-form-field class="m-l-3">
-                                                        <input mat-input placeholder="Enter Farmer Number" formControlName="farmer_no" (input)="onInputChange">
-                                                    </mat-form-field>
-                                                </form>
-                                            </li> -->
+
+                                            <!-- <li class="dropdown m-l-5">
+                                                
+                                              </li> -->
                                             <li class="dropdown">
                                                 <form [formGroup]="filterform">
                                                     <mat-form-field class="m-l-3" *ngIf="selected == 'fn'">
@@ -60,16 +63,25 @@
                                                         <mat-icon matSuffix (click)="getFarmerByFarmerNo()">search
                                                         </mat-icon>
                                                     </mat-form-field>
-                                                    <mat-form-field class="m-l-3" *ngIf="selected == 'r'">
-                                                        <input matInput (dateChange)="filterFarmers()" placeholder="select route"
-                                                        formControlName="routeId">
-                                                        <mat-icon matSuffix (click)="selectRoute()">search</mat-icon>
-                                                    </mat-form-field>
- 
+
+                                                    <!-- <mat-icon class="m-l-3" *ngIf="selected == 'nd'" (click)="getFarmersWithNoDeliveries()">search</mat-icon> -->
+
+                                                    
+                                                
+                                                    <mat-radio-group *ngIf="selected == 'a'" formControlName="activity" (change)="onStatusChanged($event.value)">
+                                                        <mat-radio-button value="active">Active</mat-radio-button>
+                                                        <mat-radio-button value="inactive">Inactive</mat-radio-button>
+                                                      </mat-radio-group>
+
+                                                    
+                                                    <mat-radio-group *ngIf="selected == 'st'" formControlName="status" (change)="onStatusChange($event.value)">
+                                                        <mat-radio-button value="ap">Approved</mat-radio-button>
+                                                        <mat-radio-button value="pe">Pending</mat-radio-button>
+                                                      </mat-radio-group>
+
                                                 </form>
                                             </li>
                                         </ul>
-                                        
                                     </div>
                                     <div class="col-2">
                                         <ul class="header-buttons">
@@ -77,7 +89,7 @@
                                                 <div class="export-button m-l-10" matTooltip="XLSX">
                                                     <img src="assets/images/icons/xlsx.png" alt="" (click)="
                                 exporter.exportTable('xlsx', {
-                                  fileName: 'Jufred Farmers',
+                                  fileName: 'all-counties',
                                   sheet: 'sheet1'
                                 })
                               " />
@@ -89,18 +101,7 @@
                                                         (click)="exporter.exportTable('csv')" />
                                                 </div>
                                             </li>
-                                            <!-- <li>
-                                                <div class="export-button m-l-10" matTooltip="JSON">
-                                                    <img src="assets/images/icons/json.png" alt=""
-                                                        (click)="exporter.exportTable('json')" />
-                                                </div>
-                                            </li> -->
-                                            <!-- <li>
-                                                <div class="export-button m-l-10" matTooltip="TXT">
-                                                    <img src="assets/images/icons/txt.png" alt=""
-                                                        (click)="exporter.exportTable('txt')" />
-                                                </div>
-                                            </li> -->
+                                           
                                         </ul>
                                     </div>
                                 </div>
@@ -149,13 +150,13 @@
                                 </ng-container>
                                 <ng-container matColumnDef="mobile_no">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">Phone.</mat-header-cell>
+                                        class="column-nowrap tbl-col-width-per-13">Phone.</mat-header-cell>
                                     <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
+                                        [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
                                         {{farmer.mobile_no}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="ID No.">
+                                <ng-container matColumnDef="id_number">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">ID
                                         No.</mat-header-cell>
                                     <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
@@ -211,7 +212,7 @@
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                 <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                                 <mat-row *matRowDef="let row; columns: displayedColumns"
-                                    (click)="farmerDetailsCall(farmer)" [style.cursor]="'pointer'" matRipple>
+                                    [style.cursor]="'pointer'" matRipple>
                                 </mat-row>
                                 <mat-cell *matNoDataRow colspan="4">
                                     No data matching the filter "{{ input.value }}"</mat-cell>
@@ -235,5 +236,6 @@
                 </div>
             </div>
         </div>
+                <!-- <app-farmers-with-no-deliveries></app-farmers-with-no-deliveries> -->
     </div>
 </section>

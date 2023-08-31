@@ -107,11 +107,15 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
     onSelectYear(event: any){
       const arr = this.monthlyStr.split('-')
       this.monthlyStr = `${event.value}-${arr[1]}`
+      this.currentYear = event.value
+      console.log(event)
       this.getData()
     }
 
     onSelectMonth(event: any){
       const arr = this.monthlyStr.split('-')
+      this.currentMonth.value = event.value
+      console.log(event.value)
       this.monthlyStr = `${arr[0]}-${event.value}`
       this.getData()
     }
@@ -131,39 +135,13 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
   
       });
     }
-  formatCollections(array=[],month= formatDate(Date.now(),'MONTH'),route='KIAMAINA'){
-    if(!array.length)return []
-    array = array.map(({collection_date,session,farmer_no,quantity,route,collector,id})=>{
-        const d = new Date(collection_date)
-        const dstr = formatDate(d,'')
-        const monthly = formatDate(d,'MONTH')
-        return {session,farmer_no,quantity,route,collector,id,date:dstr,monthly}
-    })
-    array = array.filter(d=>d.route==route)
-    const groupedData = groupBy(array, "monthly");
-    const monthly = groupedData[month];
-    if(!monthly) return []
-    const res = monthly.map(d=>({
-      x: d.date,
-      y: d.quantity
-    }))
-    const data = groupBy(res,'x')
-    const arr = []
-    for (const k in data) {
-      arr.push({
-        x: k,
-        y: sum(data[k].map(a=>a.y))
-      })
-    }
-    return arr;
-  }
   getData(){
    
     this.isLoading = true
-    this.service.fetchAllCollections().subscribe(res=>{
+    this.service.fetchCollectionsPerGivenMonthAndRoute(this.currentYear,this.currentMonth.value,this.route).subscribe(res=>{
       if(res.entity && res.entity.length>0){
 
-        this.data  = this.formatCollections(res.entity,this.monthlyStr,this.route)
+        this.data  = res.entity;
       }else{
         this.data = []
       }
@@ -171,6 +149,10 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
       this.isLoading = false
       this.renderChart()
       
+    },(err)=>{
+      this.isLoading = false
+      this.data = []
+      this.renderChart()
     })
   }
   renderChart(){

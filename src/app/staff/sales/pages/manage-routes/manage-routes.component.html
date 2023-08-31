@@ -152,7 +152,7 @@
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                 <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->
                                 <mat-row *matRowDef="let row; columns: displayedColumns"
-                                    (click)="routeDetailsCall(route)" [style.cursor]="'pointer'" matRipple>
+                                   [style.cursor]="'pointer'" matRipple>
                                 </mat-row>
                             </mat-table>
                             <mat-paginator #paginator [pageIndex]="0" [pageSize]="5"

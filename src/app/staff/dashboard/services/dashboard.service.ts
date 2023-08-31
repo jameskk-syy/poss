@@ -10,6 +10,17 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class DashboardService {
+  getAccumulationsByAccumulatorId(accumulatorId: any): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/accumulation/by-accumulator/${accumulatorId}`;
+    return this.http.get(url);
+  }
+  getCollectorsIdAccumulations(collectorId: any): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/accumulation/${collectorId}`;
+    return this.http.get(url, httpOptions);
+  }
+  getAllAccumulations(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/accumulation/all`,httpOptions); 
+   }
   getFarmerNoCollections(farmerNo: any):Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/records/by-farmer-no?farmerNo=`+farmerNo,httpOptions);
 

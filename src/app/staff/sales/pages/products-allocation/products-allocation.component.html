@@ -156,7 +156,7 @@
 
                                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                         <mat-row *matRowDef="let row; columns: displayedColumns"
-                                        (click)="AdvanceDetailsCall(row)"   [style.cursor]="'pointer'" matRipple>
+                                         [style.cursor]="'pointer'" matRipple>
                                         </mat-row>
                                         <mat-cell *matNoDataRow  colspan="4">
                                             No data matching the filter "{{ input.value }}"</mat-cell>
