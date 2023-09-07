@@ -56,9 +56,9 @@ selectCollector() {
   dialogRef.afterClosed().subscribe((result) => {
     this.dialogData = result;
     this.addAccumulationForm.patchValue({
-      collectorId: result.data.id, 
+      collectorId: result.data.id,
     });
-    this.showRouteField = false;
+    this.showRouteField = true;
 
     this.getRoutes(result.data.id);
 
@@ -82,14 +82,14 @@ getRoutes(id: any) {
 
 
 onSubmit() {
-  
+
   const authUser = JSON.parse(localStorage.getItem('auth-user'));
   this.addAccumulationForm.get('accumulatorId').setValue(authUser.id);({
     accumulatorId: authUser.id
   // const accumulatorid = authUser.id;
   // this.addAccumulationForm.patchValue({
   //   accumulatorId: accumulatorid
-    
+
   });
   this.loading = true;
 
@@ -99,9 +99,9 @@ onSubmit() {
     this.loading = false;
     this.addAccumulationForm.reset();
     this.dialogRef.close();
-    
+
   },   err => {
-    console.error(err); 
+    console.error(err);
     this.loading = false;
     this.snackbar.showNotification("snackbar-danger", "An error occurred.");
     this.dialogRef.close();
