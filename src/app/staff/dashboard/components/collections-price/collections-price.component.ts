@@ -93,9 +93,14 @@ export class CollectionsPriceComponent extends BaseComponent implements OnInit {
   }
 
   createChartParamtersForm() {
+    const defaultCollectorId = this.collectors.length > 0 ? this.collectors[0].id:[2];
+
     return this.fb.group({
       year: [this.currentYear],
-      collectorId: ["2"]
+      // collectorId:["2"],
+      collectorId: [defaultCollectorId],
+
+      
     });
   }
 
@@ -217,27 +222,29 @@ export class CollectionsPriceComponent extends BaseComponent implements OnInit {
     })
   }
 
-  getAllUsers(){
-    this.userService.fetchAllActiveAccounts().pipe(takeUntil(this.subject)).subscribe(res => {
-      let users = res.userData;
+  getAllUsers() {
+    this.userService.fetchAllActiveAccounts().pipe(takeUntil(this.subject)).subscribe(
+      res => {
+        let users = res.userData;
 
-      users.forEach(user => {
-        if(user.roles[0].name == "ROLE_COLLECTOR"){
-          this.collectors.push(user);
+        users.forEach(user => {
+          if (user.roles[0].name == "ROLE_COLLECTOR") {
+            this.collectors.push(user);
+          }
+        });
+
+        if (this.collectors.length > 0) {
+          this.chartParametersForm.patchValue({
+            collectorId: this.collectors[0].id,
+          });
+
+          this.getCollectorCollectionSPerMonth();
         }
-      })
-
-
-      if(this.collectors.length > 0){
-        this.chartParametersForm.patchValue({
-          collectorId: this.collectors[0].id
-        })
-
-        this.getCollectorCollectionSPerMonth();
+      },
+      err => {
+        console.log(err);
+        this.isLoading = false;
       }
-    }, err => {
-      console.log(err)
-      this.isLoading = false
-    })
+    );
   }
 }

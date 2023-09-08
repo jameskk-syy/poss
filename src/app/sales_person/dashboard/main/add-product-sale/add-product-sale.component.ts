@@ -30,6 +30,7 @@ export class AddProductSaleComponent implements OnInit {
   amountToPay: number
   mpesa_number:string;
   CheckoutRequestID: string;
+  paymentMode: any;
   
 
   constructor(
@@ -111,6 +112,7 @@ export class AddProductSaleComponent implements OnInit {
     
     this.subscription = this.salesservice.addSale(data)
       .subscribe((res) => {
+        console.log(res)
         this.snackBar.showNotification('snackbar-success', 'Successful!');
         this.isLoading = false;
         this.productSalesAssignment.reset();

@@ -1,5 +1,55 @@
 
-.l-bg-brown
-{
-    color: #046307;
-}
+// .l-bg-brown
+// {
+//     color: #046307;
+// }
+// // .sidebar-container {
+// //     width: 250px;
+// //     transition: width 0.3s ease-in-out;
+// //   }
+  
+// //   @media (max-width: 767px) {
+// //     .sidebar-container {
+// //       width: 100%; 
+// //     }
+// //   }
+// /* Style the menu icon */
+// .menu-icon {
+//   cursor: pointer;
+//   position: fixed;
+//   top: 10px;
+//   left: 10px;
+//   z-index: 9999;
+//   font-size: 24px;
+//   color: #333; /* Change the color to your preference */
+// }
+
+// /* Apply styles to the sidebar based on the isSidebarOpen variable */
+// .sidebar {
+//     width: 250px; /* Adjust the width when the sidebar is open */
+//     transition: width 0.3s; /* Add a transition effect for smoother animation */
+//   }
+//   .ls-closed .sidebar {
+//     width: 60px; /* Adjust the width when the sidebar is closed */
+//   }
+
+// .ls-closed .sidebar .menu-top {
+//   padding: 5px 0; /* Adjust the top-level menu item padding when the sidebar is closed */
+// }
+
+// .ls-closed .sidebar .menu-top i-feather {
+//   font-size: 20px; /* Adjust the icon size when the sidebar is closed */
+// }
+
+// /* Add responsive styles to adapt the sidebar for smaller screens */
+// @media (max-width: 991px) {
+//   /* Hide the sidebar when the screen width is less than or equal to 991px */
+//   .sidebar {
+//     display: none;
+//   }
+
+//   /* Display the menu icon when the sidebar is hidden */
+//   .menu-icon {
+//     display: block;
+//   }
+// }

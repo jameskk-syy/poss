@@ -16,7 +16,7 @@
         </button>
     </div>
     <div mat-dialog-content>
-        <!-- <mat-progress-bar mode="indeterminate" *ngIf="pLoading"></mat-progress-bar>
+        <mat-progress-bar mode="indeterminate" *ngIf="pLoading"></mat-progress-bar>
         <form [formGroup]="productSalesAssignment" class="register-form">
             <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
@@ -30,7 +30,7 @@
                     </mat-form-field>
                 </div>
             </div>
-        </form> -->
+        </form>
         <form class="register-form m-4" [formGroup]="productSalesAssignment" *ngIf="customertype=='corporate'">
              <div class="row">
                 <mat-card>
@@ -89,13 +89,16 @@
                                     <mat-label>Payment Method</mat-label>
                                     <mat-select formControlName="paymentMethod"
                                      [(value)]="method" required>
-                                            <mat-option value="cash"><b>CASH</b></mat-option>
-                                            <mat-option value="mpesa"><b>MPESA</b></mat-option>
+                                            <mat-option value="CASH"><b>CASH</b></mat-option>
+                                            <mat-option value="STK_PUSH"><b>MPESA</b></mat-option>
+                                            <mat-option value="PAYBILL"><b>PAYBILL</b></mat-option>
+
+                                            
                                     </mat-select>
                                 </mat-form-field>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                                <div *ngIf="method == 'cash'">
+                                <div *ngIf="method == 'CASH'">
                                     <!-- <button mat-raised-button color="primary" [disabled]="!productSalesAssignment.valid" (click)="computeAmount()">
                                       <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
                                       <b>Calculate</b>
@@ -104,7 +107,7 @@
                                   </div>
                                   
                                 <form [formGroup]="filterForm">
-                                    <mat-form-field class="m-l-3" *ngIf="method == 'mpesa'">
+                                    <mat-form-field class="m-l-3" *ngIf="method == 'STK_PUSH'">
                                         <input matInput
                                             placeholder="Enter MPESA number"
                                             formControlName="mpesa_number"
@@ -114,6 +117,13 @@
                                             </mat-icon>
                                     </mat-form-field>
                                 </form>
+                                <div *ngIf="method == 'PAYBILL'">
+                                    <button mat-raised-button color="primary" [disabled]="!productSalesAssignment.valid" (click)="computeAmount()">
+                                      <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                                      <b>Calculate</b>
+                                    </button>
+                                    <p [hidden]="!productSalesAssignment.valid">Kindly pay: Ksh <b>{{ amountToPay }}</b></p>
+                                  </div>
                             </div>
                         </div>
                         <div class="row">
@@ -180,29 +190,38 @@
                                    <mat-label>Payment Method</mat-label>
                                    <mat-select formControlName="paymentMethod"
                                     [(value)]="method" required>
-                                           <mat-option value="cash"><b>CASH</b></mat-option>
-                                           <mat-option value="mpesa"><b>MPESA</b></mat-option>
+                                           <mat-option value="CASH"><b>CASH</b></mat-option>
+                                           <mat-option value="STK_PUSH"><b>MPESA</b></mat-option>
+                                           <mat-option value="PAYBILL"><b>PAYBILL</b></mat-option>
+
                                    </mat-select>
                                </mat-form-field>
                            </div>
                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                               <div *ngIf="method == 'cash'">
-                                   <button mat-raised-button color="primary" [disabled]="!productSalesAssignment.valid" (click)="computeAmount()">
+                               <div *ngIf="method == 'CASH'">
+                                   <!-- <button mat-raised-button color="primary" [disabled]="!productSalesAssignment.valid" (click)="computeAmount()">
                                      <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
                                      <b>Calculate</b>
-                                   </button>
+                                   </button> -->
                                    <p [hidden]="!productSalesAssignment.valid">Kindly pay: Ksh <b>{{ amountToPay }}</b></p>
                                  </div>
                                  
                                <form [formGroup]="filterForm">
-                                   <mat-form-field class="m-l-3" *ngIf="method == 'mpesa'">
+                                   <mat-form-field class="m-l-3" *ngIf="method == 'STK_PUSH'">
                                        <input matInput
                                            placeholder="Enter MPESA number"
                                            formControlName="mpesa_number">
                                            <mat-icon matSuffix (click)="mpesaPayment()" [hidden]="!productSalesAssignment.valid">send
-                                           </mat-icon>
+                                        </mat-icon>
                                    </mat-form-field>
                                </form>
+                               <div *ngIf="method == 'PAYBILL'">
+                                <button mat-raised-button color="primary" [disabled]="!productSalesAssignment.valid" (click)="computeAmount()">
+                                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                                  <b>Calculate</b>
+                                </button>
+                                <p [hidden]="!productSalesAssignment.valid">Kindly pay: Ksh <b>{{ amountToPay }}</b></p>
+                              </div>
                            </div>
                        </div>
                        <div class="row">

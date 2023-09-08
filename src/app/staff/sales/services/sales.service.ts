@@ -144,9 +144,9 @@ export class SalesService {
 
   }
 
-  getFarmerDetails(id: any): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/farmer/farmers/details?farmerId=` + id, httpOptions);
-    // return this.http.get(`${environment.apiUrl}/api/v1/farmer/membernumber?farmer_number=` + farmer_no, httpOptions);
+  getFarmerDetails(farmer_no: any): Observable<any> {
+    // return this.http.get(`${environment.apiUrl}/api/v1/farmer/farmers/details?farmerId=` + id, httpOptions);
+    return this.http.get(`${environment.apiUrl}/api/v1/farmer/membernumber?farmer_number=` + farmer_no, httpOptions);
 
   }
 

@@ -1,5 +1,16 @@
 <nav #navbar class="navbar active">
   <div class="container-fluid bg wbg">
+
+
+    <div>
+      <a href="#" onClick="return false;" class="navbar-toggle collapsed"
+        (click)="isNavbarCollapsed = !isNavbarCollapsed" aria-expanded="false"></a>
+      <a href="#" onClick="return false;" class="bars" (click)="mobileMenuSidebarOpen($event,'overlay-open')"></a>
+
+
+      
+      </div>
+
     <div class="collapse navbar-collapse" [ngbCollapse]="isNavbarCollapsed">
       <ul class="float-start">
         <li>
@@ -8,6 +19,8 @@
           </button>
         </li>
       </ul>
+
+
       <ul class="float-start">
         <li>
           <a class="navbar-brand" routerLink={{homePage}}>
@@ -15,6 +28,10 @@
           </a>
         </li>
       </ul>
+    
+      
+
+
       <ul class="nav navbar-nav navbar-right">
         <li class="nav-notification-icons pt-0 mr-2 header-icon">
           <span>Welcome, <b>{{ userName }}</b></span>

@@ -40,6 +40,7 @@ import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
 import { FooterComponent } from "./layout/footer/footer.component";
 import { NgApexchartsModule } from "ng-apexcharts";
 import { MatTableExporterModule } from "mat-table-exporter";
+import { MatSidenavModule } from '@angular/material/sidenav';
 // import { MainComponent } from './totals-collector/dashboard/main/main/main.component';
 
 
@@ -89,7 +90,8 @@ export function createTranslateLoader(http: HttpClient): any {
     // core & shared
     CoreModule,
     SharedModule, 
-    MatTableExporterModule
+    MatTableExporterModule,
+    MatSidenavModule,
   
   ],
   providers: [

@@ -11,6 +11,16 @@ import { StatmentComponent } from '../pages/statment/statment.component';
 import { FarmerProductsReportComponent } from '../pages/farmer-products-report/farmer-products-report.component';
 import { LookupPickUpLocationsComponent } from 'src/app/staff/sales/pages/lookup-pick-up-locations/lookup-pick-up-locations.component';
 import { saveAs } from 'file-saver';
+import { RoutesLookUpComponent } from 'src/app/staff/sales/pages/routes-look-up/routes-look-up.component';
+const YEARS= [
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025,
+  2026
+];
 const MONTHS = [
   { value: 1, name: 'JANUARY' },
   { value: 2, name: 'FEBRUARY' },
@@ -34,27 +44,29 @@ export class MainComponent implements OnInit {
   reportCollectionForm: FormGroup;
   farmerstatementForm: FormGroup
   collectionPerpLocationsForm: FormGroup
+  dailyCollectionReportForm: FormGroup
+  reportFarmerForm: FormGroup
   reportCollectionForm2: FormGroup
   reportCollectionForm3: FormGroup
   reportCollectionFormp:FormGroup
-  // paymentFileForm: FormGroup
   paymentFileForm1:FormGroup
   paymentFileForm2:FormGroup
-
+  reportCollectionForm5: FormGroup;
+  CollectionCountReportForm: FormGroup
   reportCollectionFormm:FormGroup
   reportCollectionForm1:FormGroup
   
   isloading: boolean
   collectors: any
   months: any
-
+  years: any
   centered = false;
-  // radius: number;
   color: string;
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
   dialogData: any;
   date: string;
+  route: any;
 
 
   constructor(
@@ -75,6 +87,23 @@ export class MainComponent implements OnInit {
       
     
     })
+    this.CollectionCountReportForm=this.fb.group({
+      month: ["", [Validators.required]],
+      year: ["", [Validators.required]],
+
+    })
+    this.dailyCollectionReportForm=this.fb.group({
+      month: ["", [Validators.required]],
+      year: ["", [Validators.required]],
+
+
+    })
+    this.reportFarmerForm=this.fb.group({
+      date: ["", [Validators.required]],
+      route: ["", [Validators.required]],
+
+
+    })
     this.reportCollectionForm2 = this.fb.group({
 
       date: ["", [Validators.required]],
@@ -84,17 +113,21 @@ export class MainComponent implements OnInit {
 
     })
     this.reportCollectionForm1 = this.fb.group({
-
+      year: ["", [Validators.required]],
       month: ["", [Validators.required]],
-      // format: ["", [Validators.required]],
       session: ["", [Validators.required]],
 
     
     })
-    this.reportCollectionForm3 = this.fb.group({
-
+    this.reportCollectionForm5 = this.fb.group({
       date: ["", [Validators.required]],
-      // format: ["", [Validators.required]],
+      
+    
+    })
+    
+    this.reportCollectionForm3 = this.fb.group({
+      date: ["", [Validators.required]],
+      route: ["", [Validators.required]],
     
     })
     this.reportCollectionFormp = this.fb.group({
@@ -106,7 +139,7 @@ export class MainComponent implements OnInit {
     this.reportCollectionFormm = this.fb.group({
 
       month: ["", [Validators.required]],
-      // format: ["", [Validators.required]],
+      year: ["", [Validators.required]],
     
     })
 
@@ -121,6 +154,7 @@ export class MainComponent implements OnInit {
 
 
     this.months = MONTHS
+    this.years = YEARS
 
     // this.paymentFileForm = this.fb.group(
     //   {
@@ -137,6 +171,33 @@ export class MainComponent implements OnInit {
       month: ["", [Validators.required]]
     })
 
+  }
+
+  selectRoute() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "40%";
+    dialogConfig.data = {
+      data: "",
+    };
+    const dialogRef = this.dialog.open(RoutesLookUpComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      this.dialogData = result;
+
+      this.reportFarmerForm.patchValue({
+        route: this.dialogData.data.route
+      });
+      this.reportCollectionForm3.patchValue({
+        route: this.dialogData.data.route
+
+      });
+
+
+      
+      // this.generateCollectionsPerFarmerPerRoute()
+
+    });
   }
   generateDateReport() {
     // this.color="green"
@@ -200,6 +261,125 @@ export class MainComponent implements OnInit {
     }
 
   }
+  generateCollectionCount(){
+    this.isloading = true
+    this.service.collectionsCountPerDayPerMonth(this.CollectionCountReportForm.value.month,this.CollectionCountReportForm.value.year)
+      .subscribe(
+        (response) => {
+          let url = window.URL.createObjectURL(response.data);
+
+          window.open(url);
+
+          let a = document.createElement("a");
+          document.body.appendChild(a);
+          a.setAttribute("style", "display: none");
+          a.setAttribute("target", "blank");
+          a.href = url;
+          a.download = response.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+
+          this.isloading = false;
+
+
+
+          this.snackbar.showNotification(
+            "Report generated successfully",
+            "snackbar-success"
+          );
+        },
+        (err) => {
+          console.log(err);
+          this.isloading = false
+
+          this.snackbar.showNotification(
+            "Report could not be generated successfully",
+            "snackbar-danger"
+          );
+        }
+      );
+
+  }
+  generateCollectionsPerDayPerMonth(){
+    this.isloading = true
+    this.service.collectionsPerDayPerMonth(this.dailyCollectionReportForm.value.month,this.dailyCollectionReportForm.value.year)
+      .subscribe(
+        (response) => {
+          let url = window.URL.createObjectURL(response.data);
+
+          window.open(url);
+
+          let a = document.createElement("a");
+          document.body.appendChild(a);
+          a.setAttribute("style", "display: none");
+          a.setAttribute("target", "blank");
+          a.href = url;
+          a.download = response.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+
+          this.isloading = false;
+
+
+
+          this.snackbar.showNotification(
+            "Report generated successfully",
+            "snackbar-success"
+          );
+        },
+        (err) => {
+          console.log(err);
+          this.isloading = false
+
+          this.snackbar.showNotification(
+            "Report could not be generated successfully",
+            "snackbar-danger"
+          );
+        }
+      );
+
+  }
+
+  generateCollectionsPerFarmerPerRoute(){
+    this.date = this.datePipe.transform(this.reportFarmerForm.value.date, 'yyyy-MM-dd');
+    this.isloading = true
+    this.service.collectionsPerFarmerPerDatePerRoute(this.reportFarmerForm.value.date,this.reportFarmerForm.value.route)
+      .subscribe(
+        (response) => {
+          let url = window.URL.createObjectURL(response.data);
+
+          window.open(url);
+
+          let a = document.createElement("a");
+          document.body.appendChild(a);
+          a.setAttribute("style", "display: none");
+          a.setAttribute("target", "blank");
+          a.href = url;
+          a.download =response.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+
+          this.isloading = false;
+
+          this.snackbar.showNotification(
+            "Report generated successfully",
+            "snackbar-success"
+          );
+        },
+        (err) => {
+          console.log(err);
+          this.isloading = false
+
+          this.snackbar.showNotification(
+            "Report could not be generated successfully",
+            "snackbar-danger"
+          );
+        }
+      );
+  }
 
   generateCollectionsPerCollector() {
     this.date = this.datePipe.transform(this.reportCollectionForm2.value.date, 'yyyy-MM-dd');
@@ -246,10 +426,50 @@ export class MainComponent implements OnInit {
     
     
     this.isloading = true
-    this.service.collectionsPerCollectorByMonth(this.reportCollectionForm1.value.month,this.reportCollectionForm1.value.session)
+    this.service.collectionsPerCollectorByMonth(this.reportCollectionForm1.value.year,this.reportCollectionForm1.value.month,this.reportCollectionForm1.value.session)
       .subscribe(
         (response) => {
-          console.log(response)
+          let url = window.URL.createObjectURL(response.data);
+
+          window.open(url);
+
+          let a = document.createElement("a");
+          document.body.appendChild(a);
+          a.setAttribute("style", "display: none");
+          a.setAttribute("target", "blank");
+          a.href = url;
+          a.download = response.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+
+          this.isloading = false;
+
+
+
+          this.snackbar.showNotification(
+            "Report generated successfully",
+            "snackbar-success"
+          );
+        },
+        (err) => {
+          console.log(err);
+          this.isloading = false
+
+          this.snackbar.showNotification(
+            "Report could not be generated successfully",
+            "snackbar-danger"
+          );
+        }
+      );
+
+  }
+  generateCollectionsPerRoutePerDate(){
+    this.date = this.datePipe.transform(this.reportCollectionForm5.value.date, 'yyyy-MM-dd');
+    this.isloading = true
+    this.service.dailyRouteCollectionsByDate(this.reportCollectionForm5.value.date)
+      .subscribe(
+        (response) => {
           let url = window.URL.createObjectURL(response.data);
 
           window.open(url);
@@ -286,14 +506,12 @@ export class MainComponent implements OnInit {
 
   }
 
-  generateCollectionsPerLocations() {
+  generateCollectionsForRoutePerDate() {
     this.date = this.datePipe.transform(this.reportCollectionForm3.value.date, 'yyyy-MM-dd');
-    console.log("Formated date is ", this.date)
     this.isloading = true
-    this.service.collectionsPerLocationrByDate(this.date)
+    this.service.collectionsPerRouteByDate(this.reportCollectionForm3.value.date,this.reportCollectionForm3.value.route)
       .subscribe(
         (response) => {
-          console.log(response)
           let url = window.URL.createObjectURL(response.data);
 
           window.open(url);
@@ -374,11 +592,11 @@ export class MainComponent implements OnInit {
   //     );
 
   // }
-  generateCollectionsPerLocationsm() {
+  generateCollectionsPerRoutePerMonth() {
     
     
     this.isloading = true
-    this.service.collectionsPerLocationrByMonth(this.reportCollectionFormm.value.month)
+    this.service.collectionsPerRouteByMonth(this.reportCollectionFormm.value.month, this.reportCollectionFormm.value.year)
       .subscribe(
         (response) => {
           console.log(response)
@@ -727,6 +945,9 @@ export class MainComponent implements OnInit {
 
   }
   DailyCOllectionReport() {
+
+  }
+  collectionsPerFarmer(){
 
   }
   collectionsPerLocation(title: any) {

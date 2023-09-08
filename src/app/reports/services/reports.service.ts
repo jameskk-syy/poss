@@ -9,6 +9,101 @@ import { formatDate } from 'src/app/data/services/utils';
   providedIn: 'root'
 })
 export class ReportsService {
+  collectionsCountPerDayPerMonth(month: any, year: any): Observable<any> {
+    let headers = new HttpHeaders();
+    headers.append("Content-Type", "application/pdf");
+  
+    let requestOptions: any = {
+      params: {
+        month: month,
+        year: year
+      },
+      headers: headers,
+      responseType: "blob",
+      withCredentials: false,
+    };
+  
+    let API_URL = `${environment.apiUrl}/api/v1/reports/total-collections/per-day/for-month`;
+    return this.http.get(API_URL, requestOptions).pipe(
+      map((response) => {
+        return {
+          filename:month + "DetailedDailyCollectionsPerMonth",
+          data: new Blob([response], { type: "application/pdf" }),
+        };
+      })
+    );  }
+  dailyRouteCollectionsByDate(date: any):Observable<any> {
+    let headers = new HttpHeaders();
+    headers.append("Content-Type", "application/pdf");
+  
+    let requestOptions: any = {
+      params: {
+        date: formatDate(date,''),
+      },
+      headers: headers,
+      responseType: "blob",
+      withCredentials: false,
+    };
+  
+    let API_URL = `${environment.apiUrl}/api/v1/reports/totalCollections/perDate`;
+  
+    return this.http.get(API_URL, requestOptions).pipe(
+      map((response) => {
+        return {
+          filename: "CollectionPerRoutePerDate",
+          data: new Blob([response], { type: "application/pdf" }),
+        };
+      })
+    );   
+   }
+  collectionsPerDayPerMonth(month: any, year: any): Observable<any> {
+    let headers = new HttpHeaders();
+    headers.append("Content-Type", "application/pdf");
+  
+    let requestOptions: any = {
+      params: {
+        month: month,
+        year: year
+      },
+      headers: headers,
+      responseType: "blob",
+      withCredentials: false,
+    };
+  
+    let API_URL = `${environment.apiUrl}/api/v1/reports/detailed-total-collections/per-day/for-month`;
+    return this.http.get(API_URL, requestOptions).pipe(
+      map((response) => {
+        return {
+          filename:month + "DetailedDailyCollectionsPerMonth",
+          data: new Blob([response], { type: "application/pdf" }),
+        };
+      })
+    );  }
+  collectionsPerFarmerPerDatePerRoute(date: any, route: any):Observable<any> {
+    let headers = new HttpHeaders();
+    headers.append("Content-Type", "application/pdf");
+  
+    let requestOptions: any = {
+      params: {
+        date: formatDate(date,''),
+        route: route
+      },
+      headers: headers,
+      responseType: "blob",
+      withCredentials: false,
+    };
+  
+    let API_URL = `${environment.apiUrl}/api/v1/reports/collections/per-farmer/for-route`;
+  
+    return this.http.get(API_URL, requestOptions).pipe(
+      map((response) => {
+        return {
+          filename: "CollectionsPerFarmerPerRoute",
+          data: new Blob([response], { type: "application/pdf" }),
+        };
+      })
+    );  
+  }
   getMpesaPaymentFile(month: string):Observable<any> {
     let headers = new HttpHeaders();
     headers.append("Content-Type", "application/pdf");
@@ -20,7 +115,6 @@ export class ReportsService {
       withCredentials: false,
     };
     let API_URL = `${environment.apiUrl}/api/v1/reports/MpesaPaymentFile?month=`+month;
-console.log(API_URL)
     return this.http.get(API_URL, requestOptions).pipe(
       map((response) => {
         console.log(response)
@@ -55,12 +149,13 @@ console.log(API_URL)
    }
   baseUrl: string;
 
-collectionsPerCollectorByMonth(month: string, session: string): Observable<any> {
+collectionsPerCollectorByMonth(year: string, month: string, session: string): Observable<any> {
   let headers = new HttpHeaders();
   headers.append("Content-Type", "application/pdf");
 
   let requestOptions: any = {
     params: {
+      year: year,
       month: month,
       session: session
     },
@@ -68,10 +163,8 @@ collectionsPerCollectorByMonth(month: string, session: string): Observable<any> 
     responseType: "blob",
     withCredentials: false,
   };
-  console.log(month)
 
   let API_URL = `${environment.apiUrl}/api/v1/reports/collections/perCollectors/perMonth`;
-console.log(API_URL)
   return this.http.get(API_URL, requestOptions).pipe(
     map((response) => {
       return {
@@ -243,26 +336,30 @@ console.log(API_URL)
   // }
 
 
-  collectionsPerLocationrByDate(date: any): Observable<any> {
+  collectionsPerRouteByDate(date: any, route:any): Observable<any> {
     let headers = new HttpHeaders();
-    headers.append("Accept", "application/pdf");
-
+    headers.append("Content-Type", "application/pdf");
+  
     let requestOptions: any = {
-      params: date,
+      params: {
+        date: formatDate(date,''),
+        route: route
+      },
       headers: headers,
       responseType: "blob",
       withCredentials: false,
     };
-    let API_URL = `${environment.apiUrl}/api/v1/reports/totalCollections/perRoute/perDate?date=` + date;
-
+  
+    let API_URL = `${environment.apiUrl}/api/v1/reports/total-collections/per-route/per-date`;
+  
     return this.http.get(API_URL, requestOptions).pipe(
       map((response) => {
         return {
-          filename: "TotalCollectionsPerRoute",
+          filename: "CollectionForRoutePerDate",
           data: new Blob([response], { type: "application/pdf" }),
         };
       })
-    );
+    );  
   }
   // collectionsPerLocationrByDatep(date: any): Observable<any> {
   //   let headers = new HttpHeaders();
@@ -285,22 +382,25 @@ console.log(API_URL)
   //     })
   //   );
   // }
-  collectionsPerLocationrByMonth(month: any): Observable<any> {
+  collectionsPerRouteByMonth(month: any, year: any): Observable<any> {
     let headers = new HttpHeaders();
-    headers.append("Accept", "application/pdf");
-
+    headers.append("Content-Type", "application/pdf");
+  
     let requestOptions: any = {
-      params: month,
+      params: {
+        month: month,
+        year: year
+      },
       headers: headers,
       responseType: "blob",
       withCredentials: false,
     };
-    let API_URL = `${environment.apiUrl}/api/v1/reports/totalCollections/perRoute/perMonth?month=` + month;
-
+  
+    let API_URL = `${environment.apiUrl}/api/v1/reports/totalCollections/perRoute/perMonth`;
     return this.http.get(API_URL, requestOptions).pipe(
       map((response) => {
         return {
-          filename: "TotalCollectionsPerRoutePerMonth",
+          filename:month + "CollectionsPerRoutePerMonth",
           data: new Blob([response], { type: "application/pdf" }),
         };
       })

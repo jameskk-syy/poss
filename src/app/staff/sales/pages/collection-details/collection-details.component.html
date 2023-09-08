@@ -21,35 +21,37 @@
                                 <div class="col-2" *ngIf="present==true">
                                     <div style="display: flex; align-items: center;" matTooltip="Farmer Number">
                                         <mat-icon class="align">credit_card</mat-icon>
-                                        <div class="p-1"><b>{{farmer.member_type}}</b></div>
+                                        <div class="p-1"><b>{{farmer.memberType}}</b></div>
                                     </div>
                                 </div>
 
                                 <div class="col-2" *ngIf="present==true">
                                     <div style="display: flex; align-items: center;" matTooltip="ID Number">
                                         <mat-icon class="align">contacts</mat-icon>
-                                        <div class="p-1"><b>{{farmer.id_number}}</b></div>
+                                        <div class="p-1"><b>{{farmer.idNumber}}</b></div>
                                     </div>
                                 </div>
 
                                 <div class="col-2" *ngIf="present==true">
                                     <div style="display: flex; align-items: center;" matTooltip="Route">
                                         <mat-icon class="align">location_on</mat-icon>
-                                        <div class="p-1"><b>{{farmer.route}}</b></div>
+                                        <div class="p-1"><b>{{farmer.routeName}}</b></div>
                                     </div>
                                 </div>
 
                                 <div class="col-2" *ngIf="present==true">
                                     <div style="display: flex; align-items: center;" matTooltip="Phone Number">
                                         <mat-icon class="align">contact_phone</mat-icon>
-                                        <div class="p-1"><b>{{farmer.mobile_no}}</b>
+                                        <div class="p-1"><b>{{farmer.mobileNo}}</b>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-2" *ngIf="present==true">
                                     <div style="display: flex; align-items: center;" matTooltip="Account Number">
                                         <mat-icon class="align">money</mat-icon>
-                                        <div class="p-1"><b>{{farmer.account_number=='N/A'?farmer.payment_mode:farmer.account_number}}</b></div>
+                                        <div class="p-1"><b>{{farmer.accountNumber=='N/A'?farmer.paymentMode:farmer.bankDetails.accountNumber}}</b></div>
+                                        <!-- <div class="p-1"><b>{{farmer.accountNumber}}</b></div> -->
+
                                     </div>
                                 </div>
                                 
@@ -247,21 +249,21 @@
                                             <div class="col-lg-2 col-sm-6">
                                                 <div matTooltip="Farmer No" class="chat-about" *ngIf="present==true">
                                                     <div class="chat-with">Farmer No </div>
-                                                    <div class="chat-num-messages">{{farmer.farmer_no }}</div>
+                                                    <div class="chat-num-messages">{{farmer.farmerNo }}</div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 col-sm-6">
                                                 <div matTooltip="Id No" class="chat-about"
                                                     *ngIf="present==true">
                                                     <div class="chat-with">ID number </div>
-                                                    <div class="chat-num-messages">{{farmer.id_number}}</div>
+                                                    <div class="chat-num-messages">{{farmer.idNumber}}</div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 col-sm-6">
                                                 <div matTooltip="Route" class="chat-about"
                                                     *ngIf="present==true">
                                                     <div class="chat-with">Route</div>
-                                                    <div class="chat-num-messages">{{farmer.route}}</div>
+                                                    <div class="chat-num-messages">{{farmer.routeName}}</div>
                                                 </div>
                                             </div>
                                             
