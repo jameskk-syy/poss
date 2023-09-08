@@ -62,8 +62,8 @@ export class MainComponent implements OnInit {
     private router: Router, private datePipe: DatePipe, private fb: FormBuilder, private dialog: MatDialog, private service: TotalsCollectionService, private dashboard: DashboardService,
     private snackbar: SnackbarService, private Snackbar: MatSnackBar
   ) { }
- 
-  
+
+
 
   addCall() {
     const dialogConfig = new MatDialogConfig();
@@ -98,7 +98,7 @@ export class MainComponent implements OnInit {
     return formattedDate;
   }
 
-  
+
   onSelectionChange() {
     switch (this.selected) {
       case 'current_date':
@@ -114,14 +114,14 @@ export class MainComponent implements OnInit {
         break;
     }
   }
-  
+
 
   getData() {
     this.isLoading = true;
     this.getAllCollectionsSummary()
 
       this.service.getAllCollectorByNames().subscribe ( response => {
-      const collectors = response.entity; 
+      const collectors = response.entity;
       const collectorIdToUsername = {};
       collectors.forEach(collector => {
         collectorIdToUsername[collector.id] = collector.username;
@@ -140,15 +140,15 @@ export class MainComponent implements OnInit {
           accumulators.forEach(accumulator => {
             accumulatorIdToName[accumulator.id] = accumulator.username;
           });
-  
+
       this.subscription = this.service.getAllAccumulations().subscribe(res => {
         this.data = res;
-  
+
         if (this.data.entity.length > 0) {
           this.isLoading = false;
           this.isdata = true;
           this.datasize = this.data.entity.length;
-  
+
           this.data.entity.forEach(item => {
             const collectorId = item.collectorId;
             if (collectorIdToUsername.hasOwnProperty(collectorId)) {
@@ -163,7 +163,7 @@ export class MainComponent implements OnInit {
                 item.accumulatorName = accumulatorIdToName[accumulatorId];
               }
           });
-  
+
           this.dataSource = new MatTableDataSource(this.data.entity);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -179,7 +179,7 @@ export class MainComponent implements OnInit {
     });
     });
   }
-  
+
 
 
   dataSource!: MatTableDataSource<any>;
@@ -428,11 +428,11 @@ export class MainComponent implements OnInit {
       }
     });
   }
-  
+
 
   filterByAccumulatorId(Id: any) {
     let accumulatorId = this.form.value.accumulatorId;
-  
+
     if (accumulatorId != null && accumulatorId != undefined) {
       this.isLoading = true;
       this.getSummaryPerAccumulator(accumulatorId)
@@ -450,22 +450,22 @@ export class MainComponent implements OnInit {
             routeIdToName[route.id] = route.route;
           });
           const roleName = 'TOTALS_COLLECTOR';
-  
+
           this.service.getAllAccumulatorNames(roleName).subscribe(response => {
             const accumulators = response.userData;
             const accumulatorIdToName = {};
             accumulators.forEach(accumulator => {
               accumulatorIdToName[accumulator.id] = accumulator.username;
             });
-  
+
         this.subscription = this.service.getAccumulationsByAccumulatorId(accumulatorId).subscribe(res => {
           this.data = res;
-  
+
           if (this.data.entity.length > 0) {
             this.isLoading = false;
             this.isdata = true;
             this.datasize = this.data.entity.length;
-  
+
             this.data.entity.forEach(item => {
               const itemCollectorId = item.collectorId;
               if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
@@ -480,7 +480,7 @@ export class MainComponent implements OnInit {
                 item.accumulatorName = accumulatorIdToName[accumulatorId];
               }
             });
-  
+
             this.dataSource = new MatTableDataSource(this.data.entity);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
@@ -506,7 +506,7 @@ export class MainComponent implements OnInit {
       });
     }
   }
-  
+
   getSummaryPerAccumulator(accumulatorId) {
     this.isLoading = true;
     this.milkQuantity = 0;
@@ -521,13 +521,13 @@ export class MainComponent implements OnInit {
           totalMilkQuantity += entity.milkQuantity;
           totalAmount += entity.amount;
         }
-  
+
         this.milkQuantity = totalMilkQuantity;
         this.damount = totalAmount;
       }
     },(err)=>console.log(err));
   }
-  
+
     getAllCollectionsSummary() {
       this.isLoading = true;
       this.milkQuantity = 0;

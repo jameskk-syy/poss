@@ -153,99 +153,102 @@ export class DailyMilkCollectionComponent extends BaseComponent implements OnIni
     .set("month", this.chartParametersForm.value.month)
     .set("date", this.chartParametersForm.value.date)
     .set("routeId", this.chartParametersForm.value.routeId)
-    this.analyticsService.fetchAllCollections().subscribe(res => {
-      const data = this.formatCollections(res.entity,this.selectedDate)
+    this.analyticsService.fetchRouteGroupedCollectionPerGivenDay(this.selectedDate).subscribe(res => {
+      const data = res.entity
       
-
-      if(data.length > 0){
-        data.forEach(item => {
-          this.routes.push(item.x);
-  
-          this.quantities.push(item.y);
-  
-          // amounts.push(item.amount);
-        })
-      }else {
-        this.quantities = [];
-
-        this.routes = [];
-
-        // amounts = [];
-      }
-
-
-      this.barChartOptions = {
-        series: [
-          {
-            name: "Quantity",
-            data: this.quantities, 
-          },
-          
-        ],
-        chart: {
-          type: "bar",
-          height: 350,
-          foreColor: "#9aa0ac",
-          stacked: false,
-          toolbar: {
-            show: false,
-          },
-        },
-        responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              legend: {
-                position: "bottom",
-                offsetX: -10,
-                offsetY: 0,
-              },
-            },
-          },
-        ],
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: "30%",
-          },
-        },
-        // dataLabels: {
-        //   enabled: false,
-        // },
-        xaxis: {
-          type: "category",
-          categories: this.routes,
-          title: {
-            text: "Routes",
-          },
-          
-        },
-        legend: {
-          show: false,
-        },
-        fill: {
-          opacity: 1,
-          colors: ["#177147", "#397157", "#2D7152", "#22714D"],
-        },
-        tooltip: {
-          theme: "dark",
-          marker: {
-            show: true,
-          },
-          x: {
-            show: true,
-          },
-        },
-      };
+      this.renderChart(data)
 
       this.isLoading = false;
     }, err => {
-      console.log(err)
+      this.renderChart([])
       this.isLoading = false
     })
   }
   onDateChange(event:any){
 
+  }
+  renderChart(data){
+
+    if(data.length > 0){
+      data.forEach(item => {
+        this.routes.push(item.x);
+
+        this.quantities.push(item.y);
+
+        // amounts.push(item.amount);
+      })
+    }else {
+      this.quantities = [];
+
+      this.routes = [];
+
+      // amounts = [];
+    }
+
+
+    this.barChartOptions = {
+      series: [
+        {
+          name: "Quantity",
+          data: this.quantities, 
+        },
+        
+      ],
+      chart: {
+        type: "bar",
+        height: 350,
+        foreColor: "#9aa0ac",
+        stacked: false,
+        toolbar: {
+          show: false,
+        },
+      },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            legend: {
+              position: "bottom",
+              offsetX: -10,
+              offsetY: 0,
+            },
+          },
+        },
+      ],
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "30%",
+        },
+      },
+      // dataLabels: {
+      //   enabled: false,
+      // },
+      xaxis: {
+        type: "category",
+        categories: this.routes,
+        title: {
+          text: "Routes",
+        },
+        
+      },
+      legend: {
+        show: false,
+      },
+      fill: {
+        opacity: 1,
+        colors: ["#177147", "#397157", "#2D7152", "#22714D"],
+      },
+      tooltip: {
+        theme: "dark",
+        marker: {
+          show: true,
+        },
+        x: {
+          show: true,
+        },
+      },
+    };
   }
 }
   
