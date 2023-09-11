@@ -49,6 +49,15 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Farmer Number</mat-label>
+                                    <input matInput formControlName="farmerNo" required />
+                                    <mat-error *ngIf="farmerEditForm.get('farmerNo').hasError('required')">
+                                       Farmer Number is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
                         </div>
 
                         <div class="row">
@@ -251,8 +260,8 @@
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                     <mat-form-field class="example-full-width" appearance="outline">
                                         <mat-label>Mpesa Number</mat-label>
-                                        <input matInput formControlName="mpesaNumber" required />
-                                        <mat-error *ngIf="mpesaDetails.get('mpesaNumber').hasError('required')">
+                                        <input matInput formControlName="mobileNo" required />
+                                        <mat-error *ngIf="mpesaDetails.get('mobileNo').hasError('required')">
                                             Mpesa Number is required
                                         </mat-error>
                                     </mat-form-field>

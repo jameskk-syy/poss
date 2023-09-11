@@ -46,6 +46,8 @@ import { TotalsCollectionsComponent } from './pages/totals-collections/totals-co
 import { AddAccumulationsComponent } from './pages/add-accumulations/add-accumulations.component';
 import { MilkAccumulationComponent } from './pages/milk-accumulation/milk-accumulation.component';
 import { CollectorsTotalsPerMonthComponent } from './pages/collectors-totals-per-month/collectors-totals-per-month.component';
+import { EditTotalsCollectionsComponent } from './pages/edit-totals-collections/edit-totals-collections.component';
+import { DeleteTotalsCollectionsComponent } from './pages/delete-totals-collections/delete-totals-collections.component';
 
 
 
@@ -75,6 +77,8 @@ import { CollectorsTotalsPerMonthComponent } from './pages/collectors-totals-per
         AddAccumulationsComponent,
         MilkAccumulationComponent,
         CollectorsTotalsPerMonthComponent,
+        EditTotalsCollectionsComponent,
+        DeleteTotalsCollectionsComponent,
     ],
     imports: [
         CommonModule,

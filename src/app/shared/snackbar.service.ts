@@ -6,6 +6,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
   providedIn: 'root'
 })
 export class SnackbarService {
+  showSnackbar: any;
 
   constructor(private snackBar: MatSnackBar) { }
 

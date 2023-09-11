@@ -95,7 +95,7 @@ export class CollectionDetailsComponent implements OnInit {
       this.farmerid = params['id'];
       this.farmer_no = params['id'];
     });
-    this.getFarmerDetails(this.farmerid);
+    this.getFarmerDetails(this.farmer_no);
     this.getFarmerCollections(this.farmer_no);
    
     this.getFarmerAmountOnNotPayedCollections(this.farmerid);
@@ -109,7 +109,7 @@ export class CollectionDetailsComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
 
   getFarmerDetails(id) {
-    this.service.getFarmerDetails(id).subscribe((res) => {
+    this.service.getFarmerDetails(this.farmer_no).subscribe((res) => {
       this.farmer = res.entity;
       if (this.farmer.username != null || this.farmer.username != undefined) {
         this.present = true;

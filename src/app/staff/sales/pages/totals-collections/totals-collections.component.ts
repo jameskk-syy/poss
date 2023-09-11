@@ -11,7 +11,10 @@ import { Subscription } from 'rxjs';
 import { SalesService } from '../../services/sales.service';
 import { DashboardService } from 'src/app/staff/dashboard/services/dashboard.service';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-import { AddAccumulationsComponent } from '../add-accumulations/add-accumulations.component';
+import { CollectorsLookupsComponent } from 'src/app/staff/dashboard/look-ups/collectors-lookups/collectors-lookups.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { EditTotalsCollectionsComponent } from '../edit-totals-collections/edit-totals-collections.component';
+import { DeleteTotalsCollectionsComponent } from '../delete-totals-collections/delete-totals-collections.component';
 
 @Component({
   selector: 'app-totals-collections',
@@ -44,6 +47,8 @@ export class TotalsCollectionsComponent implements OnInit {
     "accumulatorName",
     "routeName",
     "collectionDate",
+    'action',
+
   ];
 
   currentDate: any
@@ -55,9 +60,10 @@ export class TotalsCollectionsComponent implements OnInit {
   accumulatorId: any;
   collectorId: any;
   MILK_COLLECTOR: string;
+  // Snackbar: any;
   constructor(
     private router: Router, private datePipe: DatePipe, private fb: FormBuilder, private dialog: MatDialog, private service: SalesService, private dashboard: DashboardService,
-    private snackbar: SnackbarService) {
+    private snackbar: SnackbarService, private Snackbar: MatSnackBar) {
   }
   // addCall() {
   //   const dialogConfig = new MatDialogConfig();
@@ -190,92 +196,108 @@ export class TotalsCollectionsComponent implements OnInit {
      accumulatorId: [""]
 
     });
+    this.smallChart2();
     this.getData();
   }
  
 
-  filterByCollectorId(Id: any) {
-    let collectorId = this.form.value.collectorId;
+  selectCollector() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "40%";
+    dialogConfig.data = {
+      user: '',
+    };
   
-    if (collectorId != null && collectorId != undefined) {
-      this.isLoading = true;
-    this.getSummaryPerCollector(collectorId)
-      this.service.getAllCollectorByNames().subscribe(response => {
-        const collectors = response.entity; 
-        const collectorIdToUsername = {};
-        collectors.forEach(collector => {
-          collectorIdToUsername[collector.id] = collector.username;
-        });
-        this.service.getAllRouteNames().subscribe ( response => {
-          const routes = response.entity;
-          const routeIdToName = {};
-          routes.forEach(route => {
-            routeIdToName[route.id] = route.route;
-          });
-          const roleName = 'TOTALS_COLLECTOR';
-  
-          this.service.getAllAccumulatorNames(roleName).subscribe(response => {
-            const accumulators = response.userData;
-            const accumulatorIdToName = {};
-            accumulators.forEach(accumulator => {
-              accumulatorIdToName[accumulator.id] = accumulator.username;
-            });
-  
-        this.subscription = this.service.getCollectorsIdAccumulations(collectorId).subscribe(res => {
-          this.data = res;
-  
-          if (this.data.entity.length > 0) {
-            this.isLoading = false;
-            this.isdata = true;
-            this.datasize = this.data.entity.length;
-  
-            this.data.entity.forEach(item => {
-              const itemCollectorId = item.collectorId;
-              if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
-                item.collectorUsername = collectorIdToUsername[itemCollectorId];
-              }
-              const routeId = item.routeFk;
-              if (routeIdToName.hasOwnProperty(routeId)) {
-                item.routeName = routeIdToName[routeId];
-              }
-              const accumulatorId = item.accumulatorId;
-              if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
-                item.accumulatorName = accumulatorIdToName[accumulatorId];
-              }
-            });
-            
-  
-            this.dataSource = new MatTableDataSource(this.data.entity);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-          } else {
-            this.isdata = false;
-            this.dataSource = new MatTableDataSource(null);
-          }
-          this.selected="";
-          this.filterform.patchValue({ farmer_no: "" });
-        },
-        (error) => {
-          console.error(error);
-          this.isLoading = false;
-          this.isdata = false;
-          this.dataSource = new MatTableDataSource(null);
-          this.selected = "";
-          this.filterform.patchValue({ collectorId: "" }); 
-        
+    const dialogRef = this.dialog.open(CollectorsLookupsComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.isLoading = true;
 
+        this.form.patchValue({
+          collectorId: result.data.id,
         });
-      });
+          this.service.getAllCollectorByNames().subscribe(response => {
+          const collectors = response.entity;
+          const collectorIdToUsername = {};
+          collectors.forEach(collector => {
+            collectorIdToUsername[collector.id] = collector.username;
+          });
+  
+          this.service.getAllRouteNames().subscribe(response => {
+            const routes = response.entity;
+            const routeIdToName = {};
+            routes.forEach(route => {
+              routeIdToName[route.id] = route.route;
+            });
+  
+            const roleName = 'TOTALS_COLLECTOR';
+
+            this.service.getAllAccumulatorNames(roleName).subscribe(response => {
+              const accumulators = response.userData;
+              const accumulatorIdToName = {};
+              accumulators.forEach(accumulator => {
+                accumulatorIdToName[accumulator.id] = accumulator.username;
+              });
+  
+              this.subscription = this.service.getCollectorsIdAccumulations(result.data.id).subscribe(res => {
+                this.data = res;
+  
+                if (this.data.entity.length > 0) {
+                  this.isLoading = false;
+                  this.isdata = true;
+                  this.datasize = this.data.entity.length;
+  
+                  this.data.entity.forEach(item => {
+                    const itemCollectorId = item.collectorId;
+                    if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
+                      item.collectorUsername = collectorIdToUsername[itemCollectorId];
+                    }
+                    const routeId = item.routeFk;
+                    if (routeIdToName.hasOwnProperty(routeId)) {
+                      item.routeName = routeIdToName[routeId];
+                    }
+                    const accumulatorId = item.accumulatorId;
+                    if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
+                      item.accumulatorName = accumulatorIdToName[accumulatorId];
+                    }
+                  });
+  
+                  this.dataSource = new MatTableDataSource(this.data.entity);
+                  this.dataSource.paginator = this.paginator;
+                  this.dataSource.sort = this.sort;
+                  this.getSummaryPerCollector(result.data.id);
+
+                } else {
+                  this.isdata = false;
+                  this.dataSource = new MatTableDataSource(null);
+                }
+                
+                this.selected = "";
+              },
+              (error) => {
+                console.log(error);
+                this.isLoading = false;
+                this.isdata = false;
+                this.dataSource = new MatTableDataSource(null);
+                this.selected = "";
+                this.Snackbar.open(error, 'Close', {
+                  duration: 3000, 
+                });
+              });
+            });
+          });
+        });
+      }
     });
-      });
-    }
   }
   
   
   getSummaryPerCollector(collectorId) {
     this.isLoading = true;
-    this.milkQuantity=0;
-    this.damount=0;
+    this.milkQuantity = 0;
+    this.damount = 0;
     this.subscription = this.dashboard.getCollectorsIdAccumulations(collectorId).subscribe(res => {
       this.data = res;
       if (this.data && this.data.entity.length > 0) {
@@ -295,7 +317,7 @@ export class TotalsCollectionsComponent implements OnInit {
 
   filterByAccumulatorId(Id: any) {
     let accumulatorId = this.form.value.accumulatorId;
-  
+    
     if (accumulatorId != null && accumulatorId != undefined) {
       this.isLoading = true;
       this.getSummaryPerAccumulator(accumulatorId)
@@ -349,20 +371,20 @@ export class TotalsCollectionsComponent implements OnInit {
           } else {
             this.isdata = false;
             this.isLoading=false;
-            // this.snackbar.showSnackbar('No accumulations found for the given accumulator.');
 
             this.dataSource = new MatTableDataSource(null);
           }
           this.selected="";
-          this.filterform.patchValue({ farmer_no: "" });
         },
         (error) => {
-          console.error(error);
+          console.log(error);
           this.isLoading = false;
           this.isdata = false;
           this.dataSource = new MatTableDataSource(null);
-          this.selected = "";
-          this.filterform.patchValue({ collectorId: "" }); 
+          this.selected="";
+          this.Snackbar.open(error, 'Close', {
+            duration: 3000, 
+          });
         
         });
       });
@@ -373,8 +395,8 @@ export class TotalsCollectionsComponent implements OnInit {
   
   getSummaryPerAccumulator(accumulatorId) {
     this.isLoading = true;
-    this.milkQuantity=0;
-    this.damount=0;
+    this.milkQuantity = 0;
+    this.damount = 0;
     this.subscription = this.dashboard.getAccumulationsByAccumulatorId(accumulatorId).subscribe(res => {
       this.data = res;
       if (this.data && this.data.entity.length > 0) {
@@ -394,8 +416,8 @@ export class TotalsCollectionsComponent implements OnInit {
   
     getAllCollectionsSummary() {
       this.isLoading = true;
-      this.milkQuantity=0;
-      this.damount=0;
+      this.milkQuantity = 0;
+      this.damount = 0;
       this.subscription = this.dashboard.getAllAccumulations().subscribe(res => {
         this.data = res;
         if (this.data && this.data.entity.length > 0) {
@@ -411,8 +433,99 @@ export class TotalsCollectionsComponent implements OnInit {
         }
       });
     }
-    
+    edit() {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false
+      dialogConfig.autoFocus = true
+      dialogConfig.width = "60%"
+      dialogConfig.data = {
+        // collection: collection
+      }
+      this.dialog.open(EditTotalsCollectionsComponent, dialogConfig)
+    }
   
-
-
+    onDelete(collection) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = {
+        // collection: collection
+      }
+      dialogConfig.width = '60%',
+      dialogConfig.autoFocus = false;
+      const dialogRef = this.dialog.open(DeleteTotalsCollectionsComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe(result => {
+        console.log("dialog was closed")
+      });
+    }
+  
+    
+    private smallChart2() {
+      this.cardChart2 = {
+        responsive: true,
+        tooltips: {
+          enabled: false,
+        },
+        legend: {
+          display: false,
+        },
+        scales: {
+          yAxes: [
+            {
+              gridLines: {
+                display: false,
+                drawBorder: false,
+              },
+              ticks: {
+                beginAtZero: true,
+                display: false,
+              },
+            },
+          ],
+          xAxes: [
+            {
+              gridLines: {
+                drawBorder: false,
+                display: false,
+              },
+              ticks: {
+                display: false,
+              },
+            },
+          ],
+        },
+        title: {
+          display: false,
+        },
+      };
+      this.cardChart2Data = [
+        {
+          label: "New Clients",
+          data: [50, 61, 80, 50, 40, 93, 63, 50, 62, 72, 52, 60, 41, 30, 45, 70],
+          borderWidth: 4,
+          pointStyle: "circle",
+          pointRadius: 4,
+          borderColor: "rgba(253,126,20,.7)",
+          pointBackgroundColor: "rgba(253,126,20,.2)",
+          backgroundColor: "rgba(253,126,20,.2)",
+          pointBorderColor: "transparent",
+        },
+      ];
+      this.cardChart2Label = [
+        "16-07-2018",
+        "17-07-2018",
+        "18-07-2018",
+        "19-07-2018",
+        "20-07-2018",
+        "21-07-2018",
+        "22-07-2018",
+        "23-07-2018",
+        "24-07-2018",
+        "25-07-2018",
+        "26-07-2018",
+        "27-07-2018",
+        "28-07-2018",
+        "29-07-2018",
+        "30-07-2018",
+        "31-07-2018",
+      ];
+    }
 }

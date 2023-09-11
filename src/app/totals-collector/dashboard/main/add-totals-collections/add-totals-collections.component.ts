@@ -71,9 +71,8 @@ getRoutes(id: any) {
     .subscribe((res) => {
       this.data = res;
       if (this.data.entity && this.data.entity.length > 0) {
-        // Assuming you want to select the first route as default
         this.addAccumulationForm.patchValue({
-          routeFk: this.data.entity[0].id, // Assuming "id" is the route's ID property
+          routeFk: this.data.entity[0].id, 
         });
       }
     });

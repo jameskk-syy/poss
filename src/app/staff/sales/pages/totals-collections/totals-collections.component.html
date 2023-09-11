@@ -156,11 +156,9 @@
                                                                 </mat-icon>
                                                             </mat-form-field> -->
                                                             <mat-form-field class="m-l-5" *ngIf="selected == 'collectorId'">
-                                                                <input matInput
-                                                                    placeholder="Enter Collector Id"
-                                                                    formControlName="collectorId">
-                                                                <mat-icon matSuffix (click)="filterByCollectorId()">search
-                                                                </mat-icon>
+                                                                <mat-label>Select Collector</mat-label>
+                                                                <input matInput formControlName="collectorId"  readonly />                   
+                                                                <mat-icon matSuffix (click)="selectCollector()">search</mat-icon>
                                                             </mat-form-field>
                                                             <mat-form-field class="m-l-5" *ngIf="selected == 'accumulatorId'">
                                                                 <input matInput
@@ -266,25 +264,23 @@
                                             </mat-cell>
                                         </ng-container>
                                     
-                                        <!-- <ng-container matColumnDef="action">
+                                        <ng-container matColumnDef="action">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)"
                                                 (contextmenu)="onContextMenu($event, response)">
-                                                <button mat-icon-button color="primary"
-                                                    (click)="$event.stopPropagation()"
-                                                    (click)="viewFarmerCollections(response)" class="tbl-action-btn">
-                                                    <app-feather-icons matTooltip="View Farmer Collections"
-                                                        [icon]="'eye'" [class]="'tbl-fav-eye'"></app-feather-icons>
-                                                </button>
                                                 <button mat-icon-button color="primary"
                                                     (click)="$event.stopPropagation()" (click)="edit(response)"
                                                     class="tbl-action-btn">
                                                     <app-feather-icons matTooltip="Edit Collections" [icon]="'edit'"
                                                         [class]="'tbl-fav-edit'"></app-feather-icons>
                                                 </button>
+                                                <button mat-icon-button color="primary" (click)="$event.stopPropagation()" 
+                                                (click)="onDelete(response)" class="tbl-action-btn">
+                                                    <app-feather-icons matTooltip="delete collection" [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                                                </button>
                                             </mat-cell>
-                                        </ng-container> -->
+                                        </ng-container>
 
                                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                         <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->

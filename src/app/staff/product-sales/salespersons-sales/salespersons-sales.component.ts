@@ -109,13 +109,13 @@ export class SalespersonsSalesComponent extends BaseComponent implements OnInit 
   
     array = array.map(({ createdOn, routeFk, routeName, amount, quantity, salesPersonName, salesPersonFk }) => {
       const d = new Date(createdOn);
-      const dstr = formatDate(d, ''); // Assuming formatDate function is defined elsewhere
+      const dstr = formatDate(d, ''); 
       return { createdOn, routeFk, routeName, amount, quantity, salesPersonName, salesPersonFk, date: dstr };
     });
   
     const filteredData = array.filter(item => {
       const itemYear = new Date(item.createdOn).getFullYear();
-      const itemMonth = new Date(item.createdOn).getMonth() + 1; // Months are 0-based
+      const itemMonth = new Date(item.createdOn).getMonth() + 1;
       return itemYear === year && itemMonth === month;
     });
   

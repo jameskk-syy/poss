@@ -1,14 +1,10 @@
 <section class="content">
     <div class="content-block">
         <div class="block-header">
-            <!-- breadcrumb -->
-          
+            <!-- breadcrumb -->         
             <app-breadcrumb [title]="'Dashboard'" [items]="['Home']" [active_item]="'Dashboard'">
-            </app-breadcrumb>
-          
+            </app-breadcrumb>         
         </div>
-        
-        
         <mat-tab-group>
             <mat-tab label="Totals Collections">
                 <div class="row">
@@ -112,28 +108,28 @@
                                                         <mat-form-field>
                                                             <mat-label>Filter By </mat-label>
                                                             <mat-select [(value)]="selected"  (selectionChange)="onSelectionChange()">
-                                                                <!-- <mat-option value="current_date"><b>Today</b></mat-option> -->
                                                                 <mat-option value="all"><b>All</b></mat-option>
                                                                 <mat-option value="collectorId"><b>Collector Id</b></mat-option>
                                                                 <mat-option value="accumulatorId"><b>Accumulator Id</b></mat-option>
-
-                                                                <!-- <mat-option value="sd"><b>Specific Date</b></mat-option>
-                                                                <mat-option value="dr"><b>Date Range</b> </mat-option> -->
-<!--                                                         
-                                                                <mat-option value="route"><b>Route
-                                                                    </b></mat-option> -->
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </li>
                                                     <li class="dropdown">
                                                         <form [formGroup]="form">
-                                                            <mat-form-field class="m-l-5" *ngIf="selected == 'collectorId'">
+                                                            <!-- <mat-form-field class="m-l-5" *ngIf="selected == 'collectorId'">
                                                                 <input matInput
                                                                     placeholder="Enter Collector Id"
                                                                     formControlName="collectorId">
                                                                 <mat-icon matSuffix (click)="filterByCollectorId()">search
                                                                 </mat-icon>
-                                                            </mat-form-field>
+                                                            </mat-form-field> -->
+                                                                <mat-form-field class="m-l-5" *ngIf="selected == 'collectorId'">
+                                                                    <mat-label>Select Collector</mat-label>
+                                                                    <input matInput formControlName="collectorId"  readonly />                   
+                                                                    <mat-icon matSuffix (click)="selectCollector()">search</mat-icon>
+                                                                </mat-form-field>
+                                                            
+                                                                
                                                             <mat-form-field class="m-l-5" *ngIf="selected == 'accumulatorId'">
                                                                 <input matInput
                                                                     placeholder="Enter Accumulator Id"

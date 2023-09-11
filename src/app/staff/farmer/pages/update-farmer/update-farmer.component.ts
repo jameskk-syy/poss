@@ -8,6 +8,8 @@ import { RoutesService } from 'src/app/admin/routes/routes.service';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { FarmerService } from '../../services/farmer.service';
 import { FarmerManagenentComponent } from '../farmer-managenent/farmer-managenent.component';
+import { ActivatedRoute,  ParamMap } from '@angular/router';
+
 
 @Component({
   selector: 'app-update-farmer',
@@ -30,7 +32,7 @@ export class UpdateFarmerComponent implements OnInit {
   wards: any;
   counties: any;
   routes: any;
-  
+  updatedFarmer: []  
   banks: any = {
     count: 45,
     list: [
@@ -352,7 +354,7 @@ export class UpdateFarmerComponent implements OnInit {
       },
     ],
   };
-  // method="BANK"
+  farmerNo: any;
 
   constructor(public dialogRef: MatDialogRef<FarmerManagenentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -361,7 +363,8 @@ export class UpdateFarmerComponent implements OnInit {
     private countiesService: CountiesService,
     private routesService: PickupService,
     private service: FarmerService,
-    private routeService: RoutesService
+    private routeService: RoutesService,
+    private route: ActivatedRoute,
   ) {
   }
 
@@ -388,17 +391,14 @@ export class UpdateFarmerComponent implements OnInit {
     this.isLoading = true;
     this.service.getFarmersById(this.data.farmer.id).subscribe(res => {
       this.data = res.entity;
-      // console.log(this.data)
       this.isLoading = false;
       this.farmer = res.entity
-    //  console.log(this.farmer)
 
-      // this.getWards(this.farmer.subcounty_fk)
-     
-  // console.log(this.farmer)
-{
+      this.method = this.farmer.paymentMode ;
+      this.onPaymentModeChange();
+  {
     this.mpesaDetails = this.fb.group({
-      mpesaNumber: ['', [Validators.required]],
+      mobileNo: [this.farmer.mobileNo, [Validators.required]],
       alternativeNumber: [''],
     });
   }{
@@ -429,6 +429,7 @@ export class UpdateFarmerComponent implements OnInit {
       firstName: [this.farmer.firstName, [Validators.required]],
       lastName: [this.farmer.lastName, [Validators.required]],
       idNumber: [this.farmer.idNumber, [Validators.required]],
+      farmerNo: [this.farmer.farmerNo, [Validators.required]],
       mobileNo: [this.farmer.mobileNo, [Validators.required]],
       subcounty_fk: [this.farmer.subcounty_fk],
       wardFk: [this.farmer.wardFk],
@@ -448,9 +449,16 @@ export class UpdateFarmerComponent implements OnInit {
   }
 
   onSubmit() {
+    this.updatedFarmer = this.farmerEditForm.value
+    // console.log("farmer::::", this.updatedFarmer);
     this.loading = true;
+    // const updatedFarmer = this.farmerEditForm.value;
+
+
+
     this.farmerEditForm.value.bankDetails = this.bankDetailsForm.value;
-    this.subscription = this.service.updateFarmer(this.farmerEditForm.value).subscribe(res => {
+    this.subscription = this.service.updateFarmer(this.updatedFarmer, this.farmer.farmerNo).subscribe(res => {
+      // console.log(res)
       this.snackbar.showNotification("snackbar-success", "Successful!");
       this.loading = false;
       this.farmerEditForm.reset();

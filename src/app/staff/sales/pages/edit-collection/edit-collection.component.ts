@@ -38,8 +38,8 @@ farmerNo:any
     this.farmer=this.collection.farmer
     this.farmerNo=this.collection.farmer_no
     
-    console.log(this.collection=this.data.collection)
-    console.log(this.collection.canNo)
+    // console.log(this.collection=this.data.collection)
+    // console.log(this.collection.canNo)
     this.getCans();
     this.getRoutes();
     this.editForm = this.fb.group({
@@ -81,7 +81,7 @@ farmerNo:any
     this.canService.getAllCans().subscribe(
       (res) => {
         this.cans = res.entity;
-        console.log(this.cans)
+        // console.log(this.cans)
       },
       (err) => {
         this.cans = [];

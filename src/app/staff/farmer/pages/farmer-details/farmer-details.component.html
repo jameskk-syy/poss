@@ -256,10 +256,10 @@
                                 <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                     <mat-form-field class="example-full-width" appearance="outline">
                                         <mat-label>Mpesa Number</mat-label>
-                                        <input matInput formControlName="mpesaNumber" required />
-                                        <!-- <mat-error *ngIf="mpesaDetails.get('mpesaNumber').hasError('required')">
+                                        <input matInput formControlName="mobileNo" required />
+                                        <mat-error *ngIf="mpesaDetails.get('mobileNo').hasError('required')">
                                             Mpesa Number is required
-                                        </mat-error> -->
+                                        </mat-error>
                                     </mat-form-field>
                                 </div>
 
@@ -327,11 +327,11 @@
                                 <button mat-raised-button color="warn" (click)="onClick()" tabindex="-1">
                                     Cancel
                                 </button>
-                                <button mat-raised-button color="primary" [disabled]="!farmerApprovalForm.valid "
-                                    (click)="onSubmit()">
+                                <button mat-raised-button color="primary" [disabled]="!farmerApprovalForm.valid || !isPending" (click)="onSubmit()">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     <b>Approve</b>
-                                </button>
+                                  </button>
+                                  
                             </div>
                         </div>
                     </mat-card-content>

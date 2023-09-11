@@ -148,6 +148,11 @@ export class CollectionsComponent implements OnInit {
             this.isLoading = false;
             this.dataSource = new MatTableDataSource(null);
           }
+          this.selected="";
+          this.form.patchValue({
+            fromDate: "",
+            toDate: ""
+          });
         })
       }
     }
@@ -165,12 +170,18 @@ export class CollectionsComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.data.entity);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+       
         }
         else {
           // this.isdata = false;
           this.isLoading = false;
           this.dataSource = new MatTableDataSource(null);
+         
         }
+        this.selected="";
+        this.form.patchValue({
+          date: ""
+        });
       })
     } else if (this.selected == 'pul') {
       console.log("Filter by  pick up location")
@@ -240,6 +251,8 @@ export class CollectionsComponent implements OnInit {
         this.isdata = false;
         this.dataSource = new MatTableDataSource(null);
       }
+      this.selected="";
+
     })
   }
 
@@ -262,6 +275,7 @@ export class CollectionsComponent implements OnInit {
         this.isLoading = false
         this.dataSource = new MatTableDataSource(null);
       }
+      this.selected="";
     })
   }
 
@@ -507,8 +521,8 @@ export class CollectionsComponent implements OnInit {
       this.subscription = this.service.getCollectionsByFarmerNo(farmerNo).subscribe(res => {
         this.data = res;
 
-        if (this.data) {
-          this.isLoading = false
+        if (this.data && this.data.entity.length > 0) {
+          this.isLoading = false;
           this.isdata = true;
           this.datasize=this.data.entity.length
           this.data.entity.sort((a, b) => new Date(b.collection_date).getTime() - new Date(a.collection_date).getTime());
@@ -516,14 +530,33 @@ export class CollectionsComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.data.entity);
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+          this.form.patchValue({
+            farmer_no: "" 
+          });
         }
         else {
           this.isdata = false;
           this.isLoading = false;
           this.dataSource = new MatTableDataSource(null);
         }
-      })
-    }
+        this.selected="";
+        
+},
+(error) => {
+  console.error(error);
+  this.isLoading = false;
+  this.isdata = false;
+  this.dataSource = new MatTableDataSource(null);
+  this.selected="";
+  // this.Snackbar.open(error, 'Close', {
+  //   duration: 3000, 
+  // });
+  
+});
+this.form.patchValue({
+  farmer_no:""
+});
+}
   }
   filterByRoute(id: any) {
     this.isLoading = true;
@@ -532,7 +565,6 @@ export class CollectionsComponent implements OnInit {
     // let pickUpLocationId = this.form.value.pickUpLocationId
 
     this.subscription = this.service.getCollectionsPerPRoute(id).subscribe(res => {
-      console.log(res)
       this.data = res;
       if (this.data.entity.length > 0) {
         this.isLoading = false
@@ -541,13 +573,31 @@ export class CollectionsComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.data.entity);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.form.patchValue({
+          route: ""
+        });
+        this.selected="";
       }
       else {
         // this.isdata = false;
         this.isLoading = false
         this.dataSource = new MatTableDataSource(null);
       }
-    })
+    },
+    (error) => {
+  console.error(error);
+  this.isLoading = false;
+  this.isdata = false;
+  this.dataSource = new MatTableDataSource(null);
+  this.selected="";
+  this.form.patchValue({
+    route:""
+  })
+  // this.Snackbar.open(error, 'Close', {
+  //   duration: 3000, 
+  // });
+  
+})
   }
 
 

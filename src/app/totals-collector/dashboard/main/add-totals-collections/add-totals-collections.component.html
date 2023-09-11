@@ -53,11 +53,15 @@
 
                                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                             <mat-form-field class="example-full-width" appearance="outline">
-                                                <mat-label>Session</mat-label>
-                                                <input matInput formControlName="session" required />
+                                                <mat-label>Select session</mat-label>
+                                            <mat-select formControlName="session" required> 
+                                                <mat-option value="session 1">Session 1</mat-option>
+                                                <mat-option value="session 2">Session 2</mat-option>
+                                                <mat-option value="session 3">Session 3</mat-option>
+                                            </mat-select>
                                                 <mat-error *ngIf="addAccumulationForm.get('session').hasError('required')">
                                                     Session is required
-                                                </mat-error>
+                                                </mat-error>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
                                             </mat-form-field>
                                         </div>
 

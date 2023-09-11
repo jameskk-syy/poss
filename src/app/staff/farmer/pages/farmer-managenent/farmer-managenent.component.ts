@@ -16,6 +16,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FarmerLookupComponent } from '../farmer-lookup/farmer-lookup.component';
 import { Activity } from 'angular-feather/icons';
 import { RoutesLookUpComponent } from 'src/app/staff/sales/pages/routes-look-up/routes-look-up.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-farmer-managenent',
@@ -49,7 +50,7 @@ export class FarmerManagenentComponent implements OnInit {
   form: any;
   id: any;
   selectedStatus: string;
-  constructor(private router: Router, private dialog: MatDialog, private service: FarmerService,private fb:FormBuilder) { }
+  constructor(private router: Router, private dialog: MatDialog, private service: FarmerService,private fb:FormBuilder,private Snackbar: MatSnackBar) { }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -337,7 +338,7 @@ export class FarmerManagenentComponent implements OnInit {
     this.isLoading = true;
     let farmerNo=this.filterform.value.farmer_no
     // {}
-    if (farmerNo != null && farmerNo != undefined ) {
+        if (this.data && this.data.entity.length > 0) {
   
       this.subscription = this.service.getByFarmersByFarmerNo(farmerNo).subscribe(res => {
         this.data = res
@@ -369,12 +370,15 @@ export class FarmerManagenentComponent implements OnInit {
         this.filterform.patchValue({ farmer_no: "" });
       },
       (error) => {
-        console.error(error);
+        console.log(error);
         this.isLoading = false;
         this.isdata = false;
         this.dataSource = new MatTableDataSource(null);
         this.selected = "";
         this.filterform.patchValue({ farmer_no: "" }); 
+        this.Snackbar.open(error, 'Close', {
+          duration: 3000, 
+        });
       }
       )
     }
