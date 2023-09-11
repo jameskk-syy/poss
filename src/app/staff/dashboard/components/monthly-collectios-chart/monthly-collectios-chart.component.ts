@@ -103,7 +103,7 @@ export class MonthlyCollectiosChartComponent extends BaseComponent implements On
       this.getData()
     }
   getData(){
-   
+
     this.isLoading = true
     this.service.fetchCollectionsPerGivenMonth(this.year,this.month).subscribe(res=>{
       if(res.entity && res.entity.length>0){
@@ -112,10 +112,11 @@ export class MonthlyCollectiosChartComponent extends BaseComponent implements On
       }else{
         this.data = []
       }
+      // console.log(this.monthlyStr)
 
       this.isLoading = false
       this.renderChart()
-      
+
     },(err)=>{
       this.isLoading = false
       this.data = []
