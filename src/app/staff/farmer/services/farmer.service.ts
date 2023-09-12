@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 const httpOptions = {
@@ -16,8 +16,9 @@ export class FarmerService {
   // }
   private apiUrl = environment.apiUrl;
   approveFarmer(farmerNo: any):Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/farmer/approve-registration=${farmerNo}`,httpOptions);
+    return this.http.put(`${environment.apiUrl}/api/v1/farmer/approve-registration/${farmerNo}`,httpOptions);
     }
+  
   fetchFarmers() {
     return this.http.get(`${environment.apiUrl}/api/v1/farmer/get`,httpOptions);
   }
@@ -40,7 +41,7 @@ export class FarmerService {
     return this.http.get(`${environment.apiUrl}/api/v1/farmer/membernumber?farmer_number=`+farmer_no,httpOptions);
   }
   public getFarmersByRoutes(routeId: any): Observable<any> {
-    console.log("calling api ....")
+    // console.log("calling api ....")
     return this.http.get(`${environment.apiUrl}/api/v1/farmer/farmers/route?routeId=`+routeId, httpOptions)
   }
   public getFarmersById(id:any): Observable<any> {

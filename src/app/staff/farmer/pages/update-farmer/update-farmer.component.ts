@@ -452,13 +452,11 @@ export class UpdateFarmerComponent implements OnInit {
     this.updatedFarmer = this.farmerEditForm.value
     // console.log("farmer::::", this.updatedFarmer);
     this.loading = true;
-    // const updatedFarmer = this.farmerEditForm.value;
 
 
 
     this.farmerEditForm.value.bankDetails = this.bankDetailsForm.value;
     this.subscription = this.service.updateFarmer(this.updatedFarmer, this.farmer.farmerNo).subscribe(res => {
-      // console.log(res)
       this.snackbar.showNotification("snackbar-success", "Successful!");
       this.loading = false;
       this.farmerEditForm.reset();

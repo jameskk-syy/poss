@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 import { CountiesService } from 'src/app/admin/counties/counties.service';
 import { PickupService } from 'src/app/admin/pick-up-locations/pickup.service';
 import { RoutesService } from 'src/app/admin/routes/routes.service';
@@ -15,7 +15,7 @@ import { FarmerManagenentComponent } from '../farmer-managenent/farmer-managenen
   styleUrls: ['./farmer-details.component.sass']
 })
 export class FarmerDetailsComponent implements OnInit {
-  method: string = 'BANK';
+
   farmerApprovalForm: FormGroup;
   bankDetailsForm: FormGroup;
   showBankForm: boolean = true;
@@ -30,7 +30,8 @@ export class FarmerDetailsComponent implements OnInit {
   wards: any;
   counties: any;
   routes: any;
-  isPending: boolean;
+  method="BANK"
+
   banks: any = {
     count: 45,
     list: [
@@ -352,10 +353,6 @@ export class FarmerDetailsComponent implements OnInit {
       },
     ],
   };
-  paymentMode: any;
-  // mpesaDetails: FormGroup;
-  // nextOfKinForm: FormGroup;
-  
   constructor(public dialogRef: MatDialogRef<FarmerManagenentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
@@ -366,6 +363,7 @@ export class FarmerDetailsComponent implements OnInit {
     private routesService: RoutesService) { }
 
     onPaymentModeChange() {
+
       if (this.method === 'BANK' || this.method === 'SACCO') {
         this.showBankForm = true;
         this.showMpesaForm = false;
@@ -385,12 +383,11 @@ export class FarmerDetailsComponent implements OnInit {
       this.data = res;
       this.isLoading = false;
       this.farmer = this.data.entity 
-     
+
       this.method = this.farmer.paymentMode ;
-
       this.onPaymentModeChange();
-
-
+     
+  
       if(this.farmer && this.farmer.nextOfKin !=null){
 
         this.nextOfKinForm = this.fb.group({
@@ -424,6 +421,7 @@ export class FarmerDetailsComponent implements OnInit {
         firstName: [this.farmer.firstName, [Validators.required]],
         lastName: [this.farmer.lastName, [Validators.required]],
         idNumber: [this.farmer.idNumber, [Validators.required]],
+        farmerNo: [ this.farmer.farmerNo, [Validators.required]],
         mobileNo: [this.farmer.mobileNo, [Validators.required]],
         subcounty_fk: [this.farmer.subcounty_fk, [Validators.required]],
         wardFk: [this.farmer.wardFk, [Validators.required]],
@@ -438,52 +436,35 @@ export class FarmerDetailsComponent implements OnInit {
         routeFk: [this.farmer.routeFk],
         nextOfKin:[this.farmer.nextOfKin]
       })}
-      
 
     )
-      // this.service.fetchFarmers().subscribe((res: any[]) => {
-      //   const farmerToCheck = res.find(farmer => farmer.farmerNo === this.farmer.farmerNo);
-      //     if (farmerToCheck && farmerToCheck.status) {
-      //     const farmerStatus = farmerToCheck.status;
-  
-      //     this.isPending = farmerStatus === 'PENDING';
-      //   }
-      // });
     this.getCounties();
     this.geRoutes();
   }
-
-
-  onSubmit() {
+  onSubmit(farmer: any) {
     this.loading = true;
-    this.farmerApprovalForm.value.bankDetails = this.bankDetailsForm.value;
-        this.service.fetchFarmers().subscribe((res: any[]) => {
-      const farmerToCheck = res.find(farmer => farmer.farmerNo === this.farmer.farmerNo);
-      if (farmerToCheck && farmerToCheck.status) {
-        const farmerStatus = farmerToCheck.status;
   
-        this.isPending = farmerStatus === 'PENDING';
-      }
-      
-      if (this.isPending) {
-        this.subscription = this.service.approveFarmer(this.farmerApprovalForm.value).subscribe(res => {
-          this.snackbar.showNotification("snackbar-success", "Successful!");
-          this.loading = false;
-          this.farmerApprovalForm.reset();
-          this.dialogRef.close();
-        }, err => {
-          this.loading = false;
-          this.snackbar.showNotification("snackbar-danger", err);
-          this.dialogRef.close();
-        });
-      } else {
+    this.service.approveFarmer(farmer.farmerNo).subscribe(
+      (res) => {
+        this.snackbar.showNotification("snackbar-success",  "Successful!");
+
+        farmer.status = 'Approved';
+        this.loading = false; 
+      },
+      (err) => {
         this.loading = false;
-        this.snackbar.showNotification("snackbar-danger", "The farmer's status is not 'PENDING'");
+        this.snackbar.showNotification("snackbar-danger", err);
+
       }
-    });
+    );
+  
+    this.dialogRef.close();
   }
   
+  
+  
 
+ 
   onClick() {
     this.dialogRef.close();
   }
@@ -538,4 +519,3 @@ export class FarmerDetailsComponent implements OnInit {
     })
   }
 }
-
