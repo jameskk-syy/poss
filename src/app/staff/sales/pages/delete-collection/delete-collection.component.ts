@@ -41,7 +41,7 @@ export class DeleteCollectionComponent implements OnInit {
     this.id = this.collection.id
     this.date = this.collection.collection_date
     this.quantity = this.collection.quantity
-    this.session = this.collection.quantity
+    this.session = this.collection.session
     this.route = this.collection.route
     
   }

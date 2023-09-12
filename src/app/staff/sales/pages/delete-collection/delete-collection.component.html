@@ -3,7 +3,7 @@
     <button mat-icon-button class="close-button" [ngStyle]="{'color': 'red'}" (click)="onClose()"><mat-icon>close</mat-icon></button>
 </h2>
 <mat-dialog-content>
-    <p>Delete Collection Record for {{route}} farmer, {{farmer}} of {{quantity}} Litres collected on {{date |date}}, {{session == "Session 1"? "Morning" :(session == "Session 2" ? "Afternoon" : "Evening")}} Session</p>
+    <p>Delete Collection Record for {{route}} farmer, {{farmer}} of {{quantity}} Litres collected on {{date |date}}, {{session == "Session 1"? "Morning" : (session == "Session 2" ? "Afternoon" : "Evening")}} Session</p>
     <div></div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
