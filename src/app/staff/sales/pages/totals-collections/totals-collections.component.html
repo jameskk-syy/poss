@@ -109,13 +109,13 @@
                                                         <mat-form-field>
                                                             <mat-label>Filter By </mat-label>
                                                             <mat-select [(value)]="selected"  (selectionChange)="onSelectionChange()">
-                                                                <!-- <mat-option value="current_date"><b>Today</b></mat-option> -->
+                                                                <mat-option value="current_date"><b>Today</b></mat-option>
                                                                 <mat-option value="all"><b>All</b></mat-option>
                                                                 <mat-option value="collectorId"><b>Collector Id</b></mat-option>
                                                                 <mat-option value="accumulatorId"><b>Accumulator Id</b></mat-option>
 
-                                                                <!-- <mat-option value="sd"><b>Specific Date</b></mat-option>
-                                                                <mat-option value="dr"><b>Date Range</b> </mat-option> -->
+                                                                <mat-option value="sd"><b>Specific Date</b></mat-option>
+                                                                <!-- <mat-option value="dr"><b>Date Range</b> </mat-option> -->
 <!--                                                         
                                                                 <mat-option value="route"><b>Route
                                                                     </b></mat-option> -->
@@ -124,14 +124,14 @@
                                                     </li>
                                                     <li class="dropdown">
                                                         <form [formGroup]="form">
-                                                            <!-- <mat-form-field class="m-l-5" *ngIf="selected == 'sd'">
-                                                                <input matInput [matDatepicker]="picker1"
+                                                            <mat-form-field class="m-l-5" *ngIf="selected == 'sd'">
+                                                                <input matInput [matDatepicker]="picker"
                                                                     (dateChange)="filterByDate()"
                                                                     placeholder="Choose a date" formControlName="date">
                                                                 <mat-datepicker-toggle matSuffix
-                                                                    [for]="picker1"></mat-datepicker-toggle>
-                                                                <mat-datepicker #picker1></mat-datepicker>
-                                                            </mat-form-field> -->
+                                                                    [for]="picker"></mat-datepicker-toggle>
+                                                                <mat-datepicker #picker></mat-datepicker>
+                                                            </mat-form-field>
 
                                                             <!-- <mat-form-field class="m-l-5" *ngIf="selected == 'dr'">
                                                                 <input matInput [matDatepicker]="picker2"

@@ -33,7 +33,8 @@ export class TotalsCollectionsComponent implements OnInit {
   selectedvalue = "";
   milkQuantity: any = 0.0;
   damount: any = 0.0;
-  datasize:any=0
+  datasize:any=0;
+  collector: any;
   filename = "totalscollections for " + this.today;
 
   public cardChart2: any;
@@ -64,6 +65,8 @@ export class TotalsCollectionsComponent implements OnInit {
   constructor(
     private router: Router, private datePipe: DatePipe, private fb: FormBuilder, private dialog: MatDialog, private service: SalesService, private dashboard: DashboardService,
     private snackbar: SnackbarService, private Snackbar: MatSnackBar) {
+      this.currentDate = this.getCurrentDate()
+
   }
   // addCall() {
   //   const dialogConfig = new MatDialogConfig();
@@ -101,6 +104,7 @@ export class TotalsCollectionsComponent implements OnInit {
   onSelectionChange() {
     switch (this.selected) {
       case 'current_date':
+        this.getTodaysData(); 
         break;
       case 'all':
         this.getData();
@@ -108,10 +112,88 @@ export class TotalsCollectionsComponent implements OnInit {
       default:
         this.form.patchValue({
           collectorId: '',
-          accumulatorId: ''
+          accumulatorId: '',
+          date: '',
         });
         break;
     }
+  }
+
+  filterByDate() {
+    this.date = this.datePipe.transform(this.form.value.date, 'yyyy-MM-dd');
+    this.isLoading = true;
+    this.getDateSummary(this.date)
+
+    this.service.getAllCollectorByNames().subscribe(response => {
+      const collectors = response.entity;
+      const collectorIdToUsername = {};
+      collectors.forEach(collector => {
+        collectorIdToUsername[collector.id] = collector.username;
+      });
+      this.service.getAllRouteNames().subscribe ( response => {
+        const routes = response.entity;
+        const routeIdToName = {};
+        routes.forEach(route => {
+          routeIdToName[route.id] = route.route;
+        });
+        const roleName = 'TOTALS_COLLECTOR';
+
+        this.service.getAllAccumulatorNames(roleName).subscribe(response => {
+          const accumulators = response.userData;
+          const accumulatorIdToName = {};
+          accumulators.forEach(accumulator => {
+            accumulatorIdToName[accumulator.id] = accumulator.username;
+          });
+    this.subscription = this.service.getTotalsCollectionByDate(this.date).subscribe(res => {
+      this.data = res;
+      if (this.data.entity.length > 0) {
+        this.isLoading = false;
+        this.isdata = true;
+        this.datasize=this.data.entity.length
+
+        this.data.entity.forEach(item => {
+          const itemCollectorId = item.collectorId;
+          if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
+            item.collectorUsername = collectorIdToUsername[itemCollectorId];
+          }
+          const routeId = item.routeFk;
+          if (routeIdToName.hasOwnProperty(routeId)) {
+            item.routeName = routeIdToName[routeId];
+          }
+          const accumulatorId = item.accumulatorId;
+          if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
+            item.accumulatorName = accumulatorIdToName[accumulatorId];
+          }
+        });
+        this.dataSource = new MatTableDataSource(this.data.entity);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+     
+      }
+      else {
+        this.isdata = false;
+        this.isLoading=false;
+        this.dataSource = new MatTableDataSource(null);
+      }
+      this.selected=""
+      },(error) => {
+        console.log(error);
+        this.isLoading = false;
+        this.isdata = false;
+        this.dataSource = new MatTableDataSource(null);
+        this.selected = "";
+        this.Snackbar.open(error, 'Close', {
+          duration: 3000, 
+        });
+      }
+      );
+
+      if (this.selected == "current_date") {
+      this.getTodaysData()
+    }
+    });
+    });
+    });
   }
 
   getData() {
@@ -169,7 +251,7 @@ export class TotalsCollectionsComponent implements OnInit {
           this.dataSource = new MatTableDataSource(null);
         }
         this.selected=""
-      });
+      } );
     });
     });
     });
@@ -193,11 +275,12 @@ export class TotalsCollectionsComponent implements OnInit {
     this.selected = 'current_date'
     this.form = this.fb.group({
     collectorId: [""],
-     accumulatorId: [""]
+     accumulatorId: [""],
+     date: [""]
 
     });
     this.smallChart2();
-    this.getData();
+    this.getTodaysData();
   }
  
 
@@ -214,6 +297,7 @@ export class TotalsCollectionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.isLoading = true;
+        this.getSummaryPerCollector(result.data.id);
 
         this.form.patchValue({
           collectorId: result.data.id,
@@ -267,7 +351,6 @@ export class TotalsCollectionsComponent implements OnInit {
                   this.dataSource = new MatTableDataSource(this.data.entity);
                   this.dataSource.paginator = this.paginator;
                   this.dataSource.sort = this.sort;
-                  this.getSummaryPerCollector(result.data.id);
 
                 } else {
                   this.isdata = false;
@@ -308,10 +391,10 @@ export class TotalsCollectionsComponent implements OnInit {
           totalMilkQuantity += entity.milkQuantity;
           totalAmount += entity.amount;
         }
-          this.milkQuantity = totalMilkQuantity;
+        this.milkQuantity = totalMilkQuantity;
         this.damount = totalAmount;
       }
-    });
+    },(err)=>console.log(err));
   }
   
 
@@ -392,6 +475,76 @@ export class TotalsCollectionsComponent implements OnInit {
       });
     }
   }
+
+  getTodaysData() {
+    this.isLoading = true;
+    const currentDate = this.getCurrentDate();
+     this.getDateSummary(this.currentDate)
+     this.service.getAllCollectorByNames().subscribe(response => {
+     const collectors = response.entity;
+     const collectorIdToUsername = {};
+     collectors.forEach(collector => {
+       collectorIdToUsername[collector.id] = collector.username;
+     });
+     this.service.getAllRouteNames().subscribe ( response => {
+       const routes = response.entity;
+       const routeIdToName = {};
+       routes.forEach(route => {
+         routeIdToName[route.id] = route.route;
+       });
+       const roleName = 'TOTALS_COLLECTOR';
+
+       this.service.getAllAccumulatorNames(roleName).subscribe(response => {
+         const accumulators = response.userData;
+         const accumulatorIdToName = {};
+         accumulators.forEach(accumulator => {
+           accumulatorIdToName[accumulator.id] = accumulator.username;
+         });
+      this.subscription = this.service.getTotalsCollectionByDate(currentDate).subscribe(res => {
+      this.data = res;
+      if (this.data.entity && this.data.entity.length > 0) {
+        this.isLoading = false;
+        this.isdata = true;
+        this.datasize=this.data.entity.length
+        this.data.entity.forEach(item => {
+          const itemCollectorId = item.collectorId;
+          if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
+            item.collectorUsername = collectorIdToUsername[itemCollectorId];
+          }
+          const routeId = item.routeFk;
+          if (routeIdToName.hasOwnProperty(routeId)) {
+            item.routeName = routeIdToName[routeId];
+          }
+          const accumulatorId = item.accumulatorId;
+          if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
+            item.accumulatorName = accumulatorIdToName[accumulatorId];
+          }
+        });
+        this.dataSource = new MatTableDataSource(this.data.entity);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+      else {
+        this.isdata = false;
+        this.isLoading = false
+        this.dataSource = new MatTableDataSource(null);
+      }
+      this.selected="";
+    },(error) => {
+      console.log(error);
+      this.isLoading = false;
+      this.isdata = false;
+      this.dataSource = new MatTableDataSource(null);
+      this.selected="";
+      this.Snackbar.open(error, 'Close', {
+        duration: 3000, 
+      });
+    
+    });
+  });
+});
+  });
+}
   
   getSummaryPerAccumulator(accumulatorId) {
     this.isLoading = true;
@@ -413,6 +566,25 @@ export class TotalsCollectionsComponent implements OnInit {
       }
     },(err)=>console.log(err));
   }
+  getDateSummary(date) {
+    this.isLoading = true;
+    this.milkQuantity = 0;
+      this.damount = 0;
+    this.subscription = this.dashboard.getTotalsCollectionByDate(date).subscribe(res => {
+      this.data = res;
+      if (this.data && this.data.entity.length > 0) {
+        this.isLoading = false;
+            let totalMilkQuantity = 0;
+        let totalAmount = 0;
+            for (const entity of this.data.entity) {
+          totalMilkQuantity += entity.milkQuantity;
+          totalAmount += entity.amount;
+        }
+            this.milkQuantity = totalMilkQuantity;
+        this.damount = totalAmount;
+      }
+    });
+  }
   
     getAllCollectionsSummary() {
       this.isLoading = true;
@@ -433,13 +605,13 @@ export class TotalsCollectionsComponent implements OnInit {
         }
       });
     }
-    edit() {
+    edit(collection) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = false
       dialogConfig.autoFocus = true
       dialogConfig.width = "60%"
       dialogConfig.data = {
-        // collection: collection
+        collection: collection
       }
       this.dialog.open(EditTotalsCollectionsComponent, dialogConfig)
     }
@@ -447,13 +619,12 @@ export class TotalsCollectionsComponent implements OnInit {
     onDelete(collection) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.data = {
-        // collection: collection
+        collection: collection
       }
       dialogConfig.width = '60%',
       dialogConfig.autoFocus = false;
       const dialogRef = this.dialog.open(DeleteTotalsCollectionsComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(result => {
-        console.log("dialog was closed")
       });
     }
   

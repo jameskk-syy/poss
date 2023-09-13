@@ -61,7 +61,10 @@ export class MainComponent implements OnInit {
   constructor(
     private router: Router, private datePipe: DatePipe, private fb: FormBuilder, private dialog: MatDialog, private service: TotalsCollectionService, private dashboard: DashboardService,
     private snackbar: SnackbarService, private Snackbar: MatSnackBar
-  ) { }
+  ) { 
+    this.currentDate = this.getCurrentDate()
+
+  }
 
 
 
@@ -102,6 +105,7 @@ export class MainComponent implements OnInit {
   onSelectionChange() {
     switch (this.selected) {
       case 'current_date':
+        this.getTodaysData(); 
         break;
       case 'all':
         this.getData();
@@ -109,13 +113,89 @@ export class MainComponent implements OnInit {
       default:
         this.form.patchValue({
           collectorId: '',
-          accumulatorId: ''
+          accumulatorId: '',
+          date: '',
         });
         break;
     }
   }
 
+  filterByDate() {
+    this.date = this.datePipe.transform(this.form.value.date, 'yyyy-MM-dd');
+    this.isLoading = true;
+    this.getDateSummary(this.date)
 
+    this.service.getAllCollectorByNames().subscribe(response => {
+      const collectors = response.entity;
+      const collectorIdToUsername = {};
+      collectors.forEach(collector => {
+        collectorIdToUsername[collector.id] = collector.username;
+      });
+      this.service.getAllRouteNames().subscribe ( response => {
+        const routes = response.entity;
+        const routeIdToName = {};
+        routes.forEach(route => {
+          routeIdToName[route.id] = route.route;
+        });
+        const roleName = 'TOTALS_COLLECTOR';
+
+        this.service.getAllAccumulatorNames(roleName).subscribe(response => {
+          const accumulators = response.userData;
+          const accumulatorIdToName = {};
+          accumulators.forEach(accumulator => {
+            accumulatorIdToName[accumulator.id] = accumulator.username;
+          });
+    this.subscription = this.service.getTotalsCollectionByDate(this.date).subscribe(res => {
+      this.data = res;
+      if (this.data.entity.length > 0) {
+        this.isLoading = false;
+        this.isdata = true;
+        this.datasize=this.data.entity.length
+
+        this.data.entity.forEach(item => {
+          const itemCollectorId = item.collectorId;
+          if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
+            item.collectorUsername = collectorIdToUsername[itemCollectorId];
+          }
+          const routeId = item.routeFk;
+          if (routeIdToName.hasOwnProperty(routeId)) {
+            item.routeName = routeIdToName[routeId];
+          }
+          const accumulatorId = item.accumulatorId;
+          if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
+            item.accumulatorName = accumulatorIdToName[accumulatorId];
+          }
+        });
+        this.dataSource = new MatTableDataSource(this.data.entity);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+     
+      }
+      else {
+        this.isdata = false;
+        this.isLoading=false;
+        this.dataSource = new MatTableDataSource(null);
+      }
+      this.selected=""
+      },(error) => {
+        console.log(error);
+        this.isLoading = false;
+        this.isdata = false;
+        this.dataSource = new MatTableDataSource(null);
+        this.selected = "";
+        this.Snackbar.open(error, 'Close', {
+          duration: 3000, 
+        });
+      }
+      );
+
+      if (this.selected == "current_date") {
+      this.getTodaysData()
+    }
+    });
+    });
+    });
+  }
   getData() {
     this.isLoading = true;
     this.getAllCollectionsSummary()
@@ -198,12 +278,12 @@ export class MainComponent implements OnInit {
     this.selected = 'current_date'
     this.form = this.fb.group({
     collectorId: [""],
-     accumulatorId: [""]
+     accumulatorId: [""],
+     date: [''],
 
     });
     this.smallChart2()
-
-    this.getData();
+    this.getTodaysData();
   }
  
   // selectCollector() {
@@ -506,6 +586,75 @@ export class MainComponent implements OnInit {
       });
     }
   }
+  getTodaysData() {
+    this.isLoading = true;
+    const currentDate = this.getCurrentDate();
+     this.getDateSummary(this.currentDate)
+     this.service.getAllCollectorByNames().subscribe(response => {
+     const collectors = response.entity;
+     const collectorIdToUsername = {};
+     collectors.forEach(collector => {
+       collectorIdToUsername[collector.id] = collector.username;
+     });
+     this.service.getAllRouteNames().subscribe ( response => {
+       const routes = response.entity;
+       const routeIdToName = {};
+       routes.forEach(route => {
+         routeIdToName[route.id] = route.route;
+       });
+       const roleName = 'TOTALS_COLLECTOR';
+
+       this.service.getAllAccumulatorNames(roleName).subscribe(response => {
+         const accumulators = response.userData;
+         const accumulatorIdToName = {};
+         accumulators.forEach(accumulator => {
+           accumulatorIdToName[accumulator.id] = accumulator.username;
+         });
+      this.subscription = this.service.getTotalsCollectionByDate(currentDate).subscribe(res => {
+      this.data = res;
+      if (this.data.entity && this.data.entity.length > 0) {
+        this.isLoading = false;
+        this.isdata = true;
+        this.datasize=this.data.entity.length
+        this.data.entity.forEach(item => {
+          const itemCollectorId = item.collectorId;
+          if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
+            item.collectorUsername = collectorIdToUsername[itemCollectorId];
+          }
+          const routeId = item.routeFk;
+          if (routeIdToName.hasOwnProperty(routeId)) {
+            item.routeName = routeIdToName[routeId];
+          }
+          const accumulatorId = item.accumulatorId;
+          if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
+            item.accumulatorName = accumulatorIdToName[accumulatorId];
+          }
+        });
+        this.dataSource = new MatTableDataSource(this.data.entity);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+      else {
+        this.isdata = false;
+        this.isLoading = false
+        this.dataSource = new MatTableDataSource(null);
+      }
+      this.selected="";
+    },(error) => {
+      console.log(error);
+      this.isLoading = false;
+      this.isdata = false;
+      this.dataSource = new MatTableDataSource(null);
+      this.selected="";
+      this.Snackbar.open(error, 'Close', {
+        duration: 3000, 
+      });
+    
+    });
+  });
+});
+  });
+}
 
   getSummaryPerAccumulator(accumulatorId) {
     this.isLoading = true;
@@ -526,6 +675,25 @@ export class MainComponent implements OnInit {
         this.damount = totalAmount;
       }
     },(err)=>console.log(err));
+  }
+  getDateSummary(date) {
+    this.isLoading = true;
+    this.milkQuantity = 0;
+      this.damount = 0;
+    this.subscription = this.dashboard.getTotalsCollectionByDate(date).subscribe(res => {
+      this.data = res;
+      if (this.data && this.data.entity.length > 0) {
+        this.isLoading = false;
+            let totalMilkQuantity = 0;
+        let totalAmount = 0;
+            for (const entity of this.data.entity) {
+          totalMilkQuantity += entity.milkQuantity;
+          totalAmount += entity.amount;
+        }
+            this.milkQuantity = totalMilkQuantity;
+        this.damount = totalAmount;
+      }
+    });
   }
 
     getAllCollectionsSummary() {
