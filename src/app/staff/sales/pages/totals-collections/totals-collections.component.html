@@ -216,9 +216,10 @@
                                             <ng-container matColumnDef="collectorUsername">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                              class="column-nowrap tbl-col-width-per-13"> Collector </mat-header-cell>
-                                             <mat-cell *matCellDef="let item;let i = index" [class.odd-row]="i % 2"
+                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                              [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
-                                              {{ item.collectorUsername }}
+                                              <!-- {{ item.collectorUsername }} -->
+                                              {{response.collectorName}}
                                                </mat-cell>
                                               </ng-container>
                                         <ng-container matColumnDef="milkQuantity">
@@ -229,14 +230,14 @@
                                                 {{response.milkQuantity | number :'1.2-2'}}
                                             </mat-cell>
                                         </ng-container>
-                                        <!-- <ng-container matColumnDef="amount">
+                                        <ng-container matColumnDef="session">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                class="column-nowrap tbl-col-width-per-13">Amount</mat-header-cell>
+                                                class="column-nowrap tbl-col-width-per-13">Session</mat-header-cell>
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
-                                                {{response.amount | number :'1.2-2'}}
+                                                {{response.session == "session 1" ? "Morning" : (response.session == "session 2" ? "Afternoon" : "Evening") }}
                                             </mat-cell>
-                                        </ng-container> -->
+                                        </ng-container>
                                         <ng-container matColumnDef="accumulatorName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                          class="column-nowrap tbl-col-width-per-13">Accumulator </mat-header-cell>
@@ -248,9 +249,9 @@
                                         <ng-container matColumnDef="routeName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                          class="column-nowrap tbl-col-width-per-13"> Route </mat-header-cell>
-                                         <mat-cell *matCellDef="let item;let i = index" [class.odd-row]="i % 2"
+                                         <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                          [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
-                                          {{ item.routeName }}
+                                          {{ response.routeName }}
                                            </mat-cell>
                                           </ng-container>
                                        

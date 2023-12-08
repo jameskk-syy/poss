@@ -45,6 +45,7 @@ export class MainComponent implements OnInit {
     'milkQuantity',
     "accumulatorName",
     "routeName",
+    "session",
     "collectionDate",
   ];
   currentDate: any

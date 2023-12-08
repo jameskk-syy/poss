@@ -47,6 +47,7 @@ export class TotalsCollectionsComponent implements OnInit {
     'milkQuantity',
     "accumulatorName",
     "routeName",
+    "session",
     "collectionDate",
     'action',
 
@@ -146,6 +147,7 @@ export class TotalsCollectionsComponent implements OnInit {
           });
     this.subscription = this.service.getTotalsCollectionByDate(this.date).subscribe(res => {
       this.data = res;
+      console.log("received:"+res)
       if (this.data.entity.length > 0) {
         this.isLoading = false;
         this.isdata = true;
@@ -481,6 +483,7 @@ export class TotalsCollectionsComponent implements OnInit {
     const currentDate = this.getCurrentDate();
      this.getDateSummary(this.currentDate)
      this.service.getAllCollectorByNames().subscribe(response => {
+      console.log(response);
      const collectors = response.entity;
      const collectorIdToUsername = {};
      collectors.forEach(collector => {

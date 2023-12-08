@@ -30,9 +30,12 @@ export class EditTotalsCollectionsComponent implements OnInit {
     this.collectorUsername=this.collection.collectorUsername
     // console.log(this.collection=this.data.collection)
     this.collectorId=this.collection.collectorId
+
     this.editForm = this.fb.group({
       collectorId:[this.collection.collectorId,[Validators.required]],
-      milkQuantity:[this.collection.milkQuantity,[Validators.required]],      
+      milkQuantity:[this.collection.milkQuantity,[Validators.required]], 
+      collectionDate:[this.collection.collectionDate, [Validators.required]],
+      session: [this.collection.session == "session 1"? "Morning" : (this.collection.session == "session 2" ? "Afternoon" : "Evening"), [Validators.required]]     
     })
   }
   onSubmit() {

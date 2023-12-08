@@ -17,7 +17,9 @@ export class SalesService {
     return this.http.put(`${environment.apiUrl}/api/v1/accumulation/update/record`, data, httpOptions); 
    }
   getTotalsCollectionByDate(date: any):Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/accumulation/get/date?date=` + date, httpOptions);
+    var resp = this.http.get(`${environment.apiUrl}/api/v1/accumulation/get/date?date=` + date, httpOptions);
+    console.log("data: "+resp)
+    return resp;
   }
  
 
