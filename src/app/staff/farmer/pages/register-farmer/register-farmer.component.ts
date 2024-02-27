@@ -198,8 +198,9 @@ export class RegisterFarmerComponent implements OnInit {
     this.subscription = this.service
       .registerFarmer(this.farmerRegirstartionForm.value)
       .subscribe(
-        (res) => {
-          this.snackbar.showNotification('snackbar-success', 'Successful!');
+        (res: any) => {
+          var details = res.entity;
+          this.snackbar.showNotification('snackbar-success', 'F/No '+details.farmerNo+', name: '+details.username+ ' created!');
           this.loading = false;
           this.farmerRegirstartionForm.reset();
           this.dialogRef.close();
