@@ -49,6 +49,15 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Farmer Number</mat-label>
+                                    <input matInput formControlName="farmerNo" required />
+                                    <mat-error *ngIf="farmerApprovalForm.get('farmerNo').hasError('required')">
+                                       Farmer Number is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
                         </div>
 
                         <div class="row">
@@ -327,10 +336,11 @@
                                 <button mat-raised-button color="warn" (click)="onClick()" tabindex="-1">
                                     Cancel
                                 </button>
-                                <button mat-raised-button color="primary" [disabled]="!farmerApprovalForm.valid || !isPending" (click)="onSubmit()">
+                                <button mat-raised-button color="primary" [disabled]="farmer.status === 'Approved' || loading" (click)="onSubmit(farmer)">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     <b>Approve</b>
                                   </button>
+                                  
                                   
                             </div>
                         </div>

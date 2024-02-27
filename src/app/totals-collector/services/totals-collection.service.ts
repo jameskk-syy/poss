@@ -10,6 +10,9 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class TotalsCollectionService {
+  getTotalsCollectionByDate(date: any):Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/accumulation/get/date?date=` + date, httpOptions);
+  }
   getCollectorRoutes(id: any):Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/api/v1/routes/colector?collectorId=` + id);
   }

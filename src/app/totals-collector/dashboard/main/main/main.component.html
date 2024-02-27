@@ -53,7 +53,7 @@
                                             </div>
                                         </div>
                                     </div> -->
-                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                                    <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
                                         <div class="card card-statistic-2">
                                             <div class="clearfix">
                                                 <div class="card-right">
@@ -72,7 +72,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                 
+                                  -->
 
                                 </div>
                                 <div class="table-responsive">
@@ -108,21 +108,24 @@
                                                         <mat-form-field>
                                                             <mat-label>Filter By </mat-label>
                                                             <mat-select [(value)]="selected"  (selectionChange)="onSelectionChange()">
+                                                                <mat-option value="current_date"><b>Today</b></mat-option>
                                                                 <mat-option value="all"><b>All</b></mat-option>
                                                                 <mat-option value="collectorId"><b>Collector Id</b></mat-option>
                                                                 <mat-option value="accumulatorId"><b>Accumulator Id</b></mat-option>
+                                                                <mat-option value="sd"><b>Specific Date</b></mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </li>
                                                     <li class="dropdown">
                                                         <form [formGroup]="form">
-                                                            <!-- <mat-form-field class="m-l-5" *ngIf="selected == 'collectorId'">
-                                                                <input matInput
-                                                                    placeholder="Enter Collector Id"
-                                                                    formControlName="collectorId">
-                                                                <mat-icon matSuffix (click)="filterByCollectorId()">search
-                                                                </mat-icon>
-                                                            </mat-form-field> -->
+                                                            <mat-form-field class="m-l-5" *ngIf="selected == 'sd'">
+                                                                <input matInput [matDatepicker]="picker"
+                                                                    (dateChange)="filterByDate()"
+                                                                    placeholder="Choose a date" formControlName="date">
+                                                                <mat-datepicker-toggle matSuffix
+                                                                    [for]="picker"></mat-datepicker-toggle>
+                                                                <mat-datepicker #picker></mat-datepicker>
+                                                            </mat-form-field>
                                                                 <mat-form-field class="m-l-5" *ngIf="selected == 'collectorId'">
                                                                     <mat-label>Select Collector</mat-label>
                                                                     <input matInput formControlName="collectorId"  readonly />                   
@@ -186,9 +189,9 @@
                                             <ng-container matColumnDef="collectorUsername">
                                                 <mat-header-cell *matHeaderCellDef mat-sort-header
                                              class="column-nowrap tbl-col-width-per-13"> Collector </mat-header-cell>
-                                             <mat-cell *matCellDef="let item;let i = index" [class.odd-row]="i % 2"
+                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                              [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
-                                              {{ item.collectorUsername }}
+                                              {{ response.collectorName }}
                                                </mat-cell>
                                               </ng-container>
                                         <ng-container matColumnDef="milkQuantity">
@@ -199,14 +202,14 @@
                                                 {{response.milkQuantity | number :'1.2-2'}}
                                             </mat-cell>
                                         </ng-container>
-                                        <!-- <ng-container matColumnDef="amount">
+                                        <ng-container matColumnDef="session">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                class="column-nowrap tbl-col-width-per-13">Amount</mat-header-cell>
+                                                class="column-nowrap tbl-col-width-per-13">Session</mat-header-cell>
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
-                                                {{response.amount | number :'1.2-2'}}
+                                                {{response.session == "session 1" ? "Morning" : (response.session == "session 2" ? "Afternoon" : "Evening")}}
                                             </mat-cell>
-                                        </ng-container> -->
+                                        </ng-container>
                                         <ng-container matColumnDef="accumulatorName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                          class="column-nowrap tbl-col-width-per-13">Accumulator </mat-header-cell>
@@ -218,9 +221,9 @@
                                         <ng-container matColumnDef="routeName">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                          class="column-nowrap tbl-col-width-per-13"> Route </mat-header-cell>
-                                         <mat-cell *matCellDef="let item;let i = index" [class.odd-row]="i % 2"
+                                         <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                          [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
-                                          {{ item.routeName }}
+                                          {{ response.routeName }}
                                            </mat-cell>
                                           </ng-container>
                                        
