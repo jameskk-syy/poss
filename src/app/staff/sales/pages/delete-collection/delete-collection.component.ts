@@ -54,7 +54,7 @@ export class DeleteCollectionComponent implements OnInit {
       this.dialogRef.close()
     }, err => {
       this.loading = false
-      this.snackBar.showNotification("snackbar-success", err.message)
+      this.snackBar.showNotification("snackbar-danger", err);
       this.dialogRef.close()
     })
   }
