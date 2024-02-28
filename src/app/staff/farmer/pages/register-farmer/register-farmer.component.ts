@@ -157,20 +157,20 @@ export class RegisterFarmerComponent implements OnInit {
 
     this.mpesaDetails = this.fb.group({
       mpesaNumber: ['', [Validators.required]],
-      alternativeNumber: [''],
+      alternativeNumber: ['',[Validators.required]],
     });
 
     this.nextOfKinForm = this.fb.group({
-      name:[''],
-      idNo:[''],            
-      relationship:[''],            
-      address:[''],
-      tel:['']    
+      name:['',[Validators.required]],
+      idNo:['',[Validators.required]],            
+      relationship:['',[Validators.required]],            
+      address:['',[Validators.required]],
+      tel:['',[Validators.required]]    
     });
 
     this.farmerRegirstartionForm = this.fb.group({
-      bankDetails: [''],
-      transportMeans: [''],
+      bankDetails: ['',[Validators.required]],
+      transportMeans: ['',[Validators.required]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       idNumber: ['', [Validators.required]],
@@ -181,12 +181,12 @@ export class RegisterFarmerComponent implements OnInit {
       alternativeMobileNo: [''],
       paymentMode:['',[Validators.required]],
       county_fk: [''],
-      location: [''],
+      location: ['',[Validators.required]],
       subLocation: [''],
       village: [''],
       gender: [''],
-      routeFk: [''],
-      nextOfKin:['']
+      routeFk: ['',[Validators.required]],
+      nextOfKin:['',[Validators.required]]
     });
   }
 
