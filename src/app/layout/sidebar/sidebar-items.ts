@@ -483,6 +483,7 @@ export const ROUTES: RouteInfo[] = [
     role: ['ROLE_STAFF'],
     submenu: [],
   },
+  
 
   // {
   //   path: '/staff/cans',
