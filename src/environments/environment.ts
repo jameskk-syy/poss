@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://3.145.143.209:9800",
-  API: "http://3.145.143.209:9800",
-//    apiUrl: "http://localhost:9700",
-//  API: "http://localhost:9700",  
+  // apiUrl: "http://localhost:9700",
+  // API: "http://localhost:9700",
+      apiUrl: "http://3.145.143.209:9800",
+      API: "http://3.145.143.209:9800",  
 };
 
 /*
