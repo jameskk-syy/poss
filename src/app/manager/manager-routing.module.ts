@@ -6,12 +6,15 @@ const routes: Routes = [
     path:'dashboard',
     loadChildren: ()=>
     import('./dashboard/dashboard.module').then(m=>m.AdminDashboardModule)
+    
   },
+  
   // {
   //   path:'payment',
   //   loadChildren: ()=>
   //   import('./dashboard/dashboard.module').then(m=>m.AdminDashboardModule)
   // }
+  
 ];
 
 @NgModule({

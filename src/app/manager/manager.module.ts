@@ -5,6 +5,10 @@ import { SharedModule } from '../shared/shared.module';
 import { StaffRoutingModule } from '../staff/staff-routing.module';
 import { MatTableModule } from '@angular/material/table';
 import { ComponentsModule } from '../shared/components/components.module';
+import { RouterModule,Routes } from '@angular/router'
+import { SmsModule } from '../staff/sms/sms.module';
+import { ReportsModule } from '../reports/reports.module';
+
 
 
 
@@ -17,6 +21,9 @@ import { ComponentsModule } from '../shared/components/components.module';
     SharedModule,
     MatTableModule,
     ComponentsModule,
+    RouterModule,
+    SmsModule,
+    ReportsModule
   ],
 })
 export class Manager { }
