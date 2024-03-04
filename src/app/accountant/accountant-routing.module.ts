@@ -8,12 +8,7 @@ const routes: Routes = [
     import('./dashboard/dashboard.module').then(m=>m.AdminDashboardModule)
     
   },
-  
-  // {
-  //   path:'payment',
-  //   loadChildren: ()=>
-  //   import('./dashboard/dashboard.module').then(m=>m.AdminDashboardModule)
-  // }
+
   
 ];
 
@@ -23,4 +18,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class ManagerRouting { }
+export class AccountantRoutingModule { }
