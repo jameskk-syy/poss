@@ -791,7 +791,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
   {
-    path: '/Accountant/dashboard/main',
+    path: '/accountant/dashboard/main',
     title: 'Dashboard',
     moduleName: 'dashboard',
     iconType: 'feather',

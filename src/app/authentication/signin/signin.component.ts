@@ -75,11 +75,7 @@ export class SigninComponent
           this.router.navigate(['/managing-director/dashboard'])
          }
          else if (role == Role.Accountant) {
-          this.router.navigate(['/accountant/dashboard']).then(() => {
-            console.log('Navigation to accountant dashboard resolved');
-          }).catch(error => {
-            console.error('Navigation to accountant dashboard rejected:', error);
-          });
+          this.router.navigate(['/accountant/dashboard'])
         }
         
          else {
