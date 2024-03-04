@@ -50,6 +50,15 @@ const routes: Routes = [
           import("./manager/manager.module").then((m)=>m.Manager)
       },
       {
+        path: "managing-director",
+        canActivate: [AuthGuard],
+        data: {
+          role: Role.ManagingDirector,
+        },
+        loadChildren: () =>
+          import("./managing-director/managing-director.module").then((m)=>m.ManagingDirectorModule)
+      },
+      {
        path: "totals-collector",
        canActivate: [AuthGuard],
        data: {

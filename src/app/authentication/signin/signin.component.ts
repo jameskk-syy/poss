@@ -71,6 +71,8 @@ export class SigninComponent
          }
          else if (role== Role.TotalsCollector){
           this.router.navigate(['/totals-collector/dashboard'])
+         }else if (role == Role.ManagingDirector) {
+          this.router.navigate(['/managing-director/dashboard'])
          }
          else if (role == Role.Accountant) {
           this.router.navigate(['/accountant/dashboard']).then(() => {

@@ -5,6 +5,7 @@ export enum Role {
   Collector = "MILK_COLLECTOR",
   SalesPerson = "SALES_PERSON",
   Manager = "MANAGER",
+  ManagingDirector = "MANAGING_DIRECTOR",
   TotalsCollector = "TOTALS_COLLECTOR",
   Accountant = "ACCOUNTANT"
 }
