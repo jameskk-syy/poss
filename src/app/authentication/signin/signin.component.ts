@@ -72,6 +72,13 @@ export class SigninComponent
          else if (role== Role.TotalsCollector){
           this.router.navigate(['/totals-collector/dashboard'])
          }
+         else if (role == Role.Accountant) {
+          this.router.navigate(['/accountant/dashboard']).then(() => {
+            console.log('Navigation to accountant dashboard resolved');
+          }).catch(error => {
+            console.error('Navigation to accountant dashboard rejected:', error);
+          });
+        }
         
          else {
           this.error = "Username or Password are invalid";
