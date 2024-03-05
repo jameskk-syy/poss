@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ComponentsModule } from '../shared/components/components.module';
-import { SharedModule } from '../shared/shared.module';
-import { MatTableModule } from '@angular/material/table';
-import { ReportsModule } from '../reports/reports.module';
-import { ProductSalesModule } from '../staff/product-sales/product-sales.module';
+import { ManagingDirectorRoutingModule } from './managing-director-routing.module';
+import { ReportsRoutingModule } from '../reports/reports-routing.module';
+import { StaffRoutingModule } from '../staff/staff-routing.module';
 
 
 
@@ -13,11 +11,9 @@ import { ProductSalesModule } from '../staff/product-sales/product-sales.module'
   
   imports: [
     CommonModule,
-    ComponentsModule,
-    SharedModule,
-    MatTableModule,
-    ReportsModule,
-    ProductSalesModule
+    ManagingDirectorRoutingModule,
+    ReportsRoutingModule,
+    StaffRoutingModule
   ]
 })
 export class ManagingDirectorModule { }
