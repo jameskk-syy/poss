@@ -804,7 +804,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
   {
-    path: '/accountant/payments/records',
+    path: '/accountant/dashboard/records',
     title: 'Payment Records',
     moduleName: 'payments',
     iconType: 'feather',
@@ -843,7 +843,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
   {
-  path: '/Accountant/customers',
+  path: '/accountant/customers',
   title: 'Customers',
   moduleName: 'customers',
   iconType: 'feather',

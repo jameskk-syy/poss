@@ -22,6 +22,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { MilkSummaryComponent } from './main/milk-summary/milk-summary.component';
 
 
 
@@ -29,6 +30,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
   declarations: [
     MainComponent,
     AddTotalsCollectionsComponent,
+    MilkSummaryComponent,
   ],
   imports: [
     CommonModule,
