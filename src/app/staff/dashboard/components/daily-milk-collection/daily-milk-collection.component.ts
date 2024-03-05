@@ -24,6 +24,7 @@ import { HttpClient } from 'selenium-webdriver/http';
 import { AnalyticsService } from 'src/app/data/services/analytics.service';
 import { UserService } from 'src/app/data/services/user.service';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
+import { line } from 'd3-shape';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -75,6 +76,7 @@ export class DailyMilkCollectionComponent extends BaseComponent implements OnIni
   currentMonth = this.monthsArray[new Date().getMonth()];
   currentDate = this.datesArray[new Date().getDate()];
   quantities = []
+  deliveredQty = []
   routes = []
 
   
@@ -175,12 +177,16 @@ export class DailyMilkCollectionComponent extends BaseComponent implements OnIni
 
         this.quantities.push(item.y);
 
+        this.deliveredQty.push(item.z)
+
         // amounts.push(item.amount);
       })
     }else {
       this.quantities = [];
 
       this.routes = [];
+
+      this.deliveredQty = []
 
       // amounts = [];
     }
@@ -189,13 +195,19 @@ export class DailyMilkCollectionComponent extends BaseComponent implements OnIni
     this.barChartOptions = {
       series: [
         {
-          name: "Quantity",
+          name: "Qty Collected",
           data: this.quantities, 
+          type: "bar"
         },
+        {
+          name: "Qty Received",
+          type: "line",
+          data: this.deliveredQty
+        }
         
       ],
       chart: {
-        type: "bar",
+        type: "line",
         height: 350,
         foreColor: "#9aa0ac",
         stacked: false,
@@ -203,6 +215,11 @@ export class DailyMilkCollectionComponent extends BaseComponent implements OnIni
           show: false,
         },
       },
+      stroke: {
+        curve: 'smooth',
+        width: [0, 4]
+      },
+      
       responsive: [
         {
           breakpoint: 480,
@@ -223,6 +240,7 @@ export class DailyMilkCollectionComponent extends BaseComponent implements OnIni
       },
       // dataLabels: {
       //   enabled: false,
+      //   enabledOnSeries: [1]
       // },
       xaxis: {
         type: "category",
@@ -233,7 +251,7 @@ export class DailyMilkCollectionComponent extends BaseComponent implements OnIni
         
       },
       legend: {
-        show: false,
+        show: true,
       },
       fill: {
         opacity: 1,
