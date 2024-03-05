@@ -10,6 +10,9 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class TotalsCollectionService {
+  getRoutesData(): Observable<any> {
+    throw new Error('Method not implemented.');
+  }
   getTotalsCollectionByDate(date: any):Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/accumulation/get/date?date=` + date, httpOptions);
   }

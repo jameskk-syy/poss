@@ -34,6 +34,7 @@ export class MainComponent implements OnInit {
   datasize:any=0;
   collectors: any[] = [];
   filename = "totalscollections for " + this.today;
+  
 
   public cardChart2: any;
   public cardChart2Data: any;
@@ -47,6 +48,12 @@ export class MainComponent implements OnInit {
     "routeName",
     "session",
     "collectionDate",
+    "milkDensity",
+    "milkPH",
+    // "milkTemperature",
+    // "milkOrgSmell",
+    // "milkOrgSight"
+    
   ];
   currentDate: any
 

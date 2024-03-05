@@ -61,7 +61,7 @@
                                             </mat-select>
                                                 <mat-error *ngIf="addAccumulationForm.get('session').hasError('required')">
                                                     Session is required
-                                                </mat-error>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                                </mat-error>                                                                        
                                             </mat-form-field>
                                         </div>
 
@@ -107,22 +107,87 @@
                                                         </mat-error>
                                                     </mat-form-field>
                                                 </div> -->
+                                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                                    <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Milk PH</mat-label>
+                                                        <input matInput formControlName="milkPH" required />
+                                                        <mat-error *ngIf="addAccumulationForm.get('milkQuantity').hasError('required')">
+                                                            Milk PH is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                                    <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Milk Density</mat-label>
+                                                        <input matInput formControlName="milkDensity" required />
+                                                        <mat-error *ngIf="addAccumulationForm.get('milkQuantity').hasError('required')">
+                                                            Milk Density is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                                    <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Milk Temperature</mat-label>
+                                                        <input matInput formControlName="milkTemperature" required />
+                                                        <mat-error *ngIf="addAccumulationForm.get('milkTemperature').hasError('required')">
+                                                            Milk Temperature is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Resazurin</mat-label>
+                                                    <mat-select formControlName="Resazurin" required> 
+                                                        <mat-option value="Pink">Pink</mat-option>
+                                                        <mat-option value="Yellow">Yellow</mat-option>
+                                                        <!-- <mat-option value="session 3">purple</mat-option> -->
+                                                    </mat-select>
+                                                        <mat-error *ngIf="addAccumulationForm.get('Resazurin').hasError('required')">
+                                                            Resazurin is required
+                                                        </mat-error>                                                                        
+                                                    </mat-form-field>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Organoleptic Smell</mat-label>
+                                                    <mat-select formControlName="OrganolepticSmell" required> 
+                                                        <mat-option value="Smell">cowish</mat-option>
+                                                        <mat-option value="Smell">Offsmell</mat-option>
+                                                        <mat-option value="Smell">Spoilt</mat-option>
+                                                    </mat-select>
+                                                        <mat-error *ngIf="addAccumulationForm.get('OrganolepticSmell').hasError('required')">
+                                                            Organoleptic is required
+                                                        </mat-error>                                                              
+                                                    </mat-form-field>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                        <mat-label>Organoleptic Sight</mat-label>
+                                                    <mat-select formControlName="Organoleptic Sight" required> 
+                                                        <mat-option value="Sight">Cream White</mat-option>
+                                                        <mat-option value="Sight">Light White</mat-option>
+                                                        <mat-option value="Sight">Coloured</mat-option>
+                                                    </mat-select>
+                                                        <mat-error *ngIf="addAccumulationForm.get('OrganolepticSight').hasError('required')">
+                                                            Organoleptic is required
+                                                        </mat-error>                                                              
+                                                    </mat-form-field>
+                                            </div>
 
-                                                <div class="row">
+                                        <div class="row">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                                                 <div class="example-button-row">
                                                     <button mat-raised-button color="warn" (click)="onClick()" tabindex="-1">
                                                         Cancel
                                                     </button>
-                                                    <button mat-raised-button color="primary" [disabled]="!addAccumulationForm.valid"
-                                                        (click)="onSubmit()">
+                                                    <button mat-raised-button color="primary" [disabled]="addAccumulationForm.valid" (click)="onSubmit()">
                                                         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                                         <b>Submit</b>
-                                                    </button>
+                                                      </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        </div>
+                                    </div>
                                     <!-- </div> -->
 
 
