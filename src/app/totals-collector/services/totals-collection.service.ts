@@ -50,6 +50,11 @@ getAllRouteNames():Observable<any> {
 getAllCollectorByNames(): Observable<any> {
   return this.http.get(`${environment.apiUrl}/api/v1/collectors/all`,httpOptions); 
 }
+
+getCollectRoutes(): Observable<any> {
+  return this.http.get(`${environment.apiUrl}/api/v1/routes/get`,httpOptions); 
+  
+}
   // http: any;
   addTotalsCollections(value: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}/api/v1/accumulation/add`,
@@ -59,7 +64,15 @@ getAllCollectorByNames(): Observable<any> {
       session: value.session,
       accumulatorId:value.accumulatorId,
       routeFk: value.routeFk,
+      ph: value.ph,
+      density: value.density,
+      resazurin: value.resazurin,
+      sight: value.sight,
+      smell: value.sight,
+      temperature: value.temperature
     },httpOptions);   }
+
+
 
   // constructor() { }
 }

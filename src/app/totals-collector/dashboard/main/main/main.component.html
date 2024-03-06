@@ -282,6 +282,32 @@
                                                 {{response.milkPH | number :'1.2-2'}}
                                             </mat-cell>
                                         </ng-container>
+                                        <ng-container matColumnDef="action">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
+                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, row)">
+                                        <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                            (click)="editCall(row)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="Edit Customer"
+                                                [icon]="'edit'"></app-feather-icons>
+                                        </button>
+                                        <button mat-icon-button color="accent" (click)="$event.stopPropagation()"
+                                            (click)="deleteCall(row)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="Delete Customer" [icon]="'trash-2'"
+                                                [class]="'tbl-fav-delete'"></app-feather-icons>
+                                        </button>
+                                        <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                            (click)="viewCustomerDetails(row)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="View Customer Details" [icon]="'eye'"
+                                                [class]="'tbl-fav-eye'"></app-feather-icons>
+                                        </button>
+                                        <!-- <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                            (click)="viewCustomerPurchases(customer)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="View Purchase Statements" [icon]="'book'"
+                                                [class]="'tbl-fav-eye'"></app-feather-icons>
+                                        </button> -->
+                                    </mat-cell>
+                                </ng-container>
                                          <!-- <ng-container matColumnDef="milkTemperature">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                                 class="column-nowrap tbl-col-width-per-13">Temp</mat-header-cell>

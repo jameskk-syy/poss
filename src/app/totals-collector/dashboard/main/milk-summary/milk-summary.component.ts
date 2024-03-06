@@ -17,7 +17,8 @@ import { MatTableDataSource } from '@angular/material/table';
     ngOnInit(): void {
       // Assuming you have a service to fetch data from the backend
       // Replace this with your actual service call
-      this.service.getCollectorRoutes().subscribe((data: any[]) => {
+      this.service.getCollectRoutes().subscribe((data: any[]) => {
+        console.log("data", data)
         this.dataSource = new MatTableDataSource(data);
       });
     }

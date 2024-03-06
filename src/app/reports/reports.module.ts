@@ -23,6 +23,7 @@ import { FarmerProductsReportComponent } from './pages/farmer-products-report/fa
 import {MatRadioModule} from '@angular/material/radio';
 
 
+
 @NgModule({
     declarations: [
         MainComponent,
@@ -48,7 +49,8 @@ import {MatRadioModule} from '@angular/material/radio';
         MatIconModule,
         MatExpansionModule,
         MatRippleModule,
-        MatRadioModule
+        MatRadioModule,
+       
         
     
     ]

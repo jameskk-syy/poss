@@ -50,6 +50,7 @@ export class MainComponent implements OnInit {
     "collectionDate",
     "milkDensity",
     "milkPH",
+    "Actions"
     // "milkTemperature",
     // "milkOrgSmell",
     // "milkOrgSight"
