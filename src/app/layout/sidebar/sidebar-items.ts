@@ -752,7 +752,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
   {
-    path: '//totalCollector/sales/totals-collections',
+    path: '/totals-collector/sales/totals-collections',
     title: 'Totals Collections',
     moduleName: 'sales',
     iconType: 'feather',
