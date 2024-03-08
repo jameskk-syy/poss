@@ -50,7 +50,7 @@ export type ChartOptions = {
 })
 export class CollectorCollectionsComponent extends BaseComponent implements OnInit {
   public barChartOptions: Partial<ChartOptions>;
-  public lineChartOptions: Partial<ChartOptions>;
+  
 
   chartDispType: any = [2020, 2022, 2023, 2024, 2025];
   monthsArray: any = [

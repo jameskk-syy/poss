@@ -61,6 +61,7 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
   yAxisOptions: any;
   dates = [];
   quantities = [];
+  deliveredQty=[];
   isLoading: boolean = false;
   data: any[]= [];
   form: FormGroup;
@@ -162,6 +163,7 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
       this.data.forEach(item => {
         this.dates.push(item.x);
         this.quantities.push(item.y);
+        this.deliveredQty.push(item.z)
       })
 
     }else {
@@ -169,18 +171,27 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
       this.quantities = [];
 
       this.dates = [];
+      this.deliveredQty = [];
     }
-
+   
     this.chartOptions = {
       series: [
         {
-          name: "Quantity",
+          name: "Quantity Collected",
           data: this.quantities,
+          type: "bar"
+        },
+        
+        {
+          name: "Qty Received",
+          type: "line",
+          data: this.deliveredQty,
+          color: "blue",
         }
       ],
       chart: {
         height: 350,
-        type: "line",
+        type: "bar",
         foreColor: "#9aa0ac",
         dropShadow: {
           enabled: true,

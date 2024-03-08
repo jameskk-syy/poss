@@ -37,12 +37,12 @@ export class AddTotalsCollectionsComponent implements OnInit {
       session: ['', Validators.required],
       accumulatorId: [''],
       routeFk: ['', Validators.required],
-      milkPH: ['', Validators.required],
-      milkDensity: ['', Validators.required],
-      milkTemperature: ['', Validators.required],
-      Resazurin: ['', Validators.required],
-      OrganolepticSmell: ['', Validators.required],
-      OrganolepticSight: ['', Validators.required],
+      ph: ['', Validators.required],
+      density: ['', Validators.required],
+      temperature: ['', Validators.required],
+      resazurin: ['', Validators.required],
+      smell: ['', Validators.required],
+      sight: ['', Validators.required],
       // Add validators for other form fields as needed
     });
   }
