@@ -50,46 +50,55 @@ export class SigninComponent
     this.loading = true;
     this.error = "";
     if (this.authForm.invalid) {
-      this.error = "Username and Password not valid !";
+      this.error = "All fields are needed !";
       return;
     } else {
-      this.authService.login(this.authForm.value).subscribe(res => {
-        this.tokenStorage.saveToken(res.token);
-        this.tokenStorage.saveUser(res);
-        const role = res.roles[0].name;
-
-        if (role == Role.Admin) {
-          this.router.navigate(['/admin/dashboard'])
-        } else if (role == Role.Staff) {
-          this.router.navigate(['/staff/dashboard'])
-        } else if (role == Role.Collector) {
-          this.router.navigate(['/collections/dashboard'])
-        } else if (role == Role.SalesPerson) {
-          this.router.navigate(['/sales-person/dashboard'])
-        } else if (role == Role.Manager) {
-          this.router.navigate(['/manager/dashboard'])
-         }
-         else if (role== Role.TotalsCollector){
-          this.router.navigate(['/totals-collector/dashboard'])
-         }else if (role == Role.ManagingDirector) {
-          this.router.navigate(['/managing-director/dashboard'])
-         }
-         else if (role == Role.Accountant) {
-          this.router.navigate(['/accountant/dashboard'])
-        }
-        
-         else {
-          this.error = "Username or Password are invalid";
-        }
-        console.log(this.error)
-
-        this.submitted = false;
-        this.loading = false;
-
-      }, err => {
-        this.error = 'Username or Password are invalid';
-        this.submitted = false;
-        this.loading = false;
+      this.authService.login(this.authForm.value).subscribe({
+        next:(result: any) => {
+          if(result.statusCode === 200) {
+            const res = result.entity;
+            this.tokenStorage.saveToken(res.token);
+            this.tokenStorage.saveUser(res);
+            const role = res.roles[0].name;
+    
+            if (role == Role.Admin) {
+              this.router.navigate(['/admin/dashboard'])
+            } else if (role == Role.Staff) {
+              this.router.navigate(['/staff/dashboard'])
+            } else if (role == Role.Collector) {
+              this.router.navigate(['/collections/dashboard'])
+            } else if (role == Role.SalesPerson) {
+              this.router.navigate(['/sales-person/dashboard'])
+            } else if (role == Role.Manager) {
+              this.router.navigate(['/manager/dashboard'])
+             }
+             else if (role== Role.TotalsCollector){
+              this.router.navigate(['/totals-collector/dashboard'])
+             }else if (role == Role.ManagingDirector) {
+              this.router.navigate(['/managing-director/dashboard'])
+             }
+             else if (role == Role.Accountant) {
+              this.router.navigate(['/accountant/dashboard'])
+            }
+             else {
+              this.error = "Username or Password are invalid";
+            }
+            console.log(this.error)
+    
+            this.submitted = false;
+            this.loading = false;
+          }
+        },
+        error: (err) => {
+          if(err){
+            this.error = err;
+            this.submitted = false;
+            this.loading = false;
+          } else {
+            this.error = "Server Error"
+          }          
+        },
+        complete: () => {}
       })
     }
   }
