@@ -80,7 +80,6 @@ export class SigninComponent
              else if (role == Role.Accountant) {
               this.router.navigate(['/accountant/dashboard'])
             }
-            
              else {
               this.error = "Username or Password are invalid";
             }
@@ -91,7 +90,6 @@ export class SigninComponent
           }
         },
         error: (err) => {
-          console.log("the error is ..."+err)
           if(err){
             this.error = err;
             this.submitted = false;
