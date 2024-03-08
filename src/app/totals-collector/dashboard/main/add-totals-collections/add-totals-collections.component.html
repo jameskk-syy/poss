@@ -151,9 +151,9 @@
                                                 <mat-form-field class="example-full-width" appearance="outline">
                                                         <mat-label>Organoleptic Smell</mat-label>
                                                     <mat-select formControlName="smell" required> 
-                                                        <mat-option value="Smell">cowish</mat-option>
-                                                        <mat-option value="Smell">Offsmell</mat-option>
-                                                        <mat-option value="Smell">Spoilt</mat-option>
+                                                        <mat-option value="COWISH">Cowish</mat-option>
+                                                        <mat-option value="OFFSMELL">OffSmell</mat-option>
+                                                        <mat-option value="SPOILT">Spoilt</mat-option>
                                                     </mat-select>
                                                         <mat-error *ngIf="addAccumulationForm.get('smell').hasError('required')">
                                                             Organoleptic Sight is required
@@ -164,9 +164,9 @@
                                                 <mat-form-field class="example-full-width" appearance="outline">
                                                         <mat-label>Organoleptic Sight</mat-label>
                                                     <mat-select formControlName="sight" required> 
-                                                        <mat-option value="Sight">Cream White</mat-option>
-                                                        <mat-option value="Sight">Light White</mat-option>
-                                                        <mat-option value="Sight">Coloured</mat-option>
+                                                        <mat-option value="CREAMWHITE">Cream White</mat-option>
+                                                        <mat-option value="LIGHTWHITE">Light White</mat-option>
+                                                        <mat-option value="COLOURED">Coloured</mat-option>
                                                     </mat-select>
                                                         <mat-error *ngIf="addAccumulationForm.get('sight').hasError('required')">
                                                             Organoleptic Sight is required
