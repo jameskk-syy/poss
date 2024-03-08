@@ -75,6 +75,11 @@ const routes: Routes = [
       ),
   },
 
+  {
+    path: "price-config",
+    loadChildren: () => import("src/app/staff/stock/configs/configs.module").then((m)  => m.ConfigsModule)
+  }
+
 ];
 
 @NgModule({
