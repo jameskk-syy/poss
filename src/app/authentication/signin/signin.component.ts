@@ -91,14 +91,14 @@ export class SigninComponent
           }
         },
         error: (err) => {
+          console.log("the error is ..."+err)
           if(err){
             this.error = err;
             this.submitted = false;
             this.loading = false;
-          }
-
-          this.error = "Server Error"
-          
+          } else {
+            this.error = "Server Error"
+          }          
         },
         complete: () => {}
       })
