@@ -79,6 +79,19 @@ export const ROUTES: RouteInfo[] = [
         role: ['ROLE_ADMIN'],
         submenu: [],
       },
+      {
+        path: '/admin/price-config',
+        title: 'Price Configurations',
+        moduleName: 'users',
+        iconType: 'feather',
+        icon: 'layers',
+        class: '',
+        groupTitle: false,
+        badge: '',
+        badgeClass: '',
+        role: ['ROLE_ADMIN'],
+        submenu: []
+      },
       // {
       //   path: '/admin/departments',
       //   title: 'Departments',
