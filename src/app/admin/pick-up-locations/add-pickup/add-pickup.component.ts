@@ -211,43 +211,35 @@ export class AddPickupComponent extends BaseComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe(
-      (result) => {
-        let collectors: any[] = [];
-        collectors = result.data;
-        if (collectors.length > 0) {
-        
+    dialogRef.afterClosed().subscribe({
+      next: (result: any) => {
+        let collectors = result.data
 
-          collectors.forEach((collector) => {
-
+        if(collectors.length > 0) {
+          collectors.forEach(collector => {
             this.collectorsForm.patchValue({
-              username: collector.username,
+              username: collector.username
             });
 
             this.collectorsArray.push(this.collectorsForm.value);
-
             this.collectorsForm.reset();
           });
 
-          if (this.collectorsArray.length > 0) {
+          if(this.collectorsArray.length > 0) {
             this.collectorsNotAdded = false;
-
-            this.getCollectors(this.collectorsArray);
-
-            
+            this.getCollectors(this.collectorsArray)
           } else {
-            this.collectorsNotAdded = true;
+            this.collectorsNotAdded = true
           }
-
-          this.collectorsNotAdded = false;
+          this.collectorsNotAdded = false
         }
 
-        this.activateLookupCollectors = false;
+        this.activateLookupCollectors = true;
       },
-      (err) => {
-        console.log(err);
+      error: (error) => {
+        console.log("Error is "+error)
       }
-    );
+    })
   }
 
   subCollectorsLookup() {
@@ -290,7 +282,6 @@ export class AddPickupComponent extends BaseComponent implements OnInit {
     this.collectorsArray = [];
     this.getCollectors(this.collectorsArray);
     this.collectorsNotAdded = true;
-
     this.activateLookupCollectors = true;
   }
 
@@ -423,6 +414,10 @@ export class AddPickupComponent extends BaseComponent implements OnInit {
     this.routesArray.forEach((route) => {
       this.routesFormControl.push(this.fb.group(route));
     });
+
+    this.subCollectorsArray.forEach((subCollector) => {
+      this.subCollectorsFormControl.push(this.fb.group(subCollector))
+    })
 
 
     console.log('Collection Center Form ', this.pickupLocationForm.value);

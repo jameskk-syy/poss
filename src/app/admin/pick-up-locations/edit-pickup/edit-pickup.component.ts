@@ -19,6 +19,7 @@ import { PickupService } from '../pickup.service';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MilkCollectorsLookupComponent } from '../dialogs/milk-collectors-lookup/milk-collectors-lookup.component';
+import { SubCollectorsLookupComponent } from '../dialogs/sub-collectors-lookup/sub-collectors-lookup.component';
 
 @Component({
   selector: 'app-edit-pickup',
@@ -76,6 +77,17 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   subscription: Subscription;
 
+  subCollectorsForm: FormGroup
+  subCollectorsArray: any[] = []
+  subCollectorsNotAdded: boolean = true
+  subCollectorsDataSource: MatTableDataSource<any>
+  @ViewChild(MatPaginator) subCollectorsPaginator : MatPaginator
+  activateLookupSubCollectors: boolean = true;
+  subCollectorsDisplayedColumns: string[] = ['index', 'username', 'actions'];
+
+
+
+
   constructor(
     public dialogRef: MatDialogRef<ManagePickupsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -95,6 +107,8 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
     this.routesForm = this.createRoutesForm();
 
     this.collectorsForm = this.createCollectorssForm();
+
+    this.subCollectorsForm = this.createSubCollectorsForm();
 
     console.log('Data ', this.data.location);
 
@@ -180,6 +194,7 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
     return this.fb.group({
       id: [''],
       collectors: new FormArray([]),
+      subcollectors: new FormArray([]),
       landMark: ['', [Validators.required]],
       route: ['', [Validators.required]],
       routeCode: ['', [Validators.required]]
@@ -200,6 +215,13 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
     });
   }
 
+  createSubCollectorsForm(): FormGroup {
+    return this.fb.group({
+      id: [''],
+      username: ['', [Validators.required]]
+    })
+  }
+
   createMinutesForm(): FormGroup {
     return this.fb.group({
       file: [''],
@@ -212,7 +234,7 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
     const dialogRef = this.dialog.open(MilkCollectorsLookupComponent, {
       width: '800px',
       data: {
-        action: 'Meeting Categories Lookup',
+        action: 'Milk Collectors Lookup',
       },
     });
 
@@ -271,12 +293,75 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
     );
   }
 
+  subCollectorsLookup() {
+    const dialogRef = this.dialog.open(SubCollectorsLookupComponent, {
+      width: "800px",
+      data: {
+        actions: "sub collectors lookup"
+      }
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: (result: any) => {
+        let subCollectors: any[] = []
+
+        subCollectors = result.data
+
+        let subCollectorNames = []
+
+        if (subCollectors.length > 0) {
+          
+          if(this.subCollectorsArray.length > 0) {
+            this.subCollectorsArray.forEach(subCollector => {
+              subCollectorNames.push(subCollector.name)
+            });
+          }
+
+          subCollectors.forEach(subCollector => {
+            if(subCollectorNames.includes(subCollector.username)) {
+              this.snackbar.showNotification("snackbar-danger", `Collector with name ${subCollector.username} already exists in this collection center !`)
+            } else {
+              subCollectors.forEach((subCollector) => {
+                this.subCollectorsForm.patchValue({
+                  username: subCollector.username
+                });
+
+                this.subCollectorsArray.push(this.subCollectorsForm.value);
+                this.subCollectorsForm.reset()
+              });
+            }
+          });
+
+          if(this.subCollectorsArray.length > 0) {
+            this.subCollectorsNotAdded = false
+            this.getSubCollectors(this.subCollectorsArray)
+          } else {
+            this.subCollectorsNotAdded = true
+          }
+          this.subCollectorsNotAdded = false
+        }
+
+        this.activateLookupSubCollectors
+      },
+      error: (error) => {
+        console.log("A error occurred "+error)
+      }
+    })
+  }
+
   clearMilkCollectors() {
     this.collectorsArray = [];
     this.getCollectors(this.collectorsArray);
     this.collectorsNotAdded = true;
 
     this.activateLookupCollectors = true;
+  }
+
+  clearSubCollectors() {
+    this.subCollectorsArray = []
+    this.getSubCollectors(this.subCollectorsArray)
+    this.subCollectorsNotAdded = true
+    this.activateLookupSubCollectors = true
   }
 
   /** Form Initialisation Methods End*/
@@ -287,6 +372,10 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
 
   get collectorsFormControl() {
     return this.f.collectors as FormArray;
+  }
+
+  get subCollectorsFormcontrol() {
+    return this.f.subcollectors as FormArray
   }
 
   get routesFormControl() {
@@ -364,6 +453,17 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
   getCollectors(collectorsArray) {
     this.collectorsDataSource = new MatTableDataSource(collectorsArray);
     this.collectorsDataSource.paginator = this.collectorsPaginator;
+  }
+
+  removeSubCollector(index: any) {
+    this.subCollectorsArray.splice(index, 1)
+    this.subCollectorsDataSource = new MatTableDataSource(this.subCollectorsArray);
+    this.subCollectorsDataSource.paginator = this.subCollectorsPaginator;
+  }
+
+  getSubCollectors(subCollectorsArray) {
+    this.subCollectorsDataSource = new MatTableDataSource(subCollectorsArray);
+    this.subCollectorsDataSource.paginator = this.subCollectorsPaginator
   }
   /** Milk Collectors Ends */
 
