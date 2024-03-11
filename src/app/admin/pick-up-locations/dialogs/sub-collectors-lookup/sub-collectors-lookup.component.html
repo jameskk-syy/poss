@@ -31,7 +31,7 @@
                                         [indeterminate]="selection.hasValue() && !isAllSelected()"
                                         [ngClass]="'tbl-checkbox'"></mat-checkbox>
                                     </mat-header-cell>
-                                    <mat-cell *matCelDef="let row" [ngClass]="'tbl-col-width-per-6'">
+                                    <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
                                         <mat-checkbox 
                                         (click)="$event.stopPropagation()"
                                         (change)="$event ? selection.toggle(row) : null"
@@ -48,7 +48,7 @@
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let row" class="column-nowrap psl-3 tbl-col-width-per-40">{{row.username}}</mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="phonenumber">
+                                <ng-container matColumnDef="mobile">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap psl-3 tbl-col-width-per-40">
                                         phone
                                     </mat-header-cell>
@@ -58,7 +58,7 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap psl-3 tbl-col-width-per-40">
                                         email
                                     </mat-header-cell>
-                                    <mat-cell *matCelDef="let row" class="column-nowrap psl-3 tbl-col-width-per-40">{{row.mobile}}</mat-cell>
+                                    <mat-cell *matCellDef="let row" class="column-nowrap psl-3 tbl-col-width-per-40">{{row.email}}</mat-cell>
                                 </ng-container>
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                 <mat-row

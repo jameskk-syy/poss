@@ -32,7 +32,7 @@ export class UserService {
   }
 
   getAllSubCollectors(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/collections/analytics/subCollectors?roleId=12`);
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/analytics/roleUsers?roleId=10`);
   }
 
   createUserAccounts(user): Observable<any>{

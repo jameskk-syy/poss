@@ -19,7 +19,7 @@ export class SubCollectorsLookupComponent implements OnInit {
   loading: boolean = true
   subcollectors: any[] = []
 
-  displayedColumns = ["select", "username", "phonenumber", "email"]
+  displayedColumns = ["select", "username", "mobile", "email"]
   @ViewChild(MatPaginator) paginator : MatPaginator
   @ViewChild(MatSort) sort : MatSort
   dataSource: MatTableDataSource<any>
@@ -74,7 +74,7 @@ export class SubCollectorsLookupComponent implements OnInit {
         let users = data.entity
 
         users.forEach(user => {
-          if(user.roles[0].name="SUB_COLLECTOR") {
+          if(user.role==="SUB_COLLECTOR") {
             this.subcollectors.push(user);
           }
         })
