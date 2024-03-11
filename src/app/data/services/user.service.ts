@@ -31,6 +31,10 @@ export class UserService {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/analytics/roleUsers?roleId=2`);
   }
 
+  getAllSubCollectors(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/analytics/subCollectors?roleId=12`);
+  }
+
   createUserAccounts(user): Observable<any>{
     const createUserAccountsUrl = `${environment.apiUrl}/admin/api/v1/users/create-user`;
 
