@@ -51,8 +51,8 @@ getAllCollectorByNames(): Observable<any> {
   return this.http.get(`${environment.apiUrl}/api/v1/collectors/all`,httpOptions); 
 }
 
-getCollectRoutes(): Observable<any> {
-  return this.http.get(`${environment.apiUrl}/api/v1/routes/get`,httpOptions); 
+getCollectRoutes(date: any): Observable<any> {
+  return this.http.get(`${environment.apiUrl}/api/v1/accumulation/get/route-summary/date?date=`+date,httpOptions); 
   
 }
   // http: any;
