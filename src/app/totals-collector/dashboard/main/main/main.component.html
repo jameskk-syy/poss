@@ -216,7 +216,7 @@
                                               </ng-container>
                                         <ng-container matColumnDef="milkQuantity">
                                             <mat-header-cell *matHeaderCellDef mat-sort-header
-                                                class="column-nowrap tbl-col-width-per-13">MQuantity</mat-header-cell>
+                                                class="column-nowrap tbl-col-width-per-13">QTY (ltrs)</mat-header-cell>
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
                                                 {{response.milkQuantity | number :'1.2-2'}}
@@ -262,7 +262,7 @@
                                                 class="column-nowrap tbl-col-width-per-13">Density</mat-header-cell>
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
-                                                {{response.milkDensity | number :'1.2-2'}}
+                                                {{response.density | number :'1.2-2'}}
                                             </mat-cell>
                                         </ng-container>
                                         
@@ -271,7 +271,7 @@
                                                 class="column-nowrap tbl-col-width-per-13">PH</mat-header-cell> 
                                              <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
-                                                {{response.milkPH | number :'1.2-2'}}
+                                                {{response.ph | number :'1.2-2'}}
                                             </mat-cell>
                                         </ng-container>
                                         
