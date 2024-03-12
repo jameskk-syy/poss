@@ -48,11 +48,21 @@ export class ViewPickupComponent implements OnInit {
   collectorsPaginator!: MatPaginator;
   @ViewChild('collectorsSort', { static: false }) collectorsSort!: MatSort;
   collectorsForm: FormGroup;
-  collectorsDisplayedColumns: string[] = ['index', 'id', 'type'];
+  collectorsDisplayedColumns: string[] = ['id', 'type'];
   collectorsArray: any[] = [];
   collectorsNotAdded: boolean = true;
   collectorsIndex: any;
   updateCollectorsSelected: boolean = false;
+
+  subCollectorsDataSource: MatTableDataSource<any>
+  @ViewChild('subCollectorsPaginator', {static: false}) subCollectorsPaginator : MatPaginator
+  @ViewChild('subCollectorsSort', {static: false}) subCollectorsSort : MatPaginator
+  subCollectorsForm: FormGroup
+  subCollectorsDisplayedColumns = ['id', 'username']
+  subCollectorsArray: any[] = []
+  subCollectorsNotAdded: boolean = true
+  subCollectorsIndex: any;
+  updatedSubCollectorsSelected: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<ManagePickupsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -89,6 +99,15 @@ export class ViewPickupComponent implements OnInit {
         });
 
         this.collectorsArray = res.entity.collectors;
+
+        this.subCollectorsArray = res.entity.subCollectors;
+
+        if(this.subCollectorsArray.length > 0) {
+          this.subCollectorsNotAdded= false;
+          this.getSubCollectors(this.subCollectorsArray)
+        } else {
+          this.subCollectorsNotAdded = true
+        }
 
         if (this.collectorsArray.length > 0) {
           this.collectorsNotAdded = false;
@@ -135,6 +154,11 @@ export class ViewPickupComponent implements OnInit {
   getCollectors(collectorsArray) {
     this.collectorsDataSource = new MatTableDataSource(collectorsArray);
     this.collectorsDataSource.paginator = this.collectorsPaginator;
+  }
+
+  getSubCollectors(subCollectorsArray) {
+    this.subCollectorsDataSource = new MatTableDataSource(subCollectorsArray);
+    this.subCollectorsDataSource.paginator = this.subCollectorsPaginator;
   }
 
   // getMilkCollectors() {

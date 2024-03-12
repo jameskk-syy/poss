@@ -132,7 +132,7 @@
                                         Collectors</mat-header-cell>
                                     <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{ row.collectors.length }}
+                                        {{ row.collectors.length + row.subCollectors.length }}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="createdon">
