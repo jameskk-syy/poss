@@ -92,17 +92,19 @@
                         [pageSizeOptions]="[2, 5, 10, 20, 30, 40, 50, 100]"
                         aria-label="Select page of users"></mat-paginator>
                 </mat-tab> -->
+
+                <!-- route collectors -->
                 <mat-tab label="Route Collectors">
                     <br>
                     <mat-table #table matTableExporter [dataSource]="collectorsDataSource" matSort class="mat-cell"
                         #exporter="matTableExporter">
-                        <ng-container matColumnDef="index">
+                        <!-- <ng-container matColumnDef="index">
                             <mat-header-cell class="table-img tbl-col-width-per-25" *matHeaderCellDef
                                 mat-sort-header>#</mat-header-cell>
                             <mat-cell class="table-img tbl-col-width-per-25" *matCellDef="let row; let i = index"
                                 [class.odd-row]="i % 2" [class.even-row]="!(i % 2)">{{i +
                                 1}}</mat-cell>
-                        </ng-container>
+                        </ng-container> -->
                         <ng-container matColumnDef="id">
                             <mat-header-cell *matHeaderCellDef mat-sort-header
                                 class="psl-3 tbl-col-width-per-35">ID</mat-header-cell>
@@ -146,6 +148,65 @@
                         </p>
                     </div>
                     <mat-paginator [pageSize]="2" #collectorsPaginator="matPaginator"
+                        [pageSizeOptions]="[2, 5, 10, 20, 30, 40, 50, 100]"
+                        aria-label="Select page of users"></mat-paginator>
+                </mat-tab>
+
+                <!-- route sub collectors -->
+                <mat-tab label="Route Sub Collectors">
+                    <br>
+                    <mat-table #table matTableExporter [dataSource]="subCollectorsDataSource" matSort class="mat-cell"
+                        #exporter="matTableExporter">
+                        <!-- <ng-container matColumnDef="index">
+                            <mat-header-cell class="table-img tbl-col-width-per-25" *matHeaderCellDef
+                                mat-sort-header>#</mat-header-cell>
+                            <mat-cell class="table-img tbl-col-width-per-25" *matCellDef="let row; let i = index"
+                                [class.odd-row]="i % 2" [class.even-row]="!(i % 2)">{{i +
+                                1}}</mat-cell>
+                        </ng-container> -->
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                class="psl-3 tbl-col-width-per-35">ID</mat-header-cell>
+                            <mat-cell *matCellDef="let row; let i = index" class="psl-3 tbl-col-width-per-35">{{
+                                i + 1 }}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="username">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header
+                                class="column-nowrap psl-3 tbl-col-width-per-80">Username</mat-header-cell>
+                            <mat-cell *matCellDef="let row" (click)="onSelect(row)"
+                                class="column-nowrap psl-3 tbl-col-width-per-80">
+                                {{ row.username }}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="actions">
+                            <mat-header-cell class="column-nowrap psl-3 tbl-col-width-per-80"
+                                *matHeaderCellDef>Actions</mat-header-cell>
+                            <mat-cell *matCellDef="let row; let i = index"
+                                class="column-nowrap psl-3 tbl-col-width-per-80">
+                                <button mat-icon-button color="accent" (click)="$event.stopPropagation()"
+                                    (click)="removeCollector(i)" class="tbl-action-btn">
+                                    <app-feather-icons [icon]="'trash-2'"
+                                        [class]="'tbl-fav-delete'"></app-feather-icons>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="subCollectorsDisplayedColumns">
+                        </mat-header-row>
+
+                        <mat-row *matRowDef="let row; let i = index; columns: subCollectorsDisplayedColumns"
+                            [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" [style.cursor]="'pointer'" matRipple>
+                        </mat-row>
+                        <mat-cell *matNoDataRow colspan="4">
+                            No data matching the filter "{{
+                            input.value
+                            }}"</mat-cell>
+                    </mat-table>
+                    <div *ngIf="subCollectorsNotAdded">
+                        <p class="p-3">
+                            No sub collectors added yet
+                        </p>
+                    </div>
+                    <mat-paginator [pageSize]="2" #subCollectorsPaginator="matPaginator"
                         [pageSizeOptions]="[2, 5, 10, 20, 30, 40, 50, 100]"
                         aria-label="Select page of users"></mat-paginator>
                 </mat-tab>

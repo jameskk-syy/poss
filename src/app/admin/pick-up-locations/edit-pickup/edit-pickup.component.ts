@@ -131,6 +131,15 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
 
         this.collectorsArray = res.entity.collectors;
 
+        this.subCollectorsArray = res.entity.subCollectors
+
+        if(this.subCollectorsArray.length > 0) {
+          this.subCollectorsNotAdded = false;
+          this.getSubCollectors(this.subCollectorsArray);
+        } else {
+          this.subCollectorsNotAdded = true;
+        }
+
         if (this.collectorsArray.length > 0) {
           this.collectorsNotAdded = false;
           this.getCollectors(this.collectorsArray);
@@ -194,7 +203,7 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
     return this.fb.group({
       id: [''],
       collectors: new FormArray([]),
-      subcollectors: new FormArray([]),
+      subCollectors: new FormArray([]),
       landMark: ['', [Validators.required]],
       route: ['', [Validators.required]],
       routeCode: ['', [Validators.required]]
@@ -264,6 +273,7 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
             }else {
               collectors.forEach((collector) => {
                 this.collectorsForm.patchValue({
+                  id: collector.id,
                   username: collector.username,
                 });
     
@@ -323,6 +333,7 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
             } else {
               subCollectors.forEach((subCollector) => {
                 this.subCollectorsForm.patchValue({
+                  id: subCollector.id,
                   username: subCollector.username
                 });
 
@@ -375,7 +386,7 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
   }
 
   get subCollectorsFormcontrol() {
-    return this.f.subcollectors as FormArray
+    return this.f.subCollectors as FormArray
   }
 
   get routesFormControl() {
@@ -475,7 +486,11 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
       this.collectorsFormControl.push(this.fb.group(collector));
     });
 
-    console.log('Update Collection Center Form ', this.pickupLocationForm.value);
+    this.subCollectorsArray.forEach((subcollector) => {
+      this.subCollectorsFormcontrol.push(this.fb.group(subcollector));
+    })
+
+    console.log('Update Route Details Form ', this.pickupLocationForm.value);
 
     this.collectionCenterService
       .updateRouteDetails(this.pickupLocationForm.value)
@@ -487,10 +502,11 @@ export class EditPickupComponent extends BaseComponent implements OnInit {
           this.btnLoading = false;
 
           this.snackbar.showNotification('snackbar-success',
-            'Collection center update successfully !'       
+            'Route Details Updated successfully !'       
           );
 
           this.dialogRef.close();
+          
         },
         (err) => {
           console.log(err);

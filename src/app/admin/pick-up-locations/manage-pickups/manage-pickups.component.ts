@@ -116,7 +116,12 @@ export class ManagePickupsComponent implements OnInit {
     dialogConfig.data = {
       location: Location
     }
-    this.dialog.open(EditPickupComponent, dialogConfig)
+    const dialogRef = this.dialog.open(EditPickupComponent, dialogConfig)
+    dialogRef.afterClosed().subscribe({
+      next: (result: any) => {
+        this.getData();
+      }
+    })
   }
 
 
