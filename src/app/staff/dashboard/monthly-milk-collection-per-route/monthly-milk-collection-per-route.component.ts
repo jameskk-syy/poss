@@ -23,7 +23,6 @@ import { RoutesService } from 'src/app/admin/routes/routes.service';
 import { AnalyticsService } from 'src/app/data/services/analytics.service';
 import { UserService } from 'src/app/data/services/user.service';
 import { formatDate,sum,groupBy } from 'src/app/data/services/utils';
-
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
 import { RoutesLookUpComponent } from 'src/app/staff/sales/pages/routes-look-up/routes-look-up.component';
 formatDate
@@ -82,7 +81,7 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
   ];
   currentYear = new Date().getFullYear();
   currentMonth = this.monthsArray[new Date().getMonth()];
-  monthlyStr = formatDate(Date.now(),'MONTH')
+  monthlyStr = formatDate(new Date(), 'MONTH')
   route: string = 'KIAMAINA'
 
   constructor(
@@ -136,44 +135,44 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
   
       });
     }
-  getData(){
-   
-    this.isLoading = true
-    this.service.fetchCollectionsPerGivenMonthAndRoute(this.currentYear,this.currentMonth.value,this.route).subscribe(res=>{
-      if(res.entity && res.entity.length>0){
-
-        this.data  = res.entity;
-      }else{
-        this.data = []
-      }
-
-      this.isLoading = false
-      this.renderChart()
-      
-    },(err)=>{
-      this.isLoading = false
-      this.data = []
-      this.renderChart()
-    })
-  }
-  renderChart(){
-    this.quantities = []
-    this.dates = []
-    if(this.data.length > 0){
+    getData() {
+      this.isLoading = true;
+      this.service.fetchCollectionsPerGivenMonthAndRoute(this.currentYear, this.currentMonth.value, this.route).subscribe(
+        res => {
+          if (res.entity && res.entity.length > 0) {
+            
+            this.data = res.entity.map(item => ({ ...item, x: formatDate(item.x, 'DD') }));
+          } else {
+            this.data = [];
+          }
+    
+          this.isLoading = false;
+          this.renderChart();
+    
+        }, (err) => {
+          this.isLoading = false;
+          this.data = [];
+          this.renderChart();
+        }
+      );
+    }
+  renderChart() {
+    this.quantities = [];
+    this.dates = [];
+    this.deliveredQty = [];
+  
+    if (this.data.length > 0) {
       this.data.forEach(item => {
-        this.dates.push(item.x);
+        this.dates.push(formatDate(item.x, 'DD'));
         this.quantities.push(item.y);
-        this.deliveredQty.push(item.z)
-      })
-
-    }else {
-
+        this.deliveredQty.push(item.z);
+      });
+    } else {
       this.quantities = [];
-
       this.dates = [];
       this.deliveredQty = [];
     }
-   
+  
     this.chartOptions = {
       series: [
         {
@@ -181,12 +180,11 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
           data: this.quantities,
           type: "bar"
         },
-        
         {
           name: "Qty Received",
           type: "line",
           data: this.deliveredQty,
-          color: "blue",
+          color: "#397157",
         }
       ],
       chart: {
@@ -211,7 +209,7 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
       },
       grid: {
         row: {
-          colors: ["transparent", "transparent"], // takes an array which will be repeated on columns
+          colors: ["transparent", "transparent"],
           opacity: 0.5,
         },
       },
@@ -219,13 +217,12 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
         size: 3,
       },
       xaxis: {
-        categories:  this.dates,
+        categories: this.dates.map(date => formatDate(date, 'DD')),
         title: {
           text: "Day",
         },
       },
       yaxis: {
-        // opposite: true,
         title: {
           text: "Quantity (Litres)",
         },
@@ -248,7 +245,5 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
       },
     };
   }
- 
-  }
-
-
+}
+  

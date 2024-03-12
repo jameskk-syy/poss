@@ -9,23 +9,22 @@ import { TotalsCollectionService } from 'src/app/totals-collector/services/total
   styleUrls: ['./milk-summary.component.sass']
 })
 export class MilkSummaryComponent implements OnInit {
-  currentDate: any
+  currentDate: any;
   selected: any;
   form: any;
   datePipe: any;
   isLoading: boolean;
+  date: any;
   subscription: any;
   data: any;
-  constructor(private service: TotalsCollectionService, private fb: FormBuilder) {this.currentDate = this.getCurrentDate()
-  } 
-
-
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['route', 'quantity'];
 
- 
+  constructor(private service: TotalsCollectionService, private fb: FormBuilder) {
+    this.currentDate = this.getCurrentDate();
+  }
+
   ngOnInit(): void {
-    
     const currentDate = this.getCurrentDate();
     this.service.getCollectRoutes(currentDate).subscribe(
       (data: any) => {
@@ -37,14 +36,10 @@ export class MilkSummaryComponent implements OnInit {
       }
     );
 
-    this.selected = 'current_date'
+    this.selected = 'current_date';
     this.form = this.fb.group({
-     date: [''],
-
+      date: [''],
     });
-  }
-  date(date: any) {
-    throw new Error('Method not implemented.');
   }
 
   getCurrentDate(): any {
@@ -56,10 +51,11 @@ export class MilkSummaryComponent implements OnInit {
 
     return formattedDate;
   }
+
   onSelectionChange() {
     switch (this.selected) {
       case 'current_date':
-        this.getTodaysData(); 
+        this.getTodaysData();
         break;
       case 'all':
         this.getData();
@@ -73,33 +69,44 @@ export class MilkSummaryComponent implements OnInit {
         break;
     }
   }
+
   getTodaysData() {
-    throw new Error('Method not implemented.');
+    const currentDate = this.getCurrentDate();
+    this.service.getCollectRoutes(currentDate).subscribe(
+      (data: any) => {
+        this.dataSource = new MatTableDataSource(data.entity);
+      },
+      (error) => {
+        console.error('Error fetching today\'s data:', error);
+      }
+    );
   }
+
   getData() {
-    throw new Error('Method not implemented.');
+    // Implement the logic for 'all' case as needed
   }
+
   filterByDate() {
-    this.date = this.datePipe.transform(this.form.value.date, 'yyyy-MM-dd');
+    const selectedDate = this.form.value.date;
+    const year = selectedDate.getFullYear();
+    const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = selectedDate.getDate().toString().padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    this.date = formattedDate;
+    console.log("selected date is" + this.date);
+
     this.isLoading = true;
-    
 
-    this.subscription = this.service.getCollectRoutes(this.date).subscribe(res => {
-      this.data = res;
-      if (this.selected == "current_date") {
-      this.getTodaysData()
-    }
-    });
-    };
-    };
-  
- 
-
-function getTodaysData() {
-  throw new Error('Function not implemented.');
+    this.subscription = this.service.getCollectRoutes(this.date).subscribe(
+      {
+        next: (data: any) => {
+          this.dataSource = new MatTableDataSource(data.entity);
+        },
+        error: (error) => {
+          console.log("error occurred");
+        }
+      }
+    );
+  }
 }
-
-function getData() {
-  throw new Error('Function not implemented.');
-}
-

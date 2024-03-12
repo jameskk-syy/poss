@@ -170,6 +170,9 @@ export class DailyMilkCollectionComponent extends BaseComponent implements OnIni
 
   }
   renderChart(data){
+    this.quantities = [];
+  this.routes = [];
+  this.deliveredQty = [];
 
     if(data.length > 0){
       data.forEach(item => {
