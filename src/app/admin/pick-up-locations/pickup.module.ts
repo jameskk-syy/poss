@@ -23,11 +23,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MilkCollectorsLookupComponent } from './dialogs/milk-collectors-lookup/milk-collectors-lookup.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
+import { SubCollectorsLookupComponent } from './dialogs/sub-collectors-lookup/sub-collectors-lookup.component';
 
 
 @NgModule({
   declarations: [
-    AddPickupComponent, DeletePickupComponent, ViewPickupComponent, EditPickupComponent, ManagePickupsComponent, MilkCollectorsLookupComponent
+    AddPickupComponent, DeletePickupComponent, ViewPickupComponent, EditPickupComponent, ManagePickupsComponent, MilkCollectorsLookupComponent, SubCollectorsLookupComponent
   ],
   imports: [
     CommonModule,
