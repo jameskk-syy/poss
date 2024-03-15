@@ -39,14 +39,14 @@
       <div class="col-lg-3 col-sm-4">
         <div class="info-box7 bg1 order-info-box7" matTooltip="All Teams Maintained"
           routerLink="/staff/sales/collections">
-          <div class="info-box7-block">
+          <!-- <div class="info-box7-block">
             <h4 class="m-b-20">Total Amount (KES)</h4>
 
             <h2 class="text-end"><span class="float-start">{{amount | number : '1.2-2' }}</span><i
                 class="fas fa-th"></i></h2>
 
 
-          </div>
+          </div> -->
 
         </div>
       </div>
@@ -55,11 +55,15 @@
     </div>
     <div class="row">
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <app-monthly-collectios-chart></app-monthly-collectios-chart>
+        <app-collector-collections-per-date></app-collector-collections-per-date>
       </div>
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-daily-milk-collection></app-daily-milk-collection>
       </div>
+    </div>
+
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+      <app-monthly-collectios-chart></app-monthly-collectios-chart>
     </div>
     
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -76,7 +80,7 @@
         <app-milk-qauntity-per-location></app-milk-qauntity-per-location>
       </div> -->
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <app-collector-collections-per-date></app-collector-collections-per-date>
+        <app-collections-per-day></app-collections-per-day>
       </div>
     </div>
     <div class="row">
@@ -112,15 +116,7 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <app-collections-per-day></app-collections-per-day>
-      </div>
-      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <!-- <app-monthly-collectios-chart></app-monthly-collectios-chart> -->
-      </div>
-    </div>
-   
+    <!--  -->
 
     <!-- <div class="row">
       <div class="col-6">
