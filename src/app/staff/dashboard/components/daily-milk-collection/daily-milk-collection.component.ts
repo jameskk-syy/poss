@@ -220,7 +220,7 @@ export class DailyMilkCollectionComponent extends BaseComponent implements OnIni
       },
       stroke: {
         curve: 'smooth',
-        width: [0, 4]
+        width: [0, 1]
       },
       
       responsive: [

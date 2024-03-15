@@ -3,19 +3,19 @@
     <h2>Milk Collection In Litres Per Route</h2>
   </div>
   <div class="row p-3">
-    <form [formGroup]="chartParametersForm">
+    <form [formGroup]="chartParametersForm" class="w-100">
       <div class="row mx-3">
-        <div class="col-4">
-          <mat-form-field appearance="legacy">
-            <mat-label>Select year</mat-label>
+        <div class="col-md-4 mb-3">
+          <mat-form-field appearance="legacy" class="w-100">
+            <mat-label>Select Year</mat-label>
             <mat-select (selectionChange)="onSelectYear($event)" formControlName="year">
               <mat-option *ngFor="let item of chartDispType" [value]="item">{{ item }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-4">
-          <mat-form-field appearance="legacy">
-            <mat-label>Select month</mat-label>
+        <div class="col-md-4 mb-3">
+          <mat-form-field appearance="legacy" class="w-100">
+            <mat-label>Select Month</mat-label>
             <mat-select (selectionChange)="onSelectMonth($event)" formControlName="month">
               <mat-option *ngFor="let item of monthsArray" [value]="item.value">{{ item.name }}</mat-option>
             </mat-select>
@@ -23,15 +23,17 @@
         </div>
       </div>
     </form>
-</div>
-  <div class="body" *ngIf="!isLoading">
-    <apx-chart [hidden]="isEmpty" [series]="barChartOptions.series" [chart]="barChartOptions.chart"
-      [dataLabels]="barChartOptions.dataLabels" [plotOptions]="barChartOptions.plotOptions"
-      [responsive]="barChartOptions.responsive" [xaxis]="barChartOptions.xaxis"
-      [tooltip]="barChartOptions.tooltip" [legend]="barChartOptions.legend" [fill]="barChartOptions.fill">
-    </apx-chart>
   </div>
-  <div *ngIf="isLoading">
+  <div class="body" *ngIf="!isLoading">
+    <div class="mx-3" style="height: 350px;"> 
+      <apx-chart [hidden]="isEmpty" [series]="barChartOptions.series" [chart]="barChartOptions.chart"
+        [dataLabels]="barChartOptions.dataLabels" [plotOptions]="barChartOptions.plotOptions"
+        [responsive]="barChartOptions.responsive" [xaxis]="barChartOptions.xaxis"
+        [tooltip]="barChartOptions.tooltip" [legend]="barChartOptions.legend" [fill]="barChartOptions.fill">
+      </apx-chart>
+    </div>
+  </div>
+  <div *ngIf="isLoading" class="text-center mt-3">
     <app-spinner></app-spinner>
-   </div>
+  </div>
 </div>

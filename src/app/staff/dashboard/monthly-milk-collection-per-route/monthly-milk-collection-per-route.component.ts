@@ -1,7 +1,9 @@
+import { DatePipe } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { log } from 'console';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -58,6 +60,7 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
   chartOptions: Partial<ChartOptions>;
   xAxisOptions: any;
   yAxisOptions: any;
+  zAxisOptions:any;
   dates = [];
   quantities = [];
   deliveredQty=[];
@@ -88,6 +91,7 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
     private service: AnalyticsService,
     private fb: FormBuilder,
     private dialog: MatDialog,
+    private datePipe: DatePipe
   ){
     super();
   }
@@ -141,7 +145,7 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
         res => {
           if (res.entity && res.entity.length > 0) {
             
-            this.data = res.entity.map(item => ({ ...item, x: formatDate(item.x, 'DD') }));
+            this.data = res.entity.map(item => ({ ...item, x: formatDate(item.x, 'dd') }));
           } else {
             this.data = [];
           }
@@ -166,6 +170,9 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
         this.dates.push(formatDate(item.x, 'DD'));
         this.quantities.push(item.y);
         this.deliveredQty.push(item.z);
+       
+
+        console.log("qty, delivered", this.quantities, this.deliveredQty)
       });
     } else {
       this.quantities = [];
@@ -184,16 +191,16 @@ export class MonthlyMilkCollectionPerRouteComponent extends BaseComponent implem
           name: "Qty Received",
           type: "line",
           data: this.deliveredQty,
-          color: "#397157",
+          color: "#FFA500",
         }
+        
       ],
       chart: {
         height: 350,
-        type: "bar",
+        type: "line",
         foreColor: "#9aa0ac",
         dropShadow: {
           enabled: true,
-          color: "#000",
           top: 18,
           left: 7,
           blur: 10,
