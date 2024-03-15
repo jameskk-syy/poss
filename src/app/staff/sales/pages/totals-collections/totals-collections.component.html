@@ -253,16 +253,28 @@
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)"
                                                 (contextmenu)="onContextMenu($event, response)">
-                                                <button mat-icon-button color="primary"
+                                                <div *ngIf="role !== 'TOTALS_COLLECTOR'">
+                                                    <button mat-icon-button color="primary"
                                                     (click)="$event.stopPropagation()" (click)="edit(response)"
-                                                    class="tbl-action-btn">
+                                                    class="tbl-action-btn"
+                                                >
                                                     <app-feather-icons matTooltip="Edit Collections" [icon]="'edit'"
                                                         [class]="'tbl-fav-edit'"></app-feather-icons>
                                                 </button>
+                                                </div>
+                                                <div *ngIf="role !== 'TOTALS_COLLECTOR'">
                                                 <button mat-icon-button color="primary" (click)="$event.stopPropagation()" 
                                                 (click)="onDelete(response)" class="tbl-action-btn">
                                                     <app-feather-icons matTooltip="delete collection" [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                                                 </button>
+                                                </div>
+                                                    <div *ngIf="role !== 'TOTALS_COLLECTOR'">
+                                                            <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                                        (click)="view(response)" class="tbl-action-btn">
+                                                        <app-feather-icons matTooltip="view collection"
+                                                            [icon]="'eye'"></app-feather-icons>
+                                                       </button>
+                                                  </div>
                                             </mat-cell>
                                         </ng-container>
 

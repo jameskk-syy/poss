@@ -15,6 +15,8 @@ import { CollectorsLookupsComponent } from 'src/app/staff/dashboard/look-ups/col
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditTotalsCollectionsComponent } from '../edit-totals-collections/edit-totals-collections.component';
 import { DeleteTotalsCollectionsComponent } from '../delete-totals-collections/delete-totals-collections.component';
+import { TokenStorageService } from 'src/app/core/service/token-storage.service';
+import { AddTotalsCollectionsComponent } from 'src/app/totals-collector/dashboard/main/add-totals-collections/add-totals-collections.component';
 
 @Component({
   selector: 'app-totals-collections',
@@ -35,6 +37,7 @@ export class TotalsCollectionsComponent implements OnInit {
   damount: any = 0.0;
   datasize:any=0;
   collector: any;
+  role: any
   filename = "totalscollections for " + this.today;
 
   public cardChart2: any;
@@ -65,7 +68,8 @@ export class TotalsCollectionsComponent implements OnInit {
   // Snackbar: any;
   constructor(
     private router: Router, private datePipe: DatePipe, private fb: FormBuilder, private dialog: MatDialog, private service: SalesService, private dashboard: DashboardService,
-    private snackbar: SnackbarService, private Snackbar: MatSnackBar) {
+    private snackbar: SnackbarService, private Snackbar: MatSnackBar, private tokenStorage: TokenStorageService
+    ) {
       this.currentDate = this.getCurrentDate()
 
   }
@@ -283,6 +287,12 @@ export class TotalsCollectionsComponent implements OnInit {
     });
     this.smallChart2();
     this.getTodaysData();
+
+    const user = this.tokenStorage.getUser();
+
+    this.role = user.roles[0].name
+
+    console.log("the role is ", this.role)
   }
  
 
@@ -629,6 +639,16 @@ export class TotalsCollectionsComponent implements OnInit {
       const dialogRef = this.dialog.open(DeleteTotalsCollectionsComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(result => {
       });
+    }
+    view(collection){
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false
+      dialogConfig.autoFocus = true
+      dialogConfig.width = "70%"
+      dialogConfig.data = {
+        collection: collection
+      }
+      this.dialog.open(AddTotalsCollectionsComponent, dialogConfig)
     }
   
     
