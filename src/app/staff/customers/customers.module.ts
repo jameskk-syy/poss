@@ -21,13 +21,15 @@ import { ViewCustomerComponent } from './view-customer/view-customer.component';
 import { UpdateCustomerComponent } from './update-customer/update-customer.component';
 
 
+
 @NgModule({
   declarations: [
     ManageCustomersComponent,
     AddCustomerComponent,
     DeleteCustomerComponent,
     ViewCustomerComponent,
-    UpdateCustomerComponent
+    UpdateCustomerComponent,
+   
   ],
   imports: [
     CommonModule,

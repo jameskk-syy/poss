@@ -5,8 +5,87 @@
       <app-breadcrumb [title]="'Dashboard'" [items]="['Home']" [active_item]="'Dashboard'">
       </app-breadcrumb>
     </div>
+    <div class="row">
+          <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+            <div class="card card-statistic-2">
+          <div class="clearfix">
+              <div class="card-right">
+                  <div>
+                      <h5 class="float-end"> Milk Received (Ltrs)</h5>
+                  </div>
+                  <div class="m-r-10 m-l-10">
+                      <h3 class="font-weight-bold float-end mb-0">{{milkQuantity | number
+                          : '1.2-2' }}</h3>
+                  </div>
+              </div>
+          </div>
+          <div class="card-chart">
+              <canvas baseChart [chartType]="'line'" [datasets]="cardChart2Data"
+                  [labels]="cardChart2Label" [options]="cardChart2" [legend]="true">
+              </canvas>
+          </div>
+      </div>
+      </div>
 
-    <!-- Widgets -->
+      <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+        <div class="card card-statistic-2">
+          <div class="clearfix">
+              <div class="card-right">
+                  <div>
+                      <h5 class="float-end">Daily Average</h5>
+                  </div>
+                  <div class="m-r-10 m-l-10">
+                      <h3 class="font-weight-bold float-end mb-0">{{damount | number :'1.2-2'  }}</h3>
+                  </div>
+              </div>
+          </div>
+          <div class="card-chart">
+              <canvas baseChart [chartType]="'line'" [datasets]="cardChart2Data"
+                  [labels]="cardChart2Label" [options]="cardChart2" [legend]="true">
+              </canvas>
+          </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+      <div class="card card-statistic-2">
+        <div class="clearfix">
+            <div class="card-right">
+                <div>
+                    <h5 class="float-end">Monthly Collections</h5>
+                </div>
+                <div class="m-r-10 m-l-10">
+                    <h3 class="font-weight-bold float-end mb-0">{{damount | number :'1.2-2'  }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="card-chart">
+            <canvas baseChart [chartType]="'line'" [datasets]="cardChart2Data"
+                [labels]="cardChart2Label" [options]="cardChart2" [legend]="true">
+            </canvas>
+        </div>
+      </div>
+  </div>
+  <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
+    <div class="card card-statistic-2">
+      <div class="clearfix">
+          <div class="card-right">
+              <div>
+                  <h5 class="float-end">Monthly Dispatch</h5>
+              </div>
+              <div class="m-r-10 m-l-10">
+                  <h3 class="font-weight-bold float-end mb-0">{{damount | number :'1.2-2'  }}</h3>
+              </div>
+          </div>
+      </div>
+      <div class="card-chart">
+          <canvas baseChart [chartType]="'line'" [datasets]="cardChart2Data"
+              [labels]="cardChart2Label" [options]="cardChart2" [legend]="true">
+          </canvas>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Widgets -->
     <div class="row" *ngIf="loaded">
       <div class="col-lg-2 col-sm-4">
         <div class="info-box7 bg-c-brown order-info-box7" matTooltip="System Users" routerLink="/admin/users">

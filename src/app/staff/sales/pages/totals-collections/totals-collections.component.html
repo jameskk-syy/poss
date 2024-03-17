@@ -13,6 +13,7 @@
                         <div class="card">
 
                             <div class="body">
+                                
                                 <div class="row">
 
                                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
@@ -35,25 +36,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
-                                        <div class="card card-statistic-2">
-                                            <div class="clearfix">
-                                                <div class="card-right">
-                                                    <div>
-                                                        <h5 class="float-end">Collections Count</h5>
-                                                    </div>
-                                                    <div class="m-r-10 m-l-10">
-                                                        <h3 class="font-weight-bold float-end mb-0">{{dcount}}</h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-chart">
-                                                <canvas baseChart [chartType]="'line'" [datasets]="cardChart2Data"
-                                                    [labels]="cardChart2Label" [options]="cardChart2" [legend]="true">
-                                                </canvas>
-                                            </div>
-                                        </div>
-                                    </div> -->
+                                   
                                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12">
                                         <div class="card card-statistic-2">
                                             <div class="clearfix">
@@ -270,16 +253,28 @@
                                             <mat-cell *matCellDef="let response;let i = index" [class.odd-row]="i % 2"
                                                 [class.even-row]="!(i % 2)"
                                                 (contextmenu)="onContextMenu($event, response)">
-                                                <button mat-icon-button color="primary"
+                                                <div *ngIf="role !== 'TOTALS_COLLECTOR'">
+                                                    <button mat-icon-button color="primary"
                                                     (click)="$event.stopPropagation()" (click)="edit(response)"
-                                                    class="tbl-action-btn">
+                                                    class="tbl-action-btn"
+                                                >
                                                     <app-feather-icons matTooltip="Edit Collections" [icon]="'edit'"
                                                         [class]="'tbl-fav-edit'"></app-feather-icons>
                                                 </button>
+                                                </div>
+                                                <div *ngIf="role !== 'TOTALS_COLLECTOR'">
                                                 <button mat-icon-button color="primary" (click)="$event.stopPropagation()" 
                                                 (click)="onDelete(response)" class="tbl-action-btn">
                                                     <app-feather-icons matTooltip="delete collection" [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                                                 </button>
+                                                </div>
+                                                    <div *ngIf="role !== 'TOTALS_COLLECTOR'">
+                                                            <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                                        (click)="view(response)" class="tbl-action-btn">
+                                                        <app-feather-icons matTooltip="view collection"
+                                                            [icon]="'eye'"></app-feather-icons>
+                                                       </button>
+                                                  </div>
                                             </mat-cell>
                                         </ng-container>
 

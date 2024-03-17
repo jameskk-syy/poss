@@ -79,6 +79,7 @@ export class CollectorCollectionsPerDateComponent
   currentMonth = this.monthsArray[new Date().getMonth()];
   isEmpty: boolean = false;
   quantities: any[] = [];
+  quantityReceived: any[] = [];
   routes: any[] = [];
 
   constructor(private analyticsService: AnalyticsService, private datePipe: DatePipe, private fb: FormBuilder) {
@@ -123,6 +124,7 @@ export class CollectorCollectionsPerDateComponent
 
     this.collectors = [];
     this.amounts = [];
+    
     let params;
 
     this.barChartOptions = {
@@ -131,6 +133,7 @@ export class CollectorCollectionsPerDateComponent
           name: 'Price (KES)',
           data: this.amounts,
         },
+        
       ],
       chart: {
         type: 'bar',
@@ -196,11 +199,12 @@ export class CollectorCollectionsPerDateComponent
           if(res.entity.length > 0){
             res.entity.forEach((item) => {
               this.collectors.push(item.collector);
-  
+              
               this.amounts.push(item.amount);
             });
           }else {
             this.collectors = [];
+            
 
             this.amounts = [];
           }
@@ -218,6 +222,7 @@ export class CollectorCollectionsPerDateComponent
     this.isLoading = true;
 
     this.quantities = [];
+    this.quantityReceived = [];
     this.routes = [];
     this.amounts = []
     let params;
@@ -227,11 +232,18 @@ export class CollectorCollectionsPerDateComponent
         {
           name: "Quantity",
           data: this.quantities,
+          type: "bar",
+        },
+        {
+          name: 'QuantityReceived',
+          data: this.quantityReceived,
+          type: "line",
+          color: "#FFA500"
         },
         
       ],
       chart: {
-        type: "bar",
+        type: "line",
         height: 350,
         foreColor: "#9aa0ac",
         stacked: false,
@@ -293,11 +305,13 @@ export class CollectorCollectionsPerDateComponent
           this.routes.push(item.route);
   
           this.quantities.push(item.quantity);
+          this.quantityReceived.push(item.quantityReceived)
   
           this.amounts.push(item.amount);
         })
       }else {
         this.quantities = [];
+        this.quantityReceived =[];
         this.isEmpty = true
 
         this.routes = [];

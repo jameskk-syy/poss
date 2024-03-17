@@ -41,6 +41,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MonthlyCollectiosChartComponent } from './components/monthly-collectios-chart/monthly-collectios-chart.component';
 import { MonthlyMilkCollectionPerRouteComponent } from './monthly-milk-collection-per-route/monthly-milk-collection-per-route.component';
 import { DailyMilkCollectionComponent } from './components/daily-milk-collection/daily-milk-collection.component';
+import { CollectionsPerDayComponent } from './components/collections-per-day/collections-per-day.component';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import { DailyMilkCollectionComponent } from './components/daily-milk-collection
     MonthlyCollectiosChartComponent,
     MonthlyMilkCollectionPerRouteComponent,
     DailyMilkCollectionComponent,
+    CollectionsPerDayComponent,
   ],
   imports: [
     CommonModule,

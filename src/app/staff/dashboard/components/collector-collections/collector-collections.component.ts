@@ -111,6 +111,7 @@ export class CollectorCollectionsComponent extends BaseComponent implements OnIn
 
     let quanties: any[] = [];
     let collectors: any[] = [];
+    let qntyRecieved: any[] = [];
     let amounts: any[] = []
     let params;
 
@@ -128,6 +129,8 @@ export class CollectorCollectionsComponent extends BaseComponent implements OnIn
           quanties.push(item.quantity);
   
           amounts.push(item.amount);
+
+          qntyRecieved.push(item.quantityReceived);
         })
       }else {
         quanties = [];
@@ -135,6 +138,8 @@ export class CollectorCollectionsComponent extends BaseComponent implements OnIn
         collectors = [];
 
         amounts = [];
+
+        qntyRecieved = [];
       }
 
 
@@ -143,11 +148,19 @@ export class CollectorCollectionsComponent extends BaseComponent implements OnIn
           {
             name: "Quantity",
             data: quanties,
+            type: "bar",
+            color: "#008000"
+          },
+          {
+            name: "quantityReceived",
+            data: qntyRecieved,
+            type: "line",
+            color: "#FFA500",
           },
           
         ],
         chart: {
-          type: "bar",
+          type: "line",
           height: 350,
           foreColor: "#9aa0ac",
           stacked: false,
