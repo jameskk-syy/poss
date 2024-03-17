@@ -78,7 +78,12 @@ const routes: Routes = [
   {
     path: "price-config",
     loadChildren: () => import("src/app/staff/stock/configs/configs.module").then((m)  => m.ConfigsModule)
-  }
+  },
+  {
+    path: "farmers",
+    loadChildren: () =>
+      import("src/app/staff/farmer/farmer.module").then((m) => m.FarmerModule)
+  },
 
 ];
 
