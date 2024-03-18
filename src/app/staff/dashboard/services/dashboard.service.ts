@@ -13,8 +13,8 @@ export class DashboardService {
   getTotalsCollectionByDate(date: any):Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/accumulation/get/date?date=` + date, httpOptions);
   }
-  getAccumulationsByAccumulatorId(accumulatorId: any): Observable<any> {
-    const url = `${environment.apiUrl}/api/v1/accumulation/by-accumulator/${accumulatorId}`;
+  getAccumulationsByAccumulatorId(accumulatorId: any, date: any): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/accumulation/by-accumulator/${accumulatorId}/${date}`;
     return this.http.get(url);
   }
   getCollectorsIdAccumulations(collectorId: any): Observable<any> {

@@ -7,5 +7,6 @@ export enum Role {
   Manager = "MANAGER",
   ManagingDirector = "MANAGING_DIRECTOR",
   TotalsCollector = "TOTALS_COLLECTOR",
-  Accountant = "ACCOUNTANT"
+  Accountant = "ACCOUNTANT",
+  SubCollector = "SUB_COLLECTOR"
 }

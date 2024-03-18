@@ -127,26 +127,26 @@
                                     </mat-cell>
                                 </ng-container>
                                 <!-- ID Column -->
-                                <ng-container matColumnDef="id">
+                                <!-- <ng-container matColumnDef="id">
                                     <mat-header-cell class="table-img tbl-col-width-per-8" *matHeaderCellDef
                                         mat-sort-header>#</mat-header-cell>
                                     <mat-cell class="table-img tbl-col-width-per-8"
                                         *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
-                                </ng-container>
+                                </ng-container> -->
                                 <ng-container matColumnDef="farmer_no">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Farmer No.
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Farmer No
                                     </mat-header-cell>
                                     <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
+                                        [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-12">
                                         {{farmer.farmer_no}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="username">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Farmer
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap tbl-col-width-per-18">Farmer
                                         Name</mat-header-cell>
                                     <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
+                                        [class.even-row]="!(i % 2)" class="table-img tbl-col-width-per-18">
                                         {{farmer.username}}
                                     </mat-cell>
                                 </ng-container>
@@ -159,18 +159,18 @@
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="id_number">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">ID
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap column-nowrap tbl-col-width-per-10">ID
                                         No.</mat-header-cell>
                                     <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
+                                        [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-10">
                                         {{farmer.id_number}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="route">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">Route</mat-header-cell>
+                                        class="column-nowrap tbl-col-width-per-14">Route</mat-header-cell>
                                     <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
+                                        [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-13">
                                         {{farmer.route }}
                                     </mat-cell>
                                 </ng-container>

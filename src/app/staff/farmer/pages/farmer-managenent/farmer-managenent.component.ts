@@ -30,7 +30,7 @@ export class FarmerManagenentComponent implements OnInit {
   activityFilter="";
 
   displayedColumns: string[] = [
-    'id',
+    // 'id',
     "farmer_no",
     "username",
     "mobile_no",

@@ -14,6 +14,9 @@ import { TotalsCollectionService } from 'src/app/totals-collector/services/total
 import { AddTotalsCollectionsComponent } from '../add-totals-collections/add-totals-collections.component';
 import { CollectorsLookupsComponent } from 'src/app/staff/dashboard/look-ups/collectors-lookups/collectors-lookups.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Role } from 'src/app/core/models/role';
+import { TokenStorageService } from 'src/app/core/service/token-storage.service';
+import { error } from 'console';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -34,6 +37,8 @@ export class MainComponent implements OnInit {
   datasize:any=0;
   collectors: any[] = [];
   filename = "totalscollections for " + this.today;
+  userId: any
+
   
 
   public cardChart2: any;
@@ -44,7 +49,6 @@ export class MainComponent implements OnInit {
     'id',
     "collectorUsername",
     'milkQuantity',
-    "accumulatorName",
     "routeName",
     "session",
     "collectionDate",
@@ -56,6 +60,17 @@ export class MainComponent implements OnInit {
     // "milkOrgSight"
     
   ];
+
+  managerColumns: string[] = [
+    'id',
+    "collectorUsername",
+    'milkQuantity',
+    "accumulatorName",
+    "routeName",
+    "session",
+    "collectionDate",
+    'action',
+  ]
   currentDate: any
 
   subscription!: Subscription;
@@ -66,10 +81,11 @@ export class MainComponent implements OnInit {
   collectorId: any;
   MILK_COLLECTOR: string;
   dialogData: any;
+  role: any
 
   constructor(
     private router: Router, private datePipe: DatePipe, private fb: FormBuilder, private dialog: MatDialog, private service: TotalsCollectionService, private dashboard: DashboardService,
-    private snackbar: SnackbarService, private Snackbar: MatSnackBar
+    private snackbar: SnackbarService, private Snackbar: MatSnackBar, private tokenStorage: TokenStorageService
   ) { 
     this.currentDate = this.getCurrentDate()
 
@@ -87,7 +103,7 @@ export class MainComponent implements OnInit {
     }
     const dialogRef = this.dialog.open(AddTotalsCollectionsComponent, dialogConfig)
     dialogRef.afterClosed().subscribe((res)=> {
-      this.getData()
+      this.getTodaysData()
     })
   }
 
@@ -207,7 +223,7 @@ export class MainComponent implements OnInit {
   }
   getData() {
     this.isLoading = true;
-    this.getAllCollectionsSummary()
+    this.getTodaysData()
 
       this.service.getAllCollectorByNames().subscribe ( response => {
       const collectors = response.entity;
@@ -292,6 +308,19 @@ export class MainComponent implements OnInit {
 
     });
     this.smallChart2()
+
+    const user = this.tokenStorage.getUser();
+
+    console.log("users data", user)
+
+    this.role = user.roles[0].name
+    this.userId = user.id
+
+    if(this.role === Role.Manager) {
+      this.displayedColumns = this.managerColumns
+    }
+
+    console.log("the role is ", this.role, this.userId)
     this.getTodaysData();
   }
  
@@ -547,7 +576,7 @@ export class MainComponent implements OnInit {
               accumulatorIdToName[accumulator.id] = accumulator.username;
             });
 
-        this.subscription = this.service.getAccumulationsByAccumulatorId(accumulatorId).subscribe(res => {
+        this.subscription = this.service.getAccumulationsByAccumulatorId(accumulatorId, this.currentDate).subscribe(res => {
           this.data = res;
 
           if (this.data.entity.length > 0) {
@@ -598,7 +627,7 @@ export class MainComponent implements OnInit {
   getTodaysData() {
     this.isLoading = true;
     const currentDate = this.getCurrentDate();
-     this.getDateSummary(this.currentDate)
+     this.getDateSummary(currentDate)
      this.service.getAllCollectorByNames().subscribe(response => {
      const collectors = response.entity;
      const collectorIdToUsername = {};
@@ -619,47 +648,47 @@ export class MainComponent implements OnInit {
          accumulators.forEach(accumulator => {
            accumulatorIdToName[accumulator.id] = accumulator.username;
          });
-      this.subscription = this.service.getTotalsCollectionByDate(currentDate).subscribe(res => {
-      this.data = res;
-      if (this.data.entity && this.data.entity.length > 0) {
-        this.isLoading = false;
-        this.isdata = true;
-        this.datasize=this.data.entity.length
-        this.data.entity.forEach(item => {
-          const itemCollectorId = item.collectorId;
-          if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
-            item.collectorUsername = collectorIdToUsername[itemCollectorId];
-          }
-          const routeId = item.routeFk;
-          if (routeIdToName.hasOwnProperty(routeId)) {
-            item.routeName = routeIdToName[routeId];
-          }
-          const accumulatorId = item.accumulatorId;
-          if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
-            item.accumulatorName = accumulatorIdToName[accumulatorId];
-          }
-        });
-        this.dataSource = new MatTableDataSource(this.data.entity);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
-      else {
-        this.isdata = false;
-        this.isLoading = false
-        this.dataSource = new MatTableDataSource(null);
-      }
-      this.selected="";
-    },(error) => {
-      console.log(error);
-      this.isLoading = false;
-      this.isdata = false;
-      this.dataSource = new MatTableDataSource(null);
-      this.selected="";
-      this.Snackbar.open(error, 'Close', {
-        duration: 3000, 
-      });
+    //   this.subscription = this.service.getTotalsCollectionByDate(currentDate).subscribe(res => {
+    //   this.data = res;
+    //   if (this.data.entity && this.data.entity.length > 0) {
+    //     this.isLoading = false;
+    //     this.isdata = true;
+    //     this.datasize=this.data.entity.length
+    //     this.data.entity.forEach(item => {
+    //       const itemCollectorId = item.collectorId;
+    //       if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
+    //         item.collectorUsername = collectorIdToUsername[itemCollectorId];
+    //       }
+    //       const routeId = item.routeFk;
+    //       if (routeIdToName.hasOwnProperty(routeId)) {
+    //         item.routeName = routeIdToName[routeId];
+    //       }
+    //       const accumulatorId = item.accumulatorId;
+    //       if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
+    //         item.accumulatorName = accumulatorIdToName[accumulatorId];
+    //       }
+    //     });
+    //     this.dataSource = new MatTableDataSource(this.data.entity);
+    //     this.dataSource.paginator = this.paginator;
+    //     this.dataSource.sort = this.sort;
+    //   }
+    //   else {
+    //     this.isdata = false;
+    //     this.isLoading = false
+    //     this.dataSource = new MatTableDataSource(null);
+    //   }
+    //   this.selected="";
+    // },(error) => {
+    //   console.log(error);
+    //   this.isLoading = false;
+    //   this.isdata = false;
+    //   this.dataSource = new MatTableDataSource(null);
+    //   this.selected="";
+    //   this.Snackbar.open(error, 'Close', {
+    //     duration: 3000, 
+    //   });
     
-    });
+    // });
   });
 });
   });
@@ -669,9 +698,13 @@ export class MainComponent implements OnInit {
     this.isLoading = true;
     this.milkQuantity = 0;
     this.damount = 0;
-    this.subscription = this.dashboard.getAccumulationsByAccumulatorId(accumulatorId).subscribe(res => {
+    this.subscription = this.dashboard.getAccumulationsByAccumulatorId(accumulatorId, this.currentDate).subscribe(res => {
       this.data = res;
+
       if (this.data && this.data.entity.length > 0) {
+        this.dataSource = new MatTableDataSource(this.data.entity);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
         this.isLoading = false;
           let totalMilkQuantity = 0;
         let totalAmount = 0;
@@ -685,7 +718,53 @@ export class MainComponent implements OnInit {
       }
     },(err)=>console.log(err));
   }
-  getDateSummary(date) {
+
+  getDateSummary(date: any) {
+    if(this.role === Role.TotalsCollector) {
+      this.getAccumulatorsTodaysData(date);
+    } else {
+      this.getAllTodaysData(date);
+    }
+  }
+
+  getAccumulatorsTodaysData(date: any): void {
+    this.isLoading = true;
+    this.milkQuantity = 0;
+      this.damount = 0;
+    this.subscription = this.dashboard.getAccumulationsByAccumulatorId(this.userId, date).subscribe(res => {
+      this.data = res;
+
+      if (this.data && this.data.entity.length > 0) {
+        this.dataSource = new MatTableDataSource(this.data.entity);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+        this.isLoading = false;
+        this.isdata = true
+            let totalMilkQuantity = 0;
+        let totalAmount = 0;
+            for (const entity of this.data.entity) {
+          totalMilkQuantity += entity.milkQuantity;
+          totalAmount += entity.amount;
+        }
+            this.milkQuantity = totalMilkQuantity;
+        this.damount = totalAmount;
+      } else {
+        this.isLoading = false;
+        this.isdata = false
+        this.dataSource = new MatTableDataSource(null);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+    },
+    error => {
+      this.isLoading = false;
+      this.isdata = false
+    }
+    );
+  }
+
+  getAllTodaysData(date: any): void {
     this.isLoading = true;
     this.milkQuantity = 0;
       this.damount = 0;

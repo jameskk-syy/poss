@@ -132,7 +132,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
       {
-        path: '/staff/farmers/farmers',
+        path: '/admin/farmers/farmers',
         title: 'Farmers',
         moduleName: 'farmers',
         iconType: 'feather',

@@ -16,6 +16,7 @@ import { LookupPickUpLocationsComponent } from '../lookup-pick-up-locations/look
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { RoutesLookUpComponent } from '../routes-look-up/routes-look-up.component';
 import { DeleteCollectionComponent } from '../delete-collection/delete-collection.component';
+import { TokenStorageService } from 'src/app/core/service/token-storage.service';
 
 @Component({
   selector: 'app-collections',
@@ -41,6 +42,8 @@ export class CollectionsComponent implements OnInit {
   datasize:any=0
   farmer: any
   filename = "collections for " + this.today;
+  role: any
+  userId: any
 
   public cardChart2: any;
   public cardChart2Data: any;
@@ -87,6 +90,7 @@ export class CollectionsComponent implements OnInit {
   constructor(
     // public dialogRef: MatDialogRef<MainComponent>,
     // @Inject(MAT_DIALOG_DATA) public data: any,
+    private tokenStorage: TokenStorageService,
     private router: Router, private datePipe: DatePipe, private fb: FormBuilder, private dialog: MatDialog, private service: SalesService, private dashboard: DashboardService,
     private snackbar: SnackbarService) {
     this.currentDate = this.getCurrentDate()
@@ -293,6 +297,15 @@ export class CollectionsComponent implements OnInit {
     this.selected = 'current_date'
     this.getAllFarmers();
     this.smallChart2()
+
+    const user = this.tokenStorage.getUser();
+
+    console.log("users data", user)
+
+    this.role = user.roles[0].name
+    this.userId = user.id
+
+    console.log("the role is ", this.role)
     this.getTodaysData();
     this.getMilkCollectors();
     this.form = this.fb.group({

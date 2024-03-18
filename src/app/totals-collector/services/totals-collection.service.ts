@@ -29,8 +29,8 @@ export class TotalsCollectionService {
   }
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   constructor(private http: HttpClient) { }
-  getAccumulationsByAccumulatorId(accumulatorId: any): Observable<any> {
-    const url = `${environment.apiUrl}/api/v1/accumulation/by-accumulator/${accumulatorId}`;
+  getAccumulationsByAccumulatorId(accumulatorId: any, date: any): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/accumulation/by-accumulator/${accumulatorId}/${date}`;
     return this.http.get(url);
   }
   getCollectorsIdAccumulations(collectorId: any): Observable<any> {
