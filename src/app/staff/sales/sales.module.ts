@@ -48,6 +48,7 @@ import { MilkAccumulationComponent } from './pages/milk-accumulation/milk-accumu
 import { CollectorsTotalsPerMonthComponent } from './pages/collectors-totals-per-month/collectors-totals-per-month.component';
 import { EditTotalsCollectionsComponent } from './pages/edit-totals-collections/edit-totals-collections.component';
 import { DeleteTotalsCollectionsComponent } from './pages/delete-totals-collections/delete-totals-collections.component';
+import { ViewTotalsCollectionsComponent } from './pages/view-totals-collections/view-totals-collections.component';
 
 
 
@@ -79,6 +80,7 @@ import { DeleteTotalsCollectionsComponent } from './pages/delete-totals-collecti
         CollectorsTotalsPerMonthComponent,
         EditTotalsCollectionsComponent,
         DeleteTotalsCollectionsComponent,
+        ViewTotalsCollectionsComponent,
     ],
     imports: [
         CommonModule,
