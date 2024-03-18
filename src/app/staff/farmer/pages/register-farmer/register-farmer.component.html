@@ -75,8 +75,7 @@
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
                                     <mat-label>Select Member Type</mat-label>
                                     <mat-select formControlName="memberType" required>
-                                        <mat-option value="SPECIAL">SPECIAL</mat-option>
-                                        <mat-option value="STANDARD">STANDARD</mat-option>
+                                        <mat-option *ngFor="let tier of tiers" [value]="tier">{{tier}}</mat-option>
                                     </mat-select>
                                     <mat-error *ngIf="farmerRegirstartionForm.get('memberType').hasError('required')">
                                         Member Type is required
@@ -295,7 +294,9 @@
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
                                     <mat-label>Relationship</mat-label>
-                                    <input matInput formControlName="relationship" />
+                                    <mat-select formControlName="relationship" required>
+                                        <mat-option *ngFor="let item of relationships" [value]="item">{{item}}</mat-option>
+                                    </mat-select>
                                 </mat-form-field>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
@@ -324,7 +325,7 @@
                                 <button mat-raised-button color="warn" (click)="onClick()" tabindex="-1">
                                     Cancel
                                 </button>
-                                <button mat-raised-button color="primary" [disabled]="!farmerRegirstartionForm.valid || (!bankDetailsForm.valid && !mpesaDetails.valid)"
+                                <button mat-raised-button color="primary" [disabled]="!farmerRegirstartionForm.valid || (!bankDetailsForm.valid && !mpesaDetails.valid) || !nextOfKinForm.valid"
                                     (click)="onSubmit()">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     <b>Submit</b>
