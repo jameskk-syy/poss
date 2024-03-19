@@ -11,8 +11,8 @@ import { TotalsCollectionsComponent } from './pages/totals-collections/totals-co
 
 const routes: Routes = [
   {
-    path: "sales",
-    component: ManageRoutesComponent,
+    path: "home",
+    component: SalesManagenentComponent,
   },
   {
     path: "collections",

@@ -30,7 +30,7 @@ export class FarmerManagenentComponent implements OnInit {
   activityFilter="";
 
   displayedColumns: string[] = [
-    'id',
+    // 'id',
     "farmer_no",
     "username",
     "mobile_no",
@@ -50,6 +50,7 @@ export class FarmerManagenentComponent implements OnInit {
   form: any;
   id: any;
   selectedStatus: string;
+  datasize: any;
   constructor(private router: Router, private dialog: MatDialog, private service: FarmerService,private fb:FormBuilder,private Snackbar: MatSnackBar) { }
 
   applyFilter(event: Event) {
@@ -568,21 +569,26 @@ export class FarmerManagenentComponent implements OnInit {
 
     this.subscription = this.service.getFarmersByRoutes(id).subscribe(res => {
       this.data = res
-      console.log("data: "+ this.data.entity)
       if (this.data.entity.length > 0) {
         this.isLoading = false
-        this.data = true
-        let result = []
-        result.push(this.data.entity)
-        console.log(result)
-        this.dataSource = new MatTableDataSource(result)
-        this.dataSource.paginator = this.paginator
-        this.dataSource.sort = this.sort
-      } else {
-        this.isLoading = false;
-        this.data = false
-        this.dataSource = new MatTableDataSource(null)
+        this.isdata = true;
+        this.datasize=this.data.entity.length
+        this.dataSource = new MatTableDataSource(this.data.entity);
+       
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.form.patchValue({
+          route: ""
+          
+        });
+        this.selected="";
       }
+      else {
+        // this.isdata = false;
+        this.isLoading = false
+        this.dataSource = new MatTableDataSource(null);
+      }
+     
     })
   }
 
@@ -593,7 +599,7 @@ export class FarmerManagenentComponent implements OnInit {
       this.data = res;
       if (this.data > 0) {
         this.isLoading = false
-        console.log("Farmer Routes",this.data)
+    
         let result = []
         result.push(this.data.entity)
         this.isLoading = false;

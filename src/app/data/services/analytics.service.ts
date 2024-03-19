@@ -12,7 +12,7 @@ export class AnalyticsService {
   fetchMonthlyCollectionsPerSession(year: any, month: any):Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/monthly-vs-session-stats?year=${year}&month=${month}`)
   }
-  fetchCollectionsPerGivenMonthAndRoute(year: number, month: any, route: string):Observable<any> {
+ fetchCollectionsPerGivenMonthAndRoute(year: number, month: any, route: string):Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/monthly-vs-route-stats?year=${year}&month=${month}&route=${route}`)
   }
   fetchCollectionsPerGivenMonth(year: number, month: number):Observable<any> {
@@ -21,11 +21,15 @@ export class AnalyticsService {
   fetchRouteGroupedCollectionPerGivenDay(selectedDate: string):Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/v1/collections/route-vs-quantity?date=${selectedDate}`)
   }
+  fetchMonthlyCollectionsPerDay(selectedDate: string):Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/daily-vs-session-stats?date=${selectedDate}`)
+  }
  
   getCollectorsTotalsPerMonth(collectorId: any): Observable<any> {
     const url = `${environment.apiUrl}/api/v1/accumulation/${collectorId}`;
     return this.http.get(url, httpOptions);  
   }
+  
   getMilkAccumulation(params: any):Observable<any> {
     const getMilkAccumulkationUrl = `${environment.apiUrl}/api/v1/accumulation/all`;
     return this.http.get<any>(getMilkAccumulkationUrl, { params })

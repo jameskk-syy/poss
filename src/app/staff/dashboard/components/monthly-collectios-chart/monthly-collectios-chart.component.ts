@@ -52,6 +52,7 @@ export class MonthlyCollectiosChartComponent extends BaseComponent implements On
   yAxisOptions: any;
   dates = [];
   quantities = [];
+  quantitiesreceived = [];
   isLoading: boolean = false;
   data: any[]= [];
   chartDispType: any = [2020, 2022, 2023, 2024, 2025];
@@ -127,17 +128,19 @@ export class MonthlyCollectiosChartComponent extends BaseComponent implements On
   renderChart(){
     // const data = this.getData()
     this.quantities = []
+    this.quantitiesreceived = []
     this.dates = []
     if(this.data.length > 0){
       this.data.forEach(item => {
         this.dates.push(item.x);
         this.quantities.push(item.y);
+        this.quantitiesreceived.push(item.z)
       })
 
     }else {
 
       this.quantities = [];
-
+      this.quantitiesreceived = [];
       this.dates = [];
     }
     // console.log(this.quantities)
@@ -147,6 +150,13 @@ export class MonthlyCollectiosChartComponent extends BaseComponent implements On
         {
           name: "Quantity",
           data: this.quantities,
+          type: "bar",
+        },
+        {
+          name: "QuantityReceived",
+          data: this.quantitiesreceived,
+          type: "line",
+          color: "#FFA500"
         }
       ],
       chart: {

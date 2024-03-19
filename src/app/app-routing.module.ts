@@ -95,6 +95,16 @@ const routes: Routes = [
         loadChildren: () =>
           import("./reports/reports.module").then((m)=>m.ReportsModule),
       },
+      {
+        path: "collectors",
+        canActivate: [AuthGuard],
+        data: {
+          role: Role.Staff,
+        },
+        loadChildren: () =>
+          import("./staff/collectors/collectors.module").then((m)=>m.CollectorsModule),
+      },
+     
     ],
   },
   {

@@ -64,19 +64,21 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
+                            
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                    <mat-label>Centre</mat-label>
-                                    <mat-select formControlName="routeFk" required>
-                                        <mat-option *ngFor="let route of routes" [value]="route.id">
-                                            {{ route.route }}
+                                    <mat-label>Customer Type</mat-label>
+                                    <mat-select formControlName="customerType" required>
+                                        <mat-option *ngFor="let item of customerType" [value]="item">
+                                            {{ item }}
                                         </mat-option>
                                     </mat-select>
-                                    <mat-error *ngIf="customerUpdateForm.get('routeFk').hasError('required')">
-                                        Centre is required
+                                    <mat-error *ngIf="customerUpdateForm.get('customerType').hasError('required')">
+                                        Customer type is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>
+
 
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">

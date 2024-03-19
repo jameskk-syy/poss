@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '../core/guard/auth.guard';
+import { ReportsModule } from '../reports/reports.module';
+import { Role } from '../core/models/role';
 
 const routes: Routes = [
   {
@@ -8,6 +11,19 @@ const routes: Routes = [
     import('./dashboard/dashboard.module').then(m=>m.AdminDashboardModule)
     
   },
+  {
+    path: "reports",
+    canActivate: [AuthGuard],
+    data: {
+      role: Role.Accountant,
+    },
+    loadChildren: () =>
+      import("../reports/reports.module").then((m)=>m.ReportsModule),
+  },
+  {
+    path: 'product-sales',
+    loadChildren: () => import('src/app/staff/product-sales/product-sales.module').then((m) => m.ProductSalesModule)
+  }
 
   
 ];

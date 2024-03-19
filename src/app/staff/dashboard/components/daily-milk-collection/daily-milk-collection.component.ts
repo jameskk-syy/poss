@@ -170,6 +170,9 @@ export class DailyMilkCollectionComponent extends BaseComponent implements OnIni
 
   }
   renderChart(data){
+    this.quantities = [];
+  this.routes = [];
+  this.deliveredQty = [];
 
     if(data.length > 0){
       data.forEach(item => {
@@ -217,7 +220,7 @@ export class DailyMilkCollectionComponent extends BaseComponent implements OnIni
       },
       stroke: {
         curve: 'smooth',
-        width: [0, 4]
+        width: [0, 1]
       },
       
       responsive: [

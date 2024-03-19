@@ -8,6 +8,8 @@ import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { FarmerService } from '../../services/farmer.service';
 import { FarmerManagenentComponent } from '../farmer-managenent/farmer-managenent.component';
 import { RoutesService } from 'src/app/admin/routes/routes.service';
+import { TokenStorageService } from 'src/app/core/service/token-storage.service';
+import { Role } from 'src/app/core/models/role';
 
 @Component({
   selector: 'app-register-farmer',
@@ -26,6 +28,13 @@ export class RegisterFarmerComponent implements OnInit {
   wards: any;
   counties: any;
   routes: any;
+  userRole: any
+  selectedPaymentMode: string = ''
+  tiersA: string[] = ["STANDARD"];
+  tiersB: string[] = ["STANDARD", "SPECIAL 1", "SPECIAL 2", "SPECIAL 3", "SPECIAL 4"]
+  tiers: string[] = []
+  relationships: string [] = ["WIFE", "MOTHER", "FATHER", "SISTER", "BROTHER", "UNCLE", "SON", "DAUGHTER"]
+
   banks: any = {
     count: 45,
     list: [
@@ -138,7 +147,8 @@ export class RegisterFarmerComponent implements OnInit {
     private countiesService: CountiesService,
     private routesService: PickupService,
     private service: FarmerService,
-    private routeService: RoutesService
+    private routeService: RoutesService,
+    private tokenStorage: TokenStorageService
   ) {}
   subscription!: Subscription;
 
@@ -146,6 +156,16 @@ export class RegisterFarmerComponent implements OnInit {
     this.getSubcounties();
     this.getCounties();
     this.getRoutes();
+
+    const user = this.tokenStorage.getUser();
+
+    this.userRole = user.roles[0].name;
+
+    if(this.userRole === Role.Admin) {
+      this.tiers = this.tiersB
+    } else {
+      this.tiers = this.tiersA
+    }
 
     this.bankDetailsForm = this.fb.group({
      
@@ -157,20 +177,20 @@ export class RegisterFarmerComponent implements OnInit {
 
     this.mpesaDetails = this.fb.group({
       mpesaNumber: ['', [Validators.required]],
-      alternativeNumber: ['',[Validators.required]],
+      alternativeNumber: [''],
     });
 
     this.nextOfKinForm = this.fb.group({
-      name:['',[Validators.required]],
-      idNo:['',[Validators.required]],            
-      relationship:['',[Validators.required]],            
-      address:['',[Validators.required]],
-      tel:['',[Validators.required]]    
+      name:['', [Validators.required]],
+      idNo:['', [Validators.required]],            
+      relationship:['', [Validators.required]],            
+      address:['', [Validators.required]],
+      tel:['', [Validators.required]]    
     });
 
     this.farmerRegirstartionForm = this.fb.group({
-      bankDetails: ['',[Validators.required]],
-      transportMeans: ['',[Validators.required]],
+      bankDetails: [''],
+      transportMeans: [''],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       idNumber: ['', [Validators.required]],
@@ -181,13 +201,18 @@ export class RegisterFarmerComponent implements OnInit {
       alternativeMobileNo: [''],
       paymentMode:['',[Validators.required]],
       county_fk: [''],
-      location: ['',[Validators.required]],
+      location: [''],
       subLocation: [''],
       village: [''],
       gender: [''],
-      routeFk: ['',[Validators.required]],
-      nextOfKin:['',[Validators.required]]
+      routeFk: [''],
+      nextOfKin:['']
     });
+
+    this.farmerRegirstartionForm.get('paymentMode').valueChanges.subscribe((value) => {
+      this.selectedPaymentMode = value;
+      // this.updateButtonState();
+    })
   }
 
   onSubmit() {
@@ -270,5 +295,23 @@ export class RegisterFarmerComponent implements OnInit {
         } else {
         }
       });
+  }
+
+  updateButtonState() {
+    if(this.selectedPaymentMode === 'SACCO' || this.selectedPaymentMode === "BANK") {
+      this.farmerRegirstartionForm.get('bankDetails').setValidators([Validators.required]);
+      this.farmerRegirstartionForm.get('bankDetails').updateValueAndValidity();
+    } else {
+      this.farmerRegirstartionForm.get('bankDetails').clearValidators();
+      this.farmerRegirstartionForm.get('bankDetails').updateValueAndValidity();
+    }
+
+    if (this.selectedPaymentMode === 'MPESA') {
+      this.farmerRegirstartionForm.get('mpesaDetails').setValidators([Validators.required]);
+      this.farmerRegirstartionForm.get('mpesaDetails').updateValueAndValidity();
+    } else {
+      this.farmerRegirstartionForm.get('mpesaDetails').clearValidators();
+      this.farmerRegirstartionForm.get('mpesaDetails').updateValueAndValidity();
+    }
   }
 }

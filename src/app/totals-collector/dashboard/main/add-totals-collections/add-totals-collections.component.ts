@@ -84,6 +84,7 @@ export class AddTotalsCollectionsComponent implements OnInit {
     if (this.addAccumulationForm.valid) {
       const authUser = JSON.parse(localStorage.getItem('auth-user'));
       this.addAccumulationForm.get('accumulatorId').setValue(authUser.id);
+      console.log("logged in userId", this.addAccumulationForm.value.accumulatorId)
   
       this.loading = true;
   

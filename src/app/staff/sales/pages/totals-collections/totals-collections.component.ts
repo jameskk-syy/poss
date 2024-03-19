@@ -15,6 +15,10 @@ import { CollectorsLookupsComponent } from 'src/app/staff/dashboard/look-ups/col
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditTotalsCollectionsComponent } from '../edit-totals-collections/edit-totals-collections.component';
 import { DeleteTotalsCollectionsComponent } from '../delete-totals-collections/delete-totals-collections.component';
+import { TokenStorageService } from 'src/app/core/service/token-storage.service';
+import { AddTotalsCollectionsComponent } from 'src/app/totals-collector/dashboard/main/add-totals-collections/add-totals-collections.component';
+import { Role } from 'src/app/core/models/role';
+import { ViewTotalsCollectionsComponent } from '../view-totals-collections/view-totals-collections.component';
 
 @Component({
   selector: 'app-totals-collections',
@@ -35,7 +39,10 @@ export class TotalsCollectionsComponent implements OnInit {
   damount: any = 0.0;
   datasize:any=0;
   collector: any;
+  role: any
   filename = "totalscollections for " + this.today;
+  userId: any
+
 
   public cardChart2: any;
   public cardChart2Data: any;
@@ -45,13 +52,23 @@ export class TotalsCollectionsComponent implements OnInit {
     'id',
     "collectorUsername",
     'milkQuantity',
-    "accumulatorName",
     "routeName",
     "session",
     "collectionDate",
     'action',
 
   ];
+
+  managerColumns: string[] = [
+    'id',
+    "collectorUsername",
+    'milkQuantity',
+    "accumulatorName",
+    "routeName",
+    "session",
+    "collectionDate",
+    'action',
+  ]
 
   currentDate: any
 
@@ -65,7 +82,8 @@ export class TotalsCollectionsComponent implements OnInit {
   // Snackbar: any;
   constructor(
     private router: Router, private datePipe: DatePipe, private fb: FormBuilder, private dialog: MatDialog, private service: SalesService, private dashboard: DashboardService,
-    private snackbar: SnackbarService, private Snackbar: MatSnackBar) {
+    private snackbar: SnackbarService, private Snackbar: MatSnackBar, private tokenStorage: TokenStorageService
+    ) {
       this.currentDate = this.getCurrentDate()
 
   }
@@ -145,50 +163,51 @@ export class TotalsCollectionsComponent implements OnInit {
           accumulators.forEach(accumulator => {
             accumulatorIdToName[accumulator.id] = accumulator.username;
           });
-    this.subscription = this.service.getTotalsCollectionByDate(this.date).subscribe(res => {
-      this.data = res;
-      console.log("received:"+res)
-      if (this.data.entity.length > 0) {
-        this.isLoading = false;
-        this.isdata = true;
-        this.datasize=this.data.entity.length
+    this.getDateSummary(this.date);
+    // this.subscription = this.service.getTotalsCollectionByDate(this.date).subscribe(res => {
+    //   this.data = res;
+    //   console.log("received:"+res)
+    //   if (this.data.entity.length > 0) {
+    //     this.isLoading = false;
+    //     this.isdata = true;
+    //     this.datasize=this.data.entity.length
 
-        this.data.entity.forEach(item => {
-          const itemCollectorId = item.collectorId;
-          if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
-            item.collectorUsername = collectorIdToUsername[itemCollectorId];
-          }
-          const routeId = item.routeFk;
-          if (routeIdToName.hasOwnProperty(routeId)) {
-            item.routeName = routeIdToName[routeId];
-          }
-          const accumulatorId = item.accumulatorId;
-          if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
-            item.accumulatorName = accumulatorIdToName[accumulatorId];
-          }
-        });
-        this.dataSource = new MatTableDataSource(this.data.entity);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+    //     this.data.entity.forEach(item => {
+    //       const itemCollectorId = item.collectorId;
+    //       if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
+    //         item.collectorUsername = collectorIdToUsername[itemCollectorId];
+    //       }
+    //       const routeId = item.routeFk;
+    //       if (routeIdToName.hasOwnProperty(routeId)) {
+    //         item.routeName = routeIdToName[routeId];
+    //       }
+    //       const accumulatorId = item.accumulatorId;
+    //       if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
+    //         item.accumulatorName = accumulatorIdToName[accumulatorId];
+    //       }
+    //     });
+    //     this.dataSource = new MatTableDataSource(this.data.entity);
+    //     this.dataSource.paginator = this.paginator;
+    //     this.dataSource.sort = this.sort;
      
-      }
-      else {
-        this.isdata = false;
-        this.isLoading=false;
-        this.dataSource = new MatTableDataSource(null);
-      }
-      this.selected=""
-      },(error) => {
-        console.log(error);
-        this.isLoading = false;
-        this.isdata = false;
-        this.dataSource = new MatTableDataSource(null);
-        this.selected = "";
-        this.Snackbar.open(error, 'Close', {
-          duration: 3000, 
-        });
-      }
-      );
+    //   }
+    //   else {
+    //     this.isdata = false;
+    //     this.isLoading=false;
+    //     this.dataSource = new MatTableDataSource(null);
+    //   }
+    //   this.selected=""
+    //   },(error) => {
+    //     console.log(error);
+    //     this.isLoading = false;
+    //     this.isdata = false;
+    //     this.dataSource = new MatTableDataSource(null);
+    //     this.selected = "";
+    //     this.Snackbar.open(error, 'Close', {
+    //       duration: 3000, 
+    //     });
+    //   }
+    //   );
 
       if (this.selected == "current_date") {
       this.getTodaysData()
@@ -282,6 +301,19 @@ export class TotalsCollectionsComponent implements OnInit {
 
     });
     this.smallChart2();
+
+    const user = this.tokenStorage.getUser();
+
+    console.log("users data", user)
+
+    this.role = user.roles[0].name
+    this.userId = user.id
+
+    if(this.role === Role.Manager) {
+      this.displayedColumns = this.managerColumns
+    }
+
+    console.log("the role is ", this.role)
     this.getTodaysData();
   }
  
@@ -427,7 +459,7 @@ export class TotalsCollectionsComponent implements OnInit {
               accumulatorIdToName[accumulator.id] = accumulator.username;
             });
   
-        this.subscription = this.service.getAccumulationsByAccumulatorId(accumulatorId).subscribe(res => {
+        this.subscription = this.service.getAccumulationsByAccumulatorId(accumulatorId, this.currentDate).subscribe(res => {
           this.data = res;
   
           if (this.data.entity.length > 0) {
@@ -481,7 +513,7 @@ export class TotalsCollectionsComponent implements OnInit {
   getTodaysData() {
     this.isLoading = true;
     const currentDate = this.getCurrentDate();
-     this.getDateSummary(this.currentDate)
+     this.getDateSummary(currentDate)
      this.service.getAllCollectorByNames().subscribe(response => {
       console.log(response);
      const collectors = response.entity;
@@ -503,47 +535,47 @@ export class TotalsCollectionsComponent implements OnInit {
          accumulators.forEach(accumulator => {
            accumulatorIdToName[accumulator.id] = accumulator.username;
          });
-      this.subscription = this.service.getTotalsCollectionByDate(currentDate).subscribe(res => {
-      this.data = res;
-      if (this.data.entity && this.data.entity.length > 0) {
-        this.isLoading = false;
-        this.isdata = true;
-        this.datasize=this.data.entity.length
-        this.data.entity.forEach(item => {
-          const itemCollectorId = item.collectorId;
-          if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
-            item.collectorUsername = collectorIdToUsername[itemCollectorId];
-          }
-          const routeId = item.routeFk;
-          if (routeIdToName.hasOwnProperty(routeId)) {
-            item.routeName = routeIdToName[routeId];
-          }
-          const accumulatorId = item.accumulatorId;
-          if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
-            item.accumulatorName = accumulatorIdToName[accumulatorId];
-          }
-        });
-        this.dataSource = new MatTableDataSource(this.data.entity);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
-      else {
-        this.isdata = false;
-        this.isLoading = false
-        this.dataSource = new MatTableDataSource(null);
-      }
-      this.selected="";
-    },(error) => {
-      console.log(error);
-      this.isLoading = false;
-      this.isdata = false;
-      this.dataSource = new MatTableDataSource(null);
-      this.selected="";
-      this.Snackbar.open(error, 'Close', {
-        duration: 3000, 
-      });
+    //   this.subscription = this.service.getTotalsCollectionByDate(currentDate).subscribe(res => {
+    //   this.data = res;
+    //   if (this.data.entity && this.data.entity.length > 0) {
+    //     this.isLoading = false;
+    //     this.isdata = true;
+    //     this.datasize=this.data.entity.length
+    //     this.data.entity.forEach(item => {
+    //       const itemCollectorId = item.collectorId;
+    //       if (collectorIdToUsername.hasOwnProperty(itemCollectorId)) {
+    //         item.collectorUsername = collectorIdToUsername[itemCollectorId];
+    //       }
+    //       const routeId = item.routeFk;
+    //       if (routeIdToName.hasOwnProperty(routeId)) {
+    //         item.routeName = routeIdToName[routeId];
+    //       }
+    //       const accumulatorId = item.accumulatorId;
+    //       if (accumulatorIdToName.hasOwnProperty(accumulatorId)) {
+    //         item.accumulatorName = accumulatorIdToName[accumulatorId];
+    //       }
+    //     });
+    //     this.dataSource = new MatTableDataSource(this.data.entity);
+    //     this.dataSource.paginator = this.paginator;
+    //     this.dataSource.sort = this.sort;
+    //   }
+    //   else {
+    //     this.isdata = false;
+    //     this.isLoading = false
+    //     this.dataSource = new MatTableDataSource(null);
+    //   }
+    //   this.selected="";
+    // },(error) => {
+    //   console.log(error);
+    //   this.isLoading = false;
+    //   this.isdata = false;
+    //   this.dataSource = new MatTableDataSource(null);
+    //   this.selected="";
+    //   this.Snackbar.open(error, 'Close', {
+    //     duration: 3000, 
+    //   });
     
-    });
+    // });
   });
 });
   });
@@ -553,7 +585,7 @@ export class TotalsCollectionsComponent implements OnInit {
     this.isLoading = true;
     this.milkQuantity = 0;
     this.damount = 0;
-    this.subscription = this.dashboard.getAccumulationsByAccumulatorId(accumulatorId).subscribe(res => {
+    this.subscription = this.dashboard.getAccumulationsByAccumulatorId(accumulatorId, this.currentDate).subscribe(res => {
       this.data = res;
       if (this.data && this.data.entity.length > 0) {
         this.isLoading = false;
@@ -569,13 +601,72 @@ export class TotalsCollectionsComponent implements OnInit {
       }
     },(err)=>console.log(err));
   }
-  getDateSummary(date) {
+  getDateSummary(date: any) {
+    if(this.role === Role.TotalsCollector) {
+      this.getAccumulatorsTodaysData(date);
+    } else {
+      this.getAllTodaysData(date);
+    }
+  }
+
+  getAccumulatorsTodaysData(date: any): void {
+    this.isLoading = true;
+    this.milkQuantity = 0;
+      this.damount = 0;
+    this.subscription = this.dashboard.getAccumulationsByAccumulatorId(this.userId, date).subscribe(res => {
+      this.data = res;
+      if (this.data && this.data.entity.length > 0) {
+        this.data.entity.forEach((item) => {
+          // implement later. getting milk accumulator names
+        })
+        this.dataSource = new MatTableDataSource(this.data.entity);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.isLoading = false;
+        this.isdata = true
+
+        let totalMilkQuantity = 0;
+        let totalAmount = 0;
+            for (const entity of this.data.entity) {
+          totalMilkQuantity += entity.milkQuantity;
+          totalAmount += entity.amount;
+        }
+            this.milkQuantity = totalMilkQuantity;
+        this.damount = totalAmount;
+      } else {
+        this.dataSource = new MatTableDataSource(null);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+        this.isdata = false;
+        this.isLoading = false;
+      }
+    },
+    (error) => {
+      console.log(error);
+      this.isLoading = false;
+      this.isdata = false;
+      this.dataSource = new MatTableDataSource(null);
+      this.selected = "";
+      this.Snackbar.open(error, 'Close', {
+        duration: 3000, 
+      });}
+    );
+  }
+
+  getAllTodaysData(date: any): void {
     this.isLoading = true;
     this.milkQuantity = 0;
       this.damount = 0;
     this.subscription = this.dashboard.getTotalsCollectionByDate(date).subscribe(res => {
       this.data = res;
       if (this.data && this.data.entity.length > 0) {
+        this.dataSource = new MatTableDataSource(this.data.entity);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.isLoading = false;
+        this.isdata = true
+
         this.isLoading = false;
             let totalMilkQuantity = 0;
         let totalAmount = 0;
@@ -585,8 +676,23 @@ export class TotalsCollectionsComponent implements OnInit {
         }
             this.milkQuantity = totalMilkQuantity;
         this.damount = totalAmount;
+      } else {
+        this.dataSource = new MatTableDataSource(null);
+        this.isLoading = false;
+        this.isdata = false
       }
-    });
+    },
+    (error) => {
+      console.log(error);
+      this.isLoading = false;
+      this.isdata = false;
+      this.dataSource = new MatTableDataSource(null);
+      this.selected = "";
+      this.Snackbar.open(error, 'Close', {
+        duration: 3000, 
+      });
+     }
+    );
   }
   
     getAllCollectionsSummary() {
@@ -616,7 +722,9 @@ export class TotalsCollectionsComponent implements OnInit {
       dialogConfig.data = {
         collection: collection
       }
-      this.dialog.open(EditTotalsCollectionsComponent, dialogConfig)
+      this.dialog.open(EditTotalsCollectionsComponent, dialogConfig).afterClosed().subscribe(result => {
+        this.ngOnInit();
+      })
     }
   
     onDelete(collection) {
@@ -629,6 +737,16 @@ export class TotalsCollectionsComponent implements OnInit {
       const dialogRef = this.dialog.open(DeleteTotalsCollectionsComponent, dialogConfig);
       dialogRef.afterClosed().subscribe(result => {
       });
+    }
+    view(collection){
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false
+      dialogConfig.autoFocus = true
+      dialogConfig.width = "70%"
+      dialogConfig.data = {
+        collection: collection
+      }
+      this.dialog.open(ViewTotalsCollectionsComponent, dialogConfig)
     }
   
     
