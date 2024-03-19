@@ -46,7 +46,7 @@
                                                             
                                                      <mat-option value="a"><b>Activity</b></mat-option>
                                                         <mat-option value="st"><b>Status</b></mat-option>
-                                                        <mat-option value=" "><b>Route</b></mat-option>
+                                                        <mat-option value="route"><b>Route</b></mat-option>
 
                                                     </mat-select>
                                                     
@@ -65,9 +65,14 @@
                                                         <mat-icon matSuffix (click)="getFarmerByFarmerNo()">search
                                                         </mat-icon>
                                                     </mat-form-field>
-
+                                                    <mat-form-field class="m-l-5" *ngIf="selected == 'route'">
+                                                        <input matInput placeholder="select route"
+                                                            formControlName="route">
+                                                        <mat-icon matSuffix (click)="selectRoute()">search
+                                                        </mat-icon>
+                                                    </mat-form-field>
                                                     <!-- <mat-icon class="m-l-3" *ngIf="selected == 'nd'" (click)="getFarmersWithNoDeliveries()">search</mat-icon> -->
-
+                                                    
                                                     
                                                 
                                                     <mat-radio-group *ngIf="selected == 'a'" formControlName="activity" (change)="onStatusChanged($event.value)">
