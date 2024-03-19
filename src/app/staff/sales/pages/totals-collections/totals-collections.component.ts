@@ -677,8 +677,6 @@ export class TotalsCollectionsComponent implements OnInit {
         this.damount = totalAmount;
       } else {
         this.dataSource = new MatTableDataSource(null);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
         this.isLoading = false;
         this.isdata = false
       }
@@ -723,7 +721,9 @@ export class TotalsCollectionsComponent implements OnInit {
       dialogConfig.data = {
         collection: collection
       }
-      this.dialog.open(EditTotalsCollectionsComponent, dialogConfig)
+      this.dialog.open(EditTotalsCollectionsComponent, dialogConfig).afterClosed().subscribe(result => {
+        this.ngOnInit();
+      })
     }
   
     onDelete(collection) {

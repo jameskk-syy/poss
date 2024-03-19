@@ -27,8 +27,8 @@
                             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Collector Id</mat-label>
-                                    <input matInput formControlName="collectorId" required />
-                                    <mat-error *ngIf="editForm.get('collectorId').hasError('required')">
+                                    <input matInput formControlName="id" required />
+                                    <mat-error *ngIf="editForm.get('id').hasError('required')">
                                        Collector Id is required
                                     </mat-error>
                                 </mat-form-field>
@@ -56,8 +56,8 @@
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Quantity</mat-label>
-                                    <input matInput formControlName="milkQuantity" required />
-                                    <mat-error *ngIf="editForm.get('milkQuantity').hasError('required')">
+                                    <input matInput formControlName="quantity" required />
+                                    <mat-error *ngIf="editForm.get('quantity').hasError('required')">
                                         Quantity is required
                                     </mat-error>
                                 </mat-form-field>
