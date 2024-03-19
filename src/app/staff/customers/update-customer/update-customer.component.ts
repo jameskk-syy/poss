@@ -19,6 +19,8 @@ export class UpdateCustomerComponent implements OnInit {
   subscription: Subscription
   routes: any
   selectedStatus: any
+  customerType: any[] = ["CREDIT", "CASH", "DEBIT", "WALKIN"]
+
 
   constructor(
     private fb: FormBuilder,
@@ -29,9 +31,7 @@ export class UpdateCustomerComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) { }
 
-  ngOnInit(
-
-  ): void {
+  ngOnInit(): void {
     console.log("These are customer details for upload", this.data.customer),
       this.customerUpdateForm = this.customerDetailsForm()
 
@@ -49,7 +49,7 @@ export class UpdateCustomerComponent implements OnInit {
 
       firstname: [this.data.customer.firstname, [Validators.required]],
       lastname: [this.data.customer.lastname, [Validators.required]],
-      routeFk: [this.data.customer.routeFk, [Validators.required]],
+      customerType: [this.data.customer.customerType, [Validators.required]],
       contact: [this.data.customer.contact, [Validators.required]],
       address: [this.data.customer.address, [Validators.required]],
       customerNO: [this.data.customer.customerNO, [Validators.required]],

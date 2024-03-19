@@ -17,6 +17,7 @@ export class AddCustomerComponent implements OnInit {
   subscription!: Subscription;
   isLoading: boolean = false
   pLoading: boolean = false
+  customerType: any[] = ["CREDIT", "CASH", "DEBIT", "WALKIN"]
 
   routes: any
 
@@ -36,7 +37,7 @@ export class AddCustomerComponent implements OnInit {
       lastname: ['', [Validators.required]],
       contact: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      routeFk: ['', [Validators.required]],
+      customerType: ['', [Validators.required]]
     });
 
     this.getRoutes()

@@ -18,6 +18,7 @@ import { DeleteTotalsCollectionsComponent } from '../delete-totals-collections/d
 import { TokenStorageService } from 'src/app/core/service/token-storage.service';
 import { AddTotalsCollectionsComponent } from 'src/app/totals-collector/dashboard/main/add-totals-collections/add-totals-collections.component';
 import { Role } from 'src/app/core/models/role';
+import { ViewTotalsCollectionsComponent } from '../view-totals-collections/view-totals-collections.component';
 
 @Component({
   selector: 'app-totals-collections',
@@ -745,7 +746,7 @@ export class TotalsCollectionsComponent implements OnInit {
       dialogConfig.data = {
         collection: collection
       }
-      this.dialog.open(AddTotalsCollectionsComponent, dialogConfig)
+      this.dialog.open(ViewTotalsCollectionsComponent, dialogConfig)
     }
   
     

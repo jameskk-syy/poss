@@ -145,7 +145,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
       {
-        path: '/accountant/customers',
+        path: '/admin/accountant/customers',
         title: 'Customers',
         moduleName: 'customers',
         iconType: 'feather',
@@ -726,7 +726,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: '/manager/product-sales',
     title: 'Sales Summary',
-    moduleName: 'product-sales',
+    moduleName: 'sales',
     iconType: 'feather',
     icon: 'briefcase',
     class: '',
@@ -791,7 +791,7 @@ export const ROUTES: RouteInfo[] = [
   },
   
   {
-    path: '/reports/main/',
+    path: '/manager/reports/main',
     title: 'Reports',
     moduleName: 'reports',
     iconType: 'feather',
@@ -930,7 +930,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['ACCOUTANT'],
+    role: ['ACCOUNTANT'],
     submenu: [],
   },
   {

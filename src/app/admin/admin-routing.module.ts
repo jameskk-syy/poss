@@ -84,6 +84,10 @@ const routes: Routes = [
     loadChildren: () =>
       import("src/app/staff/farmer/farmer.module").then((m) => m.FarmerModule)
   },
+  {
+    path: "accountant",
+    loadChildren: () => import("src/app/accountant/accountant.module").then((m) => m.AccountantModule)
+  }
 
 ];
 
