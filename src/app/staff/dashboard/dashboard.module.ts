@@ -44,6 +44,7 @@ import { DailyMilkCollectionComponent } from './components/daily-milk-collection
 import { CollectionsPerDayComponent } from './components/collections-per-day/collections-per-day.component';
 
 
+
 @NgModule({
   declarations: [
     MainComponent,
@@ -68,6 +69,7 @@ import { CollectionsPerDayComponent } from './components/collections-per-day/col
     MonthlyMilkCollectionPerRouteComponent,
     DailyMilkCollectionComponent,
     CollectionsPerDayComponent,
+    
   ],
   imports: [
     CommonModule,
