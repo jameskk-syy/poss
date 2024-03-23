@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CollectionsPerUserComponent } from './collections-per-user.component';
+import { FarmersPerRouteComponent } from './farmers-per-route.component';
 
-describe('CollectionsPerUserComponent', () => {
-  let component: CollectionsPerUserComponent;
-  let fixture: ComponentFixture<CollectionsPerUserComponent>;
+describe('FarmersPerRouteComponent', () => {
+  let component: FarmersPerRouteComponent;
+  let fixture: ComponentFixture<FarmersPerRouteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CollectionsPerUserComponent ]
+      declarations: [ FarmersPerRouteComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CollectionsPerUserComponent);
+    fixture = TestBed.createComponent(FarmersPerRouteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

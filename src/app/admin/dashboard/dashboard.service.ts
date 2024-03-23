@@ -38,4 +38,9 @@ export class DashboardService {
   public getMeetingsPerCategory(): Observable<any> {
     return this.http.get(this.usersUrl + 'meetings/meetingcategory');
   }
+
+  public getFarmerCountPerRouteUsingGET(): Observable<any> {
+    // console.log("calling api ....")
+    return this.http.get(`${environment.apiUrl}/api/v1/farmer/farmers/count/route`)
+  }
 }
