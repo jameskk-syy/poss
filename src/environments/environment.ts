@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   // apiUrl: "http://localhost:9700",
   // API: "http://localhost:9700",
-      apiUrl: "https://jufreddairy.co.ke:5555",
-      API: "https://jufreddairy.co.ke:5555",  
+      apiUrl: "http://18.219.121.50:5555",
+      API: "http://18.219.121.50:5555",  
       // apiUrl: "http://192.168.2.57:9700",
       // API: "http://192.168.2.57:9700",    
 
