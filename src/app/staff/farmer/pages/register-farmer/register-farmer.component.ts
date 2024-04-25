@@ -181,11 +181,11 @@ export class RegisterFarmerComponent implements OnInit {
     });
 
     this.nextOfKinForm = this.fb.group({
-      name:['', [Validators.required]],
-      idNo:['', [Validators.required]],            
-      relationship:['', [Validators.required]],            
-      address:['', [Validators.required]],
-      tel:['', [Validators.required]]    
+      name:[''],
+      idNo:[''],            
+      relationship:[''],            
+      address:[''],
+      tel:['']    
     });
 
     this.farmerRegirstartionForm = this.fb.group({
