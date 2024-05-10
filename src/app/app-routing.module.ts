@@ -42,10 +42,10 @@ const routes: Routes = [
       },
       {
         path: "manager",
-        canActivate: [AuthGuard],
-        data: {
-          role: Role.Manager,
-        },
+        // canActivate: [AuthGuard],
+        // data: {
+        //   role: Role.Manager,
+        // },
         loadChildren: () =>
           import("./manager/manager.module").then((m)=>m.Manager)
       },
