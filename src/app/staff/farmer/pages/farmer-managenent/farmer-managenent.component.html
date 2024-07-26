@@ -21,6 +21,13 @@
                                                 <h2>Farmers</h2>
                                             </li>
 
+                                            <li class="dropdown m-l-20">
+                                                <label for="search-input">
+                                                    <i class="material-icons search-icon">search</i>
+                                                </label>
+                                                <input placeholder="Search" style="text-transform: capitalize;" class="browser-default search-field" aria-label="Search box" (keyup)="applyFilter($event)">
+                                            </li>
+
                                             <li>
                                                 <div class="m-l-10" matTooltip="Add">
                                                     <button mat-mini-fab color="primary" (click)="addCall()">
