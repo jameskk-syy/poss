@@ -570,7 +570,9 @@ this.form.patchValue({
   farmer_no:""
 });
 }
-  }
+}
+
+
   filterByRoute(id: any) {
     this.isLoading = true;
     this.getSummaryPerRoute(id)
