@@ -18,6 +18,13 @@ export class DashboardService {
   deptsUrl = `${environment.apiUrl}/api/v1/department/`;
   usersUrl = `${environment.apiUrl}/api/action-items/user/analytics/`;
 
+  public getSummary(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/records/all`,httpOptions);
+  }
+
+  public getAllFarmers(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/farmer/get`,httpOptions);
+  }
 
   public getDepartmentsPerSubsidiary(): Observable<any> {
     return this.http.get(this.deptsUrl + 'departments/subsidiary');

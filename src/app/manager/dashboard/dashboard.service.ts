@@ -19,6 +19,10 @@ export class DashboardService {
   usersUrl = `${environment.apiUrl}/api/action-items/user/analytics/`;
 
 
+  public getSummary(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/collections/records/all`,httpOptions);
+  }
+
   public getDepartmentsPerSubsidiary(): Observable<any> {
     return this.http.get(this.deptsUrl + 'departments/subsidiary');
   }
