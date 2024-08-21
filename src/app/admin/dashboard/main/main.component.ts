@@ -20,6 +20,12 @@ export class MainComponent implements OnInit {
   subscription!: Subscription;
   loaded: boolean = false;
   isdata:boolean=false
+  isloaded: boolean = false
+
+  quantity: any = 0.0;
+  amount: any = 0.0;
+  farmers: any = 0
+  count: any = 0
 
   constructor(private service: DashboardService) {
 
@@ -53,6 +59,32 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     // this.getAnalysis();
+    this.getSummary();
+    this.getAllFarmers()
   }
+
+  getAllFarmers() {
+    this.subscription = this.service.getAllFarmers().subscribe(res => {
+      this.data = res;
+      if (this.data) {
+        this.loaded = true;
+        this.farmers = this.data.entity.length
+
+      }
+    });
+  }
+
+  getSummary() {  
+    this.subscription = this.service.getSummary().subscribe(res => {
+      this.data = res;
+      if (this.data) {
+        this.loaded = true
+        this.quantity = this.data.entity[0].quantity;
+        this.amount = this.data.entity[0].amount;
+        this.count = this.data.entity[0].count
+      }
+    });
+  }
+
 
 }
