@@ -26,6 +26,7 @@ export class MainComponent implements OnInit {
   amount: any = 0.0;
   farmers: any = 0
   count: any = 0
+  delivery: any = 0.0
 
   constructor(private service: DashboardService) {
 
@@ -60,7 +61,9 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     // this.getAnalysis();
     this.getSummary();
-    this.getAllFarmers()
+    this.getAllFarmers();
+    this.getActiveFarmerCount();
+    this.getTodaysDelivery()
   }
 
   getAllFarmers() {
@@ -68,10 +71,34 @@ export class MainComponent implements OnInit {
       this.data = res;
       if (this.data) {
         this.loaded = true;
-        this.farmers = this.data.entity.length
+        // this.farmers = this.data.entity.length
 
       }
     });
+  }
+
+  getTodaysDelivery() {
+    this.service.getTodaysDelivery().subscribe({
+      next: (res) => {
+        this.delivery = res.entity
+      },
+      error: (error) => {
+        console.log("caight error", error)
+      },
+      complete: () => {}
+    })
+  }
+
+  getActiveFarmerCount() {
+    this.service.getActiveFarmerCount().subscribe({
+      next: (res) => {
+        this.farmers = res.entity
+      },
+      error: (error) => {
+        console.log("caight error", error)
+      },
+      complete: () => {}
+    })
   }
 
   getSummary() {  

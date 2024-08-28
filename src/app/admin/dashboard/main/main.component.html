@@ -9,9 +9,9 @@
         <!-- Widgets -->
         <div class="row" *ngIf="loaded">
           <div class="col-lg-3 col-sm-4">
-            <div class="info-box7 bg1 order-info-box7" matTooltip="System Users" routerLink="/staff/sales/collections">
+            <div class="info-box7 bg1 order-info-box7" matTooltip="collected qty" routerLink="/staff/sales/collections">
               <div class="info-box7-block">
-                <h4 class="m-b-20">Total Qty (Ltr)</h4>
+                <h4 class="m-b-20">Today's Qty (Ltr)</h4>
                 <!-- <h2 class="text-end"><span class="float-start">{{quantity | number : '1.2-2' }}</span><i -->
                   <h2 class="text-end"><span class="float-start">{{quantity}}</span><i
                     class="fas fa-th"></i></h2>
@@ -21,17 +21,17 @@
             </div>
           </div>
           <div class="col-lg-3 col-sm-4">
-            <div class="info-box7 bg1 order-info-box7" matTooltip="All Subsidiaries" routerLink="/staff/sales/collections">
+            <div class="info-box7 bg1 order-info-box7" matTooltip="delivered qty" routerLink="/staff/sales/collections">
               <div class="info-box7-block">
-                <h4 class="m-b-20">Total Collections</h4>
-                <h2 class="text-end"><span class="float-start">{{count}}</span><i class="fas fa-th"></i></h2>
+                <h4 class="m-b-20">Today's Delivery</h4>
+                <h2 class="text-end"><span class="float-start">{{delivery}}</span><i class="fas fa-th"></i></h2>
               </div>
             </div>
           </div>
           <div class="col-lg-3 col-sm-4">
-            <div class="info-box7 bg1 order-info-box7" matTooltip="All Departments" routerLink="/staff/farmers/farmers">
+            <div class="info-box7 bg1 order-info-box7" matTooltip="active farmers" routerLink="/staff/farmers/farmers">
               <div class="info-box7-block">
-                <h4 class="m-b-20">Registered Farmers</h4>
+                <h4 class="m-b-20">Active Farmers</h4>
                 <h2 class="text-end"><span class="float-start">{{farmers}}</span><i class="fas fa-th"></i></h2>
               </div>
             </div>
@@ -125,11 +125,16 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <app-monthly-collectios-chart></app-monthly-collectios-chart>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <app-collector-collections></app-collector-collections>
+        <app-collector-collections-per-date></app-collector-collections-per-date>
       </div>
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <app-collector-collections-milk-price></app-collector-collections-milk-price>
+        <app-collector-collections></app-collector-collections>
       </div>
     </div>
     <div class="row">
@@ -141,20 +146,22 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <app-farmers-per-route></app-farmers-per-route>
+      </div>
+    </div>
+    <!-- <div class="row">
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-collector-collections-in-quantity-per-session></app-collector-collections-in-quantity-per-session>
       </div>
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-collector-collections-in-price-per-session></app-collector-collections-in-price-per-session>
       </div>
-    </div>
-    <div class="row">
+    </div> -->
+    <!-- <div class="row">
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <app-collector-collections-per-date></app-collector-collections-per-date>
+        <app-collector-collections-milk-price></app-collector-collections-milk-price>
       </div>
-      <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <app-milk-qauntity-per-location></app-milk-qauntity-per-location>
-      </div> -->
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-collections-quantity></app-collections-quantity>
       </div>
@@ -166,6 +173,6 @@
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-farmers-per-route></app-farmers-per-route>
       </div>
-    </div>
+    </div> -->
   </div>
 </section>
