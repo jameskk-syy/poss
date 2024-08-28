@@ -20,6 +20,7 @@ export class MainComponent implements OnInit {
   amount: any = 0.0;
   farmers: any = 0
   count: any = 0
+  deliveries: any = 0.0
 
   data: any;
   subscription!: Subscription;
@@ -73,5 +74,7 @@ export class MainComponent implements OnInit {
       }
     });
   }
+
+  get
 
 }

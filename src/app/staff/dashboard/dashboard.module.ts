@@ -111,7 +111,8 @@ import { CollectionsPerDayComponent } from './components/collections-per-day/col
     CollectorCollectionsPerDateComponent,
     CollectorsLookupsComponent,
     MonthlyMilkCollectionPerRouteComponent,
-    DailyMilkCollectionComponent
+    DailyMilkCollectionComponent,
+    MonthlyCollectiosChartComponent
   ],
   providers: [DatePipe]
 })

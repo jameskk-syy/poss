@@ -26,6 +26,14 @@ export class DashboardService {
     return this.http.get(`${environment.apiUrl}/api/v1/farmer/get`,httpOptions);
   }
 
+  public getActiveFarmerCount(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/farmer/active-count`);
+  }
+
+  public getTodaysDelivery(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/accumulation/todays-total`)
+  }
+
   public getDepartmentsPerSubsidiary(): Observable<any> {
     return this.http.get(this.deptsUrl + 'departments/subsidiary');
   }
