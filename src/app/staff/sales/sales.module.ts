@@ -49,6 +49,7 @@ import { CollectorsTotalsPerMonthComponent } from './pages/collectors-totals-per
 import { EditTotalsCollectionsComponent } from './pages/edit-totals-collections/edit-totals-collections.component';
 import { DeleteTotalsCollectionsComponent } from './pages/delete-totals-collections/delete-totals-collections.component';
 import { ViewTotalsCollectionsComponent } from './pages/view-totals-collections/view-totals-collections.component';
+import { AddDeliveryComponent } from './pages/add-delivery/add-delivery.component';
 
 
 
@@ -81,6 +82,7 @@ import { ViewTotalsCollectionsComponent } from './pages/view-totals-collections/
         EditTotalsCollectionsComponent,
         DeleteTotalsCollectionsComponent,
         ViewTotalsCollectionsComponent,
+        AddDeliveryComponent,
     ],
     imports: [
         CommonModule,
