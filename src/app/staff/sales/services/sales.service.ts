@@ -1,6 +1,7 @@
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { Delivery } from 'src/app/core/models/delivery';
 import { environment } from 'src/environments/environment';
 
 const httpOptions = {
@@ -10,6 +11,10 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class SalesService {
+  addDelivery(data: Delivery): Observable<any>{
+    return this.http.post<any>(`${environment.apiUrl}/api/v1/add`, data)
+  }
+
   deleteTotalsCollections(id: any): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/api/v1/accumulation/delete/`+id, httpOptions)
   }

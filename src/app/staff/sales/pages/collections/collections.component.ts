@@ -17,6 +17,7 @@ import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { RoutesLookUpComponent } from '../routes-look-up/routes-look-up.component';
 import { DeleteCollectionComponent } from '../delete-collection/delete-collection.component';
 import { TokenStorageService } from 'src/app/core/service/token-storage.service';
+import { AddDeliveryComponent } from '../add-delivery/add-delivery.component';
 
 @Component({
   selector: 'app-collections',
@@ -113,6 +114,17 @@ export class CollectionsComponent implements OnInit {
     const formattedDate = `${year}-${month}-${day}`;
 
     return formattedDate;
+  }
+
+  addDelivery() {
+    const config = new MatDialogConfig();
+    config.disableClose = false
+    config.autoFocus = true
+    config.width = "60%"
+    config.data = {
+      data: ""
+    },
+    this.dialog.open(AddDeliveryComponent, config)
   }
 
   onSelectionChange() {
