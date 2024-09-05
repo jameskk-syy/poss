@@ -12,7 +12,7 @@ const httpOptions = {
 })
 export class SalesService {
   addDelivery(data: Delivery): Observable<any>{
-    return this.http.post<any>(`${environment.apiUrl}/api/v1/add`, data)
+    return this.http.post<any>(`${environment.apiUrl}/api/v1/collections/add/portal`, data)
   }
 
   deleteTotalsCollections(id: any): Observable<any> {

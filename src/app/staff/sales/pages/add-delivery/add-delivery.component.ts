@@ -39,11 +39,15 @@ currentUser: any
   }
 
   submit() {
-    this.service.addAccumulation(this.data).subscribe({
+    this.loading = true
+    this.service.addDelivery(this.data()).subscribe({
       next: (res) => {
+        this.loading = false;
+        this.dialogRef.close()
         this.snackbar.showNotification("snackbar-success", res.message)
       },
       error: (error) => {
+        this.loading = false;
         console.log("error caught:", error)
         this.snackbar.showNotification("snackbar-danger", error)
       }
@@ -60,7 +64,7 @@ currentUser: any
       paymentStatus: 'N',
       collectorId: '',
       quantity: this.form.value.quantity,
-      routeId: '',
+      routeFk: '',
       session: this.form.value.session,
       event: 'Collection',
       collectionDate: date,
