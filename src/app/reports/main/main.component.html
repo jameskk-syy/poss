@@ -79,6 +79,104 @@
                     </mat-expansion-panel>
                   </mat-accordion>
                 </li>
+
+                <li (click)="collectionsPerFarmer()" class="d-flex mb-3">
+
+                  <!-- <div class="example-action-buttons">
+                          <button mat-button (click)="accordion.openAll()">Expand All</button>
+                          <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+                        </div> -->
+                  <mat-accordion class="example-headers-align" multi>
+                    <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          Monthly Route Delivery Report
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+
+                      <form class="register-form" [formGroup]="reportFarmerForm">
+                        <div class="row">
+                          <mat-form-field class="example-full-width mb-1" appearance="outline">
+                            <mat-label>Select Month</mat-label>
+                            <mat-select formControlName="month" required>
+                              <mat-option *ngFor="let month of months" [value]="month.value">{{ month.name
+                                }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="reportFarmerForm.get('month').hasError('required')">
+                              Month Is required
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="row">
+                          <mat-form-field class="example-full-width mb-2" appearance="legacy">
+                            <mat-label>Route</mat-label>
+                            <input readonly formControlName="route" [value]="route" matInput required />
+                            <mat-icon matSuffix (click)="selectRoute()">search</mat-icon>
+                          </mat-form-field>               
+                          <div class="example-button-row">
+                            <button mat-raised-button color="primary" [disabled]="!reportFarmerForm.valid"
+                              (click)="generateCollectionsPerFarmerPerRoute()">
+                              <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
+                              <b>Generate</b>
+                            </button>
+                          </div>
+
+                        </div>
+                      </form>
+
+                    </mat-expansion-panel>
+                  </mat-accordion>
+
+                </li>
+                
+                <li (click)="collectionsPerFarmer()" class="d-flex mb-3">
+
+                  <!-- <div class="example-action-buttons">
+                          <button mat-button (click)="accordion.openAll()">Expand All</button>
+                          <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+                        </div> -->
+                  <mat-accordion class="example-headers-align" multi>
+                    <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          Total Collection for specific route per date report
+                        </mat-panel-title>
+                        <!-- <mat-panel-description>
+                              Inform the date you wish to travel
+                              <mat-icon>date_range</mat-icon>
+                            </mat-panel-description> -->
+                      </mat-expansion-panel-header>
+
+                      <form class="register-form" [formGroup]="reportCollectionForm3">
+                        <div class="row">
+                          <mat-form-field class="m-l-5">
+                            <input matInput [matDatepicker]="picker2" placeholder="Choose a date"
+                              formControlName="date">
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                          </mat-form-field>
+                        <mat-form-field class="example-full-width mb-2" appearance="legacy">
+                            <mat-label>Route</mat-label>
+                            <input readonly formControlName="route" [value]="route" matInput required />
+                            <mat-icon matSuffix (click)="selectRoute()">search</mat-icon>
+                          </mat-form-field>               
+                          <div class="example-button-row">
+                            <button mat-raised-button color="primary" [disabled]="!reportCollectionForm3.valid"
+                              (click)="generateCollectionsForRoutePerDate()">
+                              <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
+                              <b>Generate</b>
+                            </button>
+                          </div>
+
+                        </div>
+                      </form>
+
+                    </mat-expansion-panel>
+                  </mat-accordion>
+
+                </li>
                 <li (click)="DailyCOllectionReport()" class="d-flex mb-3">
 
                   <!-- <div class="example-action-buttons">
@@ -201,63 +299,7 @@
 
                 </li>
 
-                <li (click)="collectionsPerFarmer()" class="d-flex mb-3">
 
-                  <!-- <div class="example-action-buttons">
-                          <button mat-button (click)="accordion.openAll()">Expand All</button>
-                          <button mat-button (click)="accordion.closeAll()">Collapse All</button>
-                        </div> -->
-                  <mat-accordion class="example-headers-align" multi>
-                    <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
-                    <mat-expansion-panel>
-                      <mat-expansion-panel-header>
-                        <mat-panel-title>
-                          Collection per Farmer for specific date and Specific Route report
-                        </mat-panel-title>
-                        <!-- <mat-panel-description>
-                              Inform the date you wish to travel
-                              <mat-icon>date_range</mat-icon>
-                            </mat-panel-description> -->
-                      </mat-expansion-panel-header>
-
-                      <form class="register-form" [formGroup]="reportFarmerForm">
-                        <div class="row">
-
-                          <mat-form-field class="m-l-5">
-                            <input matInput [matDatepicker]="picker1" placeholder="Choose a date"
-                              formControlName="date">
-                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker #picker1></mat-datepicker>
-                          </mat-form-field>
-
-                          <!-- <mat-form-field class="m-l-5">
-                            <mat-label>Route</mat-label>
-                            <input matInput formControlName="route" required />
-                            <mat-error *ngIf="reportFarmerForm.get('route').hasError('required')">
-                               Route is required
-                            </mat-error>
-                        </mat-form-field> -->
-
-                          <mat-form-field class="example-full-width mb-2" appearance="legacy">
-                            <mat-label>Route</mat-label>
-                            <input readonly formControlName="route" [value]="route" matInput required />
-                            <mat-icon matSuffix (click)="selectRoute()">search</mat-icon>
-                          </mat-form-field>               
-                          <div class="example-button-row">
-                            <button mat-raised-button color="primary" [disabled]="!reportFarmerForm.valid"
-                              (click)="generateCollectionsPerFarmerPerRoute()">
-                              <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
-                              <b>Generate</b>
-                            </button>
-                          </div>
-
-                        </div>
-                      </form>
-
-                    </mat-expansion-panel>
-                  </mat-accordion>
-
-                </li>
 
                 <li (click)="collectionsPerCollector('Report For Single User Action Items')" class="d-flex mb-3">
 
@@ -486,54 +528,6 @@
                           <div class="example-button-row">
                             <button mat-raised-button color="primary" [disabled]="!reportCollectionForm5.valid"
                               (click)="generateCollectionsPerRoutePerDate()">
-                              <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
-                              <b>Generate</b>
-                            </button>
-                          </div>
-
-                        </div>
-                      </form>
-
-                    </mat-expansion-panel>
-                  </mat-accordion>
-
-                </li>
-
-                <li (click)="collectionsPerFarmer()" class="d-flex mb-3">
-
-                  <!-- <div class="example-action-buttons">
-                          <button mat-button (click)="accordion.openAll()">Expand All</button>
-                          <button mat-button (click)="accordion.closeAll()">Collapse All</button>
-                        </div> -->
-                  <mat-accordion class="example-headers-align" multi>
-                    <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
-                    <mat-expansion-panel>
-                      <mat-expansion-panel-header>
-                        <mat-panel-title>
-                          Total Collection for specific route per date report
-                        </mat-panel-title>
-                        <!-- <mat-panel-description>
-                              Inform the date you wish to travel
-                              <mat-icon>date_range</mat-icon>
-                            </mat-panel-description> -->
-                      </mat-expansion-panel-header>
-
-                      <form class="register-form" [formGroup]="reportCollectionForm3">
-                        <div class="row">
-                          <mat-form-field class="m-l-5">
-                            <input matInput [matDatepicker]="picker2" placeholder="Choose a date"
-                              formControlName="date">
-                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                            <mat-datepicker #picker2></mat-datepicker>
-                          </mat-form-field>
-                        <mat-form-field class="example-full-width mb-2" appearance="legacy">
-                            <mat-label>Route</mat-label>
-                            <input readonly formControlName="route" [value]="route" matInput required />
-                            <mat-icon matSuffix (click)="selectRoute()">search</mat-icon>
-                          </mat-form-field>               
-                          <div class="example-button-row">
-                            <button mat-raised-button color="primary" [disabled]="!reportCollectionForm3.valid"
-                              (click)="generateCollectionsForRoutePerDate()">
                               <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
                               <b>Generate</b>
                             </button>

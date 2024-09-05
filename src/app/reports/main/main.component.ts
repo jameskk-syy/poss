@@ -99,10 +99,8 @@ export class MainComponent implements OnInit {
 
     })
     this.reportFarmerForm=this.fb.group({
-      date: ["", [Validators.required]],
+      month: ["", [Validators.required]],
       route: ["", [Validators.required]],
-
-
     })
     this.reportCollectionForm2 = this.fb.group({
 
@@ -343,9 +341,8 @@ export class MainComponent implements OnInit {
   }
 
   generateCollectionsPerFarmerPerRoute(){
-    this.date = this.datePipe.transform(this.reportFarmerForm.value.date, 'yyyy-MM-dd');
     this.isloading = true
-    this.service.collectionsPerFarmerPerDatePerRoute(this.reportFarmerForm.value.date,this.reportFarmerForm.value.route)
+    this.service.collectionsPerFarmerPerDatePerRoute(this.reportFarmerForm.value.month,this.reportFarmerForm.value.route)
       .subscribe(
         (response) => {
           let url = window.URL.createObjectURL(response.data);
@@ -365,8 +362,8 @@ export class MainComponent implements OnInit {
           this.isloading = false;
 
           this.snackbar.showNotification(
+            "snackbar-success",
             "Report generated successfully",
-            "snackbar-success"
           );
         },
         (err) => {
@@ -374,8 +371,8 @@ export class MainComponent implements OnInit {
           this.isloading = false
 
           this.snackbar.showNotification(
+            "snackbar-danger",
             "Report could not be generated successfully",
-            "snackbar-danger"
           );
         }
       );
