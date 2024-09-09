@@ -149,26 +149,22 @@ export class ReportsService {
    }
   baseUrl: string;
 
-collectionsPerCollectorByMonth(year: string, month: string, session: string): Observable<any> {
+monthlyRouteSummary(year: string, month: string): Observable<any> {
   let headers = new HttpHeaders();
   headers.append("Content-Type", "application/pdf");
 
   let requestOptions: any = {
-    params: {
-      year: year,
-      month: month,
-      session: session
-    },
+    params: {},
     headers: headers,
     responseType: "blob",
     withCredentials: false,
   };
 
-  let API_URL = `${environment.apiUrl}/api/v1/reports/collections/perCollectors/perMonth`;
+  let API_URL = `${environment.apiUrl}/api/v1/reports/monthly/route/session/${month}/${year}`;
   return this.http.get(API_URL, requestOptions).pipe(
     map((response) => {
       return {
-        filename:month + "CollectionsPerCollectorsPerMonth",
+        filename:month + "monthlyRouteSummary",
         data: new Blob([response], { type: "application/pdf" }),
       };
     })
@@ -285,26 +281,25 @@ collectionsPerCollectorByMonth(year: string, month: string, session: string): Ob
   }
 
 
-  collectionsPerCollectorByDate(date: any, session: any): Observable<any> {
+  dailyRouteSummary(date: any): Observable<any> {
     let headers = new HttpHeaders();
     headers.append("Content-Type", "application/pdf");
   
     let requestOptions: any = {
       params: {
         date: formatDate(date,''),
-        session: session
       },
       headers: headers,
       responseType: "blob",
       withCredentials: false,
     };
   
-    let API_URL = `${environment.apiUrl}/api/v1/reports/collections/perCollector/perDate/perSession`;
+    let API_URL = `${environment.apiUrl}/api/v1/reports/daily/route/session/${date}`;
   
     return this.http.get(API_URL, requestOptions).pipe(
       map((response) => {
         return {
-          filename: "CollectionsPerCollectorsPerDate",
+          filename: "dailyRouteSummary",
           data: new Blob([response], { type: "application/pdf" }),
         };
       })
