@@ -175,17 +175,17 @@ monthlyRouteSummary(year: string, month: string): Observable<any> {
 
 
 
-  generatefarmerCollections(farmerN0: any): Observable<any> {
+  generatefarmerCollections(farmerNo: any, farmerName: any,from: any, to: any): Observable<any> {
     let headers = new HttpHeaders();
     headers.append("Accept", "application/pdf");
 
     let requestOptions: any = {
-      params: farmerN0,
+      params: {farmerNo, from, to, farmerName},
       headers: headers,
       responseType: "blob",
       withCredentials: false,
     };
-    let API_URL = `${environment.apiUrl}/api/v1/reports/farmer/collections?farmerNo=` + farmerN0;
+    let API_URL = `${environment.apiUrl}/api/v1/reports/farmer/collections`;
 
     return this.http.get(API_URL, requestOptions).pipe(
       map((response) => {
