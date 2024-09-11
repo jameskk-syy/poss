@@ -144,6 +144,8 @@ export class CollectionDetailsComponent implements OnInit {
     }
   }
 
+  generateStatement(farmerNo: any) {}
+
   getFarmerAllocations(id) {
     this.service.getFarmerAllocations(id).subscribe((res) => {
       this.allocationsArray = res.entity;
@@ -170,42 +172,42 @@ export class CollectionDetailsComponent implements OnInit {
 
 
 
-  generateSTatement(farmerId: any) {
-    this.reportservice.generatefarmerCollections(farmerId).subscribe(
-      (response) => {
-        console.log(response);
-        let url = window.URL.createObjectURL(response.data);
+  // generateSTatement(farmerId: any) {
+  //   this.reportservice.generatefarmerCollections(farmerId).subscribe(
+  //     (response) => {
+  //       console.log(response);
+  //       let url = window.URL.createObjectURL(response.data);
 
-        window.open(url);
+  //       window.open(url);
 
-        let a = document.createElement('a');
-        document.body.appendChild(a);
-        a.setAttribute('style', 'display: none');
-        a.setAttribute('target', 'blank');
-        a.href = url;
-        a.download = response.filename;
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
+  //       let a = document.createElement('a');
+  //       document.body.appendChild(a);
+  //       a.setAttribute('style', 'display: none');
+  //       a.setAttribute('target', 'blank');
+  //       a.href = url;
+  //       a.download = response.filename;
+  //       a.click();
+  //       window.URL.revokeObjectURL(url);
+  //       a.remove();
 
-        this.isLoading = false;
+  //       this.isLoading = false;
 
-        this.snackbar.showNotification(
-          'Report generated successfully',
-          'snackbar-success'
-        );
-      },
-      (err) => {
-        console.log(err);
-        this.isLoading = false;
+  //       this.snackbar.showNotification(
+  //         'Report generated successfully',
+  //         'snackbar-success'
+  //       );
+  //     },
+  //     (err) => {
+  //       console.log(err);
+  //       this.isLoading = false;
 
-        this.snackbar.showNotification(
-          'Report could not be generated successfully',
-          'snackbar-danger'
-        );
-      }
-    );
-  }
+  //       this.snackbar.showNotification(
+  //         'Report could not be generated successfully',
+  //         'snackbar-danger'
+  //       );
+  //     }
+  //   );
+  // }
 
 
 

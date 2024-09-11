@@ -6,6 +6,7 @@ import { FarmerLookupComponent } from 'src/app/staff/farmer/pages/farmer-lookup/
 import { FarmerService } from 'src/app/staff/farmer/services/farmer.service';
 import { MainComponent } from '../main/main.component';
 import { ReportsService } from '../services/reports.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-farmer-statement',
@@ -26,8 +27,8 @@ export class FarmerStatementComponent implements OnInit {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private snackbar: SnackbarService,
-    private service: ReportsService
-
+    private service: ReportsService,
+    private datePipe: DatePipe
   ) {
     // this.title = data.data;
     // console.log("Title == ", this.title)
@@ -38,7 +39,8 @@ export class FarmerStatementComponent implements OnInit {
     this.farmerCollectionsForm = this.fb.group({
       username: ["", [Validators.required]],
       farmerNo: ["", [Validators.required]],
-
+      from: ['', [Validators.required]],
+      to: ['', [Validators.required]]
     })
    
   }
@@ -61,11 +63,14 @@ export class FarmerStatementComponent implements OnInit {
     });
   }
   onSubmit() {
+    this.loading = true;
+    const fromDate = this.datePipe.transform(this.farmerCollectionsForm.value.from, "yyyy-MM-dd")
+    const toDate = this.datePipe.transform(this.farmerCollectionsForm.value.to, 'yyyy-MM-dd')
 
-    console.log("Form data " + this.farmerCollectionsForm.controls.farmerNo.value)
-    this.service.generatefarmerCollections(this.farmerCollectionsForm.controls.farmerNo.value)
+    this.service.generatefarmerCollections(this.farmerCollectionsForm.controls.farmerNo.value, this.farmerCollectionsForm.value.username,fromDate, toDate,)
       .subscribe(
         (response) => {
+          this.loading = false;
           console.log(response)
           let url = window.URL.createObjectURL(response.data);
 
@@ -87,8 +92,8 @@ export class FarmerStatementComponent implements OnInit {
           this.dialogRef.close();
 
           this.snackbar.showNotification(
+            "snackbar-success",
             "Report generated successfully",
-            "snackbar-success"
           );
         },
         (err) => {
@@ -98,8 +103,8 @@ export class FarmerStatementComponent implements OnInit {
           this.dialogRef.close();
 
           this.snackbar.showNotification(
+            "snackbar-danger",
             "Report could not be generated successfully",
-            "snackbar-danger"
           );
         }
       );

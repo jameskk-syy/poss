@@ -103,19 +103,11 @@ export class MainComponent implements OnInit {
       route: ["", [Validators.required]],
     })
     this.reportCollectionForm2 = this.fb.group({
-
       date: ["", [Validators.required]],
-      // format: ["", [Validators.required]],
-      session: ["", [Validators.required]],
-
-
     })
     this.reportCollectionForm1 = this.fb.group({
       year: ["", [Validators.required]],
-      month: ["", [Validators.required]],
-      session: ["", [Validators.required]],
-
-    
+      month: ["", [Validators.required]],    
     })
     this.reportCollectionForm5 = this.fb.group({
       date: ["", [Validators.required]],
@@ -229,8 +221,8 @@ export class MainComponent implements OnInit {
 
 
             this.snackbar.showNotification(
+              "snackbar-success",
               "Report generated successfully",
-              "snackbar-success"
             );
           },
           (err) => {
@@ -238,8 +230,8 @@ export class MainComponent implements OnInit {
             this.isloading = false
 
             this.snackbar.showNotification(
+              "snackbar-danger",
               "Report could not be generated successfully",
-              "snackbar-danger"
             );
           }
         );
@@ -378,10 +370,10 @@ export class MainComponent implements OnInit {
       );
   }
 
-  generateCollectionsPerCollector() {
+  dailyRouteSummary() {
     this.date = this.datePipe.transform(this.reportCollectionForm2.value.date, 'yyyy-MM-dd');
     this.isloading = true
-    this.service.collectionsPerCollectorByDate(this.reportCollectionForm2.value.date,this.reportCollectionForm2.value.session)
+    this.service.dailyRouteSummary(this.date)
       .subscribe(
         (response) => {
           console.log(response)
@@ -403,8 +395,8 @@ export class MainComponent implements OnInit {
           this.isloading = false;
 
           this.snackbar.showNotification(
+            "snackbar-success",
             "Report generated successfully",
-            "snackbar-success"
           );
         },
         (err) => {
@@ -412,18 +404,16 @@ export class MainComponent implements OnInit {
           this.isloading = false
 
           this.snackbar.showNotification(
+            "snackbar-danger",
             "Report could not be generated successfully",
-            "snackbar-danger"
           );
         }
       );
 
   }
-  generateCollectionsPerCollectorm() {
-    
-    
+  monthlyRouteSummary() {
     this.isloading = true
-    this.service.collectionsPerCollectorByMonth(this.reportCollectionForm1.value.year,this.reportCollectionForm1.value.month,this.reportCollectionForm1.value.session)
+    this.service.monthlyRouteSummary(this.reportCollectionForm1.value.year,this.reportCollectionForm1.value.month)
       .subscribe(
         (response) => {
           let url = window.URL.createObjectURL(response.data);
