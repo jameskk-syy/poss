@@ -679,7 +679,7 @@
         <div class="card">
           <br>
           <div class="header">
-            <h2>Mpesa,Bank & Sacco Payment Report</h2>
+            <h2>Payment Report</h2>
           </div>
           <div class="body">
             <div class="doc-file-type">
@@ -696,7 +696,7 @@
                     <mat-expansion-panel>
                       <mat-expansion-panel-header>
                         <mat-panel-title>
-                          Bank And Saccos report
+                          Payroll
                         </mat-panel-title>
                         <!-- <mat-panel-description>
                                 Inform the date you wish to travel
@@ -718,7 +718,7 @@
                           <mat-form-field class="example-full-width mb-1" appearance="outline">
                             <mat-label>Select Month</mat-label>
                             <mat-select formControlName="month" required>
-                              <mat-option *ngFor="let month of months" [value]="month.name">{{ month.name
+                              <mat-option *ngFor="let month of months" [value]="month.value">{{ month.name
                                 }}</mat-option>
                             </mat-select>
                             <mat-error *ngIf="paymentFileForm1.get('month').hasError('required')">
@@ -739,10 +739,23 @@
                           </mat-form-field> -->
                         </div>
 
+                        <div class="row">
+                          <mat-form-field class="example-full-width mb-1" appearance="outline">
+                            <mat-label>Select Year</mat-label>
+                            <mat-select formControlName="year" required>
+                              <mat-option *ngFor="let year of years" [value]="year.name">{{ year.name
+                                }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="paymentFileForm1.get('year').hasError('required')">
+                              Year Is required
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+
                         <div class="example-button-row">
 
                           <button mat-raised-button color="primary" [disabled]="!paymentFileForm1.valid"
-                            (click)="generateBankAndSaccoPaymentFile()">
+                            (click)="generatePayroll()">
                             <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
                             <b>Generate</b>
                           </button>

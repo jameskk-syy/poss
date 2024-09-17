@@ -66,17 +66,17 @@ export class StatmentComponent implements OnInit {
   }
 
   generateStatement() {
-    console.log("Form data " + this.farmerstatementForm.controls.farmerNo.value)
+    this.loading = true;
     this.from = this.datePipe.transform(this.farmerstatementForm.value.from, 'yyyy-MM-dd');
     this.to = this.datePipe.transform(this.farmerstatementForm.value.to, 'yyyy-MM-dd');
     this.service.generatefarmerStatement(this.farmerstatementForm.controls.farmerNo.value,
       this.from,
       this.to
     )
-      .subscribe(
-        (response) => {
-          console.log(response)
-          let url = window.URL.createObjectURL(response.data);
+      .subscribe({
+        next: (res) => {
+          console.log(res)
+          let url = window.URL.createObjectURL(res.data);
 
           // if you want to open PDF in new tab
           window.open(url);
@@ -86,7 +86,7 @@ export class StatmentComponent implements OnInit {
           a.setAttribute("style", "display: none");
           a.setAttribute("target", "blank");
           a.href = url;
-          a.download = response.filename;
+          a.download = res.filename;
           a.click();
           window.URL.revokeObjectURL(url);
           a.remove();
@@ -96,21 +96,23 @@ export class StatmentComponent implements OnInit {
           this.dialogRef.close();
 
           this.snackbar.showNotification(
+            "snackbar-success",
             "Report generated successfully",
-            "snackbar-success"
           );
         },
-        (err) => {
-          console.log(err);
+        error: (error) => {
+          console.log(error);
           this.loading = false;
 
           this.dialogRef.close();
 
           this.snackbar.showNotification(
-            "Report could not be generated successfully",
-            "snackbar-danger"
+            "snackbar-danger",
+            "Report could not be generated successfully"
           );
-        }
+        },
+        complete: () => {}
+      }
       );
 
   }
