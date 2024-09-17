@@ -12,14 +12,15 @@ import { FarmerProductsReportComponent } from '../pages/farmer-products-report/f
 import { LookupPickUpLocationsComponent } from 'src/app/staff/sales/pages/lookup-pick-up-locations/lookup-pick-up-locations.component';
 import { saveAs } from 'file-saver';
 import { RoutesLookUpComponent } from 'src/app/staff/sales/pages/routes-look-up/routes-look-up.component';
-const YEARS= [
-  2020,
-  2021,
-  2022,
-  2023,
-  2024,
-  2025,
-  2026
+const YEARS = [
+  {value: '2024', name: '2024'},
+  {value: '2025', name: '2025'},
+  {value: '2026', name: '2026'},
+  {value: '2027', name: '2027'},
+  {value: '2028', name: '2028'},
+  {value: '2029', name: '2029'},
+  {value: '2030', name: '2030'},
+  {value: '2031', name: '2031'},
 ];
 const MONTHS = [
   { value: 1, name: 'JANUARY' },
@@ -62,6 +63,7 @@ export class MainComponent implements OnInit {
   years: any
   centered = false;
   color: string;
+  currentYear: any
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
   dialogData: any;
@@ -80,13 +82,11 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.currentYear = new Date().getFullYear().toString()
     this.reportCollectionForm = this.fb.group({
-
       date: ["", [Validators.required]],
       format: ["", [Validators.required]],
-      
-    
-    })
+      })
     this.CollectionCountReportForm=this.fb.group({
       month: ["", [Validators.required]],
       year: ["", [Validators.required]],
@@ -155,7 +155,8 @@ export class MainComponent implements OnInit {
     //   }
     // )
     this.paymentFileForm1=this.fb.group({
-      month: ["", [Validators.required]]
+      month: ["", [Validators.required]],
+      year: [this.currentYear, Validators.required]
     })
     this.paymentFileForm2=this.fb.group({
       month: ["", [Validators.required]]
@@ -703,43 +704,28 @@ export class MainComponent implements OnInit {
 
   // }
 
-  generateBankAndSaccoPaymentFile(){
+  generatePayroll(){
     this.isloading = true
-    this.service.getBankAndSaccoPaymentFile(this.paymentFileForm1.value.month)
+    this.service.getPayroll(this.paymentFileForm1.value.month, this.paymentFileForm1.value.year)
       .subscribe(
-        (response) => {
-          console.log(response)
-          let url = window.URL.createObjectURL(response.data);
-
-          // if you want to open PDF in new tab
-          window.open(url);
-
-          let a = document.createElement("a");
-          document.body.appendChild(a);
-          a.setAttribute("style", "display: none");
-          a.setAttribute("target", "blank");
-          a.href = url;
-          a.download = response.filename;
-          a.click();
-          window.URL.revokeObjectURL(url);
-          a.remove();
+        (response: Blob) => {
+          this.isloading = false
+          const filename = 'payroll.xlsx'; // Specify the desired filename with the appropriate extension
+          saveAs(response, filename);
 
           this.isloading = false;
 
-
-
           this.snackbar.showNotification(
-            "Report generated successfully",
-            "snackbar-success"
-          );
+            "snackbar-success",
+            "Report generated successfully"          );
         },
         (err) => {
           console.log(err);
           this.isloading = false
 
           this.snackbar.showNotification(
+            "snackbar-danger",
             "Report could not be generated successfully",
-            "snackbar-danger"
           );
         }
       );

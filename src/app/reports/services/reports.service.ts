@@ -126,27 +126,16 @@ export class ReportsService {
       })
     ); 
   }
-  getBankAndSaccoPaymentFile(month: any):Observable<any> {
+  getPayroll(month: any, year: any):Observable<any> {
     let headers = new HttpHeaders();
-    headers.append("Content-Type", "application/pdf");
+    headers.append("Accept", 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
-    let requestOptions: any = {
-      params: month, 
-      headers: headers,
-      responseType: "blob",
-      withCredentials: false,
-    };
-    let API_URL = `${environment.apiUrl}/api/v1/reports/BankAndSaccoPaymentFile?month=`+month;
+    let API_URL = `${environment.apiUrl}/api/v1/excel/reports/payroll/${month}/${year}`;
+    console.log("Calling api " + API_URL)
 
-    return this.http.get(API_URL, requestOptions).pipe(
-      map((response) => {
-        return {
-          filename: month + "BankAndSaccoPaymentFile",
-          data: new Blob([response], { type: "application/pdf" }),
-        };
-      })
-    ); 
+    return this.http.get(API_URL, { headers, responseType: 'blob' });
    }
+
   baseUrl: string;
 
 monthlyRouteSummary(year: string, month: string): Observable<any> {
