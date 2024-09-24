@@ -126,11 +126,11 @@ export class ReportsService {
       })
     ); 
   }
-  getPayroll(month: any, year: any):Observable<any> {
+  getPayroll(month: any, year: any, bank: any):Observable<any> {
     let headers = new HttpHeaders();
     headers.append("Accept", 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
-    let API_URL = `${environment.apiUrl}/api/v1/excel/reports/payroll/${month}/${year}`;
+    let API_URL = `${environment.apiUrl}/api/v1/excel/reports/payroll/${month}/${year}/${bank}`;
     console.log("Calling api " + API_URL)
 
     return this.http.get(API_URL, { headers, responseType: 'blob' });

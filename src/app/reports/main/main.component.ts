@@ -36,6 +36,118 @@ const MONTHS = [
   { value: 11, name: 'NOVEMBER' },
   { value: 12, name: 'DECEMBER' }
 ];
+
+const Banks = {
+  count: 45,
+  list: [
+    {
+      name: "MPESA",
+      code: "3",
+      payPointType: "MPESA",
+      status: 'ACTIVE',
+      id: 7
+    },
+    {
+      name: 'COOPERATIVE BANK',
+      code: '35',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 607,
+    },
+    {
+      name: 'KCB BANK',
+      code: '19',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 608,
+    },
+    {
+      name: 'ABSA',
+      code: '3',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 611,
+    },
+    {
+      name: 'BINGWA SACCO',
+      code: '64',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 613,
+    },
+    {
+      name: 'FORTUNE SACCO',
+      code: '30',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 614,
+    },
+    {
+      name: 'OLLIN SACCO',
+      code: '16',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 615,
+    },
+    {
+      name: 'GOODWAY SACCO',
+      code: '11',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 616,
+    },
+    {
+      name: 'EQUITY BANK',
+      code: '68',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 649,
+    },
+    {
+      name: 'FAMILY BANK LTD',
+      code: '70',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 625,
+    },
+    {
+      name: 'MWIKURE SACCO',
+      code: '15',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 628,
+    },
+    {
+      name: 'SIDIAN BANK',
+      code: '66',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 637,
+    },
+    {
+      name: 'STANBIC BANK KENYA LIMITED',
+      code: '31',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 644,
+    },
+    {
+      name: 'STANDARD CHARTERED',
+      code: '2',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 645,
+    },
+    {
+      name: 'VICTORIA COMMERCIAL BANK LTD',
+      code: '54',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 648,
+    },
+  ],
+};
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -64,6 +176,7 @@ export class MainComponent implements OnInit {
   centered = false;
   color: string;
   currentYear: any
+  banks: any
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
   dialogData: any;
@@ -82,6 +195,7 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.banks = Banks.list
     this.currentYear = new Date().getFullYear().toString()
     this.reportCollectionForm = this.fb.group({
       date: ["", [Validators.required]],
@@ -156,7 +270,8 @@ export class MainComponent implements OnInit {
     // )
     this.paymentFileForm1=this.fb.group({
       month: ["", [Validators.required]],
-      year: [this.currentYear, Validators.required]
+      year: [this.currentYear, Validators.required],
+      channel: ['', [Validators.required]]
     })
     this.paymentFileForm2=this.fb.group({
       month: ["", [Validators.required]]
@@ -706,11 +821,12 @@ export class MainComponent implements OnInit {
 
   generatePayroll(){
     this.isloading = true
-    this.service.getPayroll(this.paymentFileForm1.value.month, this.paymentFileForm1.value.year)
+    const reportname = `payroll-`+this.paymentFileForm1.value.month+`-`+this.paymentFileForm1.value.year+`-`+this.paymentFileForm1.value.channel
+    this.service.getPayroll(this.paymentFileForm1.value.month, this.paymentFileForm1.value.year, this.paymentFileForm1.value.channel)
       .subscribe(
         (response: Blob) => {
           this.isloading = false
-          const filename = 'payroll.xlsx'; // Specify the desired filename with the appropriate extension
+          const filename = reportname+'.xlsx'; // Specify the desired filename with the appropriate extension
           saveAs(response, filename);
 
           this.isloading = false;
@@ -730,6 +846,7 @@ export class MainComponent implements OnInit {
         }
       );
   }
+
   generateMpesaPaymentFile(){
     this.isloading = true
     this.service.getMpesaPaymentFile(this.paymentFileForm2.value.month)
