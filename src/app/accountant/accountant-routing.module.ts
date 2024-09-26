@@ -3,13 +3,20 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../core/guard/auth.guard';
 import { ReportsModule } from '../reports/reports.module';
 import { Role } from '../core/models/role';
+import { MainComponent } from './dashboard/main/main.component';
+
 
 const routes: Routes = [
-  {
-    path:'dashboard',
-    loadChildren: ()=>
-    import('./dashboard/dashboard.module').then(m=>m.AdminDashboardModule)
+  // {
+  //   path:'dashboard',
+  //   loadChildren: ()=>
+  //   import('./dashboard/dashboard.module').then(m=>m.AdminDashboardModule)
     
+  // },
+
+  {
+    path: "dashboard",
+    component: MainComponent,
   },
   {
     path: "reports",
