@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
-import { DashboardService } from "../dashboard.service";
+
 
 @Component({
   selector: "app-main",
@@ -21,7 +21,7 @@ export class MainComponent implements OnInit {
   loaded: boolean = false;
   isdata:boolean=false
 
-  constructor(private service: DashboardService) {
+  constructor() {
 
   }
 
