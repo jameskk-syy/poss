@@ -920,6 +920,21 @@ export const ROUTES: RouteInfo[] = [
     role: ['ACCOUNTANT'],
     submenu: [],
   },
+
+  {
+    path: '/accountant/product',
+    title: 'Product',
+    moduleName: 'product',
+    iconType: 'feather',
+    icon: 'shopping-cart',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ACCOUNTANT'],
+    submenu: [],
+  },
+
   {
     path: '/accountant/dashboard/records',
     title: 'Payment Records',

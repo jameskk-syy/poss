@@ -7,23 +7,19 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../product.service';
-import { AddCategoryComponent } from '../forms/add-category/add-category.component';
 
 @Component({
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.sass']
+  selector: 'app-product-management',
+  templateUrl: './product-management.component.html',
+  styleUrls: ['./product-management.component.sass']
 })
-export class CategoryComponent implements OnInit {
+export class ProductManagementComponent implements OnInit {
 
   displayedColumns: string[] = [
-    'name',
-    'code',
-    'description',
-    'status',
-    'createdBy',
-    'updatedBy',
-    'action'
+    'id',
+    'departmentCode',
+    'departmentName',
+    'action',
   ];
 
   subscription!: Subscription;
@@ -46,22 +42,21 @@ export class CategoryComponent implements OnInit {
 
   getData() {
     this.isLoading = true;
-      this.subscription = this.service.getCategories().subscribe(res => {
-        this.data = res;
-        console.log ('categories are here', this.data)
-        if (this.data.entity.length > 0) {
-          this.isLoading = false;
-          this.isdata = true;
-          // Binding with the datasource
-          this.dataSource = new MatTableDataSource(this.data.entity);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        }
-        else {
-          this.isdata = false;
-          this.dataSource = new MatTableDataSource<any>(this.data);
-        }
-      })
+  //     this.subscription = this.service.getDepartments().subscribe(res => {
+  //       this.data = res;
+  //       if (this.data.entity.length > 0) {
+  //         this.isLoading = false;
+  //         this.isdata = true;
+  //         // Binding with the datasource
+  //         this.dataSource = new MatTableDataSource(this.data.entity);
+  //         this.dataSource.paginator = this.paginator;
+  //         this.dataSource.sort = this.sort;
+  //       }
+  //       else {
+  //         this.isdata = false;
+  //         this.dataSource = new MatTableDataSource<any>(this.data);
+  //       }
+  //     })
    }
 
   constructor(
@@ -79,21 +74,21 @@ export class CategoryComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
-    this.getData();
+    // this.getData();
   }
 
-  addCategory(){
+  addDepartmentCall(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
-    dialogConfig.width = "900px"
+    dialogConfig.width = "500px"
     dialogConfig.data = {
       test: ""
     }
-    this.dialog.open(AddCategoryComponent, dialogConfig)
+    // this.dialog.open(AddDepartmentsComponent, dialogConfig)
   }
 
-  deleteCategory(department){
+  deleteDepartmentCall(department){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
@@ -104,7 +99,7 @@ export class CategoryComponent implements OnInit {
     // this.dialog.open(DeletedepartmentComponent, dialogConfig)
   }
 
-  editCategory(department){
+  editDepartmentCall(department){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
@@ -116,5 +111,6 @@ export class CategoryComponent implements OnInit {
   }
 
 }
+
 
 
