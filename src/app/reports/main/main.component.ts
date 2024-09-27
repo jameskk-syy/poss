@@ -12,6 +12,7 @@ import { FarmerProductsReportComponent } from '../pages/farmer-products-report/f
 import { LookupPickUpLocationsComponent } from 'src/app/staff/sales/pages/lookup-pick-up-locations/lookup-pick-up-locations.component';
 import { saveAs } from 'file-saver';
 import { RoutesLookUpComponent } from 'src/app/staff/sales/pages/routes-look-up/routes-look-up.component';
+import { loadavg } from 'os';
 const YEARS = [
   {value: '2024', name: '2024'},
   {value: '2025', name: '2025'},
@@ -271,7 +272,8 @@ export class MainComponent implements OnInit {
     this.paymentFileForm1=this.fb.group({
       month: ["", [Validators.required]],
       year: [this.currentYear, Validators.required],
-      channel: ['', [Validators.required]]
+      channel: ['', [Validators.required]],
+      format: ['', [Validators.required]]
     })
     this.paymentFileForm2=this.fb.group({
       month: ["", [Validators.required]]
@@ -333,7 +335,6 @@ export class MainComponent implements OnInit {
             a.remove();
 
             this.isloading = false;
-
 
 
             this.snackbar.showNotification(
@@ -822,9 +823,11 @@ export class MainComponent implements OnInit {
   generatePayroll(){
     this.isloading = true
     const reportname = `payroll-`+this.paymentFileForm1.value.month+`-`+this.paymentFileForm1.value.year+`-`+this.paymentFileForm1.value.channel
-    this.service.getPayroll(this.paymentFileForm1.value.month, this.paymentFileForm1.value.year, this.paymentFileForm1.value.channel)
-      .subscribe(
-        (response: Blob) => {
+
+    if (this.paymentFileForm1.value.format=="excel") {
+      this.service.getPayroll(this.paymentFileForm1.value.month, this.paymentFileForm1.value.year, this.paymentFileForm1.value.channel)
+      .subscribe({
+        next: (response: Blob) => {
           this.isloading = false
           const filename = reportname+'.xlsx'; // Specify the desired filename with the appropriate extension
           saveAs(response, filename);
@@ -833,9 +836,10 @@ export class MainComponent implements OnInit {
 
           this.snackbar.showNotification(
             "snackbar-success",
-            "Report generated successfully"          );
+            "Report generated successfully"          
+          );
         },
-        (err) => {
+        error: (err) => {
           console.log(err);
           this.isloading = false
 
@@ -844,7 +848,41 @@ export class MainComponent implements OnInit {
             "Report could not be generated successfully",
           );
         }
-      );
+    });
+    } else {
+      this.service.getPayrollByMode(this.paymentFileForm1.value.month, this.paymentFileForm1.value.year, this.paymentFileForm1.value.channel).subscribe({
+        next: (response: any) => {
+          console.log("filename is ", response.filename)
+          console.log("file is ", response.data)
+          let url = window.URL.createObjectURL(response.data);
+
+          // if you want to open PDF in new tab
+          window.open(url);
+
+          let a = document.createElement("a");
+          document.body.appendChild(a);
+          a.setAttribute("style", "display: none");
+          a.setAttribute("target", "blank");
+          a.href = url;
+          a.download = response.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+
+          this.isloading = false;
+
+          this.snackbar.showNotification(
+            "snackbar-success",
+            "Report generated successfully",
+          );
+        },
+        error: (err) => {
+          console.log("error caught is ", err);
+          this.isloading = false;
+          this.snackbar.showNotification("snackbar-danger", "failed to fetch report")
+        }
+      })
+    }
   }
 
   generateMpesaPaymentFile(){

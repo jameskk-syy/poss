@@ -704,6 +704,11 @@
                               </mat-panel-description> -->
                       </mat-expansion-panel-header>
 
+                      <!-- <mat-radio-group aria-label="Select an option" formControlName="format">
+                        <mat-radio-button value="pdf">PDF</mat-radio-button>
+                        <mat-radio-button value="excel">Excel</mat-radio-button>
+                      </mat-radio-group> -->
+
                       <form class="register-form" [formGroup]="paymentFileForm1">
                         <div class="row">
                           <!-- <mat-form-field class="example-full-width" appearance="outline">
@@ -714,6 +719,10 @@
                              Route is required
                             </mat-error>
                           </mat-form-field> -->
+                          <mat-radio-group aria-label="select report type" formControlName="format">
+                            <mat-radio-button value="pdf">pdf</mat-radio-button>
+                            <mat-radio-button value="excel">excel</mat-radio-button>
+                          </mat-radio-group>
 
                           <mat-form-field class="example-full-width mb-1" appearance="outline">
                             <mat-label>Select Month</mat-label>
