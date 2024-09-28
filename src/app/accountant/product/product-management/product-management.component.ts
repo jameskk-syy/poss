@@ -7,23 +7,23 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../product.service';
-import { AddCategoryComponent } from '../forms/add-category/add-category.component';
+import { AddProductComponent } from '../forms/add-product/add-product.component';
 
 @Component({
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.sass']
+  selector: 'app-product-management',
+  templateUrl: './product-management.component.html',
+  styleUrls: ['./product-management.component.sass']
 })
-export class CategoryComponent implements OnInit {
+export class ProductManagementComponent implements OnInit {
 
   displayedColumns: string[] = [
-    'name',
-    'code',
-    'description',
-    'status',
-    'createdBy',
-    'updatedBy',
-    'action'
+      'code',
+      'name',
+      'category',
+      'description',
+      'status',
+      'createdBy',
+      'updatedBy'
   ];
 
   subscription!: Subscription;
@@ -32,7 +32,6 @@ export class CategoryComponent implements OnInit {
   isLoading:boolean = false;
   roles:any;
   dataSource!: MatTableDataSource<any>;
-  categories: any[] = [];
 
 
   applyFilter(event: Event) {
@@ -47,9 +46,9 @@ export class CategoryComponent implements OnInit {
 
   getData() {
     this.isLoading = true;
-      this.subscription = this.service.getCategories().subscribe(res => {
+      this.subscription = this.service.getProducts().subscribe(res => {
         this.data = res;
-        console.log ('categories are here', this.data)
+        console.log ('products are here', this.data)
         if (this.data.entity.length > 0) {
           this.isLoading = false;
           this.isdata = true;
@@ -64,6 +63,7 @@ export class CategoryComponent implements OnInit {
         }
       })
    }
+
 
   constructor(
     private router: Router, 
@@ -83,39 +83,29 @@ export class CategoryComponent implements OnInit {
     this.getData();
   }
 
-  addCategory(){
+  deleteProduct(product){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "500px"
+    dialogConfig.data = {
+      dt: product
+    }
+    // this.dialog.open(DeletedepartmentComponent, dialogConfig)
+  }
+
+  addProduct(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "900px"
     dialogConfig.data = {
-      test: ""
+      product: ""
     }
-    this.dialog.open(AddCategoryComponent, dialogConfig)
-  }
-
-  deleteCategory(department){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false
-    dialogConfig.autoFocus = true
-    dialogConfig.width = "500px"
-    dialogConfig.data = {
-      dt: department
-    }
-    // this.dialog.open(DeletedepartmentComponent, dialogConfig)
-  }
-
-  editCategory(department){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false
-    dialogConfig.autoFocus = true
-    dialogConfig.width = "500px"
-    dialogConfig.data = {
-      dt: department
-    }
-    // this.dialog.open(EditdepartmentComponent, dialogConfig)
+    this.dialog.open(AddProductComponent, dialogConfig)
   }
 
 }
+
 
 

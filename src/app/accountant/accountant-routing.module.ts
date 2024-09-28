@@ -6,6 +6,7 @@ import { Role } from '../core/models/role';
 import { MainComponent } from './dashboard/main/main.component';
 
 
+
 const routes: Routes = [
   // {
   //   path:'dashboard',
@@ -13,6 +14,13 @@ const routes: Routes = [
   //   import('./dashboard/dashboard.module').then(m=>m.AdminDashboardModule)
     
   // },
+
+  {
+    path:'product',
+    loadChildren: ()=>
+    import('./product/product.module').then(m=>m.ProductModule)
+    
+  },
 
   {
     path: "dashboard",
