@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../product.service';
+import { AddProductComponent } from '../forms/add-product/add-product.component';
 
 @Component({
   selector: 'app-product-management',
@@ -16,10 +17,13 @@ import { ProductService } from '../product.service';
 export class ProductManagementComponent implements OnInit {
 
   displayedColumns: string[] = [
-    'id',
-    'departmentCode',
-    'departmentName',
-    'action',
+      'code',
+      'name',
+      'category',
+      'description',
+      'status',
+      'createdBy',
+      'updatedBy'
   ];
 
   subscription!: Subscription;
@@ -42,22 +46,24 @@ export class ProductManagementComponent implements OnInit {
 
   getData() {
     this.isLoading = true;
-  //     this.subscription = this.service.getDepartments().subscribe(res => {
-  //       this.data = res;
-  //       if (this.data.entity.length > 0) {
-  //         this.isLoading = false;
-  //         this.isdata = true;
-  //         // Binding with the datasource
-  //         this.dataSource = new MatTableDataSource(this.data.entity);
-  //         this.dataSource.paginator = this.paginator;
-  //         this.dataSource.sort = this.sort;
-  //       }
-  //       else {
-  //         this.isdata = false;
-  //         this.dataSource = new MatTableDataSource<any>(this.data);
-  //       }
-  //     })
+      this.subscription = this.service.getProducts().subscribe(res => {
+        this.data = res;
+        console.log ('products are here', this.data)
+        if (this.data.entity.length > 0) {
+          this.isLoading = false;
+          this.isdata = true;
+          // Binding with the datasource
+          this.dataSource = new MatTableDataSource(this.data.entity);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+        else {
+          this.isdata = false;
+          this.dataSource = new MatTableDataSource<any>(this.data);
+        }
+      })
    }
+
 
   constructor(
     private router: Router, 
@@ -74,40 +80,29 @@ export class ProductManagementComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
-    // this.getData();
+    this.getData();
   }
 
-  addDepartmentCall(){
+  deleteProduct(product){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "500px"
     dialogConfig.data = {
-      test: ""
-    }
-    // this.dialog.open(AddDepartmentsComponent, dialogConfig)
-  }
-
-  deleteDepartmentCall(department){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false
-    dialogConfig.autoFocus = true
-    dialogConfig.width = "500px"
-    dialogConfig.data = {
-      dt: department
+      dt: product
     }
     // this.dialog.open(DeletedepartmentComponent, dialogConfig)
   }
 
-  editDepartmentCall(department){
+  addProduct(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
-    dialogConfig.width = "500px"
+    dialogConfig.width = "900px"
     dialogConfig.data = {
-      dt: department
+      product: ""
     }
-    // this.dialog.open(EditdepartmentComponent, dialogConfig)
+    this.dialog.open(AddProductComponent, dialogConfig)
   }
 
 }

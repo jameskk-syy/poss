@@ -11,29 +11,83 @@
                 </div>
             </div>
         </div>
-        <!-- <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
             <mat-icon>close</mat-icon>
-        </button> -->
+        </button>
     </div>
     <div mat-dialog-content>
-        <!-- <form class="register-form m-4" [formGroup]="addDepartmentForm">
+        <form class="register-form m-4" [formGroup]="productForm">
             <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Department Code</mat-label>
-                        <input matInput formControlName="departmentCode" required />
-                        <mat-error *ngIf="addDepartmentForm.get('departmentCode').hasError('required')">
-                            Department Code is required
+                        <mat-label>Category</mat-label>
+                        <mat-select formControlName="category" required>
+                            <mat-option *ngFor="let category of categories" [value]="category">
+                              {{ category }}
+                            </mat-option>
+                          </mat-select>
+                        <mat-error *ngIf="productForm.get('category').hasError('required')">
+                            Category is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Product Code</mat-label>
+                        <input matInput formControlName="product code" required />
+                        <mat-error *ngIf="productForm.get('productCode').hasError('required')">
+                            Product Code is required
                         </mat-error>
                     </mat-form-field>
                 </div>
 
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Department Name</mat-label>
-                        <input matInput formControlName="departmentName" required />
-                        <mat-error *ngIf="addDepartmentForm.get('departmentName').hasError('required')">
-                            Department name is required
+                        <mat-label>Product Name</mat-label>
+                        <input matInput formControlName="productName" required />
+                        <mat-error *ngIf="productForm.get('productName').hasError('required')">
+                            Product name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Status</mat-label>
+                        <mat-select formControlName="status" required>
+                            <mat-option *ngFor="let stat of statuses" [value]="stat">
+                              {{ stat }}
+                            </mat-option>
+                          </mat-select>
+                        <mat-error *ngIf="productForm.get('status').hasError('required')">
+                            Status is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Description</mat-label>
+                        <input matInput formControlName="description" required />
+                        <mat-error *ngIf="productForm.get('description').hasError('required')">
+                            Description name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>createdBy</mat-label>
+                        <input matInput formControlName="createdBy" required />
+                        <mat-error *ngIf="productForm.get('createdBy').hasError('required')">
+                            createdBy is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>updatedBy</mat-label>
+                        <input matInput formControlName="updatedBy" required />
+                        <mat-error *ngIf="productForm.get('updatedBy').hasError('required')">
+                            Description name is required
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -44,7 +98,7 @@
                             <button mat-raised-button color="warn" (click)="onClick()" tabindex="-1">
                                 Cancel
                             </button>
-                            <button mat-raised-button color="primary" [disabled]="!addDepartmentForm.valid"
+                            <button mat-raised-button color="primary" [disabled]="!productForm.valid"
                                 (click)="onSubmit()">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                 <b>Submit</b>
@@ -53,6 +107,6 @@
                     </div>
                 </div>
             </div>
-        </form> -->
+        </form>
     </div>
 </div>

@@ -50,7 +50,7 @@ export class AddCategoryComponent implements OnInit {
     }
 
     this.loading = true;
-    this.subscription = this.service.addNewgetCategory(this.categoryForm.value).subscribe(res => {
+    this.subscription = this.service.addNewCategory(this.categoryForm.value).subscribe(res => {
       this.loading = false;
       this.snackbar.showNotification("snackbar-success", "Successful!");
       this.categoryForm.reset();

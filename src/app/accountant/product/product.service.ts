@@ -17,20 +17,37 @@ export class ProductService {
 
   deptsUrl = `${environment.apiUrl}/api/v1/category/`;
 
-
+//categories
   public getCategories(): Observable<any> {
     return this.http.get(this.deptsUrl + 'get');
   }
 
-  addNewgetCategory(data: any): Observable<any> {
+  addNewCategory(data: any): Observable<any> {
     return this.http.post(this.deptsUrl + 'add', data, httpOptions);
   }
 
-  deletegetCategory(id: any): Observable<any> {
+  deleteCategory(id: any): Observable<any> {
     return this.http.delete(this.deptsUrl + `delete/` + id, httpOptions);
   }
 
-  updategetCategory(data: any): Observable<any> {
+  updateCategory(data: any): Observable<any> {
+    return this.http.put(this.deptsUrl + `update`, data, httpOptions);
+  }
+
+  //products
+  public getProducts(): Observable<any> {
+    return this.http.get(this.deptsUrl + 'get');
+  }
+
+  addProduct(data: any): Observable<any> {
+    return this.http.post(this.deptsUrl + 'add', data, httpOptions);
+  }
+
+  deleteProduct(id: any): Observable<any> {
+    return this.http.delete(this.deptsUrl + `delete/` + id, httpOptions);
+  }
+
+  updateProduct(data: any): Observable<any> {
     return this.http.put(this.deptsUrl + `update`, data, httpOptions);
   }
 

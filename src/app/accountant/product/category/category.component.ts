@@ -32,6 +32,7 @@ export class CategoryComponent implements OnInit {
   isLoading:boolean = false;
   roles:any;
   dataSource!: MatTableDataSource<any>;
+  categories: any[] = [];
 
 
   applyFilter(event: Event) {
