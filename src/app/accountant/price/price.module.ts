@@ -18,11 +18,19 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { PriceManagementComponent } from './price-management/price-management.component';
+import { UpdatePriceComponent } from './forms/update-price/update-price.component';
+import { DeletePriceComponent } from './forms/delete-price/delete-price.component';
+
+
 @NgModule({
   declarations: [
     PriceComponent,
-    AddPriceComponent
-  ],
+    AddPriceComponent,
+    PriceManagementComponent,
+    UpdatePriceComponent,
+    DeletePriceComponent
+   ],
   imports: [
     CommonModule,
     PriceRoutingModule,

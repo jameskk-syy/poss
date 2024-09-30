@@ -4,8 +4,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PriceService } from '../../price.service';
 import { Subscription } from 'rxjs';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-import { PriceComponent } from '../../price/price.component';
+import { PriceManagementComponent } from '../../price-management/price-management.component';
 import { DatePipe } from '@angular/common'; 
+import { statusArray } from 'src/app/core/models/status';
 
 @Component({
   selector: 'app-add-price',
@@ -18,6 +19,7 @@ export class AddPriceComponent implements OnInit {
   subscription!: Subscription;
   isLoading: boolean = false
   pLoading: boolean = false
+  statuses = statusArray;
 
   routes: any
  
@@ -26,17 +28,17 @@ export class AddPriceComponent implements OnInit {
     private fb: FormBuilder,
     private snackBar: SnackbarService,
     private priceService: PriceService,
-    public dialogRef: MatDialogRef<PriceComponent>,
+    public dialogRef: MatDialogRef<PriceManagementComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit(): void {
  
     this.priceRegistrationForm = this.fb.group({
-      from_date: [`${this.datePipe.transform(new Date(), 'YYYY-MM-dd', 'EAT')}`, [Validators.required]],
+      from: [`${this.datePipe.transform(new Date(), 'YYYY-MM-dd', 'EAT')}`, [Validators.required]],
       price: ['', [Validators.required]],
       status: ['', [Validators.required]],
-      to_date:  [`${this.datePipe.transform(new Date(), 'YYYY-MM-dd', 'EAT')}`, [Validators.required]],
+      to:  [`${this.datePipe.transform(new Date(), 'YYYY-MM-dd', 'EAT')}`, [Validators.required]],
               });
 
     this.getRoutes()

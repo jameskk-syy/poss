@@ -29,8 +29,8 @@ export class PriceService {
     return this.http.post(`${environment.apiUrl}/api/v1/price/add`, data, httpOptions)
   }
 
-  public updateCustomer(data: any): Observable<any>{
-    return this.http.put(`${environment.apiUrl}/api/v1/customer/update`, data, httpOptions)
+  public updatePrice(id: any, data: any,): Observable<any>{
+    return this.http.put(`${environment.apiUrl}/api/v1/price/update/${id}`, data, httpOptions)
   }
 
   public fetchByID(id: any): Observable<any>{
@@ -41,8 +41,8 @@ export class PriceService {
     return this.http.get(`${environment.apiUrl}/api/v1/customer/customer/status?status=${status}`)
   }
 
-  public deleteCustomer(id: any): Observable<any>{
-    return this.http.delete(`${environment.apiUrl}/api/v1/customer/delete/${id}`)
+  public deletePrice(id: any): Observable<any>{
+    return this.http.delete(`${environment.apiUrl}/api/v1/price/delete/${id}`)
   }
 
   public fetchRoutes(): Observable<any>{
