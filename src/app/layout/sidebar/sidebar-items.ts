@@ -936,11 +936,11 @@ export const ROUTES: RouteInfo[] = [
   },
 
   {
-    path: '/accountant/dashboard/records',
-    title: 'Payment Records',
-    moduleName: 'payments',
+    path: '/accountant/price',
+    title: 'Price Management',
+    moduleName: 'price',
     iconType: 'feather',
-    icon: 'shopping-cart',
+    icon: 'tag',
     class: '',
     groupTitle: false,
     badge: '',

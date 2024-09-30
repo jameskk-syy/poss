@@ -1,7 +1,9 @@
   export const statusArray = [
     "APPROVED",
     "PENDING",
-    "ACTIVE"
+    "ACTIVE",
+    "INACTIVE",
+    "DELETED"
   ]
     
   

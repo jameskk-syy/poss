@@ -27,6 +27,11 @@ const routes: Routes = [
     component: MainComponent,
   },
   {
+    path: "price",
+    loadChildren: () =>
+      import("./price/price.module").then((m) => m.PriceModule),
+  },  
+  {
     path: "reports",
     canActivate: [AuthGuard],
     data: {
