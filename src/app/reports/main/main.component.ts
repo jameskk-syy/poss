@@ -12,6 +12,7 @@ import { FarmerProductsReportComponent } from '../pages/farmer-products-report/f
 import { LookupPickUpLocationsComponent } from 'src/app/staff/sales/pages/lookup-pick-up-locations/lookup-pick-up-locations.component';
 import { saveAs } from 'file-saver';
 import { RoutesLookUpComponent } from 'src/app/staff/sales/pages/routes-look-up/routes-look-up.component';
+import { loadavg } from 'os';
 const YEARS = [
   {value: '2024', name: '2024'},
   {value: '2025', name: '2025'},
@@ -36,6 +37,118 @@ const MONTHS = [
   { value: 11, name: 'NOVEMBER' },
   { value: 12, name: 'DECEMBER' }
 ];
+
+const Banks = {
+  count: 45,
+  list: [
+    {
+      name: "MPESA",
+      code: "3",
+      payPointType: "MPESA",
+      status: 'ACTIVE',
+      id: 7
+    },
+    {
+      name: 'COOPERATIVE BANK',
+      code: '35',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 607,
+    },
+    {
+      name: 'KCB BANK',
+      code: '19',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 608,
+    },
+    {
+      name: 'ABSA',
+      code: '3',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 611,
+    },
+    {
+      name: 'BINGWA SACCO',
+      code: '64',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 613,
+    },
+    {
+      name: 'FORTUNE SACCO',
+      code: '30',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 614,
+    },
+    {
+      name: 'OLLIN SACCO',
+      code: '16',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 615,
+    },
+    {
+      name: 'GOODWAY SACCO',
+      code: '11',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 616,
+    },
+    {
+      name: 'EQUITY BANK',
+      code: '68',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 649,
+    },
+    {
+      name: 'FAMILY BANK LTD',
+      code: '70',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 625,
+    },
+    {
+      name: 'MWIKURE SACCO',
+      code: '15',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 628,
+    },
+    {
+      name: 'SIDIAN BANK',
+      code: '66',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 637,
+    },
+    {
+      name: 'STANBIC BANK KENYA LIMITED',
+      code: '31',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 644,
+    },
+    {
+      name: 'STANDARD CHARTERED',
+      code: '2',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 645,
+    },
+    {
+      name: 'VICTORIA COMMERCIAL BANK LTD',
+      code: '54',
+      payPointType: 'BANK',
+      status: 'ACTIVE',
+      id: 648,
+    },
+  ],
+};
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -64,6 +177,7 @@ export class MainComponent implements OnInit {
   centered = false;
   color: string;
   currentYear: any
+  banks: any
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
   dialogData: any;
@@ -82,6 +196,7 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.banks = Banks.list
     this.currentYear = new Date().getFullYear().toString()
     this.reportCollectionForm = this.fb.group({
       date: ["", [Validators.required]],
@@ -156,7 +271,9 @@ export class MainComponent implements OnInit {
     // )
     this.paymentFileForm1=this.fb.group({
       month: ["", [Validators.required]],
-      year: [this.currentYear, Validators.required]
+      year: [this.currentYear, Validators.required],
+      channel: ['', [Validators.required]],
+      format: ['', [Validators.required]]
     })
     this.paymentFileForm2=this.fb.group({
       month: ["", [Validators.required]]
@@ -218,7 +335,6 @@ export class MainComponent implements OnInit {
             a.remove();
 
             this.isloading = false;
-
 
 
             this.snackbar.showNotification(
@@ -706,20 +822,24 @@ export class MainComponent implements OnInit {
 
   generatePayroll(){
     this.isloading = true
-    this.service.getPayroll(this.paymentFileForm1.value.month, this.paymentFileForm1.value.year)
-      .subscribe(
-        (response: Blob) => {
+    const reportname = `payroll-`+this.paymentFileForm1.value.month+`-`+this.paymentFileForm1.value.year+`-`+this.paymentFileForm1.value.channel
+
+    if (this.paymentFileForm1.value.format=="excel") {
+      this.service.getPayroll(this.paymentFileForm1.value.month, this.paymentFileForm1.value.year, this.paymentFileForm1.value.channel)
+      .subscribe({
+        next: (response: Blob) => {
           this.isloading = false
-          const filename = 'payroll.xlsx'; // Specify the desired filename with the appropriate extension
+          const filename = reportname+'.xlsx'; // Specify the desired filename with the appropriate extension
           saveAs(response, filename);
 
           this.isloading = false;
 
           this.snackbar.showNotification(
             "snackbar-success",
-            "Report generated successfully"          );
+            "Report generated successfully"          
+          );
         },
-        (err) => {
+        error: (err) => {
           console.log(err);
           this.isloading = false
 
@@ -728,8 +848,43 @@ export class MainComponent implements OnInit {
             "Report could not be generated successfully",
           );
         }
-      );
+    });
+    } else {
+      this.service.getPayrollByMode(this.paymentFileForm1.value.month, this.paymentFileForm1.value.year, this.paymentFileForm1.value.channel).subscribe({
+        next: (response: any) => {
+          console.log("filename is ", response.filename)
+          console.log("file is ", response.data)
+          let url = window.URL.createObjectURL(response.data);
+
+          // if you want to open PDF in new tab
+          window.open(url);
+
+          let a = document.createElement("a");
+          document.body.appendChild(a);
+          a.setAttribute("style", "display: none");
+          a.setAttribute("target", "blank");
+          a.href = url;
+          a.download = response.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+
+          this.isloading = false;
+
+          this.snackbar.showNotification(
+            "snackbar-success",
+            "Report generated successfully",
+          );
+        },
+        error: (err) => {
+          console.log("error caught is ", err);
+          this.isloading = false;
+          this.snackbar.showNotification("snackbar-danger", "failed to fetch report")
+        }
+      })
+    }
   }
+
   generateMpesaPaymentFile(){
     this.isloading = true
     this.service.getMpesaPaymentFile(this.paymentFileForm2.value.month)
