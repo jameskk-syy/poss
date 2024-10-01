@@ -1,0 +1,97 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modalHeader clearfix">
+                    <div class="modal-about">
+                        <div class="font-weight-bold p-t-5 ms-2 me-2 font-17">
+                            Customer Registration
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <mat-progress-bar mode="indeterminate" *ngIf="pLoading"></mat-progress-bar>
+        <form class="register-form m-4" [formGroup]="customerRegistrationForm">
+            <!--Supplier Details-->
+            <div class="row">
+                <mat-card>
+                    <mat-card-title style="font-size: x-small;">Customer Details</mat-card-title>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput formControlName="firstname" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('firstname').hasError('required')">
+                                        firstName name is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput formControlName="lastname" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('lastname').hasError('required')">
+                                        lastName name is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>contact</mat-label>
+                                    <input matInput formControlName="contact" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('contact').hasError('required')">
+                                        contact name is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-12 mb-0">
+                                <mat-form-field class="example-full-width mb-1" appearance="outline">
+                                    <mat-label>Customer Type</mat-label>
+                                    <mat-select formControlName="customerType" required>
+                                        <mat-option *ngFor="let item of customerType" [value]="item">{{item}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="customerRegistrationForm.get('customerType').hasError('required')">Customer type is required</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Address</mat-label>
+                                    <input matInput formControlName="address" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('address').hasError('required')">
+                                        address name is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-0">
+                                <div class="example-button-row">
+                                    <button mat-raised-button color="warn" (click)="onCancel()" tabindex="-1">
+                                        Cancel
+                                    </button>
+                                    <button mat-raised-button color="primary"
+                                        [disabled]="!customerRegistrationForm.valid" (click)="onSubmit()">
+                                        <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        <b>Submit</b>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </form>
+    </div>
+</div>

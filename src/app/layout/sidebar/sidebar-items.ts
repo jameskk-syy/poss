@@ -975,9 +975,9 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
   {
-  path: '/accountant/customers',
+  path: '/accountant/customer',
   title: 'Customers',
-  moduleName: 'customers',
+  moduleName: 'customer',
   iconType: 'feather',
   icon: 'divide',
   class: '',
