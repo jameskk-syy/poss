@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ManageCustomersComponent } from '../../manage-customers/manage-customers.component';
+import { ManageCustomercategoriesComponent } from '../../manage-customercategories/manage-customercategories.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CustomerService } from '../../customer.service';
 import { Subscription } from 'rxjs';
@@ -27,7 +27,7 @@ export class AddCategoriesComponent implements OnInit {
     private fb: FormBuilder,
     private snackBar: SnackbarService,
     private customerService: CustomerService,
-    public dialogRef: MatDialogRef<ManageCustomersComponent>,
+    public dialogRef: MatDialogRef<ManageCustomercategoriesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
@@ -49,7 +49,7 @@ export class AddCategoriesComponent implements OnInit {
 
     this.isLoading = true
 
-    this.subscription = this.customerService.addCustomer(this.categoryRegistrationForm.value)
+    this.subscription = this.customerService.addCategory(this.categoryRegistrationForm.value)
       .subscribe((res) => {
         this.snackBar.showNotification('snackbar-success', 'Successful!');
         this.isLoading = false;

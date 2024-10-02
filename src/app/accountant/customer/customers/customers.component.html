@@ -1,0 +1,22 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <app-breadcrumb [title]="'All Customers'" [items]="['Customers']" [active_item]="'All Customers'">
+            </app-breadcrumb>
+        </div>
+        <mat-tab-group>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Customers
+                </ng-template>
+              <app-manage-customers></app-manage-customers>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Customer Categories
+                </ng-template>
+                <app-manage-customercategories></app-manage-customercategories>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</section>

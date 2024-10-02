@@ -19,8 +19,6 @@ export class UpdateCustomerComponent implements OnInit {
   subscription: Subscription
   routes: any
   selectedStatus: any
-  customerType: any[] = ["CREDIT", "CASH", "DEBIT", "WALKIN"]
-
 
   constructor(
     private fb: FormBuilder,
@@ -47,18 +45,12 @@ export class UpdateCustomerComponent implements OnInit {
   customerDetailsForm(): FormGroup {
     return this.fb.group({
 
-      firstname: [this.data.customer.firstname, [Validators.required]],
-      lastname: [this.data.customer.lastname, [Validators.required]],
-      customerType: [this.data.customer.customerType, [Validators.required]],
-      contact: [this.data.customer.contact, [Validators.required]],
       address: [this.data.customer.address, [Validators.required]],
-      customerNO: [this.data.customer.customerNO, [Validators.required]],
-      id: [this.data.customer.id],
-      createdAt: [this.data.customer.createdAt],
-      status: [this.data.customer.status, [Validators.required]],
-      updateOn: [this.data.customer.updatedOn],
-      deletedOn: [this.data.customer.deletedOn],
-      deleteFlag: [this.data.customer.deleteFlag]
+      alt_phone: [this.data.customer.alt_phone, [Validators.required]],
+      location: [this.data.customer.location, [Validators.required]],
+      name: [this.data.customer.name, [Validators.required]],
+      phone: [this.data.customer.phone, [Validators.required]],
+       status: [this.data.customer.status, [Validators.required]],
     });
   }
 
@@ -80,7 +72,7 @@ export class UpdateCustomerComponent implements OnInit {
   onSubmit() {
     console.log("Customer Details Update", this.customerUpdateForm.value)
     this.isLoading = true
-    this.subscription = this.customerService.updateCustomer(this.customerUpdateForm.value).subscribe(
+    this.subscription = this.customerService.updateCustomer(this.data.customer.id,this.data.customer.catId,this.customerUpdateForm.value).subscribe(
       (res) => {
         this.isLoading = false
         this.snackbar.showNotification("snackbar-success", "Successful!");

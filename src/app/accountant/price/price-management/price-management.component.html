@@ -35,24 +35,12 @@
                                                     </button>
                                                 </div>
                                             </li>
-                                            <li class="dropdown m-l-5">
-                                                <mat-form-field>
-                                                    <mat-label>Filter By </mat-label>
-                                                    <mat-select [(value)]="selected">
-                                                        <mat-option value="fn"><b>Price</b></mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                            </li>
-                                            <li class="dropdown">
-                                                <form [formGroup]="filterform">
-                                                    <mat-form-field class="m-l-3" *ngIf="selected == 'fn'">
-                                                        <input matInput (dateChange)="filterPrices()"
-                                                            placeholder="Enter Price"
-                                                            formControlName="price">
-                                                        <mat-icon matSuffix (click)="getPriceByPrice()">search
-                                                        </mat-icon>
-                                                    </mat-form-field>
-                                                </form>
+                                            <li class="dropdown m-l-20">
+                                                <label for="search-input"><i
+                                                        class="material-icons search-icon">search</i></label>
+                                                <input placeholder="Search" type="text"
+                                                    style="text-transform: capitalize;" (keyup)="applyFilter($event)"
+                                                    class="browser-default search-field" aria-label="Search box" />
                                             </li>
                                         </ul>
                                     </div>

@@ -11,11 +11,13 @@ import { DeleteCustomerComponent } from '../forms/delete-customer/delete-custome
 import { ViewCustomerComponent } from '../forms/view-customer/view-customer.component';
 import { UpdateCustomerComponent } from '../forms/update-customer/update-customer.component';
 
+
 @Component({
   selector: 'app-manage-customers',
   templateUrl: './manage-customers.component.html',
   styleUrls: ['./manage-customers.component.sass']
 })
+
 export class ManageCustomersComponent implements OnInit {
 
   filterform: FormGroup
@@ -35,17 +37,16 @@ export class ManageCustomersComponent implements OnInit {
 
   displayedColumns: string[] = [
     'id',
-    "customerNO",
-    "firstname",
-    "lastname",
-    "contact",
-    "address",
+    "code",
+    "name",
+    "location",
+    "phone",  
     "status",
     'action',
   ];
 
   constructor(
-    private fb: FormBuilder, private customerservice: CustomerService ,
+    private fb: FormBuilder, private customerservice: CustomerService,
     private dialog: MatDialog
   ) { }
 

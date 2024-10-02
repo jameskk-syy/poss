@@ -1,34 +1,35 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { ManageCustomersComponent } from '../../manage-customers/manage-customers.component';
+import { ManageCustomercategoriesComponent } from '../../manage-customercategories/manage-customercategories.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { CustomerService } from '../../customer.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-delete-customer',
-  templateUrl: './delete-customer.component.html',
-  styleUrls: ['./delete-customer.component.sass']
+  selector: 'app-delete-categories',
+  templateUrl: './delete-categories.component.html',
+  styleUrls: ['./delete-categories.component.sass']
 })
-export class DeleteCustomerComponent implements OnInit {
-  customer: any
+export class DeleteCategoriesComponent implements OnInit {
+
+  category: any
   isloading: boolean = false
 
   subscription: Subscription
 
   constructor(
-    public dialogRef: MatDialogRef<ManageCustomersComponent>,
+    public dialogRef: MatDialogRef<ManageCustomercategoriesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackbar: SnackbarService,
     private customerService: CustomerService
   ) { }
 
   ngOnInit(): void {
-    this.customer = `Code: ${this.data.customer.code}, Name: ${this.data.customer.name}`
+    this.category = `Code: ${this.data.category.code}, Name: ${this.data.category.name}`
   }
 
   onDelete(){
-    this.subscription = this.customerService.deleteCustomer(this.data.customer.id)
+    this.subscription = this.customerService.deleteCategory(this.data.category.id)
     .subscribe((res)=> {
       this.isloading = true;
       this.snackbar.showNotification("snackbar-success", "Successful!");
@@ -46,3 +47,4 @@ export class DeleteCustomerComponent implements OnInit {
   }
 
 }
+
