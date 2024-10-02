@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CustomerService } from '../../customer.service';
 import { Subscription } from 'rxjs';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-
+import { statusArray } from 'src/app/core/models/status';
 @Component({
   selector: 'app-add-customer',
   templateUrl: './add-customer.component.html',
@@ -18,6 +18,7 @@ export class AddCustomerComponent implements OnInit {
   isLoading: boolean = false
   pLoading: boolean = false
   customerType: any[] = ["CREDIT", "CASH", "DEBIT", "WALKIN"]
+  statuses = statusArray;
 
   routes: any
 
@@ -33,11 +34,12 @@ export class AddCustomerComponent implements OnInit {
 
 
     this.customerRegistrationForm = this.fb.group({
-      firstname: ['', [Validators.required]],
-      lastname: ['', [Validators.required]],
-      contact: ['', [Validators.required]],
+      alt_phone: ['', [Validators.required]],
+      location: ['', [Validators.required]],
+      name: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      customerType: ['', [Validators.required]]
+      status: ['', [Validators.required]],
+      phone: ['', [Validators.required]]
     });
 
     this.getRoutes()
@@ -48,7 +50,7 @@ export class AddCustomerComponent implements OnInit {
 
     this.isLoading = true
 
-    this.subscription = this.customerService.addCustomer(this.customerRegistrationForm.value)
+    this.subscription = this.customerService.addCustomer(this.data.customer.id, this.customerRegistrationForm.value)
       .subscribe((res) => {
         this.snackBar.showNotification('snackbar-success', 'Successful!');
         this.isLoading = false;

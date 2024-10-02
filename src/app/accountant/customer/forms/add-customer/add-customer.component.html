@@ -26,53 +26,68 @@
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>First Name</mat-label>
-                                    <input matInput formControlName="firstname" required />
-                                    <mat-error *ngIf="customerRegistrationForm.get('firstname').hasError('required')">
-                                        firstName name is required
+                                    <mat-label>Address</mat-label>
+                                    <input matInput formControlName="address" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('address').hasError('required')">
+                                        The address is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Last Name</mat-label>
-                                    <input matInput formControlName="lastname" required />
-                                    <mat-error *ngIf="customerRegistrationForm.get('lastname').hasError('required')">
-                                        lastName name is required
+                                    <mat-label>Alternative Phone</mat-label>
+                                    <input matInput formControlName="alt_phone" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('alt_phone').hasError('required')">
+                                        Alternative phone is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>contact</mat-label>
-                                    <input matInput formControlName="contact" required />
-                                    <mat-error *ngIf="customerRegistrationForm.get('contact').hasError('required')">
-                                        contact name is required
+                                    <mat-label>Location</mat-label>
+                                    <input matInput formControlName="location" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('location').hasError('required')">
+                                        The location is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-xl-4 col-lg-4 col-md-12 mb-0">
-                                <mat-form-field class="example-full-width mb-1" appearance="outline">
-                                    <mat-label>Customer Type</mat-label>
-                                    <mat-select formControlName="customerType" required>
-                                        <mat-option *ngFor="let item of customerType" [value]="item">{{item}}</mat-option>
-                                    </mat-select>
-                                    <mat-error *ngIf="customerRegistrationForm.get('customerType').hasError('required')">Customer type is required</mat-error>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Name</mat-label>
+                                    <input matInput formControlName="name" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('name').hasError('required')">
+                                        The name is required
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
 
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Address</mat-label>
-                                    <input matInput formControlName="address" required />
-                                    <mat-error *ngIf="customerRegistrationForm.get('address').hasError('required')">
-                                        address name is required
+                                    <mat-label>Phone</mat-label>
+                                    <input matInput formControlName="phone" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('phone').hasError('required')">
+                                        Phone number is required
                                     </mat-error>
                                 </mat-form-field>
                             </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Status</mat-label>
+                                <mat-select formControlName="status" required>
+                                    <mat-option *ngFor="let stat of statuses" [value]="stat">
+                                      {{ stat }}
+                                    </mat-option>
+                                  </mat-select>
+                                <mat-error *ngIf="customerRegistrationForm.get('status').hasError('required')">
+                                    Status is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
                         </div>
                         <div class="row">
 
