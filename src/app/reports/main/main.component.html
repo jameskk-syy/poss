@@ -696,7 +696,7 @@
                     <mat-expansion-panel>
                       <mat-expansion-panel-header>
                         <mat-panel-title>
-                          Payroll
+                          Payroll - Payment Modes
                         </mat-panel-title>
                         <!-- <mat-panel-description>
                                 Inform the date you wish to travel
@@ -788,6 +788,56 @@
                   </mat-accordion>
 
 
+                </li>
+
+                <li class="d-flex mb-3">
+                  <mat-accordion class="example-headers-align" multi>
+                    <mat-progress-bar mode="indeterminate" *ngIf="isloading"></mat-progress-bar>
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>Full Payroll</mat-panel-title>
+                      </mat-expansion-panel-header>
+
+                      <form class="register-form" [formGroup]="payrollForm">
+                        <div class="row">
+                          <mat-radio-group aria-label="select report type" formControlName="format">
+                            <mat-radio-button value="excel">excel</mat-radio-button>
+                            <mat-radio-button value="pdf">pdf</mat-radio-button>
+                          </mat-radio-group>
+                          
+                          <mat-form-field class="example-full-width mb-1" appearance="outline">
+                            <mat-label>Select Month</mat-label>
+                            <mat-select formControlName="month" required>
+                              <mat-option *ngFor="let month of months" [value]="month.value">{{ month.name
+                                }}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="payrollForm.get('month').hasError('required')">
+                              Month Is required
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="row">
+                          <mat-form-field class="example-full-width mb-1" appearance="outline">
+                            <mat-label>Select Year</mat-label>
+                            <mat-select formControlName="year" required>
+                              <mat-option *ngFor="let year of years" [value]="year.value">{{year.value}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="payrollForm.get('year').hasError('required')">
+                              year is required
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="example-button-row">
+                          <button mat-raised-button color="primary" [disabled]="!payrollForm.valid" (click)="getFullPayroll()">
+                            <span *ngIf="isloading" class="spinner-border spinner-border-sm mr-1"></span>
+                            <b>Generate</b>
+                          </button>
+                        </div>
+                      </form>
+                    </mat-expansion-panel>
+                  </mat-accordion>
                 </li>
               
                 <li (click)="collectionsPerLocation('Report For Single User Action Items')" class="d-flex mb-3">

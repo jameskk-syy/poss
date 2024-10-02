@@ -169,6 +169,7 @@ export class MainComponent implements OnInit {
   CollectionCountReportForm: FormGroup
   reportCollectionFormm:FormGroup
   reportCollectionForm1:FormGroup
+  payrollForm: FormGroup
   
   isloading: boolean
   collectors: any
@@ -277,6 +278,11 @@ export class MainComponent implements OnInit {
     })
     this.paymentFileForm2=this.fb.group({
       month: ["", [Validators.required]]
+    })
+    this.payrollForm = this.fb.group({
+      month: ['', [Validators.required]],
+      year: [this.currentYear, [Validators.required]],
+      format: ['', [Validators.required]]
     })
 
   }
@@ -819,6 +825,61 @@ export class MainComponent implements OnInit {
   //     );
 
   // }
+
+  getFullPayroll() {
+    const reportname = `payroll-`+this.paymentFileForm1.value.month+`-`+this.paymentFileForm1.value.year+`-`
+    this.isloading = true;
+
+    if (this.payrollForm.value.format === 'excel') {
+      this.service.getFullExcelPayroll(this.payrollForm.value.month, this.payrollForm.value.year).subscribe({
+        next: (res: Blob) => {
+          this.isloading = false;
+          const filename = reportname+'.xlsx'
+          saveAs(res, filename)
+
+          this.snackbar.showNotification('snackbar-success', "payroll generated successfully")
+        },
+        error: (err) => {
+          this.isloading = false;
+          console.log(err)
+          this.snackbar.showNotification('snackbar-danger', "unable to generate payroll")
+        }
+      })
+    } else {
+      this.service.getFullPdfPayroll(this.payrollForm.value.month, this.payrollForm.value.year).subscribe({
+        next: (res: any) => {
+          let url = window.URL.createObjectURL(res.data);
+
+          // if you want to open PDF in new tab
+          window.open(url);
+
+          let a = document.createElement("a");
+          document.body.appendChild(a);
+          a.setAttribute("style", "display: none");
+          a.setAttribute("target", "blank");
+          a.href = url;
+          a.download = res.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+
+          this.isloading = false;
+
+          this.snackbar.showNotification(
+            "snackbar-success",
+            "Report generated successfully",
+          );
+        },
+        error: (err) => {
+          this.isloading = false
+          console.log(err)
+
+          this.snackbar.showNotification('snackbar-danger', "unable to get payroll")
+        },
+        complete: () => {}
+      })
+    }
+  }
 
   generatePayroll(){
     this.isloading = true
