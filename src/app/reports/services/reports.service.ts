@@ -136,6 +136,50 @@ export class ReportsService {
     return this.http.get(API_URL, { headers, responseType: 'blob' });
    }
 
+   getFullExcelPayroll(month: any, year: any): Observable<any> {
+    let headers = new HttpHeaders();
+    headers.append("Accept", 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    headers.append("Content-Type", "blob")
+
+    return this.http.get(`${environment.apiUrl}/api/v1/excel/reports/month/payroll/${month}/${year}`, {headers, responseType: 'blob'});
+   }
+
+
+   getFullPdfPayroll(month: any, year: any): Observable<any> {
+    let headers = new HttpHeaders();
+    headers.append("Content-Type", "application/pdf");
+
+    let httpOptions: any = {
+      params: {},
+      headers: headers,
+      responseType: "blob",
+      withCredentials: false,
+      observe: 'response' as 'body'
+    }
+
+    return this.http.get(`${environment.apiUrl}/api/v1/reports/month/payroll/${month}/${year}`, httpOptions).pipe(
+      map((res: any) => {
+        // get filename from disposition header
+        console.log("data us sss")
+        const contentDisposition = res.headers.get('Content-Disposition');
+
+        let filename = month+'-'+year+'.pdf';
+
+        if (contentDisposition) {
+          const matches = /filename=([^;]+)/.exec(contentDisposition)
+          if (matches != null && matches[1]) {
+            filename = matches[1].trim()
+          }
+        }
+
+        return {
+          filename: filename,
+          data: new Blob([res.body], {type: "application/pdf"})
+        }
+      }
+    ))
+   }
+
    getPayrollByMode(month: any, year: any, bank: any): Observable<any> {
     let headers = new HttpHeaders();
     headers.append("Content-Type", "application/pdf");
