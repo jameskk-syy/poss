@@ -1,0 +1,169 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- title breadcrumb -->
+            <app-breadcrumb [title]="'Warehousing'" [items]="['Warehouse']"
+            [active_item]="'Warehouse'">
+        </app-breadcrumb>
+        </div>
+
+        <div class="row">
+            <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="table-responsive">
+                            <!-- table header -->
+                             <div class="materialTableHeader">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <!-- table action bar -->
+                                        <ul class="header-buttons-left ms-0">
+                                            <li class="dropdown">
+                                                <h2>Warehouses</h2>
+                                            </li>
+
+                                            <li class="dropdown m-l-20">
+                                                <label for="search-input">
+                                                    <i class="material-icons search-icon">search</i>
+                                                </label>
+                                                <input placeholder="Search" style="text-transform: capitalize;" class="browser-default search-field" aria-label="Search box" (keyup)="search($event)">
+                                            </li>
+
+                                            <li>
+                                                <div class="m-l-10" matTooltip="Add">
+                                                    <button mat-mini-fab color="primary" (click)="create()">
+                                                        <mat-icon class="col-white">add</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="m-l-10" matTooltip="Refresh">
+                                                    <button mat-mini-fab color="primary" (click)="getAll()">
+                                                        <mat-icon class="col-white">refresh</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-2">
+                                        <ul class="header-buttons">
+                                            <li>
+                                                <div class="export-button m-l-10" matTooltip="XLSX">
+                                                    <img src="assets/images/icons/xlsx.png" alt="" (click)="
+                                exporter.exportTable('xlsx', {
+                                  fileName: 'all-counties',
+                                  sheet: 'sheet1'
+                                })
+                              " />
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="export-button m-l-10" matTooltip="CSV">
+                                                    <img src="assets/images/icons/csv.png" alt=""
+                                                        (click)="exporter.exportTable('csv')" />
+                                                </div>
+                                            </li>
+                                           
+                                        </ul>
+                                    </div>
+                                </div>
+                             </div>
+
+                             <!-- table content -->
+                              <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell" #exporter="matTableExporter">
+                                <ng-container matColumnDef="id">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Id</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i = index" [class.odd-row]="i % 2"
+                                    [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-12">
+                                    {{wh.id}}
+                                </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="code">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Code</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row] class="column-nowrap tbl-col-width-per-12">
+                                        {{wh.code}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="name">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Code</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row] class="column-nowrap tbl-col-width-per-12">
+                                        {{wh.code}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="description">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Description</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row] class="column-nowrap tbl-col-width-per-12">
+                                        {{wh.description}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="status">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="psl-3 tbl-col-width-per-8">Status</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i=index">
+                                        <div *ngIf="wh.status=='ACTIVE'">
+                                            <span class="badge badge-pill badge-primary col-green">{{wh.status}}</span>
+                                        </div>
+
+                                        <div *ngIf="wh.status == 'DELETED'">
+                                            <span class="badge badge-pill badge-primary col-green">{{wh.status}}</span>
+                                        </div>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="created_on">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="psl-3 tbl-col-width-per-8">Created On</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i=index">
+                                        {{wh.created_on | date}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="action">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
+                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, farmer)">
+                                        <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                             class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="Edit farmer"
+                                                [icon]="'edit'"></app-feather-icons>
+                                        </button>
+                                        <button mat-icon-button color="accent" (click)="$event.stopPropagation()"
+                                             class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="Delete farmer" [icon]="'trash-2'"
+                                                [class]="'tbl-fav-delete'"></app-feather-icons>
+                                        </button>
+                                        <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
+                                             class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="View Farmer Details" [icon]="'eye'"
+                                                [class]="'tbl-fav-eye'"></app-feather-icons>
+                                        </button>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <mat-header-row *matHeaderCellDef="displayedColumns"></mat-header-row>
+
+                                <mat-cell *matNoDataRow colspan="4">Records not found</mat-cell>
+                              </mat-table>
+
+                              <!-- Loading spinner -->
+                              <div *ngIf="loading" class="tbl-spinner">
+                                <mat-progress-spinner color="primary" [diameter]="40" mode="indeterminate">
+                                </mat-progress-spinner>
+                              </div>
+
+                              <div class="tbl-spinner" *ngIf="!data && !loading">
+                                <h4>0 Records Found</h4>
+                            </div>
+
+                            <mat-paginator #paginator [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
