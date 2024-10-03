@@ -18,7 +18,15 @@ baseUrl =  environment.apiUrl+'/api/v1/'
     return this.http.post(`${this.baseUrl}add`, data);
   }
 
+  public update(data: any, id: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}update/${id}`, data);
+  }
+
   public getByStatus(status: any): Observable<any> {
     return this.http.get(`${this.baseUrl}get/${status}`)
+  }
+
+  public delete(id: any): Observable<any> {
+    return this.http.delete(`${this.baseUrl}del/${id}`)
   }
 }

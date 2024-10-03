@@ -73,37 +73,37 @@
                              <!-- table content -->
                               <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell" #exporter="matTableExporter">
                                 <ng-container matColumnDef="id">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Id</mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-4">Id</mat-header-cell>
                                     <mat-cell *matCellDef="let wh;let i = index" [class.odd-row]="i % 2"
-                                    [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-12">
+                                    [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-4">
                                     {{wh.id}}
                                 </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="code">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Code</mat-header-cell>
-                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row] class="column-nowrap tbl-col-width-per-12">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-6">Code</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-6">
                                         {{wh.code}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="name">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Code</mat-header-cell>
-                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row] class="column-nowrap tbl-col-width-per-12">
-                                        {{wh.code}}
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-10">
+                                        {{wh.name}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="description">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Description</mat-header-cell>
-                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row] class="column-nowrap tbl-col-width-per-12">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-16">Description</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-16">
                                         {{wh.description}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="status">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="psl-3 tbl-col-width-per-8">Status</mat-header-cell>
-                                    <mat-cell *matCellDef="let wh;let i=index">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Status</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i=index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-10">
                                         <div *ngIf="wh.status=='ACTIVE'">
                                             <span class="badge badge-pill badge-primary col-green">{{wh.status}}</span>
                                         </div>
@@ -114,38 +114,45 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="created_on">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="psl-3 tbl-col-width-per-8">Created On</mat-header-cell>
-                                    <mat-cell *matCellDef="let wh;let i=index">
-                                        {{wh.created_on | date}}
+                                <ng-container matColumnDef="createdBy">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Created By</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-10">
+                                        {{wh.createdBy}}
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="action">
+                                <ng-container matColumnDef="createdOn">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-8">Created On</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i=index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-8">
+                                        {{wh.createdOn | date}}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="actions">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                                    <mat-cell *matCellDef="let farmer;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, farmer)">
+                                    <mat-cell *matCellDef="let wh;let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, wh)">
                                         <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                             class="tbl-action-btn">
+                                            (click)="edit(wh)" class="tbl-action-btn">
                                             <app-feather-icons matTooltip="Edit farmer"
                                                 [icon]="'edit'"></app-feather-icons>
                                         </button>
                                         <button mat-icon-button color="accent" (click)="$event.stopPropagation()"
-                                             class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="Delete farmer" [icon]="'trash-2'"
+                                        (click)="delete(wh)" class="tbl-action-btn">
+                                            <app-feather-icons matTooltip="Delete Warehouse" [icon]="'trash-2'"
                                                 [class]="'tbl-fav-delete'"></app-feather-icons>
                                         </button>
                                         <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
                                              class="tbl-action-btn">
-                                            <app-feather-icons matTooltip="View Farmer Details" [icon]="'eye'"
+                                            <app-feather-icons matTooltip="View Warehouse" [icon]="'eye'"
                                                 [class]="'tbl-fav-eye'"></app-feather-icons>
                                         </button>
                                     </mat-cell>
                                 </ng-container>
 
-                                <mat-header-row *matHeaderCellDef="displayedColumns"></mat-header-row>
+                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-                                <mat-cell *matNoDataRow colspan="4">Records not found</mat-cell>
+                                <mat-row *matRowDef="let wh; columns: displayedColumns" [style.cursor]="'pointer'" matRipple></mat-row>
                               </mat-table>
 
                               <!-- Loading spinner -->

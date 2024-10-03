@@ -4,6 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { WarehouseService } from '../warehouse.service';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AddDialogComponent } from '../add-dialog/add-dialog.component';
+import { WarehouseDelComponent } from '../warehouse-del/warehouse-del.component';
 
 @Component({
   selector: 'app-main',
@@ -15,13 +18,13 @@ export class MainComponent implements OnInit {
   data: boolean = false
   dataSource: MatTableDataSource<any>
 
-  displayedColumns: any = ['id', 'code', 'name', 'description', 'status', 'created_on']
+  displayedColumns: any = ['id', 'code', 'name', 'description', 'status', 'createdBy','createdOn', 'actions']
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild("filter", { static: true }) filter: ElementRef;
 
-  constructor(private service: WarehouseService, private snackbar: SnackbarService) { }
+  constructor(private service: WarehouseService, private snackbar: SnackbarService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getAll()
@@ -34,6 +37,8 @@ export class MainComponent implements OnInit {
         if (res.entity.length > 0) {
           this.loading = false
           this.data  =true
+
+          console.log("data retrieved is ", res)
 
           this.dataSource = new MatTableDataSource(res.entity)
           this.dataSource.paginator = this.paginator
@@ -55,7 +60,52 @@ export class MainComponent implements OnInit {
     })
   }
 
-  create() {}
+  create() {
+    const dialogConfig = new MatDialogConfig()
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "60%"
+    dialogConfig.data = {
+      action: "add",
+    }
+    this.dialog.open(AddDialogComponent, dialogConfig).afterClosed().subscribe({
+      next: (res: any) => {
+        this.ngOnInit()
+      }
+    })
+  }
+
+  edit(warehouse: any) {
+    const dialogConfig = new MatDialogConfig()
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "60%"
+    dialogConfig.data = {
+      action: "edit",
+      wh: warehouse
+    }
+    this.dialog.open(AddDialogComponent, dialogConfig).afterClosed().subscribe({
+      next: (res: any) => {
+        this.ngOnInit()
+      }
+    })
+  }
+
+  delete(warehouse: any) {
+    const dialogConfig = new MatDialogConfig()
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "60%"
+    dialogConfig.data = {
+      action: "edit",
+      wh: warehouse
+    }
+    this.dialog.open(WarehouseDelComponent, dialogConfig).afterClosed().subscribe({
+      next: (res: any) => {
+        this.ngOnInit()
+      }
+    })
+  }
 
   
   search(event: Event) {
