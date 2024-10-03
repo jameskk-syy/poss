@@ -27,6 +27,16 @@ const routes: Routes = [
     component: MainComponent,
   },
   {
+    path: "price",
+    loadChildren: () =>
+      import("./price/price.module").then((m) => m.PriceModule),
+  },  
+  {
+    path: "customer",
+    loadChildren: () =>
+      import("./customer/customer.module").then((m) => m.CustomerModule),
+  }, 
+  {
     path: "reports",
     canActivate: [AuthGuard],
     data: {
