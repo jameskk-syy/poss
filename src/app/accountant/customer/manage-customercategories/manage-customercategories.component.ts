@@ -6,10 +6,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { AddCustomerComponent } from '../forms/add-customer/add-customer.component';
-import { DeleteCustomerComponent } from '../forms/delete-customer/delete-customer.component';
+import { DeleteCategoriesComponent } from '../forms/delete-categories/delete-categories.component';
 import { ViewCustomerComponent } from '../forms/view-customer/view-customer.component';
 import { UpdateCustomerComponent } from '../forms/update-customer/update-customer.component';
+import { AddCategoriesComponent } from '../forms/add-categories/add-categories.component';
 
 @Component({
   selector: 'app-manage-customercategories',
@@ -34,11 +34,9 @@ export class ManageCustomercategoriesComponent implements OnInit {
 
   displayedColumns: string[] = [
     'id',
-    "customerNO",
-    "firstname",
-    "lastname",
-    "contact",
-    "address",
+    "code",
+    "description",
+    "name",
     "status",
     'action',
   ];
@@ -59,7 +57,7 @@ export class ManageCustomercategoriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterform = this.fb.group({
-      customer_no: [""],
+      status: [""],
     })
 
     this.getData()
@@ -70,7 +68,7 @@ export class ManageCustomercategoriesComponent implements OnInit {
     this.selected = ""
     this.isLoading = true
     this.isdata = false
-    this.customerservice.fetchCustomers().subscribe(res => {
+    this.customerservice.fetchCategory().subscribe(res => {
       this.data = res
 
       this.isLoading = false
@@ -100,21 +98,33 @@ export class ManageCustomercategoriesComponent implements OnInit {
     dialogConfig.autoFocus = true
     dialogConfig.width = "1000px"
     dialogConfig.data = {
-      customer: ""
+      category: ""
     }
 
-    const dialogRef = this.dialog.open(AddCustomerComponent, dialogConfig)
+    const dialogRef = this.dialog.open(AddCategoriesComponent, dialogConfig)
     dialogRef.afterClosed().subscribe((res)=> {
       this.getData()
     })
   }
 
-  filterCustomers() {
+  filterCategories() {
 
   }
 
-  getCustomerByCustomerNo() {
-    let farmerNo = this.filterform.value.farmer_no
+  getCategoryByStatus() {
+    const status = this.filterform.value.status;  
+    if (status) {
+          this.customerservice.fetchByStatus(status).subscribe(
+        (data) => {
+          console.log('Fetched Categories:', data);
+               },
+        (error) => {
+          console.error('Error fetching categories by status:', error);
+        }
+      );
+    } else {
+      console.error('Status is required to fetch categories.');
+    }
   }
 
   editCall(data: any) {
@@ -123,7 +133,7 @@ export class ManageCustomercategoriesComponent implements OnInit {
     dialogConfig.autoFocus = true
     dialogConfig.width = "60%"
     dialogConfig.data = {
-      customer: data
+      category: data
     }
 
     const dialogRef = this.dialog.open(UpdateCustomerComponent, dialogConfig)
@@ -138,10 +148,10 @@ export class ManageCustomercategoriesComponent implements OnInit {
     dialogConfig.autoFocus = true
     dialogConfig.width = "40%"
     dialogConfig.data = {
-      customer: data
+      category: data
     }
 
-    const dialogRef = this.dialog.open(DeleteCustomerComponent, dialogConfig)
+    const dialogRef = this.dialog.open(DeleteCategoriesComponent, dialogConfig)
     dialogRef.afterClosed().subscribe((res)=> {
       this.getData()
     })
@@ -153,7 +163,7 @@ export class ManageCustomercategoriesComponent implements OnInit {
     dialogConfig.autoFocus = true
     dialogConfig.width = "60%"
     dialogConfig.data = {
-      customer: data
+      category: data
     }
 
     const dialogRef = this.dialog.open(ViewCustomerComponent, dialogConfig)

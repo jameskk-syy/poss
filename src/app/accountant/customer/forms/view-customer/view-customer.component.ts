@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ManageCustomersComponent } from '../manage-customers/manage-customers.component';
+import { ManageCustomersComponent } from '../../manage-customers/manage-customers.component';
 
 @Component({
   selector: 'app-view-customer',
