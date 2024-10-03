@@ -104,6 +104,14 @@ const routes: Routes = [
         loadChildren: () =>
           import("./staff/collectors/collectors.module").then((m)=>m.CollectorsModule),
       },
+      {
+        path: "inventory",
+        canActivate: [AuthGuard],
+        data: {
+          role: Role.Accountant
+        },
+        loadChildren: () => import("./accountant/inventory/inventory.module").then((m)=>m.InventoryModule)
+      }
      
     ],
   },
