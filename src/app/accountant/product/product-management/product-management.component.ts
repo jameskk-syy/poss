@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { ProductService } from '../product.service';
 import { AddProductComponent } from '../forms/add-product/add-product.component';
 import { DeleteProductComponent } from '../forms/delete-product/delete-product.component';
+import { EditProductComponent } from '../forms/edit-product/edit-product.component';
 
 @Component({
   selector: 'app-product-management',
@@ -24,7 +25,6 @@ export class ProductManagementComponent implements OnInit {
       'category',
       'status',
       'createdBy',
-      'updatedBy',
       'action'
   ];
 
@@ -84,15 +84,13 @@ export class ProductManagementComponent implements OnInit {
       })
    }
 
-  addProduct(action:string){
-    if (action === 'add'){
-
+  addProduct(){
+   
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "600px"
     dialogConfig.data = {
-      action:action,
       test: ""
     }
     const dialogRef = this.dialog.open(AddProductComponent, dialogConfig);
@@ -103,25 +101,20 @@ export class ProductManagementComponent implements OnInit {
       }
       });
     }
-  }
-
   
 
-  editProduct(product:any, action:string){
-
-    if (action === 'edit') {
-
+  editProduct(product:any){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "600px"
     dialogConfig.data = {
-      action:action,
       product:product
     }
-    this.dialog.open(AddProductComponent, dialogConfig)
+    this.dialog.open(EditProductComponent, dialogConfig)
     }
-  }
+  
+  
 
   deleteProduct(product: any){
     const dialogConfig = new MatDialogConfig();

@@ -23,6 +23,8 @@ export class AddProductComponent implements OnInit {
   categories: any;
   isdata: boolean;
   selectedCategory: any;
+  catId: any
+
 
   constructor(
     public dialogRef: MatDialogRef<ProductManagementComponent>,
@@ -37,7 +39,7 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.productForm = this.fb.group({
-      code: ['', Validators.required],
+      
       name: ['', Validators.required],
       category: ['',Validators.required],
       description: ['', Validators.required],
@@ -46,49 +48,16 @@ export class AddProductComponent implements OnInit {
       updatedBy: ['',]
     });
 
-    console.log('Action:', this.data.action);
     this.getCategoryData()
-    this.onSubmit
-  
-
-    if (this.data.action === 'edit') {
-      this.productForm.patchValue({
-        code: this.data.product.code,
-        name: this.data.product.name,
-        category: this.data.product.category,
-        description: this.data.product.description,
-        status: this.data.product.status,
-      });
-      this.title = 'Edit Product';
-    } else {
-      this.title = 'Add New Product'; 
-    }
   }
 
 
   onSubmit() {
-    if (this.productForm.invalid) {
-      return;  
-    }
-
-    this.loading = true;
-    console.log('Form action:', this.data.action); 
-    console.log('Action:', this.data.action);
-
-    // Call update method if editing
-    if (this.data.action === 'edit') {
-      console.log('Editing product, calling updateProduct()');
-      this.updateProduct();
-    } else {
-
-      const selectedCategory = this.productForm.value.category;
+    
+    const selectedCategory = this.productForm.value.category;
       console.log('cjj', selectedCategory);
-      // const categoryId = this.selectedCategory.id;
       if (selectedCategory && selectedCategory.id) {
         const categoryId = selectedCategory.id;
-
-        console.log ('this id',categoryId)
-        console.log ('this id',this.productForm.value)
 
       this.subscription = this.service.addProduct(this.productForm.value, categoryId).subscribe(res => {
         this.loading = false;
@@ -105,39 +74,16 @@ export class AddProductComponent implements OnInit {
       });
     }
     }
-  }
-
-  
-
-  updateProduct() {
-    this.loading = true;
-    this.subscription = this.service.updateProduct(this.data.product, this.data.product.id).subscribe(res => {
-      this.loading = false;
-      const successMessage = res.message
-      this.snackbar.showNotification("snackbar-success", successMessage);
-      this.dialogRef.close(true);  
-    }, err => {
-      this.loading = false;
-      const errorMessage = err.message
-      this.snackbar.showNotification("snackbar-danger", errorMessage);
-    });
-  }
-
   
 
   onClick() {
     this.dialogRef.close();
   }
 
-
-
   getCategoryData() {
     this.isLoading = true;
     this.subscription = this.service.getCategories().subscribe(res => {
-        this.data = res;
-        console.log('categories are here', this.data);
-        this.categories = this.data.entity.map((item:any) =>item)
-        console.log('category name', this.categories)
+        this.categories = res.entity
     }, error => {
         this.isLoading = false;
         console.error('Error fetching categories:', error);

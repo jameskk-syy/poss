@@ -20,7 +20,7 @@
                                     </li>
                                     <li>
                                         <div class="m-l-10" matTooltip="ADD">
-                                            <button mat-mini-fab color="primary" (click)="addProduct('add')">
+                                            <button mat-mini-fab color="primary" (click)="addProduct()">
                                                 <mat-icon class="col-white">add</mat-icon>
                                             </button>
                                         </div>
@@ -92,7 +92,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Category</mat-header-cell>
                             <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{product.category}}
+                                {{product.category.name}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="status">
@@ -116,20 +116,14 @@
                                 {{product.createdOn | date}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="updatedBy">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Updated By</mat-header-cell>
-                            <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{product.updatedBy}}
-                            </mat-cell>
-                        </ng-container>
+                       
                         
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
                             <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, product)">
                                 <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="editProduct(product,'edit')" matTooltip="Edit product"
+                                    (click)="editProduct(product)" matTooltip="Edit product"
                                     class="tbl-action-btn">
                                     <app-feather-icons color="primary" matTooltip="Edit Product"
                                         [icon]="'edit'"></app-feather-icons>

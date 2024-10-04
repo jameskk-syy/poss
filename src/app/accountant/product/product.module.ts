@@ -26,6 +26,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { DeleteCategoryComponent } from './forms/delete-category/delete-category.component';
 import { DeleteProductComponent } from './forms/delete-product/delete-product.component';
+import { DeleteSkuComponent } from './forms/delete-sku/delete-sku.component';
+import { AddSkuComponent } from './forms/add-sku/add-sku.component';
+import { EditSkuComponent } from './forms/edit-sku/edit-sku.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { EditProductComponent } from './forms/edit-product/edit-product.component';
 
 
 
@@ -39,6 +44,10 @@ import { DeleteProductComponent } from './forms/delete-product/delete-product.co
     AddCategoryComponent,
     DeleteCategoryComponent,
     DeleteProductComponent,
+    DeleteSkuComponent,
+    AddSkuComponent,
+    EditSkuComponent,
+    EditProductComponent
    
   ],
   imports: [
@@ -64,8 +73,8 @@ import { DeleteProductComponent } from './forms/delete-product/delete-product.co
     MatDialogModule,
     MatTabsModule, 
     MatSelectModule,
-    MaterialModule
-        
+    MaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class ProductModule { }

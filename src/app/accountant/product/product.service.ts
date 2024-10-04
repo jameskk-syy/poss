@@ -17,6 +17,7 @@ export class ProductService {
 
   categoryUrl = `${environment.apiUrl}/api/v1/category/`;
   productUrl = `${environment.apiUrl}/api/v1/products/`;
+  skuUrl = `${environment.apiUrl}/api/v1/sku/`;
 
 //categories
   public getCategories(): Observable<any> {
@@ -57,13 +58,38 @@ export class ProductService {
   }
 
   deleteProduct(id: any): Observable<any> {
-    return this.http.delete(this.productUrl + `delete/` + id, httpOptions).pipe (
+    return this.http.delete(this.productUrl + `del/` + id, httpOptions).pipe (
       catchError(this.handleError)
     )
   }
 
   updateProduct(data: any, id: number): Observable<any> {
-    return this.http.put(this.productUrl + `update${id}`, data, httpOptions).pipe (
+    return this.http.put(this.productUrl + `update/${id}`, data, httpOptions).pipe (
+      catchError(this.handleError)
+    )
+  }
+
+  //sku
+  public getSkus(): Observable<any> {
+    return this.http.get(this.skuUrl + `get`).pipe (
+      catchError(this.handleError)
+    )
+  }
+
+  addSku(data: any, productId: number, priceId:number): Observable<any> {
+    return this.http.post(this.skuUrl + `add/${productId}/${priceId}`, data, httpOptions).pipe (
+      catchError(this.handleError)
+    )
+  }
+
+  deleteSku(id: any): Observable<any> {
+    return this.http.delete(this.skuUrl + `del/` + id, httpOptions).pipe (
+      catchError(this.handleError)
+    )
+  }
+
+  updateSKu(data: any, skuId: number, priceId:number): Observable<any> {
+    return this.http.put(this.skuUrl + `update/${skuId}/${priceId}`, data, httpOptions).pipe (
       catchError(this.handleError)
     )
   }
