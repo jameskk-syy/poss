@@ -59,8 +59,7 @@ export class AddCategoriesComponent implements OnInit {
         (err) => {
           this.isLoading = false;
           this.snackBar.showNotification('snackbar-danger', err);
-          this.dialogRef.close();
-        })
+              })
 
   }
 

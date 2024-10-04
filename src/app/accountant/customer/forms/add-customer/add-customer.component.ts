@@ -6,6 +6,7 @@ import { CustomerService } from '../../customer.service';
 import { Subscription } from 'rxjs';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { statusArray } from 'src/app/core/models/status';
+
 @Component({
   selector: 'app-add-customer',
   templateUrl: './add-customer.component.html',
@@ -17,7 +18,7 @@ export class AddCustomerComponent implements OnInit {
   subscription!: Subscription;
   isLoading: boolean = false
   pLoading: boolean = false
-  customerType: any[] = ["CREDIT", "CASH", "DEBIT", "WALKIN"]
+  categories: any[] = []; 
   statuses = statusArray;
 
   routes: any
@@ -39,18 +40,35 @@ export class AddCustomerComponent implements OnInit {
       name: ['', [Validators.required]],
       address: ['', [Validators.required]],
       status: ['', [Validators.required]],
-      phone: ['', [Validators.required]]
+      phone: ['', [Validators.required]],
+      category: ['', [Validators.required]]
     });
 
-    this.getRoutes()
+    this.getRoutes();
+    this. getCategoryData();
   }
 
+  getCategoryData() {
+    this.isLoading = true;
+    this.subscription = this.customerService.fetchCategory().subscribe(res => {
+        this.data = res;
+        console.log('categories are here', this.data);
+        this.categories = this.data.entity.map((item:any) =>item)
+        console.log('category name', this.categories)
+    }, error => {
+        this.isLoading = false;
+        console.error('Error fetching categories:', error);
+    });
+}
 
   onSubmit() {
 
     this.isLoading = true
 
-    this.subscription = this.customerService.addCustomer(this.data.customer.id, this.customerRegistrationForm.value)
+    const categoryId = this.customerRegistrationForm.get('category')?.value;
+    console.log('Selected Category ID:', categoryId);
+
+    this.subscription = this.customerService.addCustomer(categoryId, this.customerRegistrationForm.value)
       .subscribe((res) => {
         this.snackBar.showNotification('snackbar-success', 'Successful!');
         this.isLoading = false;
@@ -60,8 +78,7 @@ export class AddCustomerComponent implements OnInit {
         (err) => {
           this.isLoading = false;
           this.snackBar.showNotification('snackbar-danger', err);
-          this.dialogRef.close();
-        })
+                })
 
   }
 

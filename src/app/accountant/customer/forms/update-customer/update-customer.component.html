@@ -23,7 +23,7 @@
                 <mat-card>
                     <mat-card-title style="font-size: x-small;">Customer Details</mat-card-title>
                     <mat-card-content>
-                        <div class="row">
+                        <div class="row">                                              
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Address</mat-label>
@@ -32,7 +32,7 @@
                                         The Address is required
                                     </mat-error>
                                 </mat-form-field>
-                            </div>
+                            </div> 
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Alternative Phone</mat-label>
@@ -50,11 +50,10 @@
                                         The Location is required
                                     </mat-error>
                                 </mat-form-field>
-                            </div>
-                            
+                            </div>                
                         </div>
-
-                        <div class="row">
+                        <div class="row">                
+                     
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Name</mat-label>
@@ -63,25 +62,29 @@
                                         customer name is required
                                     </mat-error>
                                 </mat-form-field>
-                            </div>                           
-                          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                                    <mat-form-field class="example-full-width" appearance="outline">
-                                        <mat-label>Status</mat-label>
-                                        <input matInput formControlName="status" required />
-                                        <mat-error *ngIf="customerUpdateForm.get('status').hasError('required')">
-                                            Status is required
-                                        </mat-error>
-                                    </mat-form-field>
-                        </div>                  
+                            </div>
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Phone</mat-label>
-                                    <input matInput formControlName="phone" required />
-                                    <mat-error *ngIf="customerUpdateForm.get('phone').hasError('required')">
-                                        Phone number is required
+                                    <mat-label>Status</mat-label>
+                                    <mat-select formControlName="status" required>
+                                        <mat-option *ngFor="let stat of statuses" [value]="stat">
+                                          {{ stat }}
+                                        </mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="customerUpdateForm.get('status').hasError('required')">
+                                        Status is required
                                     </mat-error>
                                 </mat-form-field>
-                            </div>
+                            </div>                  
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Phone</mat-label>
+                                <input matInput formControlName="phone" required />
+                                <mat-error *ngIf="customerUpdateForm.get('phone').hasError('required')">
+                                    Phone number is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
                         </div>
                  
                         <div class="row">

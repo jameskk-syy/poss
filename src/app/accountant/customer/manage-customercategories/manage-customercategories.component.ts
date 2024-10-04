@@ -35,8 +35,8 @@ export class ManageCustomercategoriesComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     "code",
-    "description",
     "name",
+    "description",   
     "status",
     'action',
   ];

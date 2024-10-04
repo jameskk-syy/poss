@@ -58,8 +58,7 @@ export class AddPriceComponent implements OnInit {
         (err) => {
           this.isLoading = false;
           this.snackBar.showNotification('snackbar-danger', err);
-          this.dialogRef.close();
-        })
+               })
 
   }
 
