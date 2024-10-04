@@ -9,7 +9,7 @@
                             <div class="col-8">
                                 <ul class="header-buttons-left ms-0">
                                     <li class="dropdown">
-                                        <h2>Departments</h2>
+                                        <h2>Category</h2>
                                     </li>
                                     <li class="dropdown m-l-20">
                                         <label for="search-input"><i
@@ -20,7 +20,7 @@
                                     </li>
                                     <li>
                                         <div class="m-l-10" matTooltip="ADD">
-                                            <button mat-mini-fab color="primary" (click)="addCategory()">
+                                            <button mat-mini-fab color="primary" (click)="addCategory('add')">
                                                 <mat-icon class="col-white">add</mat-icon>
                                             </button>
                                         </div>
@@ -38,7 +38,7 @@
                                 <ul class="header-buttons">
                                     <li>
                                         <div class="export-button m-l-10" matTooltip="XLSX">
-                                            <img src="assets/images/icons/xlsx.png" alt="" (click)="exporter.exportTable('xlsx', {fileName: 'departments',sheet: 'sheet1' })" />
+                                            <img src="assets/images/icons/xlsx.png" alt="" (click)="exporter.exportTable('xlsx', {fileName: 'categories',sheet: 'sheet1' })" />
                                         </div>
                                     </li>
                                     <li>
@@ -65,88 +65,80 @@
                     </div>
                     <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell"
                         #exporter="matTableExporter">
-                        
-                        <!-- <ng-container matColumnDef="select">
-                            <mat-header-cell *matHeaderCellDef [ngClass]="'tbl-col-width-per-6'">
-                                <mat-checkbox (change)="$event ? masterToggle() : null"
-                                    [checked]="selection.hasValue() && isAllSelected()"
-                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                    [ngClass]="'tbl-checkbox'">
-                                </mat-checkbox>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let row" [ngClass]="'tbl-col-width-per-6'">
-                                <mat-checkbox (click)="$event.stopPropagation()"
-                                    (change)="$event ? selection.toggle(row) : null"
-                                    [checked]="selection.isSelected(row)" [ngClass]="'tbl-checkbox'">
-                                </mat-checkbox>
-                            </mat-cell>
-                        </ng-container>  -->
-                         <ng-container matColumnDef="id">
+                    
+                         <!-- <ng-container matColumnDef="id">
                             <mat-header-cell *matHeaderCellDef class="table-img tbl-col-width-per-8"
                                 mat-sort-header>#</mat-header-cell>
                             <mat-cell class="table-img tbl-col-width-per-8"
                                 *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)">{{i +
                                 1}}</mat-cell>
-                        </ng-container> 
+                        </ng-container>  -->
+                        <ng-container matColumnDef="code">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Code</mat-header-cell>
+                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{category.code}}
+                            </mat-cell>
+                        </ng-container>
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
                                 Name</mat-header-cell>
-                            <mat-cell *matCellDef="let department;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap psl-3">
-                                {{name}}
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="code">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Code</mat-header-cell>
-                            <mat-cell *matCellDef="let department;let i = index" [class.odd-row]="i % 2"
+                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{code}}
+                                {{category.name}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="description">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Description</mat-header-cell>
-                            <mat-cell *matCellDef="let department;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap psl-3">
-                                {{description}}
+                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{category.description}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="status">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
-                            <mat-cell *matCellDef="let department;let i = index" [class.odd-row]="i % 2"
+                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{status}}
+                                {{category.status}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="createdBy">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Created By</mat-header-cell>
-                            <mat-cell *matCellDef="let department;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap psl-3">
-                                {{createdBy}}
+                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{category.createdBy}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="createdOn">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Created On</mat-header-cell>
+                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{category.createdOn | date}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="updatedBy">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Updated By</mat-header-cell>
-                            <mat-cell *matCellDef="let department;let i = index" [class.odd-row]="i % 2"
+                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{updatedBy}}
+                                {{category.updatedBy}}
                             </mat-cell>
                         </ng-container>
                         
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                            <mat-cell *matCellDef="let department;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, department)">
+                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, category)">
                                 <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="editDepartmentCall(department)" matTooltip="Edit department"
+                                    (click)="editCategory(category,'edit')" matTooltip="Edit category"
                                     class="tbl-action-btn">
-                                    <app-feather-icons color="primary" matTooltip="Edit Department"
+                                    <app-feather-icons color="primary" matTooltip="Edit Category"
                                         [icon]="'edit'"></app-feather-icons>
                                 </button>
                                 <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="deleteDepartmentCall(department)" matTooltip="Delete department"
+                                    (click)="deleteCategory(category)" matTooltip="Delete category"
                                     class="tbl-action-btn">
-                                    <app-feather-icons matTooltip="Delete Department" [icon]="'trash-2'"
+                                    <app-feather-icons matTooltip="Delete Category" [icon]="'trash-2'"
                                         [class]="'tbl-fav-delete'"></app-feather-icons>
                                 </button>
                             </mat-cell>
@@ -154,7 +146,7 @@
 
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns"
-                            (click)="departmentDetailsCall(department)" [style.cursor]="'pointer'" matRipple>
+                            (click)="categoryDetailsCall(category)" [style.cursor]="'pointer'" matRipple>
                         </mat-row>
                     </mat-table>
 

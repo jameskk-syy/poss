@@ -19,6 +19,7 @@ export class AddCategoryComponent implements OnInit {
   categoryForm: FormGroup;
   subscription!: Subscription;
   statuses = statusArray;
+  title:string
 
   constructor(
     public dialogRef: MatDialogRef<CategoryComponent>,
@@ -33,34 +34,71 @@ export class AddCategoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoryForm = this.fb.group({
-      categoryCode: ['', Validators.required],
-      categoryName: ['', Validators.required],
+      code: ['', Validators.required],
+      name: ['', Validators.required],
       description: ['', Validators.required],
       status: ['', Validators.required],
-      createdBy: ['',Validators.required],
-      updatedBy: ['',Validators.required]
-
+      
     });
+
+    console.log('Action:', this.data.action);
+
+    if (this.data.action === 'edit') {
+      this.categoryForm.patchValue({
+        code: this.data.category.code,
+        name: this.data.category.name,
+        description: this.data.category.description,
+        status: this.data.category.status,
+      });
+      this.title = 'Edit Category';
+    } else {
+      this.title = 'Add New Category'; 
+    }
   }
 
-  onSubmit() {
 
+  onSubmit() {
     if (this.categoryForm.invalid) {
       return;  
     }
 
     this.loading = true;
-    this.subscription = this.service.addNewCategory(this.categoryForm.value).subscribe(res => {
+
+    // Call update method if editing
+    if (this.data.action === 'edit') {
+      this.updateCategory();
+    } else {
+      // Add new category
+      this.subscription = this.service.addNewCategory(this.categoryForm.value).subscribe(res => {
+        this.loading = false;
+        const successMessage = res.message
+        this.snackbar.showNotification("snackbar-success", successMessage);
+        this.categoryForm.reset();
+        this.dialogRef.close();
+      }, err => {
+        this.loading = false;
+        const errorMessage = err.message
+        this.snackbar.showNotification("snackbar-danger", errorMessage);
+        this.dialogRef.close();
+      });
+    }
+  }
+
+  updateCategory() {
+    this.loading = true;
+    this.subscription = this.service.updateCategory(this.data.category, this.data.category.id).subscribe(res => {
       this.loading = false;
-      this.snackbar.showNotification("snackbar-success", "Successful!");
-      this.categoryForm.reset();
-      this.dialogRef.close();
+      const successMessage = res.message
+      this.snackbar.showNotification("snackbar-success", successMessage);
+      this.dialogRef.close(true);  
     }, err => {
       this.loading = false;
-      this.snackbar.showNotification("snackbar-danger", err);
-      this.dialogRef.close();
-    })
+      const errorMessage = err.message
+      this.snackbar.showNotification("snackbar-danger", errorMessage);
+    });
   }
+
+ 
 
   onClick() {
     this.dialogRef.close();

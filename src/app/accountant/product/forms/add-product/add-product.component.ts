@@ -15,13 +15,16 @@ import { statusArray } from 'src/app/core/models/status';
 export class AddProductComponent implements OnInit {
 
   loading = false;
-  productForm: FormGroup;
+  isLoading = false;
   subscription!: Subscription;
   statuses = statusArray;
-  isdata: boolean = false;
-  isLoading:boolean = false;
-  roles:any;
-  categories: any[] = [];
+  title:string
+  productForm: FormGroup;
+  categories: any;
+  isdata: boolean;
+  selectedCategory: any;
+  catId: any
+
 
   constructor(
     public dialogRef: MatDialogRef<ProductManagementComponent>,
@@ -36,35 +39,42 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.productForm = this.fb.group({
-      productCode: ['', Validators.required],
-      productName: ['', Validators.required],
+      
+      name: ['', Validators.required],
       category: ['',Validators.required],
       description: ['', Validators.required],
       status: ['', Validators.required],
-      createdBy: ['',Validators.required],
-      updatedBy: ['',Validators.required]
-
+      createdBy: ['',],
+      updatedBy: ['',]
     });
+
+    this.getCategoryData()
   }
+
 
   onSubmit() {
+    
+    const selectedCategory = this.productForm.value.category;
+      console.log('cjj', selectedCategory);
+      if (selectedCategory && selectedCategory.id) {
+        const categoryId = selectedCategory.id;
 
-    if (this.productForm.invalid) {
-      return;  
+      this.subscription = this.service.addProduct(this.productForm.value, categoryId).subscribe(res => {
+        this.loading = false;
+        console.log ('jhdjh', this.productForm )
+        const successMessage = res.message
+        this.snackbar.showNotification("snackbar-success", successMessage);
+        this.productForm.reset();
+        this.dialogRef.close();
+      }, err => {
+        this.loading = false;
+        const errorMessage = err.message
+        this.snackbar.showNotification("snackbar-danger", errorMessage);
+        this.dialogRef.close();
+      });
     }
-
-    this.loading = true;
-    this.subscription = this.service.addProduct(this.productForm.value).subscribe(res => {
-      this.loading = false;
-      this.snackbar.showNotification("snackbar-success", "Successful!");
-      this.productForm.reset();
-      this.dialogRef.close();
-    }, err => {
-      this.loading = false;
-      this.snackbar.showNotification("snackbar-danger", err);
-      this.dialogRef.close();
-    })
-  }
+    }
+  
 
   onClick() {
     this.dialogRef.close();
@@ -73,22 +83,7 @@ export class AddProductComponent implements OnInit {
   getCategoryData() {
     this.isLoading = true;
     this.subscription = this.service.getCategories().subscribe(res => {
-        this.data = res;
-        console.log('categories are here', this.data);
-        if (this.data.entity && this.data.entity.length > 0) {
-            this.categories = this.data.entity.map((item: any) => {
-                return {
-                    id: item.id,
-                };
-            });
-            this.isLoading = false;
-            this.isdata = true;
-            console.log('Mapped Categories:', this.categories); 
-        } else {
-            this.isdata = false;
-            this.categories = []; 
-            console.log('No categories found');
-        }
+        this.categories = res.entity
     }, error => {
         this.isLoading = false;
         console.error('Error fetching categories:', error);
