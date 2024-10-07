@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../product.service';
 import { AddProductComponent } from '../forms/add-product/add-product.component';
+import { DeleteProductComponent } from '../forms/delete-product/delete-product.component';
+import { EditProductComponent } from '../forms/edit-product/edit-product.component';
 
 @Component({
   selector: 'app-product-management',
@@ -19,11 +21,11 @@ export class ProductManagementComponent implements OnInit {
   displayedColumns: string[] = [
       'code',
       'name',
-      'category',
       'description',
+      'category',
       'status',
       'createdBy',
-      'updatedBy'
+      'action'
   ];
 
   subscription!: Subscription;
@@ -32,7 +34,25 @@ export class ProductManagementComponent implements OnInit {
   isLoading:boolean = false;
   roles:any;
   dataSource!: MatTableDataSource<any>;
+  products: any[] = [];
 
+  constructor(
+    private router: Router, 
+    private dialog: MatDialog,    
+    private service: ProductService,) 
+    
+    { }
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild("filter", { static: true }) filter: ElementRef;
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
+  contextMenuPosition = { x: "0px", y: "0px" };
+
+  ngOnInit(): void {
+    this.getData();
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -64,47 +84,54 @@ export class ProductManagementComponent implements OnInit {
       })
    }
 
+  addProduct(){
+   
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "600px"
+    dialogConfig.data = {
+      test: ""
+    }
+    const dialogRef = this.dialog.open(AddProductComponent, dialogConfig);
 
-  constructor(
-    private router: Router, 
-    private dialog: MatDialog,    
-    private service: ProductService,) 
-    
-    { }
+      dialogRef.afterClosed().subscribe ({
+      next:(value) => {
+        this.ngOnInit()
+      }
+      });
+    }
+  
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild("filter", { static: true }) filter: ElementRef;
-  @ViewChild(MatMenuTrigger)
-  contextMenu: MatMenuTrigger;
-  contextMenuPosition = { x: "0px", y: "0px" };
+  editProduct(product:any){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "600px"
+    dialogConfig.data = {
+      product:product
+    }
+    this.dialog.open(EditProductComponent, dialogConfig)
+    }
+  
+  
 
-  ngOnInit(): void {
-    this.getData();
-  }
-
-  deleteProduct(product){
+  deleteProduct(product: any){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "500px"
     dialogConfig.data = {
-      dt: product
+      product: product
     }
-    // this.dialog.open(DeletedepartmentComponent, dialogConfig)
-  }
+    const dialogRef = this.dialog.open(DeleteProductComponent, dialogConfig)
 
-  addProduct(){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false
-    dialogConfig.autoFocus = true
-    dialogConfig.width = "900px"
-    dialogConfig.data = {
-      product: ""
-    }
-    this.dialog.open(AddProductComponent, dialogConfig)
+    dialogRef.afterClosed().subscribe ({
+      next: (value) => {
+        this.ngOnInit()
+      },
+    })
   }
-
 }
 
 

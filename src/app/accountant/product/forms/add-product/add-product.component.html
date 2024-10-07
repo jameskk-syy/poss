@@ -5,7 +5,7 @@
                 <div class="modalHeader clearfix">
                     <div class="modal-about">
                         <div class="font-weight-bold p-t-5 ms-2 me-2 font-17">
-                            Add New Product
+                            Add Product
                         </div>
                     </div>
                 </div>
@@ -18,39 +18,26 @@
     <div mat-dialog-content>
         <form class="register-form m-4" [formGroup]="productForm">
             <div class="row">
-                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <!-- <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Category</mat-label>
-                        <mat-select formControlName="category" required>
-                            <mat-option *ngFor="let category of categories" [value]="category">
-                              {{ category }}
-                            </mat-option>
-                          </mat-select>
-                        <mat-error *ngIf="productForm.get('category').hasError('required')">
-                            Category is required
-                        </mat-error>
+                      <mat-label>Product Code</mat-label>
+                      <input matInput formControlName="code" [readonly]="true" required />
+                      <mat-error *ngIf="productForm.get('code').hasError('required')">
+                        Product Code is required
+                      </mat-error>
                     </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>Product Code</mat-label>
-                        <input matInput formControlName="product code" required />
-                        <mat-error *ngIf="productForm.get('productCode').hasError('required')">
-                            Product Code is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+                  </div> -->
 
-                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Product Name</mat-label>
-                        <input matInput formControlName="productName" required />
-                        <mat-error *ngIf="productForm.get('productName').hasError('required')">
+                        <input matInput formControlName="name" required />
+                        <mat-error *ngIf="productForm.get('name').hasError('required')">
                             Product name is required
                         </mat-error>
                     </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Status</mat-label>
                         <mat-select formControlName="status" required>
@@ -64,7 +51,21 @@
                     </mat-form-field>
                 </div>
 
-                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Category</mat-label>
+                        <mat-select formControlName="category" required>
+                            <mat-option *ngFor="let category of categories" [value]="category">
+                              {{ category.name}}
+                            </mat-option>
+                          </mat-select>
+                        <mat-error *ngIf="productForm.get('category').hasError('required')">
+                            Category is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Description</mat-label>
                         <input matInput formControlName="description" required />
@@ -73,25 +74,6 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>createdBy</mat-label>
-                        <input matInput formControlName="createdBy" required />
-                        <mat-error *ngIf="productForm.get('createdBy').hasError('required')">
-                            createdBy is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>updatedBy</mat-label>
-                        <input matInput formControlName="updatedBy" required />
-                        <mat-error *ngIf="productForm.get('updatedBy').hasError('required')">
-                            Description name is required
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                         <div class="example-button-row" align="end">

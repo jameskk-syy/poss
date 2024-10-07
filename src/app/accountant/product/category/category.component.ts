@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../product.service';
 import { AddCategoryComponent } from '../forms/add-category/add-category.component';
+import { DeleteCategoryComponent } from '../forms/delete-category/delete-category.component';
+import { nextTick } from 'process';
 
 @Component({
   selector: 'app-category',
@@ -23,6 +25,7 @@ export class CategoryComponent implements OnInit {
     'status',
     'createdBy',
     'updatedBy',
+    'createdOn',
     'action'
   ];
 
@@ -34,6 +37,23 @@ export class CategoryComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   categories: any[] = [];
 
+  constructor(
+    private router: Router, 
+    private dialog: MatDialog,    
+    private service: ProductService,) 
+    
+    { }
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild("filter", { static: true }) filter: ElementRef;
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
+  contextMenuPosition = { x: "0px", y: "0px" };
+
+  ngOnInit(): void {
+    this.getData();
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -63,57 +83,63 @@ export class CategoryComponent implements OnInit {
           this.dataSource = new MatTableDataSource<any>(this.data);
         }
       })
+
    }
 
-  constructor(
-    private router: Router, 
-    private dialog: MatDialog,    
-    private service: ProductService,) 
-    
-    { }
+  addCategory(action:string){
+    if (action === 'add'){
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild("filter", { static: true }) filter: ElementRef;
-  @ViewChild(MatMenuTrigger)
-  contextMenu: MatMenuTrigger;
-  contextMenuPosition = { x: "0px", y: "0px" };
-
-  ngOnInit(): void {
-    this.getData();
-  }
-
-  addCategory(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
-    dialogConfig.width = "900px"
+    dialogConfig.width = "600px"
     dialogConfig.data = {
+      action:action,
       test: ""
     }
+    const dialogRef = this.dialog.open(AddCategoryComponent, dialogConfig);
+
+      dialogRef.afterClosed().subscribe ({
+      next:(value) => {
+        this.ngOnInit()
+      }
+      });
+    }
+  }
+
+  
+
+  editCategory(category:any, action:string){
+
+    if (action === 'edit') {
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "600px"
+    dialogConfig.data = {
+      action:action,
+      category:category
+    }
     this.dialog.open(AddCategoryComponent, dialogConfig)
+    }
   }
 
-  deleteCategory(department){
+  deleteCategory(category: any){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "500px"
     dialogConfig.data = {
-      dt: department
+      category: category
     }
-    // this.dialog.open(DeletedepartmentComponent, dialogConfig)
-  }
+    const dialogRef = this.dialog.open(DeleteCategoryComponent, dialogConfig)
 
-  editCategory(department){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false
-    dialogConfig.autoFocus = true
-    dialogConfig.width = "500px"
-    dialogConfig.data = {
-      dt: department
-    }
-    // this.dialog.open(EditdepartmentComponent, dialogConfig)
+    dialogRef.afterClosed().subscribe ({
+      next: (value) => {
+        this.ngOnInit()
+      },
+    })
   }
 
 }
