@@ -24,6 +24,7 @@ import { StocksComponent } from './stocks/stocks.component';
 import { AddStockComponent } from './form/add-stock/add-stock.component';
 import { EditStockComponent } from './form/edit-stock/edit-stock.component';
 import { DeleteStockComponent } from './form/delete-stock/delete-stock.component';
+import { LookupsModule } from '../../lookups/lookups.module';
 
 
 @NgModule({
@@ -32,7 +33,7 @@ import { DeleteStockComponent } from './form/delete-stock/delete-stock.component
     StocksComponent,
     AddStockComponent,
     EditStockComponent,
-    DeleteStockComponent
+    DeleteStockComponent,
   ],
   imports: [
     CommonModule,
@@ -59,8 +60,8 @@ import { DeleteStockComponent } from './form/delete-stock/delete-stock.component
     MatTabsModule, 
     MatSelectModule,
     MaterialModule,
-    ReactiveFormsModule
-
+    ReactiveFormsModule,
+    LookupsModule
   ]
 })
 export class StockModule { }

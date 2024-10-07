@@ -31,6 +31,8 @@ import { AddSkuComponent } from './forms/add-sku/add-sku.component';
 import { EditSkuComponent } from './forms/edit-sku/edit-sku.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditProductComponent } from './forms/edit-product/edit-product.component';
+// import { WarehouseLookupComponent } from '../lookups/warehouse-lookup/warehouse-lookup.component';
+
 
 
 
@@ -47,7 +49,8 @@ import { EditProductComponent } from './forms/edit-product/edit-product.componen
     DeleteSkuComponent,
     AddSkuComponent,
     EditSkuComponent,
-    EditProductComponent
+    EditProductComponent,
+    // WarehouseLookupComponent
    
   ],
   imports: [
@@ -60,7 +63,6 @@ import { EditProductComponent } from './forms/edit-product/edit-product.componen
     MatTableExporterModule,
     SharedModule,
     ComponentsModule,
-    CommonModule,
     MatMenuModule,
     MatIconModule,
     MatFormFieldModule,

@@ -1,6 +1,6 @@
-import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError } from 'rxjs';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 const httpOptions = {
@@ -10,10 +10,11 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-
 export class LookupsService {
-
-  usersUrl = `${environment.apiUrl}/api/v1/users/`
+  
+  usersUrl = `${environment.apiUrl}/api/v1/users/`;
+  warehouseUrl = `${environment.apiUrl}/api/v1/`;
+  skuUrl = `${environment.apiUrl}/api/v1/sku/`;
 
   constructor(private http: HttpClient) { 
 
@@ -23,20 +24,29 @@ export class LookupsService {
     return this.http.get(`${environment.apiUrl}/admin/api/v1/users/all-accounts`,httpOptions);
   }
 
-  approveFarmer(farmerNo: any):Observable<any> {
-    return this.http.put(`${environment.apiUrl}/api/v1/farmer/approve-registration/${farmerNo}`,httpOptions);
+  public getWarehouses(): Observable<any> {
+    return this.http.get(this.warehouseUrl + `get/all`).pipe (
+      catchError(this.handleError))
+  }
+
+  public getSkus(): Observable<any> {
+    return this.http.get(this.skuUrl + `get`).pipe (
+      catchError(this.handleError)
+    )
+  }
+
+  private handleError(error: any) {
+    console.error('Error occurred:', error);
+    let errorMessage = 'An unknown error occurred';
+
+    if (error.error && error.error.message) {
+        errorMessage = error.error.message;  
     }
-  
-  fetchFarmers() {
-    return this.http.get(`${environment.apiUrl}/api/v1/farmer/get`,httpOptions);
-  }
-  farmersByActivity(activity:any): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/farmer/activity?activity=`+activity,httpOptions)
-  }
-  farmersWithNoDeliveries() {
-    return this.http.get(`${environment.apiUrl}/api/v1/farmer/no-deliveries`,httpOptions)
-  }
 
-  
+    if (error.status === 400) {
+        errorMessage = `Bad Request: ${errorMessage}`; 
+    }
+
+    return throwError(() => new Error(errorMessage));
 }
-
+}
