@@ -1,0 +1,22 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <app-breadcrumb [title]="'Warehousing'" [items]="['Warehouses']" [active_item]="'Warehouses'">
+            </app-breadcrumb>
+        </div>
+        <mat-tab-group>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Warehouses
+                </ng-template>
+             <app-main></app-main>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Warehouse Products
+                </ng-template>
+          <app-warehouse-products></app-warehouse-products>
+            </mat-tab>
+         </mat-tab-group>
+    </div>
+</section>

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatTabsModule } from '@angular/material/tabs';
-import { InventoryRoutingModule } from './inventory-routing.module';
+import { LookupsRoutingModule } from './lookups-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableExporterModule } from 'mat-table-exporter';
@@ -16,15 +16,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 
+
 @NgModule({
-  declarations: [
-    // WarehouseProductsComponent removed from here
-  ],
-  
+  declarations: [],
   imports: [
     CommonModule,
-    InventoryRoutingModule,
-    CommonModule,  
+    LookupsRoutingModule,
     SharedModule,
     ComponentsModule,
     MatPaginatorModule,
@@ -40,4 +37,4 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
     MatTabsModule,
   ]
 })
-export class InventoryModule { }
+export class LookupsModule { }
