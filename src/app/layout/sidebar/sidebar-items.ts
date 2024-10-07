@@ -1000,6 +1000,7 @@ export const ROUTES: RouteInfo[] = [
   role: ['ACCOUNTANT'],
   submenu: [],
 },
+
 {
   path: '',
   title: 'Inventory',
@@ -1024,6 +1025,19 @@ export const ROUTES: RouteInfo[] = [
       badgeClass: '',
       role: ['ACCOUNTANT'],
       submenu: [],
+      },
+      {
+        path: '/inventory/stock/main',
+        title: 'Stock Management',
+        moduleName: 'stock',
+        iconType: 'feather',
+        icon: 'trending-up',
+        class: '',
+        groupTitle: false,
+        badge: '',
+        badgeClass: '',
+        role: ['ACCOUNTANT'],
+        submenu: [],
       },
   ],
   },
