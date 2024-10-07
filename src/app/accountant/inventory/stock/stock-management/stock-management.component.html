@@ -1,4 +1,3 @@
-
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
@@ -9,7 +8,7 @@
                             <div class="col-8">
                                 <ul class="header-buttons-left ms-0">
                                     <li class="dropdown">
-                                        <h2>Category</h2>
+                                        <h2>Products</h2>
                                     </li>
                                     <li class="dropdown m-l-20">
                                         <label for="search-input"><i
@@ -20,7 +19,7 @@
                                     </li>
                                     <li>
                                         <div class="m-l-10" matTooltip="ADD">
-                                            <button mat-mini-fab color="primary" (click)="addCategory('add')">
+                                            <button mat-mini-fab color="primary" (click)="addProduct()">
                                                 <mat-icon class="col-white">add</mat-icon>
                                             </button>
                                         </div>
@@ -38,7 +37,7 @@
                                 <ul class="header-buttons">
                                     <li>
                                         <div class="export-button m-l-10" matTooltip="XLSX">
-                                            <img src="assets/images/icons/xlsx.png" alt="" (click)="exporter.exportTable('xlsx', {fileName: 'categories',sheet: 'sheet1' })" />
+                                            <img src="assets/images/icons/xlsx.png" alt="" (click)="exporter.exportTable('xlsx', {fileName: 'Products',sheet: 'sheet1' })" />
                                         </div>
                                     </li>
                                     <li>
@@ -65,8 +64,8 @@
                     </div>
                     <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell"
                         #exporter="matTableExporter">
-                    
-                         <ng-container matColumnDef="id">
+
+                        <ng-container matColumnDef="id">
                             <mat-header-cell *matHeaderCellDef class="table-img tbl-col-width-per-8"
                                 mat-sort-header>#</mat-header-cell>
                             <mat-cell class="table-img tbl-col-width-per-8"
@@ -74,71 +73,52 @@
                                 [class.even-row]="!(i % 2)">{{i +
                                 1}}</mat-cell>
                         </ng-container> 
-                        <ng-container matColumnDef="code">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Code</mat-header-cell>
-                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{category.code}}
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
+                    
+                        <ng-container matColumnDef="item">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
-                                Name</mat-header-cell>
-                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
+                                Item</mat-header-cell>
+                            <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{category.name}}
+                                {{stock.item}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="description">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Description</mat-header-cell>
-                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
+                        <ng-container matColumnDef="skuCode">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">skuCode</mat-header-cell>
+                            <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{category.description}}
+                                {{stock.skuCode}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="status">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
-                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
+                        <ng-container matColumnDef="skuId">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">skuId</mat-header-cell>
+                            <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{category.status}}
+                                {{stock.skuId}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="createdBy">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Created By</mat-header-cell>
-                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
+                        <ng-container matColumnDef="count">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Count</mat-header-cell>
+                            <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{category.createdBy}}
+                                {{stock.count}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="createdOn">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Created On</mat-header-cell>
-                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{category.createdOn | date}}
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="updatedBy">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Updated By</mat-header-cell>
-                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{category.updatedBy}}
-                            </mat-cell>
-                        </ng-container>
+                                              
                         
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                            <mat-cell *matCellDef="let category;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, category)">
+                            <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, product)">
                                 <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="editCategory(category,'edit')" matTooltip="Edit category"
+                                    (click)="editProduct(product)" matTooltip="Edit product"
                                     class="tbl-action-btn">
-                                    <app-feather-icons color="primary" matTooltip="Edit Category"
+                                    <app-feather-icons color="primary" matTooltip="Edit Product"
                                         [icon]="'edit'"></app-feather-icons>
                                 </button>
                                 <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="deleteCategory(category)" matTooltip="Delete category"
+                                    (click)="deleteProduct(product)" matTooltip="Delete product"
                                     class="tbl-action-btn">
-                                    <app-feather-icons matTooltip="Delete Category" [icon]="'trash-2'"
+                                    <app-feather-icons matTooltip="Delete Product" [icon]="'trash-2'"
                                         [class]="'tbl-fav-delete'"></app-feather-icons>
                                 </button>
                             </mat-cell>
@@ -146,7 +126,7 @@
 
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns"
-                            (click)="categoryDetailsCall(category)" [style.cursor]="'pointer'" matRipple>
+                            (click)="productDetailsCall(product)" [style.cursor]="'pointer'" matRipple>
                         </mat-row>
                     </mat-table>
 
@@ -168,4 +148,5 @@
         </div>
     </div>
 </div>
+
 

@@ -1,0 +1,16 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <app-breadcrumb [title]="'All Products'" [items]="['Products']" [active_item]="'All Products'">
+            </app-breadcrumb>
+        </div>
+        <mat-tab-group>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Stock
+                </ng-template>
+                <app-stock-management></app-stock-management>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</section>

@@ -65,6 +65,15 @@
                     </div>
                     <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell"
                         #exporter="matTableExporter">
+
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef class="table-img tbl-col-width-per-8"
+                                mat-sort-header>#</mat-header-cell>
+                            <mat-cell class="table-img tbl-col-width-per-8"
+                                *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)">{{i +
+                                1}}</mat-cell>
+                        </ng-container> 
                     
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">

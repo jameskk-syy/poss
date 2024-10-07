@@ -5,30 +5,28 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { ProductService } from '../product.service';
-import { AddCategoryComponent } from '../forms/add-category/add-category.component';
-import { DeleteCategoryComponent } from '../forms/delete-category/delete-category.component';
-import { nextTick } from 'process';
+import { subscribeOn, Subscription } from 'rxjs';
+import { StockService } from '../stock.service';
+import { AddStockComponent } from '../form/add-stock/add-stock.component';
+import { EditStockComponent } from '../form/edit-stock/edit-stock.component';
+import { DeleteStockComponent } from '../form/delete-stock/delete-stock.component';
 
 @Component({
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.sass']
+  selector: 'app-stock-management',
+  templateUrl: './stock-management.component.html',
+  styleUrls: ['./stock-management.component.sass']
 })
-export class CategoryComponent implements OnInit {
+export class StockManagementComponent implements OnInit {
 
-  displayedColumns: string[] = [
+  displayedColumns: string [] = [
     'id',
-    'name',
-    'code',
-    'description',
-    'status',
-    'createdBy',
-    'updatedBy',
-    'createdOn',
+    'item',
+    'skuCode',
+    'skuId',
+    'count',
     'action'
-  ];
+
+  ]
 
   subscription!: Subscription;
   data: any;
@@ -36,14 +34,13 @@ export class CategoryComponent implements OnInit {
   isLoading:boolean = false;
   roles:any;
   dataSource!: MatTableDataSource<any>;
-  categories: any[] = [];
+  stocks: any[] = []
 
   constructor(
-    private router: Router, 
-    private dialog: MatDialog,    
-    private service: ProductService,) 
-    
-    { }
+    private router: Router,
+    private dialog: MatDialog,
+    private service: StockService
+  ) { }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -53,7 +50,6 @@ export class CategoryComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
-    this.getData();
   }
 
   applyFilter(event: Event) {
@@ -65,40 +61,35 @@ export class CategoryComponent implements OnInit {
     }
   }
 
-
-  getData() {
+  getData () {
     this.isLoading = true;
-      this.subscription = this.service.getCategories().subscribe(res => {
-        this.data = res;
-        console.log ('categories are here', this.data)
-        if (this.data.entity.length > 0) {
-          this.isLoading = false;
-          this.isdata = true;
-          // Binding with the datasource
-          this.dataSource = new MatTableDataSource(this.data.entity);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        }
-        else {
-          this.isdata = false;
-          this.dataSource = new MatTableDataSource<any>(this.data);
-        }
-      })
+    this.subscription = this.service.getStock().subscribe(res =>{
+      this.data = res;
+      if (this.data.entity.length > 0) {
+        this.isLoading = false;
+        this.isdata = true;
+        // Binding with the datasource
+        this.dataSource = new MatTableDataSource(this.data.entity);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+      else {
+        this.isdata = false;
+        this.dataSource = new MatTableDataSource<any>(this.data);
+      }
+    });  
+  }
 
-   }
-
-  addCategory(action:string){
-    if (action === 'add'){
-
+  addProduct(){
+   
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "600px"
     dialogConfig.data = {
-      action:action,
       test: ""
     }
-    const dialogRef = this.dialog.open(AddCategoryComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AddStockComponent, dialogConfig);
 
       dialogRef.afterClosed().subscribe ({
       next:(value) => {
@@ -106,35 +97,30 @@ export class CategoryComponent implements OnInit {
       }
       });
     }
-  }
-
   
 
-  editCategory(category:any, action:string){
-
-    if (action === 'edit') {
-
+  editProduct(product:any){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "600px"
     dialogConfig.data = {
-      action:action,
-      category:category
+      product:product
     }
-    this.dialog.open(AddCategoryComponent, dialogConfig)
+    this.dialog.open(EditStockComponent, dialogConfig)
     }
-  }
+  
+  
 
-  deleteCategory(category: any){
+  deleteProduct(product: any){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "500px"
     dialogConfig.data = {
-      category: category
+      product: product
     }
-    const dialogRef = this.dialog.open(DeleteCategoryComponent, dialogConfig)
+    const dialogRef = this.dialog.open(DeleteStockComponent, dialogConfig)
 
     dialogRef.afterClosed().subscribe ({
       next: (value) => {
@@ -144,5 +130,3 @@ export class CategoryComponent implements OnInit {
   }
 
 }
-
-
