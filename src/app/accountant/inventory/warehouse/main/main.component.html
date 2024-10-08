@@ -112,6 +112,13 @@
                                     </mat-cell>
                                 </ng-container>
 
+                                <ng-container matColumnDef="owner">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Owner</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-10">
+                                        {{wh.owner}}
+                                    </mat-cell>
+                                </ng-container>
+
                                 <ng-container matColumnDef="createdOn">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-8">Created On</mat-header-cell>
                                     <mat-cell *matCellDef="let wh;let i=index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-8">
