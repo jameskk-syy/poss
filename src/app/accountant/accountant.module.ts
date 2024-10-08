@@ -15,12 +15,14 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { NgApexchartsModule } from "ng-apexcharts";
 import { DashboardModule } from "src/app/staff/dashboard/dashboard.module";
-import { UserLookupComponent } from './lookups/user-lookup/user-lookup.component';
+
+
+
+
 @NgModule({
   declarations: [
     MainComponent,
-    UserLookupComponent
-
+   
   ],
   imports: [
     CommonModule,

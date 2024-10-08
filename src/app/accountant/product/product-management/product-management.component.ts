@@ -19,6 +19,7 @@ import { EditProductComponent } from '../forms/edit-product/edit-product.compone
 export class ProductManagementComponent implements OnInit {
 
   displayedColumns: string[] = [
+      'id',
       'code',
       'name',
       'description',

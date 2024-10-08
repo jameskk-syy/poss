@@ -1,39 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatIconModule } from '@angular/material/icon';
-import { AccountantRoutingModule } from '../accountant-routing.module';
-import { ReportsModule } from 'src/app/reports/reports.module';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { StaffRoutingModule } from 'src/app/staff/staff-routing.module';
-import { ComponentsModule } from 'src/app/shared/components/components.module';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTableExporterModule } from 'mat-table-exporter'; // Importing the MatTableExporterModule
+import { LookupsRoutingModule } from './lookups-routing.module';
+import { WarehouseLkupComponent } from './warehouse-lkup/warehouse-lkup.component';
+import { MaterialModule } from 'src/app/shared/material.module';
+import { SkuLkupComponent } from './sku-lkup/sku-lkup.component';
+import { UserLkupComponent } from './user-lkup/user-lkup.component';
+
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    WarehouseLkupComponent,
+    SkuLkupComponent,
+    UserLkupComponent
+  ],
   imports: [
     CommonModule,
-    MatIconModule,
-    MatTableModule,
-    ComponentsModule,
-    AccountantRoutingModule,
-    StaffRoutingModule,
-    SharedModule,
-    ReportsModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatTableExporterModule // Add this line to your imports
+    LookupsRoutingModule,
+    MaterialModule
   ]
 })
 export class UserLookupModule { }

@@ -1,10 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductRoutingModule } from './product-routing.module';
-import { CategoryComponent } from './category/category.component';
-import { ProductsComponent } from './products/products.component';
-import { SkuComponent } from './sku/sku.component';
-import { AddProductComponent } from './forms/add-product/add-product.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -18,44 +13,32 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ProductManagementComponent } from './product-management/product-management.component';
-import { AddCategoryComponent } from './forms/add-category/add-category.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { MatSelectModule } from '@angular/material/select';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { DeleteCategoryComponent } from './forms/delete-category/delete-category.component';
-import { DeleteProductComponent } from './forms/delete-product/delete-product.component';
-import { DeleteSkuComponent } from './forms/delete-sku/delete-sku.component';
-import { AddSkuComponent } from './forms/add-sku/add-sku.component';
-import { EditSkuComponent } from './forms/edit-sku/edit-sku.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EditProductComponent } from './forms/edit-product/edit-product.component';
-// import { WarehouseLookupComponent } from '../lookups/warehouse-lookup/warehouse-lookup.component';
-
-
+import { StockRoutingModule } from './stock-routing.module';
+import { StockManagementComponent } from './stock-management/stock-management.component';
+import { StocksComponent } from './stocks/stocks.component';
+import { AddStockComponent } from './form/add-stock/add-stock.component';
+import { EditStockComponent } from './form/edit-stock/edit-stock.component';
+import { DeleteStockComponent } from './form/delete-stock/delete-stock.component';
+import { LookupsModule } from '../../lookups/lookups.module';
 
 
 @NgModule({
   declarations: [
-    CategoryComponent,
-    ProductsComponent,
-    SkuComponent,
-    AddProductComponent,
-    ProductManagementComponent,
-    AddCategoryComponent,
-    DeleteCategoryComponent,
-    DeleteProductComponent,
-    DeleteSkuComponent,
-    AddSkuComponent,
-    EditSkuComponent,
-    EditProductComponent,
-    // WarehouseLookupComponent
-   
+    StockManagementComponent,
+    StocksComponent,
+    AddStockComponent,
+    EditStockComponent,
+    DeleteStockComponent,
   ],
   imports: [
     CommonModule,
-    ProductRoutingModule, 
+    StockRoutingModule,
+    CommonModule,
     CommonModule,
     MatTableModule,
     MatSortModule,
@@ -63,6 +46,7 @@ import { EditProductComponent } from './forms/edit-product/edit-product.componen
     MatTableExporterModule,
     SharedModule,
     ComponentsModule,
+    CommonModule,
     MatMenuModule,
     MatIconModule,
     MatFormFieldModule,
@@ -76,7 +60,8 @@ import { EditProductComponent } from './forms/edit-product/edit-product.componen
     MatTabsModule, 
     MatSelectModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LookupsModule
   ]
 })
-export class ProductModule { }
+export class StockModule { }

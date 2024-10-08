@@ -7,7 +7,6 @@ import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddDialogComponent } from '../add-dialog/add-dialog.component';
 import { WarehouseDelComponent } from '../warehouse-del/warehouse-del.component';
-import { UserLookupComponent } from 'src/app/accountant/lookups/user-lookup/user-lookup.component';
 import { AssignWarehouseComponent } from '../assign-warehouse/assign-warehouse.component';
 
 @Component({
