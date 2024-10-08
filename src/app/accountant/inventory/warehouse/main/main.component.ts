@@ -20,7 +20,7 @@ export class MainComponent implements OnInit {
   data: boolean = false
   dataSource: MatTableDataSource<any>
 
-  displayedColumns: any = ['id', 'code', 'name', 'description', 'status', 'createdBy','createdOn', 'actions']
+  displayedColumns: any = ['id', 'code', 'name', 'description', 'status', 'createdBy','owner','createdOn', 'actions']
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
