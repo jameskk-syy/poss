@@ -2,12 +2,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-import { FarmerLookupComponent } from 'src/app/staff/farmer/pages/farmer-lookup/farmer-lookup.component';
-import { FarmerService } from 'src/app/staff/farmer/services/farmer.service';
 import { MainComponent } from '../main/main.component';
 import { WarehouseService } from '../warehouse.service';
 import { DatePipe } from '@angular/common';
-import { UserLookupComponent } from 'src/app/accountant/lookups/user-lookup/user-lookup.component';
+import { UserLkupComponent } from 'src/app/accountant/lookups/user-lkup/user-lkup.component';
+
 
 @Component({
   selector: 'app-assign-warehouse',
@@ -54,7 +53,7 @@ export class AssignWarehouseComponent implements OnInit {
       action: "edit",
     };
   
-    const dialogRef = this.dialog.open(UserLookupComponent, dialogConfig);
+    const dialogRef = this.dialog.open(UserLkupComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.dialogData = result;

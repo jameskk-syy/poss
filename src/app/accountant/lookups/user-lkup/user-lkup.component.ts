@@ -1,6 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,11 +9,12 @@ import { AssignWarehouseComponent } from '../../inventory/warehouse/assign-wareh
 import { LookupsService } from '../lookups.service';
 
 @Component({
-  selector: 'app-user-lookup',
-  templateUrl: './user-lookup.component.html',
-  styleUrls: ['./user-lookup.component.sass']
+  selector: 'app-user-lkup',
+  templateUrl: './user-lkup.component.html',
+  styleUrls: ['./user-lkup.component.sass']
 })
-export class UserLookupComponent implements OnInit {
+export class UserLkupComponent implements OnInit {
+
   displayedColumns: string[] = [
     "id",
     "username",
@@ -78,3 +78,4 @@ export class UserLookupComponent implements OnInit {
 }
 
 }
+
