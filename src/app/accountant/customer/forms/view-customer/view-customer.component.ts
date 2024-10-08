@@ -22,17 +22,18 @@ export class ViewCustomerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.customerName = this.data.customer.firstname + " " + this.data.customer.lastname
+    this.customerName = this.data.customer.name 
     this.customerForm = this.customerDetailsForm();
   }
 
   customerDetailsForm(): FormGroup {
     return this.fb.group({
 
-      firstname: [this.data.customer.firstname, [Validators.required]],
-      lastname: [this.data.customer.lastname, [Validators.required]],
-      route: [this.data.customer.route, [Validators.required]],
-      contact: [this.data.customer.contact, [Validators.required]],
+      category: [this.data.customer.category.name, [Validators.required]],
+      alt_phone: [this.data.customer.alt_phone, [Validators.required]],
+      location: [this.data.customer.location, [Validators.required]],
+      name: [this.data.customer.name, [Validators.required]],
+      phone: [this.data.customer.phone, [Validators.required]],
       address: [this.data.customer.address, [Validators.required]],
       status: [this.data.customer.status, [Validators.required]],
     });

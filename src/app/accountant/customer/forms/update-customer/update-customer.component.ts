@@ -5,6 +5,7 @@ import { ManageCustomersComponent } from '../../manage-customers/manage-customer
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { CustomerService } from '../../customer.service';
 import { Subscription } from 'rxjs';
+import { statusArray } from 'src/app/core/models/status';
 
 @Component({
   selector: 'app-update-customer',
@@ -19,6 +20,7 @@ export class UpdateCustomerComponent implements OnInit {
   subscription: Subscription
   routes: any
   selectedStatus: any
+  statuses = statusArray;
 
   constructor(
     private fb: FormBuilder,
@@ -50,7 +52,7 @@ export class UpdateCustomerComponent implements OnInit {
       location: [this.data.customer.location, [Validators.required]],
       name: [this.data.customer.name, [Validators.required]],
       phone: [this.data.customer.phone, [Validators.required]],
-       status: [this.data.customer.status, [Validators.required]],
+      status: [this.data.customer.status, [Validators.required]],
     });
   }
 
@@ -72,7 +74,11 @@ export class UpdateCustomerComponent implements OnInit {
   onSubmit() {
     console.log("Customer Details Update", this.customerUpdateForm.value)
     this.isLoading = true
-    this.subscription = this.customerService.updateCustomer(this.data.customer.id,this.data.customer.catId,this.customerUpdateForm.value).subscribe(
+
+    const customerId = this.data.customer.id;
+    const categoryId = this.data.customer.category.id;
+
+    this.subscription = this.customerService.updateCustomer(customerId, categoryId,this.customerUpdateForm.value).subscribe(
       (res) => {
         this.isLoading = false
         this.snackbar.showNotification("snackbar-success", "Successful!");

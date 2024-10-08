@@ -1,7 +1,7 @@
 <section class="content">
     <div class="content-block">
         <div class="block-header">
-            <app-breadcrumb [title]="'All Collections'" [items]="['Collections']" [active_item]="'All Collections'">
+            <app-breadcrumb [title]="'All Products'" [items]="['Products']" [active_item]="'All Products'">
             </app-breadcrumb>
         </div>
         <mat-tab-group>
@@ -16,6 +16,12 @@
                     Product
                 </ng-template>
                 <app-product-management></app-product-management>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    SKUs
+                </ng-template>
+                <app-sku></app-sku>
             </mat-tab>
         </mat-tab-group>
     </div>

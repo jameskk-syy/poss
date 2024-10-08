@@ -18,9 +18,11 @@ import { DashboardModule } from "src/app/staff/dashboard/dashboard.module";
 
 
 
+
 @NgModule({
   declarations: [
-    MainComponent
+    MainComponent,
+   
   ],
   imports: [
     CommonModule,

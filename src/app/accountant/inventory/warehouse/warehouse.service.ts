@@ -29,4 +29,9 @@ baseUrl =  environment.apiUrl+'/api/v1/'
   public delete(id: any): Observable<any> {
     return this.http.delete(`${this.baseUrl}del/${id}`)
   }
+
+  public assignUser(whseCode:any,ownerId:any, data: any) : Observable<any>{
+    return this.http.post(`${this.baseUrl}assign/${whseCode}/${ownerId}`, data);
+  }
+
 }

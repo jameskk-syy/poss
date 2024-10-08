@@ -24,6 +24,15 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { MatSelectModule } from '@angular/material/select';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { DeleteCategoryComponent } from './forms/delete-category/delete-category.component';
+import { DeleteProductComponent } from './forms/delete-product/delete-product.component';
+import { DeleteSkuComponent } from './forms/delete-sku/delete-sku.component';
+import { AddSkuComponent } from './forms/add-sku/add-sku.component';
+import { EditSkuComponent } from './forms/edit-sku/edit-sku.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { EditProductComponent } from './forms/edit-product/edit-product.component';
+// import { WarehouseLookupComponent } from '../lookups/warehouse-lookup/warehouse-lookup.component';
+
 
 
 
@@ -35,6 +44,13 @@ import { MaterialModule } from 'src/app/shared/material.module';
     AddProductComponent,
     ProductManagementComponent,
     AddCategoryComponent,
+    DeleteCategoryComponent,
+    DeleteProductComponent,
+    DeleteSkuComponent,
+    AddSkuComponent,
+    EditSkuComponent,
+    EditProductComponent,
+    // WarehouseLookupComponent
    
   ],
   imports: [
@@ -47,7 +63,6 @@ import { MaterialModule } from 'src/app/shared/material.module';
     MatTableExporterModule,
     SharedModule,
     ComponentsModule,
-    CommonModule,
     MatMenuModule,
     MatIconModule,
     MatFormFieldModule,
@@ -60,8 +75,8 @@ import { MaterialModule } from 'src/app/shared/material.module';
     MatDialogModule,
     MatTabsModule, 
     MatSelectModule,
-    MaterialModule
-        
+    MaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class ProductModule { }

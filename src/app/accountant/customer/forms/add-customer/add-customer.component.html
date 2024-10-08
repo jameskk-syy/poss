@@ -26,13 +26,17 @@
                         <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Address</mat-label>
-                                    <input matInput formControlName="address" required />
-                                    <mat-error *ngIf="customerRegistrationForm.get('address').hasError('required')">
-                                        The address is required
+                                    <mat-label>Category</mat-label>
+                                    <mat-select formControlName="category" required>
+                                        <mat-option *ngFor="let category of categories" [value]="category.id">
+                                          {{ category.name}}
+                                        </mat-option>
+                                      </mat-select>
+                                    <mat-error *ngIf="customerRegistrationForm.get('category').hasError('required')">
+                                        Category is required
                                     </mat-error>
                                 </mat-form-field>
-                            </div>
+                            </div>                          
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Alternative Phone</mat-label>
@@ -73,6 +77,15 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Address</mat-label>
+                                <input matInput formControlName="address" required />
+                                <mat-error *ngIf="customerRegistrationForm.get('address').hasError('required')">
+                                    The address is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
                         </div>
                         <div class="row">
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">

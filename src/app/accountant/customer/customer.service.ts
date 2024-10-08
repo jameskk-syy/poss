@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-
 @Injectable({
   providedIn: 'root'
 })
@@ -47,12 +46,12 @@ export class CustomerService {
     return this.http.get(`${environment.apiUrl}/api/v1/customer-category/get/${status}`)
   }
 
-  public deleteCustomer(id: any): Observable<any>{
+  public deleteCategory(id: any): Observable<any>{
     return this.http.delete(`${environment.apiUrl}/api/v1/customer-category/del/${id}`)
   }
 
-  public deleteCategory(id: any): Observable<any>{
-    return this.http.delete(`${environment.apiUrl}/api/v1//customer/delete/${id}`)
+  public deleteCustomer(id: any): Observable<any>{
+    return this.http.delete(`${environment.apiUrl}/api/v1/customer/delete/${id}`)
   }
 
   public fetchRoutes(): Observable<any>{

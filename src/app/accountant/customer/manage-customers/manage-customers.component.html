@@ -116,15 +116,26 @@
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="status">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                                        class="column-nowrap">Status</mat-header-cell>
-                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
-                                        [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{row.status }}
-                                    </mat-cell>
-                                </ng-container>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
+                                  
+                                    <mat-cell *matCellDef="let row; let i = index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap">
+                                      <!-- Conditionally Render Badges Based on the Status -->
+                                      <div *ngIf="row.status == 'ACTIVE'">
+                                        <span class="badge badge-pill badge-primary col-green">
+                                          {{ "ACTIVE" }}
+                                        </span>
+                                      </div>
+                                      <div *ngIf="row.status == 'DELETED'">
+                                        <span class="badge badge-pill badge-primary col-red">
+                                          {{ "DELETED" }}
+                                        </span>
+                                      </div>
+                                      <div *ngIf="row.status != 'ACTIVE' && row.status != 'DELETED'">
+                                        <span class="badge badge-pill badge-secondary">Unknown Status</span>
+                                    </div>
+                                   </mat-cell>
+                                  </ng-container>    
                 
-
                                 <ng-container matColumnDef="action">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
                                     <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"

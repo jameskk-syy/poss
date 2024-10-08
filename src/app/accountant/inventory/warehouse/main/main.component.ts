@@ -7,6 +7,7 @@ import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddDialogComponent } from '../add-dialog/add-dialog.component';
 import { WarehouseDelComponent } from '../warehouse-del/warehouse-del.component';
+import { AssignWarehouseComponent } from '../assign-warehouse/assign-warehouse.component';
 
 @Component({
   selector: 'app-main',
@@ -18,11 +19,12 @@ export class MainComponent implements OnInit {
   data: boolean = false
   dataSource: MatTableDataSource<any>
 
-  displayedColumns: any = ['id', 'code', 'name', 'description', 'status', 'createdBy','createdOn', 'actions']
+  displayedColumns: any = ['id', 'code', 'name', 'description', 'status', 'createdBy','owner','createdOn', 'actions']
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild("filter", { static: true }) filter: ElementRef;
+  selectedWhseCode: any;
 
   constructor(private service: WarehouseService, private snackbar: SnackbarService, private dialog: MatDialog) { }
 
@@ -107,6 +109,21 @@ export class MainComponent implements OnInit {
     })
   }
 
+  assign(warehouse: any) {
+    const dialogConfig = new MatDialogConfig()
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "60%"
+    dialogConfig.data = {
+      action: "edit",
+      wh: warehouse
+    }
+    this.dialog.open(AssignWarehouseComponent, dialogConfig).afterClosed().subscribe({
+      next: (res: any) => {
+        this.ngOnInit()
+      }
+    })
+  }  
   
   search(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
