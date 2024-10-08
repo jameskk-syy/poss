@@ -20,4 +20,4 @@ import { UserLkupComponent } from './user-lkup/user-lkup.component';
     MaterialModule
   ]
 })
-export class UserLookupModule { }
+export class LookupsModule { }
