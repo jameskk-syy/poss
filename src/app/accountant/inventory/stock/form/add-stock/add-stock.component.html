@@ -5,7 +5,7 @@
                 <div class="modalHeader clearfix">
                     <div class="modal-about">
                         <div class="font-weight-bold p-t-5 ms-2 me-2 font-17">
-                            Add Stock
+                            {{title}}
                         </div>
                     </div>
                 </div>
@@ -21,11 +21,11 @@
                 
                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>WareHouse Code</mat-label>
+                        <mat-label>WareHouse </mat-label>
                         <input matInput formControlName="whseCode" required readonly />
-                        <mat-icon matSuffix (click)="selectWarehouse()">search</mat-icon>
+                        <mat-icon matSuffix (click)="selectWarehouse()" *ngIf="isEditMode === 'create'">search</mat-icon>
                         <mat-error *ngIf="stockForm.get('whseCode').hasError('required')">
-                            WaheHouse Code name is required
+                            WareHouse is required
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -34,7 +34,7 @@
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>SKU Unit</mat-label>
                         <input matInput formControlName="skuId" required readonly/>
-                        <mat-icon matSuffix (click)="selectSkuUnit()">search</mat-icon>
+                        <mat-icon matSuffix (click)="selectSkuUnit()" *ngIf="isEditMode ==='create'">search</mat-icon>
                         <mat-error *ngIf="stockForm.get('skuId').hasError('required')">
                             SKU Unit name is required
                         </mat-error>
@@ -42,7 +42,6 @@
                 </div>
 
                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
-
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Count</mat-label>
                         <input matInput formControlName="count" required />
@@ -50,7 +49,16 @@
                             Count name is required
                         </mat-error>
                     </mat-form-field>
+                </div>
 
+                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Message</mat-label>
+                        <input matInput formControlName="message" required />
+                        <mat-error *ngIf="stockForm.get('message').hasError('required')">
+                            Message name is required
+                        </mat-error>
+                    </mat-form-field>
                 </div>
 
                 <div class="row">
