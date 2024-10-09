@@ -104,6 +104,7 @@ export class ReportsService {
       })
     );  
   }
+
   getMpesaPaymentFile(month: string):Observable<any> {
     let headers = new HttpHeaders();
     headers.append("Content-Type", "application/pdf");
@@ -126,6 +127,42 @@ export class ReportsService {
       })
     ); 
   }
+
+  dailyRouteSummaryPerMonth(route: any, month: string, year: any):Observable<any> {
+    let headers = new HttpHeaders();
+    headers.append("Content-Type", "application/pdf");
+
+    let requestOptions: any = {
+      params: month, 
+      headers: headers,
+      responseType: "blob",
+      withCredentials: false,
+      observe: "response" as "body"
+    };
+    let API_URL = `${environment.apiUrl}/api/v1/reports/route/month-daily/${route}/${month}/${year}`;
+    return this.http.get(API_URL, requestOptions).pipe(
+      map((res: any) => {
+                // get filename from disposition header
+                console.log("data us sss")
+                const contentDisposition = res.headers.get('Content-Disposition');
+        
+                let filename = month+'-'+year+'.pdf';
+        
+                if (contentDisposition) {
+                  const matches = /filename=([^;]+)/.exec(contentDisposition)
+                  if (matches != null && matches[1]) {
+                    filename = matches[1].trim()
+                  }
+                }
+        
+                return {
+                  filename: filename,
+                  data: new Blob([res.body], {type: "application/pdf"})
+                }
+      })
+    ); 
+  }
+
   getPayroll(month: any, year: any, bank: any):Observable<any> {
     let headers = new HttpHeaders();
     headers.append("Accept", 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -160,7 +197,6 @@ export class ReportsService {
     return this.http.get(`${environment.apiUrl}/api/v1/reports/month/payroll/${month}/${year}`, httpOptions).pipe(
       map((res: any) => {
         // get filename from disposition header
-        console.log("data us sss")
         const contentDisposition = res.headers.get('Content-Disposition');
 
         let filename = month+'-'+year+'.pdf';

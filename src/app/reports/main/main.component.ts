@@ -170,6 +170,7 @@ export class MainComponent implements OnInit {
   reportCollectionFormm:FormGroup
   reportCollectionForm1:FormGroup
   payrollForm: FormGroup
+  routeSummaryPerMonth: FormGroup
   
   isloading: boolean
   collectors: any
@@ -250,12 +251,16 @@ export class MainComponent implements OnInit {
     })
 
     this.collectionPerpLocationsForm = this.fb.group({
-
       date: ["", [Validators.required]],
       format: ["", [Validators.required]],
       pul: ["", [Validators.required]],
       locationId: ["", [Validators.required]],
+    })
 
+    this.routeSummaryPerMonth = this.fb.group({
+      route: ['', [Validators.required]],
+      month: ['', [Validators.required]],
+      year: [this.currentYear, [Validators.required]]
     })
 
 
@@ -304,8 +309,9 @@ export class MainComponent implements OnInit {
       });
       this.reportCollectionForm3.patchValue({
         route: this.dialogData.data.route
-
       });
+
+      this.routeSummaryPerMonth.get('route').setValue(this.dialogData.data.route)
 
 
       
@@ -944,6 +950,42 @@ export class MainComponent implements OnInit {
         }
       })
     }
+  }
+
+  dailyRouteSummaryPerMonth() {
+    this.isloading = true
+    this.service.dailyRouteSummaryPerMonth(this.routeSummaryPerMonth.value.route, this.routeSummaryPerMonth.value.month, this.routeSummaryPerMonth.value.year).subscribe({
+      next: (res: any) => {
+        let url = window.URL.createObjectURL(res.data);
+
+        // if you want to open PDF in new tab
+        window.open(url);
+
+        let a = document.createElement("a");
+        document.body.appendChild(a);
+        a.setAttribute("style", "display: none");
+        a.setAttribute("target", "blank");
+        a.href = url;
+        a.download = res.filename;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+
+        this.isloading = false;
+
+        this.snackbar.showNotification(
+          "snackbar-success",
+          "Report generated successfully",
+        );
+      },
+      error: (err) => {
+        this.isloading = false
+        console.log(err)
+
+        this.snackbar.showNotification('snackbar-danger', "unable to get report")
+      },
+      complete: () => {}
+    })
   }
 
   generateMpesaPaymentFile(){
