@@ -60,8 +60,8 @@
                         </ng-container>
 
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns"
-                            (click)="productDetailsCall(product)" [style.cursor]="'pointer'" matRipple>
+                        <mat-row *matRowDef="let warehouse; columns: displayedColumns"
+                            (click)="onSelectWarehouse(warehouse)" [style.cursor]="'pointer'" matRipple>
                         </mat-row>
                     </mat-table> 
 
