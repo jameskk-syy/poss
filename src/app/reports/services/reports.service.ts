@@ -197,7 +197,6 @@ export class ReportsService {
     return this.http.get(`${environment.apiUrl}/api/v1/reports/month/payroll/${month}/${year}`, httpOptions).pipe(
       map((res: any) => {
         // get filename from disposition header
-        console.log("data us sss")
         const contentDisposition = res.headers.get('Content-Disposition');
 
         let filename = month+'-'+year+'.pdf';
