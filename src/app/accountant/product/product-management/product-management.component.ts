@@ -10,6 +10,7 @@ import { ProductService } from '../product.service';
 import { AddProductComponent } from '../forms/add-product/add-product.component';
 import { DeleteProductComponent } from '../forms/delete-product/delete-product.component';
 import { EditProductComponent } from '../forms/edit-product/edit-product.component';
+import { error } from 'console';
 
 @Component({
   selector: 'app-product-management',
@@ -67,8 +68,9 @@ export class ProductManagementComponent implements OnInit {
 
   getData() {
     this.isLoading = true;
-      this.subscription = this.service.getProducts().subscribe(res => {
-        this.data = res;
+      this.subscription = this.service.getProducts().subscribe({
+        next:(res) =>{
+          this.data = res;
         console.log ('products are here', this.data)
         if (this.data.entity.length > 0) {
           this.isLoading = false;
@@ -82,8 +84,16 @@ export class ProductManagementComponent implements OnInit {
           this.isdata = false;
           this.dataSource = new MatTableDataSource<any>(this.data);
         }
-      })
-   }
+        },
+        error: (err) => {
+          this.isLoading = false;
+          console.error('Error fetching stock data:', err);
+          this.isdata = false;
+          }
+       
+        })
+      }
+  
 
   addProduct(){
    

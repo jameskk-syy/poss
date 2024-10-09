@@ -13,7 +13,7 @@ const httpOptions = {
 export class LookupsService {
   
   usersUrl = `${environment.apiUrl}/api/v1/users/`;
-  warehouseUrl = `${environment.apiUrl}/api/v1/`;
+  warehouseUrl = `${environment.apiUrl}/api/v1/warehouse`;
   skuUrl = `${environment.apiUrl}/api/v1/sku/`;
 
   constructor(private http: HttpClient) { 
@@ -25,7 +25,7 @@ export class LookupsService {
   }
 
   public getWarehouses(): Observable<any> {
-    return this.http.get(this.warehouseUrl + `get/all`).pipe (
+    return this.http.get(this.warehouseUrl + `/get/all`).pipe (
       catchError(this.handleError))
   }
 

@@ -24,7 +24,7 @@ export class WarehouseLkupComponent implements OnInit {
     'status'
   ]
   IsLoading: boolean;
-  data: boolean;
+  data: any;
   subscription!: Subscription;
   isdata: boolean = false;
   isLoading:boolean = false;
@@ -47,35 +47,34 @@ export class WarehouseLkupComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
+    // this.getWarehouseData()
     this.getWarehouseData()
   }
 
 
   getWarehouseData() {
-    this.IsLoading = true;
-    this.lookupsService.getWarehouses().subscribe({
-      next: (res: any) => {
-      console.log('warehouse fata', res)
-        if (res.entity.length > 0) {
-          this.IsLoading = false
-          this.data  =true
-          this.dataSource = new MatTableDataSource(res.entity)
-          this.dataSource.paginator = this.paginator
-          this.dataSource.sort = this.sort
-        } else {
-          this.IsLoading = false
-          this.data = false
-          this.dataSource = new MatTableDataSource(null)
+    this.isLoading = true;
+      this.subscription = this.lookupsService.getWarehouses().subscribe(res => {
+        this.data = res;
+        console.log ('Warehouse are here', this.data)
+        if (this.data.entity.length > 0) {
+          this.isLoading = false;
+          this.isdata = true;
+          // Binding with the datasource
+          this.dataSource = new MatTableDataSource(this.data.entity);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
         }
-      },
-      error: (err) => {
-        this.IsLoading = false
-        this.data = false
-        console.log("caught error is ", err)
-        this.snackbar.showNotification('snackbar-danger', err)
-      },
-      complete: () => {}
-    })
+        else {
+          this.isdata = false;
+          this.dataSource = new MatTableDataSource<any>(this.data);
+        }
+      })
+   }
+
+   onSelectWarehouse(warehouse: any) {
+    console.log(warehouse); 
+    this.dialogRef.close({ warehouse: { name: warehouse.name, whseCode: warehouse.code } });
   }
 
   applyFilter(event: Event) {

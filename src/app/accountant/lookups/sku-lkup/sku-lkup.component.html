@@ -38,35 +38,35 @@
                         <ng-container matColumnDef="code">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
                                 Code</mat-header-cell>
-                            <mat-cell *matCellDef="let warehouse;let i = index" [class.odd-row]="i % 2"
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
                                 {{sku.code}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Name</mat-header-cell>
-                            <mat-cell *matCellDef="let warehouse;let i = index" [class.odd-row]="i % 2"
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
                                 {{sku.name}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="price">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Price</mat-header-cell>
-                            <mat-cell *matCellDef="let warehouse;let i = index" [class.odd-row]="i % 2"
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{sku.price}}
+                                {{sku.priceList.price}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="unit">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Unit</mat-header-cell>
-                            <mat-cell *matCellDef="let warehouse;let i = index" [class.odd-row]="i % 2"
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
                                 {{sku.unit}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="status">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
-                            <mat-cell *matCellDef="let warehouse;let i = index" [class.odd-row]="i % 2"
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
                                 {{sku.status}}
                             </mat-cell>
@@ -74,8 +74,8 @@
 
 
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns"
-                            (click)="productDetailsCall(product)" [style.cursor]="'pointer'" matRipple>
+                        <mat-row *matRowDef="let sku; columns: displayedColumns"
+                            (click)="onSelectSku(sku)" [style.cursor]="'pointer'" matRipple>
                         </mat-row>
                     </mat-table> 
 
