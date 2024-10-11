@@ -14,10 +14,11 @@ import { MatCardModule } from '@angular/material/card';
 import { WarehouseDelComponent } from './warehouse-del/warehouse-del.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AssignWarehouseComponent } from './assign-warehouse/assign-warehouse.component';
-import { WarehouseProductsComponent } from './warehouse-products/warehouse-products.component';
 import { InventoriesComponent } from './inventories/inventories.component';
 import { ViewWarehouseProductsComponent } from './view-warehouse-products/view-warehouse-products.component';
 import { StockWidgetsComponent } from './stock-widgets/stock-widgets.component';
+import { TransferHistoryComponent } from './transfer-history/transfer-history.component';
+import { TransferWarehouseComponent } from './transfer-warehouse/transfer-warehouse.component';
 
 @NgModule({
   declarations: [
@@ -25,10 +26,11 @@ import { StockWidgetsComponent } from './stock-widgets/stock-widgets.component';
     AddDialogComponent,
     WarehouseDelComponent,
     AssignWarehouseComponent,
-    WarehouseProductsComponent, // Keep it here
     InventoriesComponent,
      ViewWarehouseProductsComponent,
-     StockWidgetsComponent
+     StockWidgetsComponent,
+     TransferHistoryComponent,
+     TransferWarehouseComponent
   ],
   imports: [
     CommonModule,

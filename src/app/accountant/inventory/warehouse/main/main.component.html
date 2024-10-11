@@ -64,9 +64,9 @@
                              <!-- table content -->
                               <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell" #exporter="matTableExporter">
                                 <ng-container matColumnDef="id">
-                                    <mat-header-cell class="table-img tbl-col-width-per-8" *matHeaderCellDef
+                                    <mat-header-cell class="table-img tbl-col-width-per-4" *matHeaderCellDef
                                         mat-sort-header>#</mat-header-cell>
-                                    <mat-cell class="table-img tbl-col-width-per-8"
+                                    <mat-cell class="table-img tbl-col-width-per-4"
                                         *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
                                 </ng-container>
@@ -79,18 +79,25 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="name">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Name</mat-header-cell>
-                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-10">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-8">Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-8">
                                         {{wh.name}}
                                     </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="description">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-16">Description</mat-header-cell>
-                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-16">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-14">Description</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-14">
                                         {{wh.description}}
                                     </mat-cell>
                                 </ng-container>
+
+                                <ng-container matColumnDef="owner">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Owner</mat-header-cell>
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="table-img tbl-col-width-per-10">
+                                        {{wh.owner}}
+                                    </mat-cell>
+                                </ng-container>                            
 
                                 <ng-container matColumnDef="status">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Status</mat-header-cell>
@@ -112,13 +119,6 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="owner">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Owner</mat-header-cell>
-                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-10">
-                                        {{wh.owner}}
-                                    </mat-cell>
-                                </ng-container>
-
                                 <ng-container matColumnDef="createdOn">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-8">Created On</mat-header-cell>
                                     <mat-cell *matCellDef="let wh;let i=index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-8">
@@ -127,7 +127,7 @@
                                 </ng-container>
 
                                 <ng-container matColumnDef="viewStock">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-8">View Stock</mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-18">View Stock</mat-header-cell>
                                     <mat-cell *matCellDef="let wh; let i = index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, wh)">
                                       <button class="badge badge-solid-green btn purple btn btn-sm m-1" (click)="$event.stopPropagation(); viewWarehouseStock(wh)">
                                         View Stock

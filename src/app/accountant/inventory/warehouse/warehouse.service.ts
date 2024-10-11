@@ -34,4 +34,6 @@ baseUrl =  environment.apiUrl+'/api/v1/warehouse/'
     return this.http.post(`${this.baseUrl}assign/${whseCode}/${ownerId}`, data);
   }
 
+  createUserAccounts
+  
 }
