@@ -68,8 +68,9 @@ export class CategoryComponent implements OnInit {
 
   getData() {
     this.isLoading = true;
-      this.subscription = this.service.getCategories().subscribe(res => {
-        this.data = res;
+      this.subscription = this.service.getCategories().subscribe({
+        next:(res) => {
+          this.data = res;
         console.log ('categories are here', this.data)
         if (this.data.entity.length > 0) {
           this.isLoading = false;
@@ -83,8 +84,13 @@ export class CategoryComponent implements OnInit {
           this.isdata = false;
           this.dataSource = new MatTableDataSource<any>(this.data);
         }
+        },
+          error: (err) => {
+          this.isLoading = false;
+          console.error('Error fetching stock data:', err);
+          this.isdata = false;
+          }
       })
-
    }
 
   addCategory(action:string){

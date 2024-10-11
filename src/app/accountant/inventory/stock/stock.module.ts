@@ -25,6 +25,8 @@ import { AddStockComponent } from './form/add-stock/add-stock.component';
 import { EditStockComponent } from './form/edit-stock/edit-stock.component';
 import { DeleteStockComponent } from './form/delete-stock/delete-stock.component';
 import { LookupsModule } from '../../lookups/lookups.module';
+import { StockStatisticsComponent } from './stock-statistics/stock-statistics.component';
+import { ChartsModule as chartjsModule } from "ng2-charts";
 
 
 @NgModule({
@@ -34,6 +36,7 @@ import { LookupsModule } from '../../lookups/lookups.module';
     AddStockComponent,
     EditStockComponent,
     DeleteStockComponent,
+    StockStatisticsComponent,
   ],
   imports: [
     CommonModule,
@@ -61,7 +64,8 @@ import { LookupsModule } from '../../lookups/lookups.module';
     MatSelectModule,
     MaterialModule,
     ReactiveFormsModule,
-    LookupsModule
+    LookupsModule,
+    chartjsModule
   ]
 })
 export class StockModule { }

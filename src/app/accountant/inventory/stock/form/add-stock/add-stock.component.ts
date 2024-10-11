@@ -7,6 +7,7 @@ import { StockManagementComponent } from '../../stock-management/stock-managemen
 import { StockService } from '../../stock.service';
 import { WarehouseLkupComponent } from 'src/app/accountant/lookups/warehouse-lkup/warehouse-lkup.component';
 import { SkuLkupComponent } from 'src/app/accountant/lookups/sku-lkup/sku-lkup.component';
+import { count } from 'console';
 
 
 
@@ -23,10 +24,13 @@ export class AddStockComponent implements OnInit {
   stockForm: FormGroup;
   categories: any;
   isdata: boolean;
-  warehouseData: any;
-  selectedWarehouseId: any;
-  skuData: any;
+  warehouse: any;
+  selectedWarehouseCode: any;
   selectedSkuId: any;
+  whseCode: any;
+  sku: any;
+  title: string;
+  isEditMode: any;
 
 
   constructor(
@@ -39,15 +43,35 @@ export class AddStockComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.isEditMode = this.data.action;
+    
     this.stockForm = this.fb.group({
-      whseCode: ['', Validators.required],
-      skuId: ['',Validators.required],
+      whseCode: [{value:'', disabled: this.isEditMode !== "create" }, Validators.required],
+      skuId: [{ value: '', disabled: this.isEditMode !== "create" },Validators.required],
       count: ['', Validators.required],
-    });  
+      message:['',Validators.required]
+    });
+
+    
+    if (this.isEditMode === 'remove') {     
+      this.title = 'Remove Stock Count';
+      this.patchData()
+    } else if (this.isEditMode === 'add'){
+      this.title = 'Add Stock Count '; 
+      this.patchData()
+    } else {
+      this.title = 'Create New Stock'
+    }
   }
 
-  onSubmit(){
-
+  patchData() {
+    this.stockForm.patchValue({
+      whseCode: this.data.stock.whseCode,
+      skuId: this.data.stock.item,
+      count: this.data.stock.count,
+      message:this.data.stock.message
+    });
   }
 
   onClick() {
@@ -66,12 +90,16 @@ export class AddStockComponent implements OnInit {
     const dialogRef = this.dialog.open(WarehouseLkupComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.warehouseData = result;
+        this.warehouse = result.warehouse;
+        console.log ('results war',this.warehouse)
+
         this.stockForm.patchValue({
-          username: this.warehouseData.data.name,
-          id: this.warehouseData.data.id 
+          whseid: this.warehouse.name,
+          whseCode: this.warehouse.whseCode
         });
-          this.selectedWarehouseId = this.warehouseData.data.id
+
+          this.whseCode = this.warehouse.whseCode
+          console.log ('warehouse',this.whseCode)
       }
     });
   }
@@ -89,15 +117,55 @@ export class AddStockComponent implements OnInit {
     const dialogRef = this.dialog.open(SkuLkupComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.skuData = result;
+        this.sku = result.sku;
         this.stockForm.patchValue({
-          name: this.skuData.data.name,
-          id: this.skuData.data.id 
+          skuId: this.sku.name,
+          id: this.sku.id 
         });
-          this.selectedSkuId = this.skuData.data.id
+          this.selectedSkuId = this.sku.id
       }
     });
   }
 
-}
+  onSubmit(){
+      const count = this.stockForm.value.count
+
+      if (this.data.action !== "create") {
+        this.whseCode = this.data.stock.whseCode
+        this.selectedSkuId = this.data.stock.skuId
+
+        console.log ('pased code',this.data.stock.whseCode)
+        console.log ('pased stock',this.selectedSkuId)
+      }
+
+      const data = {
+        count: this.stockForm.value.count,
+        message: this.stockForm.value.message,
+        whseCode: this.whseCode,
+        skuId: this.selectedSkuId
+      }
+      
+
+      this.subscription = this.service.addNewStock(this.data.action,data).subscribe({
+        next: (res) => {
+          this.loading = false;
+          console.log ('jhdjh', this.stockForm )
+          const successMessage = res.message
+          this.snackbar.showNotification("snackbar-success", successMessage);
+          this.stockForm.reset();
+          this.dialogRef.close();
+        },
+        error: (err) => {
+          this.loading = false;
+          const errorMessage = err.message
+          this.snackbar.showNotification("snackbar-danger", err);
+          this.dialogRef.close();
+        }
+      }
+    );
+    }
+
+    
+
+    }
 

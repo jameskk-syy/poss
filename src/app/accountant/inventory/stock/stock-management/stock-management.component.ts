@@ -50,6 +50,7 @@ export class StockManagementComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
+    this.getData()
   }
 
   applyFilter(event: Event) {
@@ -61,72 +62,67 @@ export class StockManagementComponent implements OnInit {
     }
   }
 
-  getData () {
+  getData() {
     this.isLoading = true;
-    this.subscription = this.service.getStock().subscribe(res =>{
-      this.data = res;
-      if (this.data.entity.length > 0) {
-        this.isLoading = false;
-        this.isdata = true;
-        // Binding with the datasource
-        this.dataSource = new MatTableDataSource(this.data.entity);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }
-      else {
-        this.isdata = false;
-        this.dataSource = new MatTableDataSource<any>(this.data);
-      }
-    });  
+    this.subscription = this.service.getStock().subscribe({
+      next:(res) => {
+        this.data = res;
+        console.log('stocksss', res)
+          if (this.data.entity.length > 0) {
+            this.isLoading = false;
+            this.isdata = true;
+            // Binding with the datasource
+            this.dataSource = new MatTableDataSource(this.data.entity);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          } else {
+            this.isLoading = false;
+            this.dataSource = new MatTableDataSource<any>(this.data);
+          }
+        },
+        error: (err) => {
+          this.isLoading = false;
+          console.error('Error fetching stock data:', err);
+          this.isdata = false;
+        }
+    })
   }
 
-  addProduct(){
-   
+  addStock(action: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "600px"
-    dialogConfig.data = {
-      test: ""
+    dialogConfig.data = { 
+      action:action
     }
-    const dialogRef = this.dialog.open(AddStockComponent, dialogConfig);
+    console.log('action is create',action)
+  
 
+    const dialogRef = this.dialog.open(AddStockComponent, dialogConfig);
       dialogRef.afterClosed().subscribe ({
       next:(value) => {
         this.ngOnInit()
       }
       });
     }
-  
 
-  editProduct(product:any){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false
-    dialogConfig.autoFocus = true
-    dialogConfig.width = "600px"
-    dialogConfig.data = {
-      product:product
-    }
-    this.dialog.open(EditStockComponent, dialogConfig)
-    }
-  
-  
+    removeStock(stock: any, action: string){
+      if (action === 'add' || action === 'remove') {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false
+        dialogConfig.autoFocus = true
+        dialogConfig.width = "600px"
+        dialogConfig.data = {
+          stock:stock,
+          action:action
+        }
+        console.log('action is here',action)
+        console.log('action is here',stock)
 
-  deleteProduct(product: any){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false
-    dialogConfig.autoFocus = true
-    dialogConfig.width = "500px"
-    dialogConfig.data = {
-      product: product
-    }
-    const dialogRef = this.dialog.open(DeleteStockComponent, dialogConfig)
+        const dialogRef = this.dialog.open(AddStockComponent, dialogConfig);
+      };
+      }
 
-    dialogRef.afterClosed().subscribe ({
-      next: (value) => {
-        this.ngOnInit()
-      },
-    })
-  }
 
 }

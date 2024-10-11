@@ -9,6 +9,7 @@ import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { AddStockComponent } from 'src/app/staff/stock/inventory/add-stock/add-stock.component';
 import { WarehouseService } from '../../inventory/warehouse/warehouse.service';
 import { LookupsService } from '../lookups.service';
+import { ProductService } from '../../product/product.service';
 
 @Component({
   selector: 'app-sku-lkup',
@@ -24,18 +25,18 @@ export class SkuLkupComponent implements OnInit {
     'price',
     'unit'
   ]
-  IsLoading: boolean;
-  data: boolean;
   subscription!: Subscription;
+  data: any;
   isdata: boolean = false;
   isLoading:boolean = false;
   roles:any;
   dataSource!: MatTableDataSource<any>;
-  warehouses: any[] = [];
+  skus: any[] = [];
 
   constructor(
     private warehouseService: WarehouseService,
     private lookupService: LookupsService,
+    private service: ProductService,
     private snackbar: SnackbarService,
     public dialogRef: MatDialogRef<AddStockComponent>
   ) { }
@@ -48,34 +49,31 @@ export class SkuLkupComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
+    this.getSkuData()
   }
 
 
   getSkuData() {
-    this.IsLoading = true;
-    this.lookupService.getSkus().subscribe({next: (res: any) => {
-        if (res.entity.length > 0) {
-          this.IsLoading = false
-          this.data  =true
-          this.dataSource = new MatTableDataSource(res.entity)
-          this.dataSource.paginator = this.paginator
-          this.dataSource.sort = this.sort
-        } else {
-          this.IsLoading = false
-          this.data = false
-          this.dataSource = new MatTableDataSource(null)
+    this.isLoading = true;
+      this.subscription = this.service.getSkus().subscribe(res => {
+        this.data = res;
+        console.log ('Skus are here', this.data)
+        if (this.data.entity.length > 0) {
+          this.isLoading = false;
+          this.isdata = true;
+          // Binding with the datasource
+          this.dataSource = new MatTableDataSource(this.data.entity);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
         }
-      },
-      error: (err) => {
-        this.IsLoading = false
-        this.data = false
-        console.log("caught error is ", err)
-        this.snackbar.showNotification('snackbar-danger', err)
-      },
-      complete: () => {}
-    })
-  }
-
+        else {
+          this.isdata = false;
+          this.dataSource = new MatTableDataSource<any>(this.data);
+        }
+      })
+   }
+  
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -83,6 +81,11 @@ export class SkuLkupComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  onSelectSku(sku: any) {
+    console.log(sku); 
+    this.dialogRef.close({ sku: { name: sku.name, id: sku.id } });
   }
 
 }

@@ -1,13 +1,19 @@
 <section class="content">
     <div class="content-block">
         <div class="block-header">
-            <app-breadcrumb [title]="'All Products'" [items]="['Products']" [active_item]="'All Products'">
+            <app-breadcrumb [title]="'All Products'" [items]="['Stocks']" [active_item]="'All Stocks'">
             </app-breadcrumb>
         </div>
         <mat-tab-group>
             <mat-tab>
                 <ng-template mat-tab-label>
-                    Stock
+                    Stock Overview
+                </ng-template>
+                <app-stock-statistics></app-stock-statistics>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Stock Management
                 </ng-template>
                 <app-stock-management></app-stock-management>
             </mat-tab>
