@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class WarehouseService {
-baseUrl =  environment.apiUrl+'/api/v1/'
+baseUrl =  environment.apiUrl+'/api/v1/warehouse/'
   constructor(private http: HttpClient) { }
 
   public getAll(): Observable<any> {
@@ -34,4 +34,6 @@ baseUrl =  environment.apiUrl+'/api/v1/'
     return this.http.post(`${this.baseUrl}assign/${whseCode}/${ownerId}`, data);
   }
 
+  createUserAccounts
+  
 }
