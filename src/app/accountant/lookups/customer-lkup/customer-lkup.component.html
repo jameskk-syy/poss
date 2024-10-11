@@ -8,7 +8,7 @@
                             <div class="col-8">
                                 <ul class="header-buttons-left ms-0">
                                     <li class="dropdown">
-                                        <h2>Warehouses</h2>
+                                        <h2>Customer</h2>
                                     </li>
                                     <li class="dropdown m-l-20">
                                         <label for="search-input"><i
@@ -38,29 +38,57 @@
                         <ng-container matColumnDef="code">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
                                 Code</mat-header-cell>
-                            <mat-cell *matCellDef="let warehouse;let i = index" [class.odd-row]="i % 2"
+                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{warehouse.code}}
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="name">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Name</mat-header-cell>
-                            <mat-cell *matCellDef="let warehouse;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{warehouse.name}}
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="status">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
-                            <mat-cell *matCellDef="let warehouse;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{warehouse.status}}
+                                {{customer.code}}
                             </mat-cell>
                         </ng-container>
 
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
+                                Name</mat-header-cell>
+                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{customer.name}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="address">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Address</mat-header-cell>
+                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{customer.address}}
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="location">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Location</mat-header-cell>
+                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{customer.location}}
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="phone">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Mobile No</mat-header-cell>
+                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{customer.phone}}
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
+                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{customer.status}}
+                            </mat-cell>
+                        </ng-container>
+                        
+
+
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let warehouse; columns: displayedColumns"
-                            (click)="onSelectWarehouse(warehouse)" [style.cursor]="'pointer'" matRipple>
+                        <mat-row *matRowDef="let customer; columns: displayedColumns"
+                            (click)="onSelectCustomer(customer)" [style.cursor]="'pointer'" matRipple>
                         </mat-row>
                     </mat-table> 
 

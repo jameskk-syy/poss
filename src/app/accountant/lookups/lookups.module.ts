@@ -6,13 +6,17 @@ import { WarehouseLkupComponent } from './warehouse-lkup/warehouse-lkup.componen
 import { MaterialModule } from 'src/app/shared/material.module';
 import { SkuLkupComponent } from './sku-lkup/sku-lkup.component';
 import { UserLkupComponent } from './user-lkup/user-lkup.component';
+import { SalespersonLkupComponent } from './salesperson-lkup/salesperson-lkup.component';
+import { CustomerLkupComponent } from './customer-lkup/customer-lkup.component';
 
 
 @NgModule({
   declarations: [
     WarehouseLkupComponent,
     SkuLkupComponent,
-    UserLkupComponent
+    UserLkupComponent,
+    SalespersonLkupComponent,
+    CustomerLkupComponent
   ],
   imports: [
     CommonModule,
