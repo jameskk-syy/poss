@@ -16,7 +16,11 @@ const routes: Routes = [
   {
     path: 'warehouse-stock/:code', 
     component: ViewWarehouseProductsComponent
-  }
+  },
+  // {
+  //   path: 'warehouse-main', 
+  //   component: main
+  // }
 ];
 
 @NgModule({

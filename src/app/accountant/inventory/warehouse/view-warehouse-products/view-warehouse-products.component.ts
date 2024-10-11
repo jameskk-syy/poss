@@ -17,11 +17,11 @@ export class ViewWarehouseProductsComponent implements OnInit {
 
   displayedColumns: string[] = [
     'id',
-    'count',
     'item',
-    'skuId',
     'skuCode',
+    'count',
     'unit',
+    'price',      
     'updatedBy',
     'updatedOn',
     'actions'
