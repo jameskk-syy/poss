@@ -41,6 +41,9 @@ export class StockService {
     )
   }
 
+  public getProducts(whseCode: any): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/stock/warehouse/${whseCode}`);
+  }
 
   private handleError(error: any) {
     console.error('Error occurred:', error);

@@ -10,11 +10,14 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { AddDialogComponent } from './add-dialog/add-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
 import { WarehouseDelComponent } from './warehouse-del/warehouse-del.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AssignWarehouseComponent } from './assign-warehouse/assign-warehouse.component';
 import { WarehouseProductsComponent } from './warehouse-products/warehouse-products.component';
 import { InventoriesComponent } from './inventories/inventories.component';
+import { ViewWarehouseProductsComponent } from './view-warehouse-products/view-warehouse-products.component';
+import { StockWidgetsComponent } from './stock-widgets/stock-widgets.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,9 @@ import { InventoriesComponent } from './inventories/inventories.component';
     WarehouseDelComponent,
     AssignWarehouseComponent,
     WarehouseProductsComponent, // Keep it here
-    InventoriesComponent
+    InventoriesComponent,
+     ViewWarehouseProductsComponent,
+     StockWidgetsComponent
   ],
   imports: [
     CommonModule,
@@ -33,6 +38,7 @@ import { InventoriesComponent } from './inventories/inventories.component';
     ComponentsModule,
     MaterialModule,
     MatSelectModule,
+    MatCardModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatTabsModule

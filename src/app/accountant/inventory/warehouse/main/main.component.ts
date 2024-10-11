@@ -8,6 +8,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddDialogComponent } from '../add-dialog/add-dialog.component';
 import { WarehouseDelComponent } from '../warehouse-del/warehouse-del.component';
 import { AssignWarehouseComponent } from '../assign-warehouse/assign-warehouse.component';
+import { ViewWarehouseProductsComponent } from '../view-warehouse-products/view-warehouse-products.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -19,14 +21,14 @@ export class MainComponent implements OnInit {
   data: boolean = false
   dataSource: MatTableDataSource<any>
 
-  displayedColumns: any = ['id', 'code', 'name', 'description', 'status', 'createdBy','owner','createdOn', 'actions']
+  displayedColumns: any = ['id', 'code', 'name', 'description', 'owner','createdBy','status','createdOn', 'viewStock','actions']
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild("filter", { static: true }) filter: ElementRef;
   selectedWhseCode: any;
 
-  constructor(private service: WarehouseService, private snackbar: SnackbarService, private dialog: MatDialog) { }
+  constructor(private service: WarehouseService, private snackbar: SnackbarService, private dialog: MatDialog,private router: Router ) { }
 
   ngOnInit(): void {
     this.getAll()
@@ -113,7 +115,7 @@ export class MainComponent implements OnInit {
     const dialogConfig = new MatDialogConfig()
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
-    dialogConfig.width = "60%"
+    dialogConfig.width = "40%"
     dialogConfig.data = {
       action: "edit",
       wh: warehouse
@@ -124,6 +126,10 @@ export class MainComponent implements OnInit {
       }
     })
   }  
+    
+   viewWarehouseStock(wh: any) {
+       this.router.navigate([`inventory/warehouse/warehouse-stock`, wh.code]); 
+  }
   
   search(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
