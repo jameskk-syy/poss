@@ -2,7 +2,7 @@
     <div class="content-block">
         <div class="block-header">
             <!-- breadcrumb -->
-            <app-breadcrumb [title]="'All Stocks'" [items]="['Stocks']" [active_item]="'All Stocks'">
+            <app-breadcrumb [title]="'Warehouses'" [items]="['Warehouse']" [active_item]="'Warehouses'">
             </app-breadcrumb>
         </div>
 
@@ -21,7 +21,7 @@
                                     <div class="col-8">
                                         <ul class="header-buttons-left ms-0">
                                             <li class="dropdown">
-                                                <h2>Stocks</h2>
+                                                <h2>Warehouse</h2>
                                             </li>
                                             <li class="dropdown m-l-20">
                                                 <label for="search-input"><i
@@ -110,10 +110,10 @@
                                     </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="skuId">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">skuId</mat-header-cell>
+                                <ng-container matColumnDef="price">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Price</mat-header-cell>
                                     <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-10">
-                                        {{wh.skuId}}
+                                        {{wh.price}}
                                     </mat-cell>
                                 </ng-container>
 

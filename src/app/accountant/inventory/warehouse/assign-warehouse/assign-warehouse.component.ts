@@ -89,8 +89,8 @@ export class AssignWarehouseComponent implements OnInit {
   }
   
  
-  onClick() {
-
+  onCancel() {
+    this.dialogRef.close();
   }
 
 
