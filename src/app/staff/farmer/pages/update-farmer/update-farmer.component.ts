@@ -457,17 +457,16 @@ export class UpdateFarmerComponent implements OnInit {
     console.log("selected route fk ", this.farmerEditForm.value.routeFk)
 
     this.farmerEditForm.value.bankDetails = this.bankDetailsForm.value;
-    // this.subscription = this.service.updateFarmer(this.updatedFarmer, this.farmer.farmerNo).subscribe(res => {
-    //   this.snackbar.showNotification("snackbar-success", "Successful!");
-    //   this.loading = false;
-    //   this.farmerEditForm.reset();
-    //   this.dialogRef.close();
-    // }, err => {
-    //   this.loading = false;
-    //   this.snackbar.showNotification("snackbar-danger", err);
-    //   this.dialogRef.close();
-    // })
-  
+    this.subscription = this.service.updateFarmer(this.updatedFarmer, this.farmer.farmerNo).subscribe(res => {
+      this.snackbar.showNotification("snackbar-success", "Farmer details updated!");
+      this.loading = false;
+      this.farmerEditForm.reset();
+      this.dialogRef.close();
+    }, err => {
+      this.loading = false;
+      this.snackbar.showNotification("snackbar-danger", err);
+      this.dialogRef.close();
+    })
   }
 
   onClick() {
