@@ -22,8 +22,10 @@ export class SkuLkupComponent implements OnInit {
     'id',
     'code',
     'name',
+    'product',
     'price',
-    'unit'
+    'unit',
+    
   ]
   subscription!: Subscription;
   data: any;

@@ -22,15 +22,18 @@ export class SalespersonLkupComponent implements OnInit {
     'firstName',
     'lastName',
     'mobile',
-    'status'
+    'status',
+    'roles'
   ]
+
   dataSource!: MatTableDataSource<any>;
-  salesPerson: any[] = []
   IsLoading: boolean;
-  data: any;
   subscription!: Subscription;
   isdata: boolean = false;
   isLoading:boolean = false;
+  data: any;
+  salesPerson: any[] = []
+  
  
 
   constructor(
@@ -48,6 +51,7 @@ export class SalespersonLkupComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
+    this.getData()
    
   }
 
@@ -62,15 +66,15 @@ export class SalespersonLkupComponent implements OnInit {
 
   getData() {
     this.isLoading = true;
-    this.subscription = this.lookupsService.getCustomers().subscribe({
+    this.subscription = this.lookupsService.getSalesperson().subscribe({
       next:(res) => {
         this.data = res;
-        console.log('stocksss', res)
-          if (this.data.entity.length > 0) {
+        console.log('sales persssss', res)
+          if (this.data.userData.length > 0) {
             this.isLoading = false;
             this.isdata = true;
             // Binding with the datasource
-            this.dataSource = new MatTableDataSource(this.data.entity);
+            this.dataSource = new MatTableDataSource(this.data.userData);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           } else {
@@ -84,6 +88,11 @@ export class SalespersonLkupComponent implements OnInit {
           this.isdata = false;
         }
     })
+  }
+
+  onSelectSalesperson(salesperson: any) {
+    console.log(salesperson); 
+    this.dialogRef.close({ salesperson: { name: salesperson.username, id: salesperson.id } });
   }
 
 }

@@ -40,22 +40,30 @@
                                 Username</mat-header-cell>
                             <mat-cell *matCellDef="let salesperson;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{salesperson.code}}
+                                {{salesperson.username}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="firstname">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Name</mat-header-cell>
+                        <ng-container matColumnDef="firstName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">First Name</mat-header-cell>
                             <mat-cell *matCellDef="let salesperson;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{salesperson.name}}
+                                {{salesperson.firstName}}
                             </mat-cell>
                         </ng-container>
 
-                        <ng-container matColumnDef="lastname">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Name</mat-header-cell>
+                        <ng-container matColumnDef="lastName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Last Name</mat-header-cell>
                             <mat-cell *matCellDef="let salesperson;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{salesperson.name}}
+                                {{salesperson.lastName}}
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mobile">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Mobile No</mat-header-cell>
+                            <mat-cell *matCellDef="let salesperson;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{salesperson.mobile}}
                             </mat-cell>
                         </ng-container>
 
@@ -66,13 +74,15 @@
                                 {{salesperson.status}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="phone">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Mobile No</mat-header-cell>
+
+                        <ng-container matColumnDef="roles">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Role</mat-header-cell>
                             <mat-cell *matCellDef="let salesperson;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{salesperson.name}}
+                                {{salesperson.roles.name}}
                             </mat-cell>
                         </ng-container>
+                        
 
 
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

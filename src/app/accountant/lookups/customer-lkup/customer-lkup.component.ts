@@ -10,6 +10,7 @@ import { SalesService } from 'src/app/staff/sales/services/sales.service';
 import { LookupsService } from '../lookups.service';
 import { SalespersonComponent } from '../../salesperson/salesperson/salesperson.component';
 
+
 @Component({
   selector: 'app-customer-lkup',
   templateUrl: './customer-lkup.component.html',
@@ -17,6 +18,7 @@ import { SalespersonComponent } from '../../salesperson/salesperson/salesperson.
 })
 export class CustomerLkupComponent implements OnInit {
   displayedColumns: string [] =[
+    'select',
     'code',
     'name',
     'address',
@@ -25,6 +27,7 @@ export class CustomerLkupComponent implements OnInit {
     'status'
   ]
 
+  selectedCustomers: Set<number> = new Set();
   dataSource!: MatTableDataSource<any>;
   salesPerson: any[] = []
   IsLoading: boolean;
@@ -32,6 +35,7 @@ export class CustomerLkupComponent implements OnInit {
   subscription!: Subscription;
   isdata: boolean = false;
   isLoading:boolean = false;
+  selection: { [key: string]: boolean } = {}; 
  
 
   constructor(
@@ -87,8 +91,30 @@ export class CustomerLkupComponent implements OnInit {
     })
   }
 
+  onCheckboxChange (customer:any){
+    if (this.selectedCustomers.has(customer.id)) {
+      this.selectedCustomers.delete(customer.id);
+    } else
+    {
+      this.selectedCustomers.add(customer.id);
+    }
+  }
+
+  selectAll(event:any){
+    if(event.checked){
+      this.dataSource.data.forEach((customer:any) =>this.selectedCustomers.add(customer.id));
+    } else{
+      this.selectedCustomers.clear();
+    }
+  }
+
   onSelectCustomer(customer: any) {
+    const selectedCustomerArray = Array.from(this.selectedCustomers).map(id =>{
+      const customer = this.dataSource.data.find((c:any) => c.id === id);
+
+      return {name: customer.name, id: customer.id}
+    })
     console.log(customer); 
-    this.dialogRef.close({ customer: { name: customer.name, id: customer.id } });
+    this.dialogRef.close({ customer: { selectedCustomerArray } });
   }
 }

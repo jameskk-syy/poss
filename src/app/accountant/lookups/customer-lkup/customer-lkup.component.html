@@ -26,6 +26,19 @@
                     <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell"
                         #exporter="matTableExporter">
 
+                        
+
+                        <ng-container matColumnDef="select">
+                            <mat-header-cell *matHeaderCellDef>
+                                <mat-checkbox (change)="$event ? selectAll($event) : null"></mat-checkbox>
+                                Select All</mat-header-cell>
+                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                <mat-checkbox [(ngModel)]="selection[customer.id]" (change)="onCheckboxChange(customer)"></mat-checkbox>
+                            </mat-cell>
+                        </ng-container>
+                        
+
                         <ng-container matColumnDef="id">
                             <mat-header-cell *matHeaderCellDef class="table-img tbl-col-width-per-8"
                                 mat-sort-header>#</mat-header-cell>

@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { CustomerLkupComponent } from '../../lookups/customer-lkup/customer-lkup.component';
+import { SalespersonLkupComponent } from '../../lookups/salesperson-lkup/salesperson-lkup.component';
 
 
 @Component({
@@ -13,12 +14,17 @@ import { CustomerLkupComponent } from '../../lookups/customer-lkup/customer-lkup
   styleUrls: ['./onboard-salesperson.component.sass']
 })
 export class OnboardSalespersonComponent implements OnInit {
-  loading:any;
+  isLoading:Boolean = false;
+  loading: boolean = false;
   warehouse: any;
   salespersonForm: FormGroup;
   whseCode: any;
   customer: any;
   customerId: any;
+  salesperson: any;
+  salespersonId: any;
+  customers: any;
+  
 
   constructor(
     private fb: FormBuilder,
@@ -74,15 +80,16 @@ export class OnboardSalespersonComponent implements OnInit {
     const dialogRef = this.dialog.open(CustomerLkupComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.customer = result.customer;
+        this.customers = result.customer;
         console.log ('results cust',this.customer.name)
+        const customerNames = this.customers.map((customer: any) => customer.name).join(', ');
 
         this.salespersonForm.patchValue({
-          customer: this.customer.name,
-          id:this.customer.id
+          customer: customerNames,
+          id: this.customers.map((customer: any) => customer.id)
         });
 
-          this.customerId = this.customer.id
+          this.customerId = this.customers[0].id
           console.log ('customer Id',this.customerId)
       }
     });
@@ -98,25 +105,48 @@ export class OnboardSalespersonComponent implements OnInit {
      
     };
   
-    const dialogRef = this.dialog.open(WarehouseLkupComponent, dialogConfig);
+    const dialogRef = this.dialog.open(SalespersonLkupComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.warehouse = result.warehouse;
-        console.log ('results war',this.warehouse)
-
+        this.salesperson = result.salesperson;
+        console.log ('results sales',this.salesperson)
         this.salespersonForm.patchValue({
-          whseid: this.warehouse.name,
-          whseCode: this.warehouse.whseCode
+          salesperson: this.salesperson.name,
+          name: this.salesperson.name,
+          id: this.salesperson.id
         });
 
-          this.whseCode = this.warehouse.whseCode
-          console.log ('warehouse',this.whseCode)
+        this.salespersonId = this.salesperson.id
+          
+          console.log ('Salespeope',this.salespersonId)
       }
     });
   }
 
+
 onSubmit(){
+  this.isLoading = true
+  // this.subscribe = selespersonService.
 
 }
 
+
+// this.subscription = this.service.addNewStock(this.data.action,data).subscribe({
+//   next: (res) => {
+//     this.loading = false;
+//     console.log ('jhdjh', this.stockForm )
+//     const successMessage = res.message
+//     this.snackbar.showNotification("snackbar-success", successMessage);
+//     this.stockForm.reset();
+//     this.dialogRef.close();
+//   },
+//   error: (err) => {
+//     this.loading = false;
+//     const errorMessage = err.message
+//     this.snackbar.showNotification("snackbar-danger", err);
+//     this.dialogRef.close();
+//   }
+// }
+// );
+// }
 }

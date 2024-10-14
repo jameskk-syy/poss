@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { LookupsRoutingModule } from './lookups-routing.module';
 import { WarehouseLkupComponent } from './warehouse-lkup/warehouse-lkup.component';
 import { MaterialModule } from 'src/app/shared/material.module';
@@ -21,7 +20,8 @@ import { CustomerLkupComponent } from './customer-lkup/customer-lkup.component';
   imports: [
     CommonModule,
     LookupsRoutingModule,
-    MaterialModule
+    MaterialModule,
+  
   ]
 })
 export class LookupsModule { }

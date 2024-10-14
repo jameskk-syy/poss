@@ -39,10 +39,10 @@
               </mat-form-field>
             </div>
 
-            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                 <mat-form-field class="example-full-width" appearance="outline">
                   <mat-label>Customers</mat-label>
-                  <input matInput formControlName="customer" required />
+                  <textarea matInput formControlName="customer" rows="1" required> </textarea>
                   <mat-icon matSuffix (click)="selectCustomer()">search</mat-icon>
                   <mat-error *ngIf="salespersonForm.get('customer').hasError('required')">
                     Customer is required  </mat-error>

@@ -16,6 +16,7 @@ export class LookupsService {
   warehouseUrl = `${environment.apiUrl}/api/v1/warehouse`;
   skuUrl = `${environment.apiUrl}/api/v1/sku/`;
   customersUrl = `${environment.apiUrl}/api/v1/customer/`
+  salespersonUrl = `${environment.apiUrl}/api/v1/sales-person/`
 
   constructor(private http: HttpClient) { 
 
@@ -35,6 +36,10 @@ export class LookupsService {
 
   public getCustomers():Observable <any> {
     return this.http.get(this.customersUrl + `all`)
+  }
+
+  public getSalesperson(): Observable <any> {
+    return this.http.get(this.salespersonUrl + 'get')
   }
 
    
