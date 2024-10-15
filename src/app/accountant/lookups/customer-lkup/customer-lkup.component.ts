@@ -36,6 +36,8 @@ export class CustomerLkupComponent implements OnInit {
   isdata: boolean = false;
   isLoading:boolean = false;
   selection: { [key: string]: boolean } = {}; 
+  customers: any [] = []
+  allChecked: boolean = false
  
 
   constructor(
@@ -91,30 +93,30 @@ export class CustomerLkupComponent implements OnInit {
     })
   }
 
-  onCheckboxChange (customer:any){
-    if (this.selectedCustomers.has(customer.id)) {
-      this.selectedCustomers.delete(customer.id);
-    } else
-    {
-      this.selectedCustomers.add(customer.id);
+  selectCustomer(checked: boolean, index: any, customer: any) {
+    console.log("customer index and value", checked, index, customer)
+
+    if (checked) {
+      this.customers.splice(index, 0, customer)
+    } else {
+      this.customers.splice(index, 1)
     }
+
+    console.log(this.customers)
   }
 
-  selectAll(event:any){
-    if(event.checked){
-      this.dataSource.data.forEach((customer:any) =>this.selectedCustomers.add(customer.id));
-    } else{
-      this.selectedCustomers.clear();
+  masterToggle(checked: boolean) {
+    if (checked) {
+      this.customers = [...this.dataSource.data]
+      console.log("checked value is ", checked)
+    } else {
+      this.customers = []
     }
+
+    console.log("Selected Customers after master toggle:", this.customers);
   }
 
-  onSelectCustomer(customer: any) {
-    const selectedCustomerArray = Array.from(this.selectedCustomers).map(id =>{
-      const customer = this.dataSource.data.find((c:any) => c.id === id);
-
-      return {name: customer.name, id: customer.id}
-    })
-    console.log(customer); 
-    this.dialogRef.close({ customer: { selectedCustomerArray } });
+  isCustomerSelected(customer: any): boolean {
+    return this.customers.includes(customer);
   }
 }

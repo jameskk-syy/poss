@@ -30,11 +30,13 @@
 
                         <ng-container matColumnDef="select">
                             <mat-header-cell *matHeaderCellDef>
-                                <mat-checkbox (change)="$event ? selectAll($event) : null"></mat-checkbox>
+                                <mat-checkbox (change)="masterToggle($event.checked)"></mat-checkbox>
                                 Select All</mat-header-cell>
                             <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                <mat-checkbox [(ngModel)]="selection[customer.id]" (change)="onCheckboxChange(customer)"></mat-checkbox>
+                                <mat-checkbox [checked]="isCustomerSelected(customer)" 
+                                    (change)="selectCustomer($event.checked, i, customer)">
+                                </mat-checkbox>
                             </mat-cell>
                         </ng-container>
                         
@@ -97,11 +99,9 @@
                             </mat-cell>
                         </ng-container>
                         
-
-
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let customer; columns: displayedColumns"
-                            (click)="onSelectCustomer(customer)" [style.cursor]="'pointer'" matRipple>
+                        <mat-row *matRowDef="let customer; let i= index; columns: displayedColumns"
+                             [style.cursor]="'pointer'" matRipple>
                         </mat-row>
                     </mat-table> 
 
