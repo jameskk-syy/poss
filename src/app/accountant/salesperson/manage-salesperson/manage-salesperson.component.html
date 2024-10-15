@@ -74,57 +74,44 @@
                                 1}}</mat-cell>
                         </ng-container> 
                     
-                        <ng-container matColumnDef="item">
+                        <ng-container matColumnDef="username">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
-                                Item</mat-header-cell>
-                            <mat-cell *matCellDef="let stock;let i = index" [class.odd-row]="i % 2"
+                                Username</mat-header-cell>
+                            <mat-cell *matCellDef="let salesperson;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{stock.item}}
+                                {{salesperson.username}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="skuCode">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">skuCode</mat-header-cell>
-                            <mat-cell *matCellDef="let stock;let i = index" [class.odd-row]="i % 2"
+                        <ng-container matColumnDef="mobile">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Mobile</mat-header-cell>
+                            <mat-cell *matCellDef="let salesperson;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{stock.skuCode}}
+                                {{salesperson.mobile}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="skuId">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">skuId</mat-header-cell>
-                            <mat-cell *matCellDef="let stock;let i = index" [class.odd-row]="i % 2"
+                        <ng-container matColumnDef="whseCode">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Warehouse</mat-header-cell>
+                            <mat-cell *matCellDef="let salesperson;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{stock.skuId}}
+                                {{salesperson.whseCode}}
                             </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="count">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Count</mat-header-cell>
-                            <mat-cell *matCellDef="let stock;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{stock.count}}
-                            </mat-cell>
-                        </ng-container>
-                                              
-                        
+                        </ng-container>                                           
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
                             <mat-cell *matCellDef="let stock;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, product)">
                                 <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="removeStock(stock,'add')" class="tbl-action-btn">
-                                    <app-feather-icons color="primary" matTooltip="Add Stock"
-                                        [icon]="'plus'"></app-feather-icons>
+                                    (click)="editSalesperson(salesperson)" matTooltip="Edit Salesperson"
+                                    class="tbl-action-btn">
+                                    <app-feather-icons [icon]="'edit'"
+                                        [class]="'tbl-fav-edit'"></app-feather-icons>
                                 </button>
                                 <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="removeStock(stock,'remove')" class="tbl-action-btn">
-                                    <app-feather-icons color="accent" matTooltip="Remove Stock"
-                                        [icon]="'minus'"></app-feather-icons>
-                                </button>
-                                <!-- <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="deleteStock(stock)" matTooltip="Delete product"
+                                    (click)="viewSalesperson(salesperson)" matTooltip="view Salesperson"
                                     class="tbl-action-btn">
-                                    <app-feather-icons matTooltip="Delete Product" [icon]="'trash-2'"
-                                        [class]="'tbl-fav-delete'"></app-feather-icons>
-                                </button> -->
+                                    <app-feather-icons [icon]="'arrow-right-circle'"
+                                        [class]="'tbl-fav-proceed'"></app-feather-icons>
+                                </button>
                             </mat-cell>
                         </ng-container>
 

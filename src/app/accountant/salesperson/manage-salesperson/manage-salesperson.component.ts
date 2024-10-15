@@ -1,6 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SalespersonService } from '../salesperson.service';
+import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
+import { error } from 'console';
 
 @Component({
   selector: 'app-manage-salesperson',
@@ -13,18 +20,32 @@ export class ManageSalespersonComponent implements OnInit {
   isLoading: boolean = false;
   isdata: any;
   dataSource!: MatTableDataSource<any>;
-
-
+  subscription!: Subscription;
+  data: any;
 
   displayedColumns: string [] = [
     'id',
+    'username',
+    'mobile',
+    'whseCode',
     'action'
   ]
 
+  
+
   constructor(
     private salespersonService: SalespersonService,
+    private router: Router,
+    private dialog: MatDialog,
 
   ) { }
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild("filter", { static: true }) filter: ElementRef;
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
+  contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit() {
     this.getData()
@@ -41,9 +62,31 @@ export class ManageSalespersonComponent implements OnInit {
 
 
   getData(){
+    this.isLoading = true;
+    this.subscription = this.salespersonService.getSalesperson().subscribe({
+      next:(res) => {
+        this.data = res;
+        if(this.data.entity.length > 0){
+          this.isLoading = false;
+          this.isdata = true;
+          this.dataSource = new MatTableDataSource(this.data.entity);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        } else {
+        this.isLoading = false;
+        this.dataSource = new MatTableDataSource(this.data.entity)
+        }
+      },
+      error (err){
+        this.isLoading = false;
+        console.error('error fetching data:', err);
+        this.isdata = false;
+      }
+    })
 
   }
 
-  
-
 }
+
+
+
