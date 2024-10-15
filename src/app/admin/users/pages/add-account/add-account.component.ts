@@ -62,10 +62,17 @@ export class AddAccountComponent extends BaseComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       (result) => {
-        console.log("Result ", result);
-        this.userForm.patchValue({
-          role: result.data.id,
+        // this.userForm.reset();
+
+        // Optionally, you can provide initial values if needed
+        // this.userForm.reset({ email: '', name: '', ... });
+    
+        // Explicitly mark form controls as pristine and untouched
+        Object.keys(this.userForm.controls).forEach(key => {
+          this.userForm.get(key)?.reset()
         });
+    
+        // Optionally update form validity if needed
       },
       (err) => {
         console.log(err);
