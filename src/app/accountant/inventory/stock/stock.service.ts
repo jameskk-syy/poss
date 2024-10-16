@@ -42,6 +42,26 @@ export class StockService {
     return this.http.get(`${environment.apiUrl}/api/v1/stock/warehouse/${whseCode}`);
   }
 
+  public getMasterHistory(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/stock-move/warehouse/master`);
+  }
+
+  public getBywhseCode(whseCode:any): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/stock-move/warehouse/${whseCode}`);
+  }
+
+  public getByDateRange(fromDate:any, toDate:any): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/stock-move/date-range/${fromDate}/${toDate}`);
+  }
+
+  public getByCodeandRange(whseCode:any,fromDate:any, toDate:any): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/v1/stock-move/warehouse/${whseCode}/${fromDate}/${toDate}`);
+  }
+
+  public transferWarehouse(data: any) : Observable<any>{
+    return this.http.post(`${this.stockUrl}transfer`, data);
+  }
+
 }
 
 

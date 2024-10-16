@@ -33,7 +33,5 @@ baseUrl =  environment.apiUrl+'/api/v1/warehouse/'
   public assignUser(whseCode:any,ownerId:any, data: any) : Observable<any>{
     return this.http.post(`${this.baseUrl}assign/${whseCode}/${ownerId}`, data);
   }
-
-  createUserAccounts
   
 }

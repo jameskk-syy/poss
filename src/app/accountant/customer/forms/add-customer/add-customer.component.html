@@ -36,16 +36,17 @@
                                         Category is required
                                     </mat-error>
                                 </mat-form-field>
-                            </div>                          
+                            </div>   
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Alternative Phone</mat-label>
-                                    <input matInput formControlName="alt_phone" required />
-                                    <mat-error *ngIf="customerRegistrationForm.get('alt_phone').hasError('required')">
-                                        Alternative phone is required
+                                    <mat-label>Name</mat-label>
+                                    <input matInput formControlName="name" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('name').hasError('required')">
+                                        The name is required
                                     </mat-error>
                                 </mat-form-field>
-                            </div>
+                            </div>                       
+                         
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Location</mat-label>
@@ -58,15 +59,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                                <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>Name</mat-label>
-                                    <input matInput formControlName="name" required />
-                                    <mat-error *ngIf="customerRegistrationForm.get('name').hasError('required')">
-                                        The name is required
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
+                       
 
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
@@ -77,6 +70,17 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
+                            
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Alternative Phone</mat-label>
+                                    <input matInput formControlName="alt_phone" required />
+                                    <mat-error *ngIf="customerRegistrationForm.get('alt_phone').hasError('required')">
+                                        Alternative phone is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                             <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label>Address</mat-label>

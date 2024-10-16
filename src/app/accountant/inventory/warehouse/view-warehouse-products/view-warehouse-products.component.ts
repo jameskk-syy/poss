@@ -7,6 +7,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StockService } from '../../stock/stock.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MainComponent } from '../main/main.component';
 
 @Component({
   selector: 'app-view-warehouse-products',
@@ -24,9 +26,10 @@ export class ViewWarehouseProductsComponent implements OnInit {
     'price',      
     'updatedBy',
     'updatedOn',
-    'actions'
+    'actions',
   ];
 
+  warehouseData:any;
   subscription!: Subscription;
   code:any;
   data: any;
@@ -35,7 +38,7 @@ export class ViewWarehouseProductsComponent implements OnInit {
 
   dataSource!: MatTableDataSource<any>;
 
-  constructor(private route: ActivatedRoute, private dialog: MatDialog, private service: StockService,) { }
+  constructor( private route: ActivatedRoute, private dialog: MatDialog, private service: StockService,) { }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -47,7 +50,14 @@ export class ViewWarehouseProductsComponent implements OnInit {
   ngOnInit(): void {
     const code = this.route.snapshot.paramMap.get('code');
     this.getData(code);
-  }
+  
+    this.route.queryParams.subscribe((params) => {
+      if (params['warehouse']) {
+        this.warehouseData = JSON.parse(params['warehouse']);
+        console.log(this.warehouseData); 
+      }
+    });
+  }  
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -57,7 +67,6 @@ export class ViewWarehouseProductsComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
 
   getData(code: string) {
     this.isLoading = true;
@@ -126,4 +135,5 @@ export class ViewWarehouseProductsComponent implements OnInit {
     //   }
     // })
   }  
+
 }

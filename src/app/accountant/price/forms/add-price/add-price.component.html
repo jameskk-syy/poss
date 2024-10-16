@@ -36,6 +36,19 @@
                                       </mat-error>
                                   </mat-form-field>
                             </div>
+
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>To Date</mat-label>
+                                    <input matInput [matDatepicker]="toPicker" formControlName="to" required
+                                           [value]="priceRegistrationForm.get('to').value | date: 'yyyy-MM-dd'"  />
+                                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #toPicker></mat-datepicker>
+                                    <mat-error *ngIf="priceRegistrationForm.get('to').hasError('required')">
+                                        toDate is required
+                                      </mat-error>
+                                  </mat-form-field>
+                                 </div>   
                             
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
@@ -45,8 +58,10 @@
                                         Price is required
                                     </mat-error>
                                 </mat-form-field>
-                            </div>
-                            
+                            </div>                            
+                        </div>
+
+                        <div class="row">
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Status</mat-label>
@@ -59,22 +74,7 @@
                                         Status is required
                                     </mat-error>
                                 </mat-form-field>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
-                                <mat-form-field class="example-full-width" appearance="outline">
-                                    <mat-label>To Date</mat-label>
-                                    <input matInput [matDatepicker]="toPicker" formControlName="to" required
-                                           [value]="priceRegistrationForm.get('to').value | date: 'yyyy-MM-dd'"  />
-                                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                                    <mat-datepicker #toPicker></mat-datepicker>
-                                    <mat-error *ngIf="priceRegistrationForm.get('to').hasError('required')">
-                                        toDate is required
-                                      </mat-error>
-                                  </mat-form-field>
-                                 </div>                     
+                            </div>         
                                </div>
 
                              <div class="row">

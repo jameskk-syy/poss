@@ -80,7 +80,7 @@
 
                                 <ng-container matColumnDef="name">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-8">Name</mat-header-cell>
-                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-8">
+                                    <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-8">
                                         {{wh.name}}
                                     </mat-cell>
                                 </ng-container>
