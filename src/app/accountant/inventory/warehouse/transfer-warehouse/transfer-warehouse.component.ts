@@ -3,11 +3,13 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from "@angular/router";
 import { takeUntil } from "rxjs";
-import { WarehouseService } from "../warehouse.service";
+import { StockService } from "../../stock/stock.service";
 import { BaseComponent } from "src/app/shared/components/base/base.component";
 import { SnackbarService } from "src/app/shared/services/snackbar.service";
 import { WarehouseLkupComponent } from "src/app/accountant/lookups/warehouse-lkup/warehouse-lkup.component";
-
+import { SkuLkupComponent } from "src/app/accountant/lookups/sku-lkup/sku-lkup.component";
+import { ConfirmTransferComponent } from "../confirm-transfer/confirm-transfer.component";
+import { clear } from "console";
 @Component({
   selector: 'app-transfer-warehouse',
   templateUrl: './transfer-warehouse.component.html',
@@ -15,17 +17,21 @@ import { WarehouseLkupComponent } from "src/app/accountant/lookups/warehouse-lku
 })
 export class TransferWarehouseComponent extends BaseComponent implements OnInit {
 
- 
+  sku: any;
   transferForm: FormGroup;
   warehouse: any;
   whseCode: any;
   loading = false;
+  selectedSkuCode: any;
+  fromWarehouse: any
+  toWarehouse: any
+ 
 
   constructor(
     private dialog: MatDialog,
     private fb: FormBuilder,
     private router: Router,
-    private warehouseService: WarehouseService,
+    private stockService: StockService,
     private snackbar: SnackbarService
   ) {
     super();
@@ -36,7 +42,7 @@ export class TransferWarehouseComponent extends BaseComponent implements OnInit 
       count: ["", [Validators.required]],
       from: ["", [Validators.required]],
       message: ["", [Validators.required]],
-      skuCode: ["", [Validators.required]],
+      skuName:  ["", [Validators.required]],
       to: ["", [Validators.required]],
     });
 
@@ -64,13 +70,14 @@ export class TransferWarehouseComponent extends BaseComponent implements OnInit 
         if (field === 'from') {
           this.transferForm.patchValue({
             from: this.warehouse.name,
-            whseCode: this.warehouse.whseCode
           });
+          this.fromWarehouse = this.warehouse.whseCode
         } else if (field === 'to') {
           this.transferForm.patchValue({
             to: this.warehouse.name,
-            whseCode: this.warehouse.whseCode
           });
+
+          this.toWarehouse = this.warehouse.whseCode
         }
   
         this.whseCode = this.warehouse.whseCode;
@@ -79,34 +86,62 @@ export class TransferWarehouseComponent extends BaseComponent implements OnInit 
     });
   }
 
-  onSubmit() {
-    this.loading = true;
-
-    this.warehouseService.createUserAccounts(this.transferForm.value)
-      .pipe(takeUntil(this.subject))
-      .subscribe(
-        (res) => {
-          this.loading = false;
-
-          console.log(res);
-
-          if(res.statusCode == 200 || res.statusCode == 201){
-            this.snackbar.showNotification(res.message, "snackbar-success");
-
-             this.router.navigate([`/admin/user-accounts/all`]);
-          }else {
-            this.snackbar.showNotification(res.message, "snackbar-danger")
-
-            this.loading = false;
-          }
-        },
-        (err) => {
-          console.log(err)
-          this.snackbar.showNotification(err.error.error, "snackbar-danger");
-          console.log(err);
-          this.loading = false;
-        }
-      );
+  selectSkuUnit(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+    dialogConfig.data = {
+     
+    };
+  
+    const dialogRef = this.dialog.open(SkuLkupComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.sku = result.sku;
+        this.transferForm.patchValue({
+          skuName: this.sku.name,
+          skuCode: this.sku.code 
+        });
+          this.selectedSkuCode = this.sku.code
+      }
+    });
   }
+
+  onSubmit() {
+    const formData = {
+      count: this.transferForm.value.count,
+      from: this.fromWarehouse,
+      to: this.toWarehouse,
+      message: this.transferForm.value.message,
+      skuCode: this.selectedSkuCode
+    };
+  
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+  
+    dialogConfig.data = {
+      action: "edit",
+      formData: formData
+    };
+  
+    this.dialog.open(ConfirmTransferComponent, dialogConfig).afterClosed().subscribe({
+      next: () => {
+        this.clearForm()
+      },
+    });
+  }
+
+  clearForm() {
+    this.transferForm.reset()
+    this.transferForm.get('count')
+    this.transferForm.get('from').markAsUntouched()
+    this.transferForm.get('message').markAsUntouched()
+    this.transferForm.get('skuName').markAsUntouched()
+    this.transferForm.get('to').markAsUntouched()
+  }
+  
 }
 
