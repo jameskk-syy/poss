@@ -28,6 +28,7 @@ export class ManageSalespersonComponent implements OnInit {
     'username',
     'mobile',
     'whseCode',
+    'ViewCustomers',
     'action'
   ]
 
@@ -85,6 +86,13 @@ export class ManageSalespersonComponent implements OnInit {
     })
 
   }
+
+  // viewSalespersonCustomers(salesperson: any){
+  //   this.router.navigate({}){salesperson}
+
+  // }
+
+
 
 }
 

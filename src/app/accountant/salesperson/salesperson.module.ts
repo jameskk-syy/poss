@@ -23,13 +23,19 @@ import { MatTableExporterModule } from 'mat-table-exporter';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { EditSalespersonComponent } from './forms/edit-salesperson/edit-salesperson.component';
+import { ManageSpCustomersComponent } from './manage-sp-customers/manage-sp-customers.component';
+import { SpCustomerHistoryComponent } from './sp-customer-history/sp-customer-history.component';
 
 
 @NgModule({
   declarations: [
     SalespersonComponent,
     OnboardSalespersonComponent,
-    ManageSalespersonComponent
+    ManageSalespersonComponent,
+    EditSalespersonComponent,
+    ManageSpCustomersComponent,
+    SpCustomerHistoryComponent
   ],
   imports: [
     CommonModule,

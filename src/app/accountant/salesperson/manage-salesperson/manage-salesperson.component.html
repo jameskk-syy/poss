@@ -95,22 +95,35 @@
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
                                 {{salesperson.whseCode}}
                             </mat-cell>
+                        </ng-container> 
+                        <ng-container matColumnDef="ViewCustomers">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">View Customers</mat-header-cell>
+                            <mat-cell *matCellDef="let salesperson;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                <button class="badge badge-solid-green" (click)="$event.stopPropagation()"
+                                    (click)="viewSalespersonCustomers(salesperson)"> View Customers
+                                </button>
+                            </mat-cell>
                         </ng-container>                                           
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
                             <mat-cell *matCellDef="let stock;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, product)">
-                                <button mat-icon-button (click)="$event.stopPropagation()"
+                                <!-- <button mat-icon-button (click)="$event.stopPropagation()"
                                     (click)="editSalesperson(salesperson)" matTooltip="Edit Salesperson"
                                     class="tbl-action-btn">
                                     <app-feather-icons [icon]="'edit'"
                                         [class]="'tbl-fav-edit'"></app-feather-icons>
-                                </button>
-                                <button mat-icon-button (click)="$event.stopPropagation()"
+                                </button> -->
+                                <!-- <button mat-icon-button (click)="$event.stopPropagation()"
                                     (click)="viewSalesperson(salesperson)" matTooltip="view Salesperson"
                                     class="tbl-action-btn">
                                     <app-feather-icons [icon]="'arrow-right-circle'"
                                         [class]="'tbl-fav-proceed'"></app-feather-icons>
+                                </button> -->
+                                <button mat-icon-button (click)="$event.stopPropagation()"
+                                     matTooltip="deactivate Salesperson" class="tbl-action-btn">
+                                    <mat-slide-toggle (change)="deactivateSalesperson(salesperson)"></mat-slide-toggle>
                                 </button>
                             </mat-cell>
                         </ng-container>
