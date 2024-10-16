@@ -1,0 +1,49 @@
+<div class="content-block bg">
+    <div class="row clearfix bg">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="modalHeader">
+                    <div class="editRowModal">
+                        <div class="modalHeader clearfix">
+                            <div class="modalHeader clearfix">
+                                <div class="modal-about">
+                                    <div style="font-weight: bold; padding-top: 5px; font-size: 17px;">
+                                        Confirm Stock Transfer
+                                    </div>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+                <mat-dialog-content>
+                    <div style="margin-left: 20px;">
+                        <div style="font-size: 22px; ">
+                            <p>Are you sure you want to transfer stock to the selected warehouse?</p>
+                        </div>                        
+                    <p><b>From Warehouse:</b> {{warehouse.from}}</p>
+                    <p><b>To Warehouse:</b> {{warehouse.to}}</p>
+                    <p><b>Quantity:</b> {{warehouse.count}}</p>
+                    <p><b>Item:</b> {{warehouse.skuCode}}</p>
+                    <div></div>
+                    </div>
+                </mat-dialog-content>
+            
+                <div class="row" style="margin-left: 13px;">
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <div class="example-button-row">
+                            <button mat-raised-button color="warn" (click)="close()" tabindex="-1">
+                                Cancel
+                            </button>
+                            <button mat-raised-button color="primary" 
+                                (click)="submit()">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                <b>Transfer</b>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </div>

@@ -126,10 +126,12 @@ export class MainComponent implements OnInit {
       }
     })
   }  
-    
-   viewWarehouseStock(wh: any) {
-       this.router.navigate([`inventory/warehouse/warehouse-stock`, wh.code]); 
+  viewWarehouseStock(wh: any) {
+    this.router.navigate([`inventory/warehouse/warehouse-stock`, wh.code], {
+      queryParams: { warehouse: JSON.stringify(wh) },
+    });
   }
+  
   
   search(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

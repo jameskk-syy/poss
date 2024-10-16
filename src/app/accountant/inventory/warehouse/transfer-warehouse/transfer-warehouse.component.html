@@ -2,7 +2,7 @@
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
           <div class="card">
             <div class="header">
-              <h2>Transfer Warehouse</h2>
+              <h2>Stock Transfer</h2>
             </div>
             <div class="body">
               
@@ -10,17 +10,8 @@
                 <div class="row">
                   <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
                     <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>Count</mat-label>
-                      <input formControlName="count" matInput required />
-                      <mat-error *ngIf="transferForm.get('count').hasError('required')">
-                        Count is required
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>From</mat-label>
-                      <input formControlName="from" matInput required/>
+                      <mat-label>From Warehouse</mat-label>
+                      <input formControlName="from" matInput readonly required/>
                       <mat-icon matSuffix (click)="selectWarehouse('from')">search</mat-icon>
                       <mat-error *ngIf="transferForm.get('from').hasError('required')">
                         From Warehouse
@@ -29,24 +20,46 @@
                   </div>
                   <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
                     <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>Message</mat-label>
+                      <mat-label>To Warehouse</mat-label>
+                      <input matInput formControlName="to" readonly required />
+                      <mat-icon matSuffix (click)="selectWarehouse('to')">search</mat-icon>
+                      <mat-error *ngIf="transferForm.get('to').hasError('required')">
+                        The To Warehouse is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                      <mat-label>Item</mat-label>
+                      <input matInput formControlName="skuName" readonly required/>
+                      <mat-icon matSuffix (click)="selectSkuUnit()">search</mat-icon>
+                      <mat-error *ngIf="transferForm.get('skuName').hasError('required')">
+                        Item is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                      <mat-label>Item Count</mat-label>
+                      <input formControlName="count" matInput required />
+                      <mat-error *ngIf="transferForm.get('count').hasError('required')">
+                        Quantity is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                
+                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
+                    <mat-form-field class="example-full-width mb-3" appearance="outline">
+                      <mat-label>Description</mat-label>
                       <input formControlName="message" matInput required />
                       <mat-error *ngIf="transferForm.get('message').hasError('required')">
                         The Message is required
                       </mat-error>
                     </mat-form-field>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>skuCode</mat-label>
-                      <input formControlName="skuCode" matInput />
-                      <mat-error *ngIf="transferForm.get('skuCode').hasError('required')">
-                        The skuCodeis required
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
+                </div>           
+               
                   <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
                     <mat-form-field class="example-full-width mb-1" appearance="outline">
                       <mat-label>Role</mat-label>
@@ -57,29 +70,15 @@
                       </button>
                     </mat-form-field>
                   </div> -->
-                  <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
-                    <mat-form-field class="example-full-width mb-3" appearance="outline">
-                      <mat-label>To</mat-label>
-                      <input matInput formControlName="to" required />
-                      <mat-icon matSuffix (click)="selectWarehouse('to')">search</mat-icon>
-                      <mat-error *ngIf="transferForm.get('to').hasError('required')">
-                        The To Warehouse is required
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
+                
                 </div>
                 <div class="row">
-                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
-                    <div class="example-button-row">
-                    <button mat-raised-button color="warn" (click)=" onCancel()" tabindex="-1">
-                      Cancel
-                    </button>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">                
                     <button mat-raised-button color="primary" [disabled]="!transferForm.valid"
                         (click)="onSubmit()">
                       <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                       <b>Submit</b>
-                   </button>
-                  </div>                
+                   </button>               
                   </div>
                 </div>
               </form>              

@@ -19,6 +19,7 @@ import { ViewWarehouseProductsComponent } from './view-warehouse-products/view-w
 import { StockWidgetsComponent } from './stock-widgets/stock-widgets.component';
 import { TransferHistoryComponent } from './transfer-history/transfer-history.component';
 import { TransferWarehouseComponent } from './transfer-warehouse/transfer-warehouse.component';
+import { ConfirmTransferComponent } from './confirm-transfer/confirm-transfer.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { TransferWarehouseComponent } from './transfer-warehouse/transfer-wareho
      ViewWarehouseProductsComponent,
      StockWidgetsComponent,
      TransferHistoryComponent,
-     TransferWarehouseComponent
+     TransferWarehouseComponent,
+     ConfirmTransferComponent
   ],
   imports: [
     CommonModule,

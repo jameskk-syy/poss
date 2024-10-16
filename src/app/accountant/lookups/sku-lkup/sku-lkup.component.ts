@@ -85,7 +85,7 @@ export class SkuLkupComponent implements OnInit {
 
   onSelectSku(sku: any) {
     console.log(sku); 
-    this.dialogRef.close({ sku: { name: sku.name, id: sku.id } });
+    this.dialogRef.close({ sku: { name: sku.name, id: sku.id, code:sku.code } });
   }
 
 }
