@@ -14,6 +14,7 @@ import { MatTableExporterModule } from "mat-table-exporter";
 import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSelectModule } from "@angular/material/select";
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 const materialModules = [
   MatButtonModule,
@@ -30,7 +31,8 @@ const materialModules = [
   MatTableExporterModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSelectModule
+  MatSelectModule,
+  MatCheckboxModule
 ];
 
 @NgModule({

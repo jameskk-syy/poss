@@ -1042,4 +1042,19 @@ export const ROUTES: RouteInfo[] = [
   ],
   },
 
+  {
+    path: '/accountant/salesperson',
+    title: 'Salesperson',
+    moduleName: 'salesperson',
+    iconType: 'feather',
+    icon: 'user',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ACCOUNTANT'],
+    submenu: [],
+  },
+  
+
 ];

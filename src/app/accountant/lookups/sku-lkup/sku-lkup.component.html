@@ -57,6 +57,13 @@
                                 {{sku.priceList.price}}
                             </mat-cell>
                         </ng-container>
+                        <ng-container matColumnDef="product">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Product</mat-header-cell>
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{sku.product.name}}
+                            </mat-cell>
+                        </ng-container>
                         <ng-container matColumnDef="unit">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Unit</mat-header-cell>
                             <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"

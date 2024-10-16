@@ -14,6 +14,10 @@ const routes: Routes = [
   //   import('./dashboard/dashboard.module').then(m=>m.AdminDashboardModule)
     
   // },
+  {
+    path: "dashboard",
+    component: MainComponent,
+  },
 
   {
     path:'product',
@@ -23,19 +27,24 @@ const routes: Routes = [
   },
 
   {
-    path: "dashboard",
-    component: MainComponent,
+    path:'salesperson',
+    loadChildren: ()=>
+    import('./salesperson/salesperson.module').then(m=>m.SalespersonModule)
+    
   },
+
   {
     path: "price",
     loadChildren: () =>
       import("./price/price.module").then((m) => m.PriceModule),
   },  
+
   {
     path: "customer",
     loadChildren: () =>
       import("./customer/customer.module").then((m) => m.CustomerModule),
   }, 
+
   {
     path: "reports",
     canActivate: [AuthGuard],

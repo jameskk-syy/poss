@@ -15,6 +15,8 @@ export class LookupsService {
   usersUrl = `${environment.apiUrl}/api/v1/users/`;
   warehouseUrl = `${environment.apiUrl}/api/v1/warehouse`;
   skuUrl = `${environment.apiUrl}/api/v1/sku/`;
+  customersUrl = `${environment.apiUrl}/api/v1/customer/`
+  salespersonUrl = `${environment.apiUrl}/api/v1/sales-person/`
 
   constructor(private http: HttpClient) { 
 
@@ -25,28 +27,20 @@ export class LookupsService {
   }
 
   public getWarehouses(): Observable<any> {
-    return this.http.get(this.warehouseUrl + `/get/all`).pipe (
-      catchError(this.handleError))
+    return this.http.get(this.warehouseUrl + `/get/all`)
   }
 
   public getSkus(): Observable<any> {
-    return this.http.get(this.skuUrl + `get`).pipe (
-      catchError(this.handleError)
-    )
+    return this.http.get(this.skuUrl + `get`)
   }
 
-  private handleError(error: any) {
-    console.error('Error occurred:', error);
-    let errorMessage = 'An unknown error occurred';
+  public getCustomers():Observable <any> {
+    return this.http.get(this.customersUrl + `all`)
+  }
 
-    if (error.error && error.error.message) {
-        errorMessage = error.error.message;  
-    }
+  public getSalesperson(): Observable <any> {
+    return this.http.get(this.salespersonUrl + 'get')
+  }
 
-    if (error.status === 400) {
-        errorMessage = `Bad Request: ${errorMessage}`; 
-    }
-
-    return throwError(() => new Error(errorMessage));
-}
+   
 }
