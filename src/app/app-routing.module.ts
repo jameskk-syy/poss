@@ -68,6 +68,14 @@ const routes: Routes = [
        import("./totals-collector/totals-collector.module").then((m)=>m.TotalsCollectorModule)
       },
       {
+        path: "salesperson",
+        canActivate: [AuthGuard],
+        data: {
+          role: Role.Accountant
+        },
+        loadChildren: () => import("./accountant/salesperson/salesperson.module").then((m => m.SalespersonModule))
+      },
+      {
       path: "accountant",
        canActivate: [AuthGuard],
        data: {

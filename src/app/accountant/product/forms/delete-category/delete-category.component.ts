@@ -12,7 +12,8 @@ import { CategoryComponent } from '../../category/category.component';
 })
 export class DeleteCategoryComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<CategoryComponent>,
+  constructor(
+    public dialogRef: MatDialogRef<CategoryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackbar: SnackbarService,
     private service: ProductService) { }

@@ -2,12 +2,13 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SalespersonService } from '../salesperson.service';
 import { Subscription } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { error } from 'console';
+import { query } from '@angular/animations';
 
 @Component({
   selector: 'app-manage-salesperson',
@@ -29,8 +30,9 @@ export class ManageSalespersonComponent implements OnInit {
     'mobile',
     'whseCode',
     'ViewCustomers',
-    'action'
+    
   ]
+  salesperson: any;
 
   
 
@@ -84,11 +86,30 @@ export class ManageSalespersonComponent implements OnInit {
         this.isdata = false;
       }
     })
+  }
+
+  viewSalespersonCustomers(salesperson: any){
+    this.router.navigate([`salesperson/viewcustomer`, salesperson.id],
+  );
+  
 
   }
 
-  // viewSalespersonCustomers(salesperson: any){
-  //   this.router.navigate({}){salesperson}
+  manageCustomers(){
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false
+      dialogConfig.autoFocus = true
+      dialogConfig.width = "600px"
+      dialogConfig.data = {
+        
+      }
+      this.dialog.open(Component, dialogConfig)
+      }
+  
+
+  // deactivateSalesperson(isActive: boolean, salesperson:any){
+  //   salesperson:isActive = isActive
+
 
   // }
 

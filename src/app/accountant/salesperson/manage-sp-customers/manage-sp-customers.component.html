@@ -1,123 +1,187 @@
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="body">
-                <div class="table-responsive">
-                    <div class="materialTableHeader">
-                        <div class="row">
-                            <div class="col-8">
-                                <ul class="header-buttons-left ms-0">
-                                    <li class="dropdown">
-                                        <h2>Customer</h2>
-                                    </li>
-                                    <li class="dropdown m-l-20">
-                                        <label for="search-input"><i
-                                                class="material-icons search-icon">search</i></label>
-                                        <input placeholder="Search" type="text"
-                                            style="text-transform: capitalize;" (keyup)="applyFilter($event)"
-                                            class="browser-default search-field" aria-label="Search box" />
-                                    </li>
-                                </ul>
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Salesperson'" [items]="['Customers']"
+                [active_item]="'All Customers'">
+            </app-breadcrumb>
+        </div>
+        <div><p><Strong>SalespersonId: {{salesPersonId}}</Strong></p></div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="body">
+                    <div class="table-responsive">
+                        <div class="materialTableHeader">
+                            <div class="row">
+                                <div class="col-8">
+                                    <ul class="header-buttons-left ms-0">
+                                        <li class="dropdown">
+                                            <h2>Customers</h2>
+                                        </li>
+                                        <li class="dropdown m-l-20">
+                                            <label for="search-input"><i
+                                                    class="material-icons search-icon">search</i></label>
+                                            <input placeholder="Search" type="text"
+                                                style="text-transform: capitalize;" (keyup)="applyFilter($event)"
+                                                class="browser-default search-field" aria-label="Search box" />
+                                        </li>
+                                        <li>
+                                            <div class="m-l-10" matTooltip="ADD">
+                                                <button mat-mini-fab color="primary" (click)="addCustomer(salesPersonId)">
+                                                    <mat-icon class="col-white">add</mat-icon>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="m-l-10" matTooltip="REFRESH">
+                                                <button mat-mini-fab color="primary" (click)="getData(salesPersonId)">
+                                                    <mat-icon class="col-white">refresh</mat-icon>
+                                                </button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-4">
+                                    <ul class="header-buttons">
+                                        <li>
+                                            <div class="export-button m-l-10" matTooltip="XLSX">
+                                                <img src="assets/images/icons/xlsx.png" alt="" (click)="exporter.exportTable('xlsx', {fileName: 'Products',sheet: 'sheet1' })" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="export-button m-l-10" matTooltip="CSV">
+                                                <img src="assets/images/icons/csv.png" alt=""
+                                                    (click)="exporter.exportTable('csv')" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="export-button m-l-10" matTooltip="JSON">
+                                                <img src="assets/images/icons/json.png" alt=""
+                                                    (click)="exporter.exportTable('json')" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="export-button m-l-10" matTooltip="TXT">
+                                                <img src="assets/images/icons/txt.png" alt=""
+                                                    (click)="exporter.exportTable('txt')" />
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            
                         </div>
-                    </div>
-            
-                    <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell"
-                        #exporter="matTableExporter">
+                        <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell"
+                            #exporter="matTableExporter">
 
+                            <ng-container matColumnDef="id">
+                                <mat-header-cell *matHeaderCellDef class="table-img tbl-col-width-per-8"
+                                    mat-sort-header>#</mat-header-cell>
+                                <mat-cell class="table-img tbl-col-width-per-8"
+                                    *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
+                                    [class.even-row]="!(i % 2)">{{i +
+                                    1}}</mat-cell>
+                            </ng-container> 
                         
+                            <ng-container matColumnDef="code">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
+                                    Code</mat-header-cell>
+                                <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                    [class.even-row]="!(i % 2)" class="column-nowrap">
+                                    {{customer.code}}
+                                </mat-cell>
+                            </ng-container>
 
-                        <ng-container matColumnDef="select">
-                            <mat-header-cell *matHeaderCellDef>
-                                <mat-checkbox (change)="masterToggle($event.checked)"></mat-checkbox>
-                                Select All</mat-header-cell>
-                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                <mat-checkbox [checked]="isCustomerSelected(customer)" 
-                                    (change)="selectCustomer($event.checked, i, customer)">
-                                </mat-checkbox>
-                            </mat-cell>
-                        </ng-container>
-                        
+                            <ng-container matColumnDef="name">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
+                                    Name</mat-header-cell>
+                                <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                    [class.even-row]="!(i % 2)" class="column-nowrap">
+                                    {{customer.name}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="address">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Address</mat-header-cell>
+                                <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                    [class.even-row]="!(i % 2)" class="column-nowrap">
+                                    {{customer.address}}
+                                </mat-cell>
+                            </ng-container>
 
-                        <ng-container matColumnDef="id">
-                            <mat-header-cell *matHeaderCellDef class="table-img tbl-col-width-per-8"
-                                mat-sort-header>#</mat-header-cell>
-                            <mat-cell class="table-img tbl-col-width-per-8"
-                                *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)">{{i +
-                                1}}</mat-cell>
-                        </ng-container> 
-                    
-                        <ng-container matColumnDef="code">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
-                                Code</mat-header-cell>
-                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{customer.code}}
-                            </mat-cell>
-                        </ng-container>
+                            <ng-container matColumnDef="location">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Location</mat-header-cell>
+                                <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                    [class.even-row]="!(i % 2)" class="column-nowrap">
+                                    {{customer.location}}
+                                </mat-cell>
+                            </ng-container>
 
-                        <ng-container matColumnDef="name">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
-                                Name</mat-header-cell>
-                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{customer.name}}
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="address">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Address</mat-header-cell>
-                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{customer.address}}
-                            </mat-cell>
-                        </ng-container>
+                            <ng-container matColumnDef="phone">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Mobile No</mat-header-cell>
+                                <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                    [class.even-row]="!(i % 2)" class="column-nowrap">
+                                    {{customer.phone}}
+                                </mat-cell>
+                            </ng-container>
 
-                        <ng-container matColumnDef="location">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Location</mat-header-cell>
-                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{customer.location}}
-                            </mat-cell>
-                        </ng-container>
+                            <ng-container matColumnDef="status">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
+                                <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                    [class.even-row]="!(i % 2)" class="column-nowrap">
+                                    {{customer.status}}
+                                </mat-cell>
+                            </ng-container>
 
-                        <ng-container matColumnDef="phone">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Mobile No</mat-header-cell>
-                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{customer.phone}}
-                            </mat-cell>
-                        </ng-container>
+                            <ng-container matColumnDef="customerDetails">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Customers</mat-header-cell>
+                                <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                    [class.even-row]="!(i % 2)" class="column-nowrap">
+                                    <button class="badge badge-solid-green" (click)="$event.stopPropagation()"
+                                        (click)="viewCustomersDetails(customer)"> Customers 
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
 
-                        <ng-container matColumnDef="status">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
-                            <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{customer.status}}
-                            </mat-cell>
-                        </ng-container>
-                        
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let customer; let i= index; columns: displayedColumns"
-                             [style.cursor]="'pointer'" matRipple>
-                        </mat-row>
-                    </mat-table> 
+                            <ng-container matColumnDef="actions">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
+                                <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
+                                    [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, product)">
+                                    <button mat-icon-button (click)="$event.stopPropagation()"
+                                        (click)="editCustomer(customer,salesPersonId)" 
+                                        class="tbl-action-btn" matTooltip="Remove Customer">
+                                        <app-feather-icons color="primary" matTooltip="Remove Customer"
+                                            [icon]="'delete'"></app-feather-icons>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
 
-                    <!-- Loading spinner -->
-                    <div *ngIf="isLoading" class="tbl-spinner">
-                        <mat-progress-spinner color="primary" [diameter]="50" mode="indeterminate">
-                        </mat-progress-spinner>
+                            
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns"
+                                (click)="stockDetails(stock)" [style.cursor]="'pointer'" matRipple>
+                            </mat-row>
+                        </mat-table>
+
+                        <!-- Loading spinner -->
+                        <div *ngIf="isLoading" class="tbl-spinner">
+                            <mat-progress-spinner color="primary" [diameter]="50" mode="indeterminate">
+                            </mat-progress-spinner>
+                        </div>
+
+                        <div class="tbl-spinner" *ngIf="isdata==false && !isLoading">
+                            <h4>0 Records Found</h4>
+                        </div>
+
+                        <mat-paginator #paginator [pageIndex]="0" [pageSize]="5"
+                            [pageSizeOptions]="[5, 10, 25, 100]">
+                        </mat-paginator>
                     </div>
-
-                    <div class="tbl-spinner" *ngIf="isdata==false && !isLoading">
-                        <h4>0 Records Found</h4>
-                    </div>
-
-                    <mat-paginator #paginator [pageIndex]="0" [pageSize]="5"
-                        [pageSizeOptions]="[5, 10, 25, 100]">
-                    </mat-paginator>
                 </div>
             </div>
         </div>
     </div>
+    </div>
+</section>
+
+
+

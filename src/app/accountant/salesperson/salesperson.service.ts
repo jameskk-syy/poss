@@ -18,6 +18,7 @@ export class SalespersonService {
   constructor(private http: HttpClient) { }
 
   salespersonUrl = `${environment.apiUrl}/api/v1/sales-person/`;
+  customerUrl = `${environment.apiUrl}/api/v1/customer/`;
 
 
   onBoardSalesperson(id, whseCode, customer):Observable<any> {
@@ -28,7 +29,18 @@ export class SalespersonService {
     return this.http.get(this.salespersonUrl + `get/all`,httpOptions)
   }
 
-  
+  getCustomers(salesPersonId){
+    return this.http.get(this.customerUrl + `get/salesperson/${salesPersonId}`)
+  }
+
+  removeCustomer(salesPersonId, customerId): Observable<any>{
+    return this.http.put(this.salespersonUrl + `remove/customer/${salesPersonId}/${customerId}`,{})
+  }
+
+  addCustomer(salespersonId, data): Observable<any>{
+    return this.http.put(this.salespersonUrl + `add/customers/${salespersonId}`,data)
+  }
+
 }
 
 

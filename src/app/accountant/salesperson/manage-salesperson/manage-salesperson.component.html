@@ -17,13 +17,6 @@
                                             style="text-transform: capitalize;" (keyup)="applyFilter($event)"
                                             class="browser-default search-field" aria-label="Search box" />
                                     </li>
-                                    <!-- <li>
-                                        <div class="m-l-10" matTooltip="ADD">
-                                            <button mat-mini-fab color="primary" (click)="addStock('create')">
-                                                <mat-icon class="col-white">add</mat-icon>
-                                            </button>
-                                        </div>
-                                    </li> -->
                                     <li>
                                         <div class="m-l-10" matTooltip="REFRESH">
                                             <button mat-mini-fab color="primary" (click)="getData()">
@@ -31,6 +24,14 @@
                                             </button>
                                         </div>
                                     </li>
+                                    <li>
+                                        <div class="m-l-10" matTooltip = "ADD">
+                                            <button mat-mini-fab color = "primary" (click)="manageCustomers()">
+                                                <mat-icon class="col-white">add</mat-icon>
+                                            </button>
+                                        </div>
+                                    </li>
+                                    
                                 </ul>
                             </div>
                             <div class="col-4">
@@ -70,8 +71,7 @@
                                 mat-sort-header>#</mat-header-cell>
                             <mat-cell class="table-img tbl-col-width-per-8"
                                 *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)">{{i +
-                                1}}</mat-cell>
+                                [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
                         </ng-container> 
                     
                         <ng-container matColumnDef="username">
@@ -105,28 +105,16 @@
                                 </button>
                             </mat-cell>
                         </ng-container>                                           
-                        <ng-container matColumnDef="action">
+                        <!-- <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                            <mat-cell *matCellDef="let stock;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, product)">
-                                <!-- <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="editSalesperson(salesperson)" matTooltip="Edit Salesperson"
-                                    class="tbl-action-btn">
-                                    <app-feather-icons [icon]="'edit'"
-                                        [class]="'tbl-fav-edit'"></app-feather-icons>
-                                </button> -->
-                                <!-- <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="viewSalesperson(salesperson)" matTooltip="view Salesperson"
-                                    class="tbl-action-btn">
-                                    <app-feather-icons [icon]="'arrow-right-circle'"
-                                        [class]="'tbl-fav-proceed'"></app-feather-icons>
-                                </button> -->
+                            <mat-cell *matCellDef="let salesperson;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, salesperson)">
                                 <button mat-icon-button (click)="$event.stopPropagation()"
                                      matTooltip="deactivate Salesperson" class="tbl-action-btn">
-                                    <mat-slide-toggle (change)="deactivateSalesperson(salesperson)"></mat-slide-toggle>
+                                    <mat-slide-toggle [checked] = "salesperson.isActive" (change)="deactivateSalesperson($event.checked, salesperson)"></mat-slide-toggle>
                                 </button>
                             </mat-cell>
-                        </ng-container>
+                        </ng-container> -->
 
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns"
