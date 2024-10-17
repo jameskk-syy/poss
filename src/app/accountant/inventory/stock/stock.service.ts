@@ -55,7 +55,7 @@ export class StockService {
   }
 
   public getByCodeandRange(whseCode:any,fromDate:any, toDate:any): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/stock-move/warehouse/${whseCode}/${fromDate}/${toDate}`);
+    return this.http.get(`${environment.apiUrl}/api/v1/stock-move/warehouse/date-range/${whseCode}/${fromDate}/${toDate}`);
   }
 
   public transferWarehouse(data: any) : Observable<any>{
