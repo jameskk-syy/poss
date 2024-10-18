@@ -55,9 +55,9 @@ export class AddAccountComponent extends BaseComponent implements OnInit {
   roleLookup() {
     const dialogRef = this.dialog.open(RolesLookupComponent, {
       width: "800px",
-      data: {
-        action: "Meeting Categories Lookup",
-      },
+      // data: {
+      //   action: "Meeting Categories Lookup",
+      // },
     });
 
     dialogRef.afterClosed().subscribe(

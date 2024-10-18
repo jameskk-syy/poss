@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+
 
 @Component({
   selector: 'app-sp-customer-history',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SpCustomerHistoryComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+   
+  ) { }
 
   ngOnInit(): void {
   }

@@ -1,1 +1,45 @@
-<p>sp-customer-history works!</p>
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Customer'" [items]="['Customers']"
+                [active_item]="'All Customers'">
+            </app-breadcrumb>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="header">
+                      <h2>Details</h2>
+                    </div>
+                    <div class="card-body">
+                        <p>Name: <b> {{'customerName'}}.</b></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8 col-lg-6 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="header">
+                      <h2>Performance</h2>
+                    </div>
+                    <div class="card-body">
+                        <p> graphical Performance with filterng </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-8 col-lg-6 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="header">
+                      <h2>Payments</h2>
+                    </div>
+                    <div class="card-body">
+                        <p> graphical Performance with filterng </p>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+    </div>
+</section>
