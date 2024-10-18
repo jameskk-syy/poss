@@ -68,7 +68,7 @@ export class SigninComponent
             } else if (role == Role.Collector) {
               this.router.navigate(['/collections/dashboard'])
             } else if (role == Role.SalesPerson) {
-              this.router.navigate(['/sales-person/dashboard'])
+              this.router.navigate(['/salesperson/main'])
             } else if (role == Role.Manager) {
               this.router.navigate(['/manager/dashboard'])
              }

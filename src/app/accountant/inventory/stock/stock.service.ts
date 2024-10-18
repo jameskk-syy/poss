@@ -16,6 +16,7 @@ export class StockService {
   constructor(private http: HttpClient) { }
 
   stockUrl = `${environment.apiUrl}/api/v1/stock/`;
+  stockStatUrl = `${environment.apiUrl}/api/v1/stock-stats`;
 
   public getStock(): Observable<any> {
     return this.http.get(this.stockUrl + `warehouse/master`)
@@ -60,6 +61,14 @@ export class StockService {
 
   public transferWarehouse(data: any) : Observable<any>{
     return this.http.post(`${this.stockUrl}transfer`, data);
+  }
+
+  getWhseStatData():Observable<any>{
+    return this.http.get(`${this.stockStatUrl}/warehouse/wh0`)
+  }
+
+  getWhseValueData():Observable<any>{
+    return this.http.get(`${this.stockStatUrl}/warehouse/value/wh0`)
   }
 
 }
