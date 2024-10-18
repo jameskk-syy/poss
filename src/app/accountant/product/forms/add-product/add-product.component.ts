@@ -59,21 +59,26 @@ export class AddProductComponent implements OnInit {
       if (selectedCategory && selectedCategory.id) {
         const categoryId = selectedCategory.id;
 
-      this.subscription = this.service.addProduct(this.productForm.value, categoryId).subscribe(res => {
+      this.subscription = this.service.addProduct(this.productForm.value, categoryId).subscribe({
+        next: (res) => {
         this.loading = false;
         console.log ('jhdjh', this.productForm )
         const successMessage = res.message
         this.snackbar.showNotification("snackbar-success", successMessage);
         this.productForm.reset();
         this.dialogRef.close();
-      }, err => {
+        }, 
+      error: (err) => {
         this.loading = false;
         const errorMessage = err.message
         this.snackbar.showNotification("snackbar-danger", errorMessage);
         this.dialogRef.close();
-      });
-    }
-    }
+        }
+      }
+    )
+  }
+}
+  
   
 
   onClick() {

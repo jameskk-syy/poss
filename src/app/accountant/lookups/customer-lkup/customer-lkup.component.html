@@ -119,6 +119,13 @@
                         [pageSizeOptions]="[5, 10, 25, 100]">
                     </mat-paginator>
                 </div>
+                <div class="clearfix">
+                <button mat-raised-button color="primary" class="btn mt-2 pull-right"
+                [disabled]="customers.length>0 ? !disable : disable" (click)="submitCustomerSelection()">
+                 <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                <b>Submit</b>
+                </button>
+             </div>
             </div>
     </div>
 </div>

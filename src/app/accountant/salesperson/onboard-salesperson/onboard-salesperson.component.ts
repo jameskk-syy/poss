@@ -80,17 +80,15 @@ export class OnboardSalespersonComponent implements OnInit {
     const dialogRef = this.dialog.open(CustomerLkupComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.customers = result.customer;
-        console.log ('results cust',this.customer.name)
-        const customerNames = this.customers.map((customer: any) => customer.name).join(', ');
+        this.customers = result.customers;
+       
+        const customerNames = this.customers.map((customers: any) => customers.name).join(', ');
 
         this.salespersonForm.patchValue({
           customer: customerNames,
           id: this.customers.map((customer: any) => customer.id)
         });
 
-          this.customerId = this.customers[0].id
-          console.log ('customer Id',this.customerId)
       }
     });
   }
@@ -126,27 +124,25 @@ export class OnboardSalespersonComponent implements OnInit {
 
 onSubmit(){
   this.isLoading = true
-  // this.subscribe = selespersonService.
+
+  this.selespersonService.onBoardSalesperson( this.salespersonId,this.whseCode, this.customers).subscribe({
+    next: (res) => {
+      this.loading = false;
+      const successMessage = res.message
+      this.snackbar.showNotification("snackbar-success", successMessage);
+      this.salespersonForm.reset();
+    },
+
+    error: (err) => {
+      this.loading = false;
+      const errorMessage = err.message
+      this.snackbar.showNotification("snackbar-danger", err);
+      
+    
+    }
+
+  })
 
 }
 
-
-// this.subscription = this.service.addNewStock(this.data.action,data).subscribe({
-//   next: (res) => {
-//     this.loading = false;
-//     console.log ('jhdjh', this.stockForm )
-//     const successMessage = res.message
-//     this.snackbar.showNotification("snackbar-success", successMessage);
-//     this.stockForm.reset();
-//     this.dialogRef.close();
-//   },
-//   error: (err) => {
-//     this.loading = false;
-//     const errorMessage = err.message
-//     this.snackbar.showNotification("snackbar-danger", err);
-//     this.dialogRef.close();
-//   }
-// }
-// );
-// }
 }
