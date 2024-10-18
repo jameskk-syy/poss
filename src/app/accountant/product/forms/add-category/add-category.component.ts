@@ -69,36 +69,41 @@ export class AddCategoryComponent implements OnInit {
       this.updateCategory();
     } else {
       // Add new category
-      this.subscription = this.service.addNewCategory(this.categoryForm.value).subscribe(res => {
+      this.subscription = this.service.addNewCategory(this.categoryForm.value).subscribe({
+        next: (res) => {
         this.loading = false;
         const successMessage = res.message
         this.snackbar.showNotification("snackbar-success", successMessage);
         this.categoryForm.reset();
         this.dialogRef.close();
-      }, err => {
+        },  
+        error: (err) => {
         this.loading = false;
         const errorMessage = err.message
         this.snackbar.showNotification("snackbar-danger", errorMessage);
         this.dialogRef.close();
-      });
+        }
+    })
     }
   }
 
   updateCategory() {
     this.loading = true;
-    this.subscription = this.service.updateCategory(this.data.category, this.data.category.id).subscribe(res => {
+    this.subscription = this.service.updateCategory(this.data.category, this.data.category.id).subscribe({
+    next: (res) => {
       this.loading = false;
       const successMessage = res.message
       this.snackbar.showNotification("snackbar-success", successMessage);
-      this.dialogRef.close(true);  
-    }, err => {
+      this.dialogRef.close(true);
+      },
+      error: (err) =>{
       this.loading = false;
       const errorMessage = err.message
       this.snackbar.showNotification("snackbar-danger", errorMessage);
-    });
-  }
+      }
 
- 
+      })
+    }
 
   onClick() {
     this.dialogRef.close();

@@ -37,8 +37,7 @@ export class CustomerLkupComponent implements OnInit {
   isLoading:boolean = false;
   selection: { [key: string]: boolean } = {}; 
   customers: any [] = []
-  allChecked: boolean = false
- 
+  allChecked: boolean = false 
 
   constructor(
     private salespersonService: SalesService,
@@ -118,5 +117,17 @@ export class CustomerLkupComponent implements OnInit {
 
   isCustomerSelected(customer: any): boolean {
     return this.customers.includes(customer);
+  }   
+
+  submitCustomerSelection(){
+    this.dialogRef.close({customers:this.customers});
+  }
+
+  disable(): boolean {
+    if (this.customers.length>0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
