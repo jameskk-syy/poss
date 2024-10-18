@@ -1056,8 +1056,9 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
 
+  //Salesperson
   {
-    path: '/salesperson/customers',
+    path: '/salesperson/main',
     title: 'Dashboard',
     moduleName: 'dashboard',
     iconType: 'feather',
