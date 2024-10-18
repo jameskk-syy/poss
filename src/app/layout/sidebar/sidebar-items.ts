@@ -1055,6 +1055,62 @@ export const ROUTES: RouteInfo[] = [
     role: ['ACCOUNTANT'],
     submenu: [],
   },
+
+  {
+    path: '/salesperson/customers',
+    title: 'Dashboard',
+    moduleName: 'dashboard',
+    iconType: 'feather',
+    icon: 'monitor',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['SalesPerson'],
+    submenu: [],
+  },
+
+  {
+    path: '/salesperson/customers',
+    title: 'Customers',
+    moduleName: 'customers',
+    iconType: 'feather',
+    icon: 'user',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['SalesPerson'],
+    submenu: [],
+  },
+
+  {
+    path: '/salesperson/warehouses',
+    title: 'Warehouse',
+    moduleName: 'warehouses',
+    iconType: 'feather',
+    icon: 'archive',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['SalesPerson'],
+    submenu: [],
+  },
+
+  {
+    path: '/salesperson/salespersons',
+    title: 'Salesperson',
+    moduleName: 'salespersons',
+    iconType: 'feather',
+    icon: 'user',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['SalesPerson'],
+    submenu: [],
+  },
   
 
 ];

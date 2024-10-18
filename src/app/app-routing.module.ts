@@ -31,14 +31,24 @@ const routes: Routes = [
         loadChildren: () =>
           import("./staff/staff.module").then((m)=>m.StaffModule),
       },
+      // {
+      //   path: "sales-person",
+      //   canActivate: [AuthGuard],
+      //   data: {
+      //     role: Role.SalesPerson,
+      //   },
+      //   loadChildren: () =>
+      //     import("./sales_person/sales-person.module").then((m)=>m.SalesPerson),
+      // },
+
       {
-        path: "sales-person",
+        path: "salesperson",
         canActivate: [AuthGuard],
         data: {
           role: Role.SalesPerson,
         },
         loadChildren: () =>
-          import("./sales_person/sales-person.module").then((m)=>m.SalesPerson),
+          import("./salesperson/salesperson.module").then((m)=>m.SalespersonModule),
       },
       {
         path: "manager",
@@ -131,6 +141,7 @@ const routes: Routes = [
         (m) => m.AuthenticationModule
       ),
   },
+  
   { path: "**", component: Page404Component },
 ];
 @NgModule({

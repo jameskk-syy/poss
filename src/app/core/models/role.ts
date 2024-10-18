@@ -3,7 +3,7 @@ export enum Role {
   Admin = "ROLE_ADMIN",
   Staff = "ROLE_STAFF",
   Collector = "MILK_COLLECTOR",
-  SalesPerson = "SALES_PERSON",
+  SalesPerson = "SalesPerson",
   Manager = "MANAGER",
   ManagingDirector = "MANAGING_DIRECTOR",
   TotalsCollector = "TOTALS_COLLECTOR",
