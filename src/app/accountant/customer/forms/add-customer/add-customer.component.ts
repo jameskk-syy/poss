@@ -14,10 +14,10 @@ import { statusArray } from 'src/app/core/models/status';
 })
 export class AddCustomerComponent implements OnInit {
 
-  customerRegistrationForm: FormGroup
+  customerRegistrationForm: FormGroup;
   subscription!: Subscription;
-  isLoading: boolean = false
-  pLoading: boolean = false
+  isLoading: boolean = false;
+  pLoading: boolean = false;
   categories: any[] = []; 
   statuses = statusArray;
 
@@ -32,7 +32,6 @@ export class AddCustomerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
 
     this.customerRegistrationForm = this.fb.group({
       alt_phone: ['', [Validators.required]],
@@ -49,38 +48,41 @@ export class AddCustomerComponent implements OnInit {
   }
 
   getCategoryData() {
-    this.isLoading = true;
-    this.subscription = this.customerService.fetchCategory().subscribe(res => {
+    this.isLoading = false;
+    this.subscription = this.customerService.fetchCategory()
+    .subscribe({
+      next:(res) => {
         this.data = res;
         console.log('categories are here', this.data);
         this.categories = this.data.entity.map((item:any) =>item)
         console.log('category name', this.categories)
-    }, error => {
+    }, error:(err) => {
         this.isLoading = false;
-        console.error('Error fetching categories:', error);
-    });
+        console.error('Error fetching categories:', err);
+    }
+  });
 }
 
-  onSubmit() {
+onSubmit() {
+  this.isLoading = true;
 
-    this.isLoading = true
+  const categoryId = this.customerRegistrationForm.get('category')?.value;
+  console.log('Selected Category ID:', categoryId);
 
-    const categoryId = this.customerRegistrationForm.get('category')?.value;
-    console.log('Selected Category ID:', categoryId);
-
-    this.subscription = this.customerService.addCustomer(categoryId, this.customerRegistrationForm.value)
-      .subscribe((res) => {
+  this.subscription = this.customerService.addCustomer(categoryId, this.customerRegistrationForm.value)
+    .subscribe({
+      next: (res) => {
         this.snackBar.showNotification('snackbar-success', 'Successful!');
         this.isLoading = false;
         this.customerRegistrationForm.reset();
         this.dialogRef.close();
       },
-        (err) => {
-          this.isLoading = false;
-          this.snackBar.showNotification('snackbar-danger', err);
-                })
-
-  }
+      error: (err) => {  
+        this.isLoading = false;
+        this.snackBar.showNotification('snackbar-danger', err);
+      }
+    });
+}
 
   onCancel() {
     this.dialogRef.close()
