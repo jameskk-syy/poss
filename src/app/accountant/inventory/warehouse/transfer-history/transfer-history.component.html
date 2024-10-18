@@ -5,7 +5,7 @@
             <div class="body">
                 <div class="table-responsive">
                     <!-- table header -->
-                     <div class="materialTableHeader">
+                    <div class="materialTableHeader">
                         <div class="row">
                             <div class="col-10">
                                 <!-- table action bar -->
@@ -23,38 +23,18 @@
 
                                     <li class="dropdown m-l-5">
                                         <mat-form-field>
-                                          <mat-label>Filter By</mat-label>
-                                          <mat-select [(value)]="selected" (selectionChange)="onSelectionChange()">
-                                            <mat-option value="whseName"><b>Warehouse Code</b></mat-option>
-                                            <mat-option value="dateRange"><b>Date Range</b></mat-option>
-                                            <mat-option value="all"><b>Warehouse Code & Date Range</b></mat-option>
-                                          </mat-select>
+                                            <mat-label>Filter By</mat-label>
+                                            <mat-select [(ngModel)]="selected" (ngModelChange)="onSelectionChange()">
+                                                <mat-option value="whseName"><b>Warehouse Code</b></mat-option>
+                                                <mat-option value="dateRange"><b>Date Range</b></mat-option>
+                                                <mat-option value="all"><b>Warehouse Code & Date Range</b></mat-option>
+                                            </mat-select>
                                         </mat-form-field>
-                                      </li>
-                                      
-                                      <li class="dropdown">
-                                        <form [formGroup]="form">                                          
-                                          <mat-form-field class="m-l-5" *ngIf="selected == 'dateRange' || selected == 'all'">
-                                            <mat-date-range-input [rangePicker]="picker">
-                                              <input matStartDate formControlName="startDate" placeholder="Start date">
-                                              <input matEndDate formControlName="endDate" placeholder="End date">
-                                            </mat-date-range-input>
-                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                            <mat-date-range-picker #picker></mat-date-range-picker>
-                                          </mat-form-field>
-                                      
-                                          <mat-form-field class="m-l-5" *ngIf="selected == 'whseName' || selected == 'all'">
-                                            <mat-label>Select Warehouse</mat-label>
-                                            <input matInput formControlName="whseName" readonly />
-                                            <mat-icon matSuffix (click)="selectWarehouse()">search</mat-icon>
-                                          </mat-form-field>
-                                      
-                                        </form>
-                                      </li>
-                                      
+                                    </li>
+
                                     <li>
                                         <div class="m-l-10" matTooltip="Refresh">
-                                            <button mat-mini-fab color="primary" (click)="getAll()">
+                                            <button mat-mini-fab color="primary" (click)="refresh()">
                                                 <mat-icon class="col-white">refresh</mat-icon>
                                             </button>
                                         </div>
@@ -79,67 +59,120 @@
                                                 (click)="exporter.exportTable('csv')" />
                                         </div>
                                     </li>
-                                   
                                 </ul>
                             </div>
                         </div>
-                     </div>
+                    </div>
+
+                    <!-- Filter Input Section -->
+                    <div *ngIf="selected" class="row filter-input-section" style="margin-top: 10px;">
+                        <form [formGroup]="form">
+                            <mat-form-field class="m-l-5" *ngIf="selected === 'dateRange'">
+                                <mat-date-range-input [rangePicker]="picker" (dateChange)="filterByDate()">
+                                    <input matStartDate formControlName="startDate" placeholder="Start date" (dateChange)="filterByDate()">                        <input 
+                                        matEndDate 
+                                        formControlName="endDate" 
+                                        placeholder="End date" 
+                                        (dateChange)="filterByDate()">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+                    
+                            <mat-form-field class="m-l-5" *ngIf="selected === 'whseName'">
+                                <mat-label>Select Warehouse</mat-label>
+                                <input matInput formControlName="whseName" readonly />
+                                <mat-icon matSuffix (click)="selectWarehouse()">search</mat-icon>
+                            </mat-form-field>
+                            
+                            <div *ngIf="selected === 'all'" class="m-l-5">
+                           
+                                <mat-form-field class="m-l-5">
+                                    <mat-label>Select Date Range</mat-label>
+                                    <mat-date-range-input [rangePicker]="combinedPicker">
+                                        <input 
+                                            matStartDate 
+                                            formControlName="combinedStartDate" 
+                                            placeholder="Start date">
+                                        <input 
+                                            matEndDate 
+                                            formControlName="combinedEndDate" 
+                                            placeholder="End date">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matSuffix [for]="combinedPicker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #combinedPicker></mat-date-range-picker>
+                                </mat-form-field>
+                            
+                                <!-- Warehouse Selector -->
+                                <mat-form-field class="m-l-5">
+                                    <mat-label>Select Warehouse</mat-label>
+                                    <input 
+                                        matInput 
+                                        formControlName="combinedWhseName" 
+                                        readonly/>
+                                    <mat-icon matSuffix (click)="openWarehouseLookup()">search</mat-icon> <!-- Corrected click event -->
+                                </mat-form-field>
+                            </div>
+                            
+                        </form>
+                    </div>
+                    
 
                      <!-- table content -->
                       <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell" #exporter="matTableExporter">
                         <ng-container matColumnDef="id">
-                            <mat-header-cell class="table-img tbl-col-width-per-4" *matHeaderCellDef
+                            <mat-header-cell class="table-img tbl-col-width-per-6" *matHeaderCellDef
                                 mat-sort-header>#</mat-header-cell>
-                            <mat-cell class="table-img tbl-col-width-per-4"
+                            <mat-cell class="table-img tbl-col-width-per-6"
                                 *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)">{{i + 1}}</mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="skuCode">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-8">sku Code</mat-header-cell>
-                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-8">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">sku Code</mat-header-cell>
+                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-10">
                                 {{wh.skuCode}}
                             </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="item">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-8">Item</mat-header-cell>
-                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-8">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Item</mat-header-cell>
+                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-10">
                                 {{wh.item}}
                             </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="fromWhse">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">From Whse</mat-header-cell>
-                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-10">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">From Whse</mat-header-cell>
+                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-12">
                                 {{wh.fromWhse}}
                             </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="toWhse">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">To Whse</mat-header-cell>
-                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="table-img tbl-col-width-per-10">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">To Whse</mat-header-cell>
+                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="table-img tbl-col-width-per-12">
                                 {{wh.toWhse}}
                             </mat-cell>
                         </ng-container>      
                         
                         <ng-container matColumnDef="description">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Description</mat-header-cell>
-                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="table-img tbl-col-width-per-10">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Description</mat-header-cell>
+                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="table-img tbl-col-width-per-12">
                                 {{wh.description}}
                             </mat-cell>
                         </ng-container>  
 
                         <ng-container matColumnDef="count">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Count</mat-header-cell>
-                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-10">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Count</mat-header-cell>
+                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-12">
                                 {{wh.count}}
                             </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="movedBy">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Moved By</mat-header-cell>
-                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-10">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Moved By</mat-header-cell>
+                            <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-12">
                                 {{wh.movedBy}}
                             </mat-cell>
                         </ng-container>
@@ -150,29 +183,6 @@
                                 {{wh.createdOn | date}}
                             </mat-cell>
                         </ng-container>
-
-                        <!-- <ng-container matColumnDef="actions">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                            <mat-cell *matCellDef="let wh;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, wh)">
-                                <-- <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                    (click)="edit(wh)" class="tbl-action-btn">
-                                    <app-feather-icons matTooltip="Edit farmer"
-                                        [icon]="'edit'"></app-feather-icons>
-                                </button> -->
-                                <!-- <button mat-icon-button color="accent" (click)="$event.stopPropagation()"
-                                (click)="delete(wh)" class="tbl-action-btn">
-                                    <app-feather-icons matTooltip="Delete Warehouse" [icon]="'trash-2'"
-                                        [class]="'tbl-fav-delete'"></app-feather-icons>
-                                </button>                                         -->
-                                <!-- <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                     class="tbl-action-btn">
-                                    <app-feather-icons matTooltip="View Warehouse" [icon]="'eye'"
-                                        [class]="'tbl-fav-eye'"></app-feather-icons>
-                                </button> -->
-                                                     
-                            <!-- </mat-cell>
-                        </ng-container>  -->
                         
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
