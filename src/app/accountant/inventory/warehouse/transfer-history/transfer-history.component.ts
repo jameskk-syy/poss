@@ -29,7 +29,7 @@ export class TransferHistoryComponent  implements OnInit {
   data: boolean = false
   dataSource: MatTableDataSource<any>
 
-  displayedColumns: any = ['id', 'fromWhse','toWhse', 'item','skuCode','count', 'description', 'movedBy', 'createdOn']
+  displayedColumns: any = ['id', 'fromWhse','toWhse', 'item','skuCode','quantity', 'description', 'movedBy', 'createdOn']
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
