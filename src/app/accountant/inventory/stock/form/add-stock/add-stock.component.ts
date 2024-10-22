@@ -7,7 +7,6 @@ import { StockManagementComponent } from '../../stock-management/stock-managemen
 import { StockService } from '../../stock.service';
 import { WarehouseLkupComponent } from 'src/app/accountant/lookups/warehouse-lkup/warehouse-lkup.component';
 import { SkuLkupComponent } from 'src/app/accountant/lookups/sku-lkup/sku-lkup.component';
-import { count } from 'console';
 
 
 
@@ -139,7 +138,7 @@ export class AddStockComponent implements OnInit {
       }
 
       const data = {
-        count: this.stockForm.value.count,
+        quantity: this.stockForm.value.count,
         message: this.stockForm.value.message,
         whseCode: this.whseCode,
         skuId: this.selectedSkuId
