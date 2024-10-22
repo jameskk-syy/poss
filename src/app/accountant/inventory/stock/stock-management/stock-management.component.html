@@ -96,11 +96,11 @@
                                 {{stock.skuId}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="count">
+                        <ng-container matColumnDef="quantity">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Count</mat-header-cell>
                             <mat-cell *matCellDef="let stock;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{stock.count}}
+                                {{stock.quantity}}
                             </mat-cell>
                         </ng-container>
                                               

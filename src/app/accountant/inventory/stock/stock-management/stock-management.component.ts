@@ -23,7 +23,7 @@ export class StockManagementComponent implements OnInit {
     'item',
     'skuCode',
     'skuId',
-    'count',
+    'quantity',
     'action'
 
   ]
