@@ -178,10 +178,10 @@
                             </mat-cell>
                         </ng-container>  
 
-                        <ng-container matColumnDef="count">
+                        <ng-container matColumnDef="quantity">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-12">Count</mat-header-cell>
                             <mat-cell *matCellDef="let wh;let i =index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-wrap tbl-col-width-per-12">
-                                {{wh.count}}
+                                {{wh.quantity}}
                             </mat-cell>
                         </ng-container>
 
