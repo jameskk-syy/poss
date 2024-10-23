@@ -1,8 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ManageSalespersonComponent } from './manage-salesperson/manage-salesperson.component';
+import { CustomerComponent } from './customer/customer.component';
 
-const routes: Routes = [{path: 'main', component:ManageSalespersonComponent}];
+const routes: Routes = [
+  {
+    path: "",
+    redirectTo: "customer",
+    pathMatch: "full",
+  },
+  {
+    path: "main",
+    component: CustomerComponent,
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
