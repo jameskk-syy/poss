@@ -13,8 +13,6 @@ const routes: Routes = [
     component: UserProfileComponent,
   },
 ];
-
-
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
