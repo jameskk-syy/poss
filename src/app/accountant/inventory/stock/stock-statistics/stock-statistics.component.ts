@@ -12,6 +12,8 @@ export class StockStatisticsComponent implements OnInit {
     isdata: boolean;
     data: any;
     subscription!: Subscription;
+  stock_value: any;
+  warehouse: any;
   
     
   constructor(
@@ -19,6 +21,9 @@ export class StockStatisticsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getWhseValueData()
+
+    this.getWhseStatData()
   }
 
   getWhseValueData() {
@@ -50,14 +55,15 @@ export class StockStatisticsComponent implements OnInit {
     this.subscription = this.stockService.getWhseStatData().subscribe({
       next:(res) => {
         this.data = res;
-        console.log('stocksss', res)
-          if (this.data.entity.length > 0) {
+        this.stock_value = this.data.entity.stock_value;
+        this.warehouse = this.data.entity.warehouse;
+        console.log('stockss----s', this.warehouse)
+          if (this.data.entity.length > 0 && this.data?.entity?.payload) {
             this.isLoading = false;
             this.isdata = true;
            
           } else {
             this.isLoading = false;
-            
           }
         },
         error: (err) => {
