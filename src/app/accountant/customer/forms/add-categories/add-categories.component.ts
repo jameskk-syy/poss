@@ -50,16 +50,18 @@ export class AddCategoriesComponent implements OnInit {
     this.isLoading = true
 
     this.subscription = this.customerService.addCategory(this.categoryRegistrationForm.value)
-      .subscribe((res) => {
+      .subscribe({
+        next:(res) => {
         this.snackBar.showNotification('snackbar-success', 'Successful!');
         this.isLoading = false;
         this.categoryRegistrationForm.reset();
         this.dialogRef.close();
       },
-        (err) => {
+       error: (err) => {
           this.isLoading = false;
           this.snackBar.showNotification('snackbar-danger', err);
-              })
+              }
+  });
 
   }
 
