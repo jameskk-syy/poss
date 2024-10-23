@@ -68,16 +68,31 @@
                     <div *ngIf="selected" class="row filter-input-section" style="margin-top: 10px;">
                         <form [formGroup]="form">
                             <mat-form-field class="m-l-5" *ngIf="selected === 'dateRange'">
-                                <mat-date-range-input [rangePicker]="picker" (dateChange)="filterByDate()">
-                                    <input matStartDate formControlName="startDate" placeholder="Start date" (dateChange)="filterByDate()">                        <input 
-                                        matEndDate 
-                                        formControlName="endDate" 
-                                        placeholder="End date" 
-                                        (dateChange)="filterByDate()">
-                                </mat-date-range-input>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field>
+                                <mat-label>Start Date</mat-label>
+                                <input
+                                  matInput
+                                  [matDatepicker]="startPicker"
+                                  placeholder="Start date"
+                                  formControlName="startDate"
+                                  (dateChange)="filterByDate()"
+                                />
+                                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #startPicker></mat-datepicker>
+                              </mat-form-field>
+                              
+                              <mat-form-field class="m-l-5" *ngIf="selected === 'dateRange'">
+                                <mat-label>End Date</mat-label>
+                                <input
+                                  matInput
+                                  [matDatepicker]="endPicker"
+                                  placeholder="End date"
+                                  formControlName="endDate"
+                                  (dateChange)="filterByDate()"
+                                />
+                                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #endPicker></mat-datepicker>
+                              </mat-form-field>
+                              
                     
                             <mat-form-field class="m-l-5" *ngIf="selected === 'whseName'">
                                 <mat-label>Select Warehouse</mat-label>
