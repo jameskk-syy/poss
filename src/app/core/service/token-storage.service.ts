@@ -37,4 +37,9 @@ export class TokenStorageService {
 
     return {};
   }
+
+  public getUserId(): string | null {
+    const user = this.getUser();
+    return user ? user.id || null : null
+  }
 }

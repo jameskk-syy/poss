@@ -1067,7 +1067,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['SalesPerson'],
+    role: ['SALES_PERSON'],
     submenu: [],
   },
 
@@ -1081,7 +1081,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['SalesPerson'],
+    role: ['SALES_PERSON'],
     submenu: [],
   },
 
@@ -1095,7 +1095,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['SalesPerson'],
+    role: ['SALES_PERSON'],
     submenu: [],
   },
 
@@ -1109,7 +1109,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['SalesPerson'],
+    role: ['SALES_PERSON'],
     submenu: [],
   },
   
