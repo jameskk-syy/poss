@@ -31,10 +31,13 @@ export class ReportsService {
           data: new Blob([response], { type: "application/pdf" }),
         };
       })
-    );  }
+    );  
+  }
+
   dailyRouteCollectionsByDate(date: any):Observable<any> {
     let headers = new HttpHeaders();
     headers.append("Content-Type", "application/pdf");
+
   
     let requestOptions: any = {
       params: {

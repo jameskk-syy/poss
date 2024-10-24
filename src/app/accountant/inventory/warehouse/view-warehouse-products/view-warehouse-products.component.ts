@@ -7,8 +7,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { StockService } from '../../stock/stock.service';
+import { WarehouseService } from '../warehouse.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MainComponent } from '../main/main.component';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 
 @Component({
   selector: 'app-view-warehouse-products',
@@ -38,7 +40,7 @@ export class ViewWarehouseProductsComponent implements OnInit {
 
   dataSource!: MatTableDataSource<any>;
 
-  constructor( private route: ActivatedRoute, private dialog: MatDialog, private service: StockService,) { }
+  constructor(private snackbar: SnackbarService, private route: ActivatedRoute, private dialog: MatDialog,private warehouse:WarehouseService, private service: StockService,) { }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -48,15 +50,17 @@ export class ViewWarehouseProductsComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
-    const code = this.route.snapshot.paramMap.get('code');
-    this.getData(code);
-  
-    this.route.queryParams.subscribe((params) => {
-      if (params['warehouse']) {
-        this.warehouseData = JSON.parse(params['warehouse']);
-        console.log(this.warehouseData); 
-      }
-    });
+    this.code = this.route.snapshot.paramMap.get('code');
+    this.getData(this.code);
+    console.log('whseCode',this.code); 
+
+    // this.route.queryParams.subscribe((params) => {
+    //   if (params['warehouse']) {
+    //     this.warehouseData = JSON.parse(params['warehouse']);
+    //     console.log(this.warehouseData); 
+    //   }
+    // });
+    this.getDetails(this.code);
   }  
 
   applyFilter(event: Event) {
@@ -66,6 +70,23 @@ export class ViewWarehouseProductsComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  getDetails(code:string){
+    this.isLoading = true
+    
+     this.subscription = this.warehouse.getDetails(code).subscribe({
+        next: (res: any) => {       
+            this.isLoading = false;
+            this.warehouseData = res.entity; 
+            this.snackbar.showNotification('snackbar-success', res.message)
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.snackbar.showNotification('snackbar-danger', err)
+        },
+        complete: () => {}
+    })
   }
 
   getData(code: string) {

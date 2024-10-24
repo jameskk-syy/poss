@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { takeUntil } from "rxjs";
 import { BaseComponent } from "src/app/shared/components/base/base.component";
-import { WarehouseService } from "../warehouse.service";
-//import { Account } from "../../data/types/account";
+import { StockService } from "../../stock/stock.service";
+import { SnackbarService } from "src/app/shared/snackbar.service";
 
 @Component({
   selector: 'app-stock-widgets',
@@ -12,103 +12,57 @@ import { WarehouseService } from "../warehouse.service";
 })
 export class StockWidgetsComponent extends BaseComponent implements OnInit {
 
+  @Input() warehouseCode: string | null = null;
+
+  loading: boolean = false;
   activeAccounts: number = 0;
-  totalAccounts: number = 0;
+  stockValue: {value:number; count: number} = {value:0, count:0};
   deletedAccounts: number = 0;
   lockedAccounts: number = 0;
-  //activeAccountsArray: Account[] = [];
-  //inactiveAccountsArray: Account[] = [];
-  //deletedAccountsArray: Account[] = [];
-  //lockedAccountsArray: Account[] = [];
+  whseCode: any;
 
   constructor(
-    // private accountService: AccountService, 
-    private warehouseService: WarehouseService,
-    private router: Router
+    private stockService: StockService,
+    private router: Router,
+    private snackbar: SnackbarService
     ) {
       super();
   }
 
-  ngOnInit(): void {
-    this.getActiveUserAccounts();
-    this.getTotalAccounts();
+  ngOnInit() {
+    console.log('Received warehouse code in stock widgets:', this.warehouseCode);
+    this.getStockValue()
   }
 
-  getActiveUserAccounts() {
-    // this.userService.fetchAllActiveAccounts()
-    //   .pipe(takeUntil(this.subject))
-    //   .subscribe(
-    //     (res) => {
-    //       this.activeAccountsArray = res.userData;          
-
-    //       this.activeAccounts = this.activeAccountsArray.length;
-    //       this.totalAccounts += this.activeAccounts;
-          
-    //       this.getLockedAccounts();
-    //     },
-    //     (err) => {
-    //       console.log(err);
-    //     }
-    //   );
-  }
-
-  getTotalAccounts() {
-    this.totalAccounts = this.activeAccounts + this.deletedAccounts + this.lockedAccounts;
-  }
-
-  getDeletedAccounts() {
-    // this.userService
-    //   .fetchAllDeletedUserAccounts()
-    //   .pipe(takeUntil(this.subject))
-    //   .subscribe(
-    //     (res) => {
-    //       this.deletedAccountsArray = res.userData;
-
-    //       this.deletedAccounts = this.deletedAccountsArray.length;
-    //       this.totalAccounts += this.deletedAccounts;
-    //       this.getTotalAccounts();
-    //     },
-    //     (err) => {
-    //       this.deletedAccountsArray=[]
-    //       this.deletedAccounts = 0;
-          
-    //     }
-    //   );
-  }
-
-  getLockedAccounts() {
-    // this.userService
-    //   .fetchAllLockedUserAccounts()
-    //   .pipe(takeUntil(this.subject))
-    //   .subscribe(
-    //     (res) => {
-    //       this.lockedAccountsArray = res.userData;
-
-    //       this.lockedAccounts = this.lockedAccountsArray.length;
-    //       this.totalAccounts += this.lockedAccounts;
-    //       this.getDeletedAccounts();
-    //     },
-    //     (err) => {
-    //       this.lockedAccountsArray=[]
-    //       this.lockedAccounts = 0
-    //     }
-    //   );
-  }
-
-  viewActiveAccounts() {
-    this.router.navigate(["/admin/user-accounts/active-accounts"]);
-  }
-
-  viewInactiveUserAccounts() {
-    this.router.navigate(["/admin/user-accounts/all"]);
-  }
-
-  viewdeletedAccounts() {
-    this.router.navigate(["/admin/user-accounts/deleted-accounts"]);
-  }
-
-  viewLockedAccounts() {
-    this.router.navigate(["/admin/user-accounts/locked-accounts"]);
+  getStockValue(): void {
+    this.loading = true;
+    const whseCode = this.warehouseCode;     
+    this.stockService.getWhseValue(whseCode).subscribe({
+      next: (res: any) => {
+        if (res && res.entity) { 
+          this.loading = false;
+          this.stockValue.value = res.entity.value; 
+          this.stockValue.count = res.entity.count; 
+          console.log("Stock Value retrieved:", this.stockValue.value);
+          console.log("Stock Count retrieved:", this.stockValue.count);
+          this.snackbar.showNotification('snackbar-success', res.message);
+        } else {
+          this.loading = false;
+          this.stockValue = { value: 0, count: 0 }; 
+          console.log("No stock value data found.");
+          this.snackbar.showNotification('snackbar-danger', 'No data found.');
+        }
+      },
+      error: (err) => {
+        this.loading = false;
+        this.stockValue = { value: 0, count: 0 };
+        console.error("Error fetching stock value:", err);
+        this.snackbar.showNotification('snackbar-danger', err);
+      },
+      complete: () => {
+        console.log("Stock value fetch complete.");
+      }
+    });
   }
 }
 
