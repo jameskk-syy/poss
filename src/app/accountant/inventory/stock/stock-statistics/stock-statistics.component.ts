@@ -28,7 +28,7 @@ export class StockStatisticsComponent implements OnInit {
 
   getWhseValueData() {
     this.isLoading = true;
-    this.subscription = this.stockService.getWhseValueData().subscribe({
+    this.subscription = this.stockService.getWhseValueData("wh0").subscribe({
       next:(res) => {
         this.data = res;
         console.log('stocksss', res)

@@ -1100,7 +1100,7 @@ export const ROUTES: RouteInfo[] = [
   },
 
   {
-    path: '/salesperson/warehouses',
+    path: '/salesperson/warehouses/main',
     title: 'Warehouse',
     moduleName: 'warehouses',
     iconType: 'feather',

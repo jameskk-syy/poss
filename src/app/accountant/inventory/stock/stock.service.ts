@@ -67,8 +67,12 @@ export class StockService {
     return this.http.get(`${this.stockStatUrl}/warehouse/wh0`)
   }
 
-  getWhseValueData():Observable<any>{
-    return this.http.get(`${this.stockStatUrl}/warehouse/value/{whseCode}?whseCode=wh0`)
+  getWhseValueData(whseCode:any):Observable<any>{
+    return this.http.get(`${this.stockStatUrl}/warehouse/${whseCode}`);
+  }
+
+  getWhseValue(whseCode:any):Observable<any>{
+    return this.http.get(`${this.stockStatUrl}/warehouse/value/${whseCode}`);
   }
 
 }

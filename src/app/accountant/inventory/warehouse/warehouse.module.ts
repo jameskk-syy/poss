@@ -20,6 +20,7 @@ import { StockWidgetsComponent } from './stock-widgets/stock-widgets.component';
 import { TransferHistoryComponent } from './transfer-history/transfer-history.component';
 import { TransferWarehouseComponent } from './transfer-warehouse/transfer-warehouse.component';
 import { ConfirmTransferComponent } from './confirm-transfer/confirm-transfer.component';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ConfirmTransferComponent } from './confirm-transfer/confirm-transfer.co
     SharedModule,
     ComponentsModule,
     MaterialModule,
+    MatSortModule,
     MatSelectModule,
     MatCardModule,
     ReactiveFormsModule,

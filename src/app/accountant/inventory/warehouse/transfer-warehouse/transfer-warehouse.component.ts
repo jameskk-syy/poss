@@ -39,7 +39,7 @@ export class TransferWarehouseComponent extends BaseComponent implements OnInit 
 
   ngOnInit(): void {
     this.transferForm = this.fb.group({
-      count: ["", [Validators.required]],
+      quantity: ["", [Validators.required]],
       from: ["", [Validators.required]],
       message: ["", [Validators.required]],
       skuName:  ["", [Validators.required]],
@@ -110,7 +110,7 @@ export class TransferWarehouseComponent extends BaseComponent implements OnInit 
 
   onSubmit() {
     const formData = {
-      count: this.transferForm.value.count,
+      quantity: this.transferForm.value.quantity,
       from: this.fromWarehouse,
       to: this.toWarehouse,
       message: this.transferForm.value.message,
@@ -136,7 +136,7 @@ export class TransferWarehouseComponent extends BaseComponent implements OnInit 
 
   clearForm() {
     this.transferForm.reset()
-    this.transferForm.get('count')
+    this.transferForm.get('quantity')
     this.transferForm.get('from').markAsUntouched()
     this.transferForm.get('message').markAsUntouched()
     this.transferForm.get('skuName').markAsUntouched()
