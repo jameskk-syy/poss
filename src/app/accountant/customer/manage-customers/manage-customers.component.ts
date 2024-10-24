@@ -10,6 +10,7 @@ import { AddCustomerComponent } from '../forms/add-customer/add-customer.compone
 import { DeleteCustomerComponent } from '../forms/delete-customer/delete-customer.component';
 import { ViewCustomerComponent } from '../forms/view-customer/view-customer.component';
 import { UpdateCustomerComponent } from '../forms/update-customer/update-customer.component';
+import { ApproveCustomerComponent } from '../forms/approve-customer/approve-customer.component';
 
 
 @Component({
@@ -22,6 +23,21 @@ export class ManageCustomersComponent implements OnInit {
 
   filterform: FormGroup
   selected = "";
+  data: any;
+  isdata: boolean = true;
+  isLoading: boolean = true;
+
+  displayedColumns: string[] = [
+    
+    'id',
+    "code",
+    "name",
+    "location",
+    "phone",  
+    "status",
+    "approved",
+    'action',
+  ];
 
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -30,20 +46,6 @@ export class ManageCustomersComponent implements OnInit {
   @ViewChild(MatMenuTrigger)
   contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: "0px", y: "0px" };
-
-  data: any;
-  isdata: boolean = false;
-  isLoading: boolean = false;
-
-  displayedColumns: string[] = [
-    'id',
-    "code",
-    "name",
-    "location",
-    "phone",  
-    "status",
-    'action',
-  ];
 
   constructor(
     private fb: FormBuilder, private customerservice: CustomerService,
@@ -67,34 +69,37 @@ export class ManageCustomersComponent implements OnInit {
     this.getData()
   }
 
-
+  
   getData() {
     this.selected = ""
     this.isLoading = true
     this.isdata = false
-    this.customerservice.fetchCustomers().subscribe(res => {
-      this.data = res
-
-      this.isLoading = false
-      if (res.entity && res.entity.length > 0) {
-        this.isdata = true
-        // Binding with the datasource
-        this.dataSource = new MatTableDataSource(res.entity);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-
-      } else {
+    this.customerservice.fetchCustomers().subscribe({
+      next: (res) => {
         this.isLoading = false
-        this.isdata = false
-        this.dataSource = new MatTableDataSource<any>(this.data);
+        if (res.entity && res.entity.length > 0) {
+          this.isLoading = false;
+          this.isdata = true
+          // Binding with the datasource
+          this.dataSource = new MatTableDataSource(res.entity);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+  
+        } else {
+          this.isLoading = false
+          this.isdata = false
+          this.dataSource = new MatTableDataSource<any>(this.data);
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Error fetching customer data:', err);
+        this.isdata = false;
       }
 
-    },err=>{
-        this.isLoading = false
-        this.isdata = false
-        this.dataSource = new MatTableDataSource<any>(this.data);
-    })
+      })
   }
+
 
   addCall() {
     const dialogConfig = new MatDialogConfig()
@@ -164,9 +169,25 @@ export class ManageCustomersComponent implements OnInit {
     })
   }
 
-  viewCustomerPurchases() {
+  approveCustomer(customer:any){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "60%"
+    dialogConfig.data = {
+      customer: customer
+    }
 
+    console.log('ghg', customer)
+
+    const dialogRef = this.dialog.open(ApproveCustomerComponent, dialogConfig)
+    dialogRef.afterClosed().subscribe((res)=> {
+      this.getData()
+    })
   }
+
+  
+
 
   customerDetailsCall() {
 

@@ -30,7 +30,6 @@ export class ManageSpCustomersComponent implements OnInit {
   ]
 
   dataSource!: MatTableDataSource<any>;
-  IsLoading: boolean;
   data: any;
   subscription!: Subscription;
   isdata: boolean = false;

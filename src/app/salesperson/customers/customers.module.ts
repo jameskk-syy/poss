@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { CustomersRoutingModule } from './customers-routing.module';
 import { AddCustomersComponent } from './forms/add-customers/add-customers.component';
 import { EditCustomersComponent } from './forms/edit-customers/edit-customers.component';
-import { DeleteCustomersComponent } from './delete-customers/delete-customers.component';
 import { CustomerComponent } from './customer/customer.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -31,7 +30,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
   declarations: [
     AddCustomersComponent,
     EditCustomersComponent,
-    DeleteCustomersComponent,
     CustomerComponent
   ],
   imports: [
