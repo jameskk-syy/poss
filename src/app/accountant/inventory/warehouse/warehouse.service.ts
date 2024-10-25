@@ -47,6 +47,6 @@ baseUrl =  environment.apiUrl+'/api/v1/warehouse/'
  }
   
  public approveRequest(requestId: any): Observable<any> {
-  return this.http.put(`${environment.apiUrl}/api/v1/customer/update/${requestId}`, {});
+  return this.http.put(`${environment.apiUrl}/api/v1/stock-request/approve/${requestId}`, {});
 }
 }

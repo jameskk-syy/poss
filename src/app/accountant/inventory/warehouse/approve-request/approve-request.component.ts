@@ -119,21 +119,21 @@ requisitionData: any[] = [];
   });
   }
 
-  requestStock(){
+  requestStock(id: any){
     this.isLoading = true
 
     console.log('Requisition Data',this.requisitionData);
-    this.subscription = this.warehouseService.approveRequest(this.requisitionData)
+    this.subscription = this.warehouseService.approveRequest(id)
       .subscribe({
         next:(res) => {
         this.snackBar.showNotification('snackbar-success', 'Successful!');
         this.isLoading = false;
         this.form.reset();
       },
-       error: (err) => {
+      error: (err) => {
           this.isLoading = false;
           this.snackBar.showNotification('snackbar-danger', err);
-              }
+      }
   });
   }
 
