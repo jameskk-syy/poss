@@ -26,6 +26,9 @@ export class CustomersService {
     return this.http.post<any>(this.customerUrl + `add/${categoryId}`,data)
   }
 
+  editCustomer(id, catId, data): Observable<any>{
+    return this.http.put<any>(this.customerUrl +`update/${id}/${catId}`, data,)
+  }
  
 }
 

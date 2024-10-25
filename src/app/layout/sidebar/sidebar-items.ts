@@ -1056,6 +1056,20 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
 
+  {
+    path: '/accountant/salesperson',
+    title: 'Order Management',
+    moduleName: 'salesperson',
+    iconType: 'feather',
+    icon: 'user',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ACCOUNTANT'],
+    submenu: [],
+  },
+
   //Salesperson
   {
     path: '/salesperson/main',
@@ -1099,19 +1113,6 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
 
-  {
-    path: '/salesperson/salespersons',
-    title: 'Salesperson',
-    moduleName: 'salespersons',
-    iconType: 'feather',
-    icon: 'user',
-    class: '',
-    groupTitle: false,
-    badge: '',
-    badgeClass: '',
-    role: ['SALES_PERSON'],
-    submenu: [],
-  },
-  
+
 
 ];
