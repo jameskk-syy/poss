@@ -56,7 +56,6 @@ import { EditProductComponent } from './forms/edit-product/edit-product.componen
   imports: [
     CommonModule,
     ProductRoutingModule, 
-    CommonModule,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
