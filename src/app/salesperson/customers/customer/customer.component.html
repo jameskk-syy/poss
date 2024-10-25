@@ -111,6 +111,24 @@
                                         {{row.phone }}
                                     </mat-cell>
                                 </ng-container>
+
+                                <ng-container matColumnDef="alt_phone">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                        class="column-nowrap">Alt Phone</mat-header-cell>
+                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)" class="column-nowrap">
+                                        {{row.alt_phone }}
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="category">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                                        class="column-nowrap">Category</mat-header-cell>
+                                    <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
+                                        [class.even-row]="!(i % 2)" class="column-nowrap">
+                                        {{row.category.name}}
+                                    </mat-cell>
+                                </ng-container>
                                 <ng-container matColumnDef="status">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
                                   
@@ -137,7 +155,7 @@
                                     <mat-cell *matCellDef="let row;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, row)">
                                         <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                                            (click)="editCall(row)" class="tbl-action-btn">
+                                            (click)="editCustomer(row)" class="tbl-action-btn">
                                             <app-feather-icons matTooltip="Edit Customer"
                                                 [icon]="'edit'"></app-feather-icons>
                                         </button>

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DeleteCustomersComponent } from './delete-customers.component';
+import { ApproveCustomerComponent } from './approve-customer.component';
 
-describe('DeleteCustomersComponent', () => {
-  let component: DeleteCustomersComponent;
-  let fixture: ComponentFixture<DeleteCustomersComponent>;
+describe('ApproveCustomerComponent', () => {
+  let component: ApproveCustomerComponent;
+  let fixture: ComponentFixture<ApproveCustomerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeleteCustomersComponent ]
+      declarations: [ ApproveCustomerComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DeleteCustomersComponent);
+    fixture = TestBed.createComponent(ApproveCustomerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

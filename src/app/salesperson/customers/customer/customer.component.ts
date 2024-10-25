@@ -19,7 +19,14 @@ export class CustomerComponent implements OnInit {
 
   displayedColumns: string[]= [
     'id',
-
+    'code',
+    'name',
+    'location',
+    'phone',
+    'alt_phone',
+    'status',
+    'category',
+    'action'
   ]
   dataSource!: MatTableDataSource<any>;
   isLoading: Boolean;
@@ -96,7 +103,7 @@ export class CustomerComponent implements OnInit {
     
     const dialogRef = this.dialog.open(AddCustomersComponent, dialogConfig);
 
-      dialogRef.afterClosed().subscribe ({
+    dialogRef.afterClosed().subscribe ({
       next:(value) => {
         this.ngOnInit()
       }
@@ -104,25 +111,24 @@ export class CustomerComponent implements OnInit {
 
   }
 
-  editCustomer(customer, salesPersonId){
+  editCustomer(customer){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
-    dialogConfig.width = "600px"
+    dialogConfig.width = "900px"
     dialogConfig.data = {
       customer:customer,
-      salesPersonId:salesPersonId
+      
     }
 
     console.log('cust', customer)
     const dialogRef = this.dialog.open(EditCustomersComponent, dialogConfig);
 
-      dialogRef.afterClosed().subscribe ({
+    dialogRef.afterClosed().subscribe ({
       next:(value) => {
         this.ngOnInit()
       }
       });
-
   }
 
 }

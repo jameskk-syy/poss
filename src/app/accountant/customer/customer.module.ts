@@ -24,6 +24,7 @@ import { AddCategoriesComponent } from './forms/add-categories/add-categories.co
 import { ManageCustomercategoriesComponent } from './manage-customercategories/manage-customercategories.component';
 import { DeleteCategoriesComponent } from './forms/delete-categories/delete-categories.component';
 import { CustomersComponent } from './customers/customers.component';
+import { ApproveCustomerComponent } from './forms/approve-customer/approve-customer.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { CustomersComponent } from './customers/customers.component';
     ManageCustomercategoriesComponent,
     DeleteCategoriesComponent,
     CustomersComponent,
+    ApproveCustomerComponent,
     
   ],
   

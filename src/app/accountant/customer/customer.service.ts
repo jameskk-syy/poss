@@ -58,4 +58,8 @@ export class CustomerService {
     return this.http.get(`${environment.apiUrl}/api/v1/routes/get`)
   }
 
+  approveCustomer(id:any): Observable<any>{
+    return this.http.put<any>(this.customersUrl +`approve/${id}`,{})
+  }
+
 }
