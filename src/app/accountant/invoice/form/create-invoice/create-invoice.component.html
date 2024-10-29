@@ -1,24 +1,179 @@
-<div class="addContainer">
-    <div class="card">
-      <div class="body">
-        <div class="modalHeader">
-          <div class="editRowModal">
-            <div class="modalHeader clearfix">
-              <div class="modalHeader clearfix">
-                <div class="modal-about">
-                  <div class="font-weight-bold p-t-5 ms-2 me-2 font-17">
-                    <h2 class="mt-2">Create Invoice</h2>
-                  </div>
-                </div>
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+  <mat-horizontal-stepper [linear]="isLinear" #stepper>
+      <form [formGroup]="invoiceForm" class="mx-4">
+          <mat-step [stepControl]="productForm">
+              <ng-template matStepLabel>Select Items</ng-template>
+
+            <div [formGroup]="productForm" class="row">
+              <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Quantity</mat-label>
+                    <input matInput formControlName="quantity" required />
+                </mat-form-field>
               </div>
+
+            
+              <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Items</mat-label>
+                  <input matInput formControlName="code" />
+                  <mat-icon matSuffix (click)="selectItemLk()">search</mat-icon>
+                </mat-form-field>
+              </div> 
+              <div class="row">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 d-flex justify-content-end">
+                <button mat-raised-button color="primary" (click)="addItem()">
+                Add Item
+            </button>
             </div>
           </div>
-        </div>
-        <div mat-dialog-content>
-        <!-- <mat-horizontal-stepper [linear]="isLinear" #stepper>   ADD PICKUP COMPONENT-->
-          <form class="register-form m-4" [formGroup]="invoiceForm">
-            <div class="row">
-                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+            </div>
+
+            <br>
+
+            <div class="card">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="boxs mail_listing">
+                      <div class="row">
+                          <div class="body">
+                              <div class="table-responsive">
+                                  <div class="materialTableHeader mt-3">
+                                      <div class="row">
+                                          <div class="col-8">
+                                              <ul class="header-buttons-left ms-0">
+                                                  <li class="dropdown">
+                                                      <h2>Products
+                                                      </h2>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <mat-table #table matTableExporter [dataSource]="productDataSource" matSort
+                                      class="mat-cell" #exporter="matTableExporter">
+                                      <ng-container matColumnDef="index">
+                                          <mat-header-cell *matHeaderCellDef mat-sort-header
+                                              class="psl-3 tbl-col-width-per-35">Id</mat-header-cell>
+                                          <mat-cell *matCellDef="let row; let i = index"
+                                              class="psl-3 tbl-col-width-per-35">{{
+                                              i + 1 }}</mat-cell>
+                                      </ng-container>
+                                      <ng-container matColumnDef="name">
+                                          <mat-header-cell *matHeaderCellDef
+                                              mat-sort-header
+                                              class="column-nowrap psl-3 tbl-col-width-per-80">Product</mat-header-cell>
+                                          <mat-cell *matCellDef="let row"
+                                              (click)="onSelect(row)"
+                                              class="column-nowrap psl-3 tbl-col-width-per-80">
+                                              {{ row.name }}
+                                          </mat-cell>
+                                      </ng-container>
+                                      <ng-container matColumnDef="code">
+                                        <mat-header-cell *matHeaderCellDef
+                                            mat-sort-header
+                                            class="column-nowrap psl-3 tbl-col-width-per-80">Code</mat-header-cell>
+                                        <mat-cell *matCellDef="let row"
+                                            (click)="onSelect(row)"
+                                            class="column-nowrap psl-3 tbl-col-width-per-80">
+                                            {{ row.code }}
+                                        </mat-cell>
+                                    </ng-container>
+                                      <ng-container matColumnDef="unit">
+                                        <mat-header-cell *matHeaderCellDef
+                                            mat-sort-header
+                                            class="column-nowrap psl-3 tbl-col-width-per-80">Unit</mat-header-cell>
+                                        <mat-cell *matCellDef="let row"
+                                            (click)="onSelect(row)"
+                                            class="column-nowrap psl-3 tbl-col-width-per-80">
+                                            {{ row.unit }}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="quantity">
+                                      <mat-header-cell *matHeaderCellDef
+                                          mat-sort-header
+                                          class="column-nowrap psl-3 tbl-col-width-per-80">Quantity</mat-header-cell>
+                                      <mat-cell *matCellDef="let row"
+                                          (click)="onSelect(row)"
+                                          class="column-nowrap psl-3 tbl-col-width-per-80">
+                                          {{ row.quantity }}
+                                      </mat-cell>
+                                    </ng-container>
+                                      <ng-container matColumnDef="actions">
+                                          <mat-header-cell
+                                              class="column-nowrap psl-3 tbl-col-width-per-80"
+                                              *matHeaderCellDef>Actions</mat-header-cell>
+                                          <mat-cell *matCellDef="let row; let i = index"
+                                              class="column-nowrap psl-3 tbl-col-width-per-80">
+                                              <button mat-icon-button color="accent"
+                                                  (click)="$event.stopPropagation()"
+                                                  (click)="removeItem(i)"
+                                                  class="tbl-action-btn">
+                                                  <app-feather-icons [icon]="'trash-2'"
+                                                      [class]="'tbl-fav-delete'"></app-feather-icons>
+                                              </button>
+                                          </mat-cell>
+                                      </ng-container>
+                                      <mat-header-row
+                                          *matHeaderRowDef="productDisplayedColumns">
+                                      </mat-header-row>
+
+                                      <mat-row
+                                          *matRowDef="let row; let i = index; columns: productDisplayedColumns"
+                                          [class.odd-row]="i % 2"
+                                          [class.even-row]="!(i % 2)"
+                                          [style.cursor]="'pointer'" matRipple>
+                                      </mat-row>
+                                      <mat-cell *matNoDataRow colspan="4">
+                                          No data matching the filter "{{
+                                          input.value
+                                          }}"</mat-cell>
+                                  </mat-table>
+                                  <div *ngIf="productNotAdded">
+                                      <p class="p-3">
+                                          No item selected yet
+                                      </p>
+                                  </div>
+                                  <mat-paginator [pageSize]="2"
+                                      #collectorsPaginator="matPaginator"
+                                      [pageSizeOptions]="[2, 5, 10, 20, 30, 40, 50, 100]"
+                                      aria-label="Select page of users"></mat-paginator>
+                                      </div>
+                                  </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mr 3 d-flex justify-content-end">
+                    <button mat-raised-button matStepperNext color="primary">Next
+                    </button>
+                </div>
+              </mat-step>
+
+               <mat-step [stepControl]="invoiceForm">
+                <ng-template matStepLabel>General Details</ng-template>
+              <div class="row">
+               <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Total Amount</mat-label>
+                    <input matInput formControlName="totalAmount" required />
+                    <mat-error *ngIf="invoiceForm.get('totalAmount').hasError('required')">
+                        Total Amount is required
+                    </mat-error>
+                </mat-form-field>
+               </div>
+              </div>
+
+               <div>
+                <button mat-raised-button matStepperNext color="primary">
+                    Next
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step [stepControl]="invoiceForm">
+              <ng-template matStepLabel>General Details</ng-template>
+                <div class="row">
+                  <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Invoice Number</mat-label>
                         <input matInput formControlName="invoice" required />
@@ -26,7 +181,7 @@
                             Invoice Number is required
                         </mat-error>
                     </mat-form-field>
-                </div>
+                  </div>
 
                 <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
@@ -51,49 +206,7 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-                
-              <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <mat-label>Items</mat-label>
-                  <input matInput formControlName="item" />
-                  <mat-icon matSuffix (click)="selectItem()">search</mat-icon>
-                  <mat-error
-                    *ngIf="invoiceForm.get('item').hasError('required')">
-                    Item name is required
-                  </mat-error>
-                </mat-form-field>
-              </div>
-
-              <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
-                <mat-form-field class="example-full-width" appearance="outline">
-                    <mat-label>Quantity</mat-label>
-                    <input matInput formControlName="quantity" required />
-                    <mat-error *ngIf="invoiceForm.get('quantity').hasError('required')">
-                        Quantity is required
-                    </mat-error>
-                </mat-form-field>
-               </div>
-
-               <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
-                <mat-form-field class="example-full-width" appearance="outline">
-                    <mat-label>Unit</mat-label>
-                    <input matInput formControlName="unit" required />
-                    <mat-error *ngIf="invoiceForm.get('unit').hasError('required')">
-                        Unit is required
-                    </mat-error>
-                </mat-form-field>
-               </div>
-
-               <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
-                <mat-form-field class="example-full-width" appearance="outline">
-                    <mat-label>Total Amount</mat-label>
-                    <input matInput formControlName="unit" required />
-                    <mat-error *ngIf="invoiceForm.get('totalAmount').hasError('required')">
-                        Total Amount is required
-                    </mat-error>
-                </mat-form-field>
-               </div>
-  
+               
               <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                   <div class="example-button-row" align="end">
@@ -105,10 +218,9 @@
                 </div>
               </div>
             </div>
+            </mat-step>
           </form>
-        <!-- </mat-horizontal-stepper> -->
-        </div>
+        </mat-horizontal-stepper>
       </div>
-    </div>
-  </div>
+       
   

@@ -1,6 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators,FormArray } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { SkuLkupComponent } from 'src/app/accountant/lookups/sku-lkup/sku-lkup.component';
 import {formatDate,sum,groupBy} from 'src/app/data/services/utils'
 
@@ -15,6 +18,7 @@ export class CreateInvoiceComponent implements OnInit {
   loading = false
   isLinear = false;
   invoiceForm: FormGroup;
+  productForm: FormGroup;
   datesArray: string[] = [];
   monthsArray: string[] = [];
   currentYear = new Date().getFullYear();
@@ -23,9 +27,22 @@ export class CreateInvoiceComponent implements OnInit {
   selectedDate: any;
   sku: any;
   selectedSkuId: any;
+  selectedSkuCode: any;
+  productNotAdded = true;
 
+  // activateLookupSubCollectors: boolean = true;
+  productDataSource = new MatTableDataSource<any>([]);
+  @ViewChild('subCollectorsPaginator') subCollectorsPaginator : MatPaginator
+  @ViewChild('subCollectorsSort') subCollectorsSort : MatSort
   
-
+  productDisplayedColumns: string[] = [
+    'name',
+    'code',
+    'unit',
+    'quantity',
+    'actions'
+  ]
+  selectedSkuUnit: any;
 
   constructor(
     
@@ -34,35 +51,28 @@ export class CreateInvoiceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.invoiceForm = this.fb.group({
-      invoice: ['', ],
+    this.invoiceForm = this.createInvoiceForm();
+    this.productForm = this.createProductForm();
+  }
+
+  createInvoiceForm(): FormGroup {
+    return this.fb.group({
+      items: new FormArray([]),
+      invoice: ['', Validators.required],
       description: ['', Validators.required],
-      date: ['', Validators.required],
-      item: ['', Validators.required],
-      quantity: ['', Validators.required],
-      unit: ['', Validators.required],
+      date: ['', Validators.required],    
       totalAmount: ['', Validators.required],
-      
     });
   }
 
-
-  onSelectDate(): void {
-    this.selectedDate = formatDate(this.invoiceForm.value.date,'')
-    
+  createProductForm(): FormGroup {
+    return this.fb.group({
+      quantity:['', Validators.required],
+      code:['', Validators.required]
+    });
   }
 
-  generateDatesArray(): void {
-    const selectedDate = new Date(this.invoiceForm.value.date);
-
-    if (!isNaN(selectedDate.getTime())) {
-      this.datesArray = [formatDate(selectedDate,'')];
-    } else {
-      this.datesArray = [];
-    }
-  }
-
-  selectItem(){
+  selectItemLk(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
@@ -75,17 +85,68 @@ export class CreateInvoiceComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.sku = result.sku;
-        this.invoiceForm.patchValue({
+        console.log('skkkuuu', this.sku)
+        this.productForm.patchValue({
           skuId: this.sku.name,
-          id: this.sku.id 
+          code: this.sku.code,
+          unit: this.sku.unit
+
         });
-          this.selectedSkuId = this.sku.id
       }
+
+      console.log("item", this.selectedSkuUnit)
     });
+  }
+
+
+
+
+  
+  onSelectDate(): void {
+    this.selectedDate = formatDate(this.invoiceForm.value.date,'')
+  }
+
+  generateDatesArray(): void {
+    const selectedDate = new Date(this.invoiceForm.value.date);
+
+    if (!isNaN(selectedDate.getTime())) {
+      this.datesArray = [formatDate(selectedDate,'')];
+    } else {
+      this.datesArray = [];
+    }
   }
 
   onSubmit(){
 
   }
+
+
+
+  addItem() {
+    if (this.productForm.get('code').valid) {
+      const newItem = {
+        quantity: this.productForm.get('quantity').value,
+        code: this.productForm.get('code').value,
+        unit: this.sku.unit,
+        name: this.sku.name
+
+      };
+
+      console.log('unit', this.sku.unit)
+
+      console.log('to the table',newItem)
+      this.productDataSource.data = [...this.productDataSource.data,newItem];
+      this.productDataSource._updateChangeSubscription();
+      this.productNotAdded = this.productDataSource.data.length === 0;
+      this.productForm.reset(); 
+    }
+  }
+
+  removeItem(index: any) {
+    this.productDataSource.data.splice(index, 1);
+    this.productDataSource._updateChangeSubscription();
+    this.productNotAdded = this.productDataSource.data.length === 0; 
+  }
+  
 
 }

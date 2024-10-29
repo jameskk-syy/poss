@@ -17,6 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { MaterialModule } from 'src/app/shared/material.module';
@@ -51,7 +52,8 @@ import { LookupsModule } from '../lookups/lookups.module';
     MatDatepickerModule,
     MatProgressBarModule,
     MatSnackBarModule,
-    MatTabsModule, 
+    MatTabsModule,
+    MatStepperModule,
     MatSelectModule,
     MaterialModule,
     ReactiveFormsModule,
