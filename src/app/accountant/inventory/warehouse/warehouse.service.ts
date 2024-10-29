@@ -37,5 +37,16 @@ baseUrl =  environment.apiUrl+'/api/v1/warehouse/'
   public getDetails(whseCode: any): Observable<any> {
     return this.http.get(`${this.baseUrl}get/code?whseCode=${whseCode}`);
   }
+
+  public getRequisitions(): Observable<any>{
+    return this.http.get(`${environment.apiUrl}/api/v1/stock-request/get/all`);
+ }
+
+ public getByApproval(approved:any):Observable<any>{
+   return this.http.get(`${environment.apiUrl}/api/v1/stock-request/get/approved?approved=${approved}`);
+ }
   
+ public approveRequest(requestId: any): Observable<any> {
+  return this.http.put(`${environment.apiUrl}/api/v1/stock-request/approve/${requestId}`, {});
+}
 }

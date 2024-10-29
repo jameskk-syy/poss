@@ -1,0 +1,203 @@
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="body">
+                <div class="table-responsive">
+                    <div class="materialTableHeader">
+                        <div class="row">
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                <ul class="header-buttons-left ms-0">
+                                    <li class="dropdown">
+                                        <h2>Requisition</h2>
+                                    </li>
+                                    <li class="dropdown m-l-10">
+                                        <label for="search-input"><i
+                                                class="material-icons search-icon">search</i></label>
+                                        <input placeholder="Search" type="text"
+                                            style="text-transform: capitalize;" (keyup)="applyFilter($event)"
+                                            class="browser-default search-field" aria-label="Search box" />
+                                    </li>                                 
+                                    <li>
+                                        <div class="m-l-4" matTooltip="REFRESH">
+                                            <button mat-mini-fab color="primary" (click)="getData()">
+                                                <mat-icon class="col-white">refresh</mat-icon>
+                                            </button>
+                                        </div>
+                                    </li>
+                                    <li class="dropdown m-l-5">
+                                        <mat-form-field>
+                                            <mat-label>Filter By</mat-label>
+                                            <mat-select >
+                                                <mat-option value="approval"><b>Approval</b></mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </li>
+                                    
+                                    <li class="dropdown m-l-5">
+                                        <form [formGroup]="form">
+                                            <mat-form-field class="m-l-5">
+                                                <input matInput
+                                                       placeholder="Enter Approval"
+                                                       formControlName="approval"
+                                                       (input)="filterByApproval()">
+                                            </mat-form-field>
+                                        </form>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                <ul class="header-buttons">
+                                    <li>
+                                        <div class="export-button m-l-10" matTooltip="XLSX">
+                                            <img src="assets/images/icons/xlsx.png" alt="" (click)="exporter.exportTable('xlsx', {fileName: 'Products',sheet: 'sheet1' })" />
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="export-button m-l-10" matTooltip="CSV">
+                                            <img src="assets/images/icons/csv.png" alt=""
+                                                (click)="exporter.exportTable('csv')" />
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="export-button m-l-10" matTooltip="JSON">
+                                            <img src="assets/images/icons/json.png" alt=""
+                                                (click)="exporter.exportTable('json')" />
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="export-button m-l-10" matTooltip="TXT">
+                                            <img src="assets/images/icons/txt.png" alt=""
+                                                (click)="exporter.exportTable('txt')" />
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell"
+                        #exporter="matTableExporter">
+
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef class="table-img tbl-col-width-per-8"
+                                mat-sort-header>#</mat-header-cell>
+                            <mat-cell class="table-img tbl-col-width-per-8"
+                                *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)">{{i +
+                                1}}</mat-cell>
+                        </ng-container> 
+                    
+                        <ng-container matColumnDef="approvedFlag">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
+                                Flag</mat-header-cell>
+                            <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{request.approvedFlag}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="item">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Item</mat-header-cell>
+                            <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{request.item}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="fromWhse">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">From</mat-header-cell>
+                            <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{request.fromWhse}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="toWhse">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">To</mat-header-cell>
+                            <mat-cell *matCellDef="let request; let i = index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{request.toWhse}}
+                            </mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="message">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Message</mat-header-cell>
+                            <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{request.message}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="quantity">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Quantity</mat-header-cell>
+                            <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{request.quantity}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="approveStock">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-18">Approve</mat-header-cell>
+                            <mat-cell *matCellDef="let request; let i = index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" >
+                              <button class="badge badge-solid-green btn purple btn btn-sm m-1" (click)="$event.stopPropagation(); requestStock(request.id)">
+                                Approve 
+                              </button>
+                            </mat-cell>
+                          </ng-container>
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="table-img tbl-col-width-per-10">Status</mat-header-cell>
+                            <mat-cell *matCellDef="let request;let i=index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap tbl-col-width-per-10">
+                                <div *ngIf="request.status=='ACTIVE'">
+                                    <span class="badge badge-pill badge-primary col-green">{{request.status}}</span>
+                                </div>
+
+                                <div *ngIf="request.status == 'DELETED'">
+                                    <span class="badge badge-pill badge-primary col-green">{{request.status}}</span>
+                                </div>
+
+                                <div *ngIf="request.status == 'PENDING'">
+                                    <span class="badge badge-pill badge-primary col-green">{{request.status}}</span>
+                                </div>
+                                
+                                <div *ngIf="request.status == 'APPROVED'">
+                                    <span class="badge badge-pill badge-primary col-green">{{request.status}}</span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="requestBy">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Requested By</mat-header-cell>
+                            <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{request.requestBy}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="createdOn">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Created On</mat-header-cell>
+                            <mat-cell *matCellDef="let request;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{request.createdOn | date}}
+                            </mat-cell>
+                        </ng-container>
+                       
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns"
+                            (click)="productDetailsCall(request)" [style.cursor]="'pointer'" matRipple>
+                        </mat-row>
+                    </mat-table>
+
+                    <!-- Loading spinner -->
+                    <div *ngIf="isLoading" class="tbl-spinner">
+                        <mat-progress-spinner color="primary" [diameter]="50" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </div>
+
+                    <div class="tbl-spinner" *ngIf="isdata==false && !isLoading">
+                        <h4>0 Records Found</h4>
+                    </div>
+
+                    <mat-paginator #paginator [pageIndex]="0" [pageSize]="5"
+                        [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

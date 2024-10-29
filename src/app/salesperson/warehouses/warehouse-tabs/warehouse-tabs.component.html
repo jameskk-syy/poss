@@ -1,0 +1,24 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <app-breadcrumb [title]="'Warehousing'" [items]="['Warehouses']" [active_item]="'Warehouses'" *ngIf="index === 0">
+            </app-breadcrumb>
+            <app-breadcrumb [title] = "'Stock Requisition'" [items]="['Requisition']" [active_item]="'Requisition'" *ngIf="index === 1">
+            </app-breadcrumb>
+        </div>
+        <mat-tab-group [(selectedIndex)]="index" (selectedTabChange)="onTabChange($event)">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Warehouse Details
+                </ng-template>
+                <app-warehouse-details></app-warehouse-details>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Stock Requisition
+                </ng-template>
+                <app-stock-requisition></app-stock-requisition>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</section>

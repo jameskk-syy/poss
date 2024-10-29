@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ViewWarehouseProductsComponent } from 'src/app/accountant/inventory/warehouse/view-warehouse-products/view-warehouse-products.component';
+import { WarehouseTabsComponent } from './warehouse-tabs/warehouse-tabs.component';
 
-const routes: Routes = [{path: 'main', component:ViewWarehouseProductsComponent}];
+const routes: Routes = [{path: 'main', component:WarehouseTabsComponent}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

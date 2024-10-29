@@ -21,6 +21,7 @@ import { TransferHistoryComponent } from './transfer-history/transfer-history.co
 import { TransferWarehouseComponent } from './transfer-warehouse/transfer-warehouse.component';
 import { ConfirmTransferComponent } from './confirm-transfer/confirm-transfer.component';
 import { MatSortModule } from '@angular/material/sort';
+import { ApproveRequestComponent } from './approve-request/approve-request.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { MatSortModule } from '@angular/material/sort';
      StockWidgetsComponent,
      TransferHistoryComponent,
      TransferWarehouseComponent,
-     ConfirmTransferComponent
+     ConfirmTransferComponent,
+     ApproveRequestComponent
   ],
   imports: [
     CommonModule,
@@ -48,6 +50,9 @@ import { MatSortModule } from '@angular/material/sort';
     ReactiveFormsModule,
     MatDialogModule,
     MatTabsModule
+  ],
+  exports: [
+    StockWidgetsComponent
   ]
 })
 export class WarehouseModule { }

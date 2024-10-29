@@ -1,0 +1,97 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modalHeader clearfix">
+                    <div class="modal-about">
+                        <div class="font-weight-bold p-t-5 ms-2 me-2 font-17">
+                            Request Stock
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <mat-progress-bar mode="indeterminate" *ngIf="pLoading"></mat-progress-bar>
+        <form class="register-form m-4" [formGroup]="stockRequestForm">
+            <!--Supplier Details-->
+            <div class="row">
+                <mat-card>
+                    <mat-card-title style="font-size: x-small;">Stock Request Details</mat-card-title>
+                    <mat-card-content>
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>SKU Item</mat-label>
+                                    <input matInput formControlName="skuCode" required readonly/>
+                                    <mat-icon matSuffix (click)="selectSkuUnit()">search</mat-icon>
+                                    <mat-error *ngIf="stockRequestForm.get('skuCode').hasError('required')">
+                                        SKU Item name is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                    <mat-label>From Warehouse</mat-label>
+                                    <input formControlName="from" matInput readonly required/>
+                                    <mat-icon matSuffix (click)="selectWarehouse('from')">search</mat-icon>
+                                    <mat-error *ngIf="stockRequestForm.get('from').hasError('required')">
+                                      From Warehouse
+                                    </mat-error>
+                                  </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                                    <mat-label>To Warehouse</mat-label>
+                                    <input matInput formControlName="to" readonly required />
+                                    <mat-icon matSuffix (click)="selectWarehouse('to')">search</mat-icon>
+                                    <mat-error *ngIf="stockRequestForm.get('to').hasError('required')">
+                                      The To Warehouse is required
+                                    </mat-error>
+                                  </mat-form-field>
+                            </div>
+                        </div>               
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Quantity</mat-label>
+                                    <input matInput formControlName="quantity" required />
+                                    <mat-error *ngIf="stockRequestForm.get('quantity').hasError('required')">
+                                        The Quantity is required
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-0">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Message</mat-label>
+                                <input matInput formControlName="message" required />
+                                <mat-error *ngIf="stockRequestForm.get('message').hasError('required')">
+                                The Message is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>  
+                        </div>                     
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-0">
+                                <div class="example-button-row">
+                                    <button mat-raised-button color="warn" (click)="onCancel()" tabindex="-1">
+                                        Cancel
+                                    </button>
+                                    <button mat-raised-button color="primary"
+                                        [disabled]="!stockRequestForm.valid" (click)="onSubmit()">
+                                        <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        <b>Submit</b>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </form>
+    </div>
+</div>
