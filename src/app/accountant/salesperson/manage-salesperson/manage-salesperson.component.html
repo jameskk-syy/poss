@@ -104,18 +104,8 @@
                                     (click)="viewSalespersonCustomers(salesperson)"> View Customers
                                 </button>
                             </mat-cell>
-                        </ng-container>                                           
-                        <!-- <ng-container matColumnDef="action">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                            <mat-cell *matCellDef="let salesperson;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, salesperson)">
-                                <button mat-icon-button (click)="$event.stopPropagation()"
-                                     matTooltip="deactivate Salesperson" class="tbl-action-btn">
-                                    <mat-slide-toggle [checked] = "salesperson.isActive" (change)="deactivateSalesperson($event.checked, salesperson)"></mat-slide-toggle>
-                                </button>
-                            </mat-cell>
-                        </ng-container> -->
-
+                        </ng-container>   
+                                                               
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns"
                             (click)="stockDetails(stock)" [style.cursor]="'pointer'" matRipple>

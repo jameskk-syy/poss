@@ -1057,11 +1057,11 @@ export const ROUTES: RouteInfo[] = [
   },
 
   {
-    path: '/accountant/salesperson',
-    title: 'Order Management',
+    path: '/accountant/invoice',
+    title: 'Invoice',
     moduleName: 'salesperson',
     iconType: 'feather',
-    icon: 'user',
+    icon: 'clipboard',
     class: '',
     groupTitle: false,
     badge: '',
@@ -1112,7 +1112,5 @@ export const ROUTES: RouteInfo[] = [
     role: ['SALES_PERSON'],
     submenu: [],
   },
-
-
 
 ];

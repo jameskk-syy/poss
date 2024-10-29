@@ -126,10 +126,18 @@
 
                             <ng-container matColumnDef="status">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
-                                <mat-cell *matCellDef="let customer;let i = index" [class.odd-row]="i % 2"
-                                    [class.even-row]="!(i % 2)" class="column-nowrap">
-                                    {{customer.status}}
-                                </mat-cell>
+                                <mat-cell *matCellDef="let row; let i = index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)" class="column-nowrap">
+                                  <div *ngIf="row.status == 'ACTIVE'">
+                                    <span class="badge badge-pill badge-primary col-green">
+                                      {{ "ACTIVE" }}
+                                    </span>
+                                  </div>
+                                  <div *ngIf="row.status == 'DELETED'">
+                                    <span class="badge badge-pill badge-primary col-red">
+                                      {{ "DELETED" }}
+                                    </span>
+                                  </div>
+                               </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="customerDetails">
