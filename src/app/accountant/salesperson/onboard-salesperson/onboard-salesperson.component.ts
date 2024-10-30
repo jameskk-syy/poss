@@ -88,7 +88,6 @@ export class OnboardSalespersonComponent implements OnInit {
           customer: customerNames,
           id: this.customers.map((customer: any) => customer.id)
         });
-
       }
     });
   }
@@ -137,12 +136,8 @@ onSubmit(){
       this.loading = false;
       const errorMessage = err.message
       this.snackbar.showNotification("snackbar-danger", err);
-      
-    
     }
-
   })
-
 }
 
 }

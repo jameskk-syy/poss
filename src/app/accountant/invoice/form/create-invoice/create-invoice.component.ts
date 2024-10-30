@@ -6,6 +6,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SkuLkupComponent } from 'src/app/accountant/lookups/sku-lkup/sku-lkup.component';
 import {formatDate,sum,groupBy} from 'src/app/data/services/utils'
+import { InvoiceService } from '../../invoice.service';
+import { Subscription } from 'rxjs';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { paymentArray } from 'src/app/core/models/paymentMethods';
+import { SalespersonLkupComponent } from 'src/app/accountant/lookups/salesperson-lkup/salesperson-lkup.component';
 
 @Component({
   selector: 'app-create-invoice',
@@ -29,8 +34,10 @@ export class CreateInvoiceComponent implements OnInit {
   selectedSkuId: any;
   selectedSkuCode: any;
   productNotAdded = true;
+  selectedSkuUnit: any;
+  subscription!: Subscription;
+  paymentMethods = paymentArray
 
-  // activateLookupSubCollectors: boolean = true;
   productDataSource = new MatTableDataSource<any>([]);
   @ViewChild('subCollectorsPaginator') subCollectorsPaginator : MatPaginator
   @ViewChild('subCollectorsSort') subCollectorsSort : MatSort
@@ -42,12 +49,18 @@ export class CreateInvoiceComponent implements OnInit {
     'quantity',
     'actions'
   ]
-  selectedSkuUnit: any;
+  invoiceFormData: any;
+  itemData: any[];
+  salesperson: any;
+  salespersonId: any;
+  
 
   constructor(
     
     private fb: FormBuilder,
     private dialog: MatDialog,
+    private invoiceService: InvoiceService,
+    private snackbar: SnackbarService
   ) { }
 
   ngOnInit(): void {
@@ -57,18 +70,21 @@ export class CreateInvoiceComponent implements OnInit {
 
   createInvoiceForm(): FormGroup {
     return this.fb.group({
-      items: new FormArray([]),
-      invoice: ['', Validators.required],
+      amount: ['', Validators.required],
+      date: ['', Validators.required], 
       description: ['', Validators.required],
-      date: ['', Validators.required],    
-      totalAmount: ['', Validators.required],
+      invoiceNo: ['', Validators.required],
+      // customerCode:['',Validators],
+      // paymentMode: ['',Validators],
+      // spId:['',Validators],
+      items: new FormArray([])      
     });
   }
 
   createProductForm(): FormGroup {
     return this.fb.group({
       quantity:['', Validators.required],
-      code:['', Validators.required]
+      skuCode:['', Validators.required]
     });
   }
 
@@ -77,9 +93,7 @@ export class CreateInvoiceComponent implements OnInit {
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.width = "60%";
-    dialogConfig.data = {
-     
-    };
+    dialogConfig.data = {};
   
     const dialogRef = this.dialog.open(SkuLkupComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
@@ -88,18 +102,39 @@ export class CreateInvoiceComponent implements OnInit {
         console.log('skkkuuu', this.sku)
         this.productForm.patchValue({
           skuId: this.sku.name,
-          code: this.sku.code,
+          skuCode: this.sku.code,
           unit: this.sku.unit
-
         });
       }
-
-      console.log("item", this.selectedSkuUnit)
     });
   }
 
+  selectSalespersonLk(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+    dialogConfig.data = {
+     
+    };
+  
+    const dialogRef = this.dialog.open(SalespersonLkupComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.salesperson = result.salesperson;
+        console.log ('results sales',this.salesperson)
+        this.invoiceForm.patchValue({
+          salesperson: this.salesperson.name,
+          name: this.salesperson.name,
+          id: this.salesperson.id
+        });
 
-
+        this.salespersonId = this.salesperson.id
+          
+          console.log ('Salespeope',this.salespersonId)
+      }
+    });
+  }
 
   
   onSelectDate(): void {
@@ -116,30 +151,23 @@ export class CreateInvoiceComponent implements OnInit {
     }
   }
 
-  onSubmit(){
-
-  }
-
-
-
+  
   addItem() {
-    if (this.productForm.get('code').valid) {
+    if (this.productForm.get('skuCode').valid) {
       const newItem = {
         quantity: this.productForm.get('quantity').value,
-        code: this.productForm.get('code').value,
+        code: this.productForm.get('skuCode').value,
         unit: this.sku.unit,
         name: this.sku.name
-
       };
 
-      console.log('unit', this.sku.unit)
-
-      console.log('to the table',newItem)
       this.productDataSource.data = [...this.productDataSource.data,newItem];
       this.productDataSource._updateChangeSubscription();
       this.productNotAdded = this.productDataSource.data.length === 0;
       this.productForm.reset(); 
+      this.productForm.markAsPristine()
     }
+    console.log('items array', this.productDataSource.data)
   }
 
   removeItem(index: any) {
@@ -148,5 +176,43 @@ export class CreateInvoiceComponent implements OnInit {
     this.productNotAdded = this.productDataSource.data.length === 0; 
   }
   
+  onSubmit(){
+    this.isLoading = true
+
+    this.itemData = this.productDataSource.data;
+    const items = this.productDataSource.data.map(item =>({
+      quantity:item.quantity,
+      skuCode:item.code
+    }))
+
+    console.log ('on the submit',items)
+    console.log ('on the submit',this.itemData)
+    this.invoiceFormData = this.invoiceForm.getRawValue();
+    const data = {
+      amount:this.invoiceFormData.amount,
+      date:this.invoiceFormData.date,
+      description:this.invoiceFormData.description,
+      invoiceNo:this.invoiceFormData.invoiceNo,
+      soldItems:items
+    }
+    
+    console.log('ytu', data)
+
+    this.subscription = this.invoiceService.addInvoice(data).subscribe({
+      next: (res) =>{
+        this.loading =false
+        const successMessage = res.message
+        this.snackbar.showNotification("snackbar-success", successMessage);
+        this.invoiceForm.reset();
+        this.invoiceForm.markAsPristine();
+      },
+      error: (err) => {
+        this.loading = false;
+        const errorMessage = err.message
+        this.snackbar.showNotification("snackbar-danger", errorMessage);
+        
+        }    
+    })
+  }
 
 }

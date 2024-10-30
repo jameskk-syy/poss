@@ -23,6 +23,7 @@ export class ManageSalespersonComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   subscription!: Subscription;
   data: any;
+  salesperson: any;
 
   displayedColumns: string [] = [
     'id',
@@ -32,7 +33,7 @@ export class ManageSalespersonComponent implements OnInit {
     'ViewCustomers',
     
   ]
-  salesperson: any;
+  
 
   
 

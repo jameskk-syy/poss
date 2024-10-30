@@ -25,12 +25,18 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ProductRoutingModule } from '../product/product-routing.module';
 import { InvoicesComponent } from './invoices/invoices.component';
 import { LookupsModule } from '../lookups/lookups.module';
+import { ViewInvoicesComponent } from './view-invoices/view-invoices.component';
+import { ConfirmPaymentComponent } from './confirm-payment/confirm-payment.component';
+import { ViewInvoiceItemsComponent } from './view-invoice-items/view-invoice-items.component';
 
 
 @NgModule({
   declarations: [
     CreateInvoiceComponent,
-    InvoicesComponent
+    InvoicesComponent,
+    ViewInvoicesComponent,
+    ConfirmPaymentComponent,
+    ViewInvoiceItemsComponent
   ],
   imports: [
     CommonModule,

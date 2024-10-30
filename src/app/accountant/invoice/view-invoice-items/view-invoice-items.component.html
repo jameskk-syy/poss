@@ -1,0 +1,107 @@
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="body">
+                <div class="table-responsive">
+                    <div class="materialTableHeader">
+                        <div class="row">
+                            <div class="col-8">
+                                <ul class="header-buttons-left ms-0">
+                                    <li class="dropdown">
+                                        <h2>Items</h2>
+                                    </li>
+                                    <li class="dropdown m-l-20">
+                                        <label for="search-input"><i
+                                                class="material-icons search-icon">search</i></label>
+                                        <input placeholder="Search" type="text"
+                                            style="text-transform: capitalize;" (keyup)="applyFilter($event)"
+                                            class="browser-default search-field" aria-label="Search box" />
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+                    </div>
+            
+                    <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell"
+                        #exporter="matTableExporter">
+
+                        <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef class="table-img tbl-col-width-per-8"
+                                mat-sort-header>#</mat-header-cell>
+                            <mat-cell class="table-img tbl-col-width-per-8"
+                                *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)">{{i +
+                                1}}</mat-cell>
+                        </ng-container> 
+                    
+                        <ng-container matColumnDef="code">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
+                                Code</mat-header-cell>
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{sku.code}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Name</mat-header-cell>
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{sku.name}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="price">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Price</mat-header-cell>
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{sku.priceList.price}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="product">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Product</mat-header-cell>
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{sku.product.name}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="unit">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Unit</mat-header-cell>
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{sku.unit}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
+                            <mat-cell *matCellDef="let sku;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{sku.status}}
+                            </mat-cell>
+                        </ng-container>
+
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let sku; columns: displayedColumns"
+                            (click)="onSelectSku(sku)" [style.cursor]="'pointer'" matRipple>
+                        </mat-row>
+                    </mat-table> 
+
+                    <!-- Loading spinner -->
+                    <div *ngIf="isLoading" class="tbl-spinner">
+                        <mat-progress-spinner color="primary" [diameter]="50" mode="indeterminate">
+                        </mat-progress-spinner>
+                    </div>
+
+                    <div class="tbl-spinner" *ngIf="isdata==false && !isLoading">
+                        <h4>0 Records Found</h4>
+                    </div>
+
+                    <mat-paginator #paginator [pageIndex]="0" [pageSize]="5"
+                        [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+    </div>
+</div>
+
+
