@@ -32,8 +32,6 @@ export class AddCategoriesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
-
     this.categoryRegistrationForm = this.fb.group({
       code: ['', [Validators.required]],
       description: ['', [Validators.required]],

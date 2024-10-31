@@ -90,9 +90,14 @@ export class ManageSalespersonComponent implements OnInit {
   }
 
   viewSalespersonCustomers(salesperson: any){
-    this.router.navigate([`salesperson/viewcustomer`, salesperson.id],
+    this.router.navigate([`salesperson/viewcustomer`, salesperson.userId],
+      {queryParams:
+        {
+          name: salesperson.username
+        }
+      }
   );
-  
+  console.log(salesperson)
 
   }
 

@@ -36,6 +36,7 @@ export class ManageSpCustomersComponent implements OnInit {
   isLoading:boolean = false;
   customers: any [] = []
   salesPersonId: any;
+  salesperson: any;
   
   
 
@@ -58,10 +59,13 @@ export class ManageSpCustomersComponent implements OnInit {
     // const salesPersonId = this.route.snapshot.paramMap.get('id')
 
     this.route.params.subscribe(params => {
-      this.salesPersonId = params['id'];
-      console.log("salesperson", this.salesPersonId);
+      this.salesPersonId = params['userId'];
     })
 
+    this.route.queryParams.subscribe(queryParams =>{
+      this.salesperson = queryParams['name']
+    })
+    console.log('sales',this.salesperson)
     this.getData(this.salesPersonId)
 
   }

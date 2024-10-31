@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { paymentArray } from 'src/app/core/models/paymentMethods';
 import { SalespersonLkupComponent } from 'src/app/accountant/lookups/salesperson-lkup/salesperson-lkup.component';
+import { CustomerlkNochkbxComponent } from 'src/app/accountant/lookups/customerlk-nochkbx/customerlk-nochkbx.component';
 
 @Component({
   selector: 'app-create-invoice',
@@ -35,6 +36,7 @@ export class CreateInvoiceComponent implements OnInit {
   selectedSkuCode: any;
   productNotAdded = true;
   selectedSkuUnit: any;
+  selectedCustomerCode:any;
   subscription!: Subscription;
   paymentMethods = paymentArray
 
@@ -53,6 +55,8 @@ export class CreateInvoiceComponent implements OnInit {
   itemData: any[];
   salesperson: any;
   salespersonId: any;
+  customer: any;
+  spId: any;
   
 
   constructor(
@@ -74,13 +78,15 @@ export class CreateInvoiceComponent implements OnInit {
       date: ['', Validators.required], 
       description: ['', Validators.required],
       invoiceNo: ['', Validators.required],
-      // customerCode:['',Validators],
-      // paymentMode: ['',Validators],
-      // spId:['',Validators],
+      customerName:['',Validators.required],
+      paymentMode: ['',Validators.required],
+      spName:['',Validators.required],
       items: new FormArray([])      
     });
   }
 
+
+  
   createProductForm(): FormGroup {
     return this.fb.group({
       quantity:['', Validators.required],
@@ -125,17 +131,41 @@ export class CreateInvoiceComponent implements OnInit {
         console.log ('results sales',this.salesperson)
         this.invoiceForm.patchValue({
           salesperson: this.salesperson.name,
-          name: this.salesperson.name,
-          id: this.salesperson.id
+          spName: this.salesperson.name,
+          spId: this.salesperson.id
         });
 
-        this.salespersonId = this.salesperson.id
-          
-          console.log ('Salespeope',this.salespersonId)
+        this.spId = this.salesperson.id
+
       }
     });
   }
 
+  selectCustomerLk(){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+    dialogConfig.data = {
+      sp: this.spId
+     };
+     
+     console.log("spid",this.spId)
+    const dialogRef = this.dialog.open(CustomerlkNochkbxComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.customer = result.customer;
+        console.log ('results sales',this.customer)
+        this.invoiceForm.patchValue({
+          customerName: this.customer.name,
+          customerCode: this.customer.code
+        }); 
+        
+          this.selectedCustomerCode =this.customer.code
+          console.log ('Salespeope',this.customer.name)
+      }
+    });
+  }
   
   onSelectDate(): void {
     this.selectedDate = formatDate(this.invoiceForm.value.date,'')
@@ -190,9 +220,12 @@ export class CreateInvoiceComponent implements OnInit {
     this.invoiceFormData = this.invoiceForm.getRawValue();
     const data = {
       amount:this.invoiceFormData.amount,
+      customerCode:this.selectedCustomerCode,
       date:this.invoiceFormData.date,
       description:this.invoiceFormData.description,
       invoiceNo:this.invoiceFormData.invoiceNo,
+      paymentMode:this.invoiceFormData.paymentMode,
+      spId:this.spId,
       soldItems:items
     }
     

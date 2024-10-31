@@ -35,12 +35,15 @@ export class LookupsService {
   }
 
   public getCustomers():Observable <any> {
-    return this.http.get(this.customersUrl + `all`)
+    return this.http.get(this.customersUrl + `all/`)
   }
 
   public getSalesperson(): Observable <any> {
     return this.http.get(this.salespersonUrl + 'get')
   }
 
+  getCustomersp(salesPersonId){
+    return this.http.get(this.customersUrl + `get/salesperson/${salesPersonId}`)
+  }
    
 }

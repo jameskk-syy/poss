@@ -16,7 +16,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'viewcustomer/:id',
+    path: 'viewcustomer/:userId',
     component:ManageSpCustomersComponent
   },
 

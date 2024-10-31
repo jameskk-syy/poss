@@ -7,6 +7,7 @@ import { SkuLkupComponent } from './sku-lkup/sku-lkup.component';
 import { UserLkupComponent } from './user-lkup/user-lkup.component';
 import { SalespersonLkupComponent } from './salesperson-lkup/salesperson-lkup.component';
 import { CustomerLkupComponent } from './customer-lkup/customer-lkup.component';
+import { CustomerlkNochkbxComponent } from './customerlk-nochkbx/customerlk-nochkbx.component';
 
 
 @NgModule({
@@ -15,7 +16,9 @@ import { CustomerLkupComponent } from './customer-lkup/customer-lkup.component';
     SkuLkupComponent,
     UserLkupComponent,
     SalespersonLkupComponent,
-    CustomerLkupComponent
+    CustomerLkupComponent,
+    CustomerlkNochkbxComponent
+
   ],
   imports: [
     CommonModule,
