@@ -5,9 +5,9 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { error } from 'console';
+// import { error } from 'console';
 import { UserService } from 'src/app/data/services/user.service';
-import { MainComponent } from 'src/app/reports/main/main.component';
+// import { MainComponent } from 'src/app/reports/main/main.component';
 
 @Component({
   selector: 'app-sub-collectors-lookup',
@@ -27,10 +27,10 @@ export class SubCollectorsLookupComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   selection = new SelectionModel<any>(true, []);
-  constructor(public dialogRef: MatDialogRef<MainComponent>, @Inject(MAT_DIALOG_DATA) public data, private userService: UserService ) { }
+  // constructor(public dialogRef: MatDialogRef<MainComponent>, @Inject(MAT_DIALOG_DATA) public data, private userService: UserService ) { }
 
   ngOnInit(): void {
-    this.getSubCollectors();
+    // this.getSubCollectors();
   }
 
   isAllSelected() {
@@ -48,17 +48,17 @@ export class SubCollectorsLookupComponent implements OnInit {
     this.selection.select(...this.dataSource.data);
   }
 
-  selectActionSubjects(){
-    this.dialogRef.close({ event: "close", data: this.selection.selected });
-  }
+  // selectActionSubjects(){
+  //   this.dialogRef.close({ event: "close", data: this.selection.selected });
+  // }
 
-  onSelectRow(data: any) {
-    this.dialogRef.close({ event: "close", data: data });
-  }
+  // onSelectRow(data: any) {
+  //   this.dialogRef.close({ event: "close", data: data });
+  // }
 
-  onCancel(){
-    this.dialogRef.close();
-  }
+  // onCancel(){
+  //   this.dialogRef.close();
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -68,30 +68,30 @@ export class SubCollectorsLookupComponent implements OnInit {
     }
   }
 
-  getSubCollectors() {
-    this.userService.getAllSubCollectors().subscribe({
-      next: (data: any) => {
-        let users = data.entity
+  // getSubCollectors() {
+  //   this.userService.getAllSubCollectors().subscribe({
+  //     next: (data: any) => {
+  //       let users = data.entity
 
-        users.forEach(user => {
-          if(user.role==="SUB_COLLECTOR") {
-            this.subcollectors.push(user);
-          }
-        })
+  //       users.forEach(user => {
+  //         if(user.role==="SUB_COLLECTOR") {
+  //           this.subcollectors.push(user);
+  //         }
+  //       })
 
-        if(this.subcollectors.length > 0) {
-          this.loading = false;
-          this.dataSource = new MatTableDataSource<any>(this.subcollectors);
-          this.dataSource.paginator = this.paginator
-          this.dataSource.sort = this.sort
-        } else {
-          this.loading = false
-        }
-      },
-      error: (error) => {
-        console.log("the error is "+error)
-      }
-    })
-  }
+  //       if(this.subcollectors.length > 0) {
+  //         this.loading = false;
+  //         this.dataSource = new MatTableDataSource<any>(this.subcollectors);
+  //         this.dataSource.paginator = this.paginator
+  //         this.dataSource.sort = this.sort
+  //       } else {
+  //         this.loading = false
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.log("the error is "+error)
+  //     }
+  //   })
+  // }
 
 }

@@ -9,9 +9,9 @@
         <!-- Widgets -->
         <div class="row" *ngIf="loaded">
           <div class="col-lg-3 col-sm-4">
-            <div class="info-box7 bg1 order-info-box7" matTooltip="collected qty" routerLink="/staff/sales/collections">
+            <div class="info-box7 bg1 order-info-box7" matTooltip="petro qty" routerLink="/staff/sales/collections">
               <div class="info-box7-block">
-                <h4 class="m-b-20">Today's Qty (Ltr)</h4>
+                <h4 class="m-b-20">PMS Qty (Ltr)</h4>
                 <!-- <h2 class="text-end"><span class="float-start">{{quantity | number : '1.2-2' }}</span><i -->
                   <h2 class="text-end"><span class="float-start">{{quantity}}</span><i
                     class="fas fa-th"></i></h2>
@@ -21,41 +21,35 @@
             </div>
           </div>
           <div class="col-lg-3 col-sm-4">
-            <div class="info-box7 bg1 order-info-box7" matTooltip="delivered qty" routerLink="/staff/sales/collections">
+            <div class="info-box7 bg1 order-info-box7" matTooltip="diesel qty" routerLink="/staff/sales/collections">
               <div class="info-box7-block">
-                <h4 class="m-b-20">Today's Delivery</h4>
+                <h4 class="m-b-20">AGO Qty (Ltr)</h4>
                 <h2 class="text-end"><span class="float-start">{{delivery}}</span><i class="fas fa-th"></i></h2>
               </div>
             </div>
           </div>
           <div class="col-lg-3 col-sm-4">
-            <div class="info-box7 bg1 order-info-box7" matTooltip="active farmers" routerLink="/staff/farmers/farmers">
+            <div class="info-box7 bg1 order-info-box7" matTooltip="Station Attendants" routerLink="/staff/farmers/farmers">
               <div class="info-box7-block">
-                <h4 class="m-b-20">Active Farmers</h4>
+                <h4 class="m-b-20"> Attendants</h4>
                 <h2 class="text-end"><span class="float-start">{{farmers}}</span><i class="fas fa-th"></i></h2>
               </div>
             </div>
           </div>
+
           <div class="col-lg-3 col-sm-4">
-            <div class="info-box7 bg1 order-info-box7" matTooltip="All Teams Maintained"
-              routerLink="/staff/sales/collections">
-              <!-- <div class="info-box7-block">
-                <h4 class="m-b-20">Total Amount (KES)</h4>
-    
-                <h2 class="text-end"><span class="float-start">{{amount | number : '1.2-2' }}</span><i
-                    class="fas fa-th"></i></h2>
-    
-    
-              </div> -->
-    
+            <div class="info-box7 bg1 order-info-box7" matTooltip="ABS Count" routerLink="/staff/farmers/farmers">
+              <div class="info-box7-block">
+                <h4 class="m-b-20"> ABS Count</h4>
+                <h2 class="text-end"><span class="float-start">{{farmers}}</span><i class="fas fa-th"></i></h2>
+              </div>
             </div>
           </div>
-    
-    
+
         </div>
 
     <!-- Widgets -->
-    <div class="row" *ngIf="isloaded">
+    <!-- <div class="row" *ngIf="isloaded">
       <div class="col-lg-2 col-sm-4">
         <div class="info-box7 bg-c-brown order-info-box7" matTooltip="System Users" routerLink="/admin/users">
           <div class="info-box7-block">
@@ -106,7 +100,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- <div class="row">
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
@@ -117,39 +111,39 @@
       </div>
     </div> -->
     <div class="row">
-      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+      <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-daily-milk-collection></app-daily-milk-collection>
-      </div>
-      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+      </div> -->
+      <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-collector-collections-per-date></app-collector-collections-per-date>
-      </div>
+      </div> -->
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <app-monthly-collectios-chart></app-monthly-collectios-chart>
       </div>
-    </div>
-    <div class="row">
+    </div> -->
+    <!-- <div class="row">
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-collector-collections-per-date></app-collector-collections-per-date>
       </div>
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-collector-collections></app-collector-collections>
       </div>
-    </div>
+    </div> -->
     <div class="row">
-      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+      <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-milk-collection-quantity-against-price></app-milk-collection-quantity-against-price>
-      </div>
-      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+      </div> -->
+      <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-collector-collections-count></app-collector-collections-count>
-      </div>
+      </div> -->
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
         <app-farmers-per-route></app-farmers-per-route>
       </div>
-    </div>
+    </div> -->
     <!-- <div class="row">
       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <app-collector-collections-in-quantity-per-session></app-collector-collections-in-quantity-per-session>

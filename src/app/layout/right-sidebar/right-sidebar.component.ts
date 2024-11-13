@@ -14,6 +14,7 @@ import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 import { UnsubscribeOnDestroyAdapter } from "src/app/shared/UnsubscribeOnDestroyAdapter";
 import { DirectionService } from "src/app/core/service/direction.service";
 
+
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: "app-right-sidebar",

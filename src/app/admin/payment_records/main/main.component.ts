@@ -6,7 +6,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Subscription } from 'rxjs';
-import { SalesService } from 'src/app/staff/sales/services/sales.service';
+// import { SalesService } from 'src/app/staff/sales/services/sales.service';
 
 @Component({
   selector: 'app-main-management',
@@ -38,7 +38,7 @@ export class MainComponent implements OnInit {
   confirmed: number = 0;
   confirmedRecords = []
   totalQuantity: number = 0.0;
-  constructor(private service: SalesService,
+  constructor(
     private fb: FormBuilder) {
       // this.route = routeData.route
      }
@@ -53,17 +53,17 @@ export class MainComponent implements OnInit {
   }
  
 
-  handleApprove(){
-    this.isLoading = true;
-    const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
-    this.service.updateApprovalStatus(this.confirmedRecords,this.route.id,staffId).subscribe(res=>{
-      console.log(res)
-      // if(res.entity && res.entity.length){
-      //   location.reload()
-      // }
-    })
-    console.log(this.confirmedRecords)
-  }
+  // handleApprove(){
+  //   this.isLoading = true;
+  //   const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
+  //   this.service.updateApprovalStatus(this.confirmedRecords,this.route.id,staffId).subscribe(res=>{
+  //     console.log(res)
+  //     // if(res.entity && res.entity.length){
+  //     //   location.reload()
+  //     // }
+  //   })
+  //   console.log(this.confirmedRecords)
+  // }
   handleChange(selected:string){
     this.method = selected;
     const data = this.data.entity.filter((v:any)=> v.payment_mode.toLowerCase()==this.method.toLowerCase())
@@ -83,37 +83,37 @@ export class MainComponent implements OnInit {
   }
 
 
-  getData() {
-    this.isLoading = true;
-    const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
+  // getData() {
+  //   this.isLoading = true;
+  //   const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
 
-    this.subscription = this.service.getApprovedPaymentRecords(staffId).subscribe(res => {
-      this.data = res;
-      if (this.data.entity && this.data.entity.length > 0) {
-        this.isLoading = false;
-        this.isdata = true;
-        this.confirmed = res.entity.length;
-        // Binding with the datasource
-        this.totalQuantity = this.data.entity.reduce((val:number,object:any)=>object.quantity+val,0.0)
-        this.dataSource = new MatTableDataSource(this.data.entity);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+  //   this.subscription = this.service.getApprovedPaymentRecords(staffId).subscribe(res => {
+  //     this.data = res;
+  //     if (this.data.entity && this.data.entity.length > 0) {
+  //       this.isLoading = false;
+  //       this.isdata = true;
+  //       this.confirmed = res.entity.length;
+  //       // Binding with the datasource
+  //       this.totalQuantity = this.data.entity.reduce((val:number,object:any)=>object.quantity+val,0.0)
+  //       this.dataSource = new MatTableDataSource(this.data.entity);
+  //       this.dataSource.paginator = this.paginator;
+  //       this.dataSource.sort = this.sort;
 
-        this.handleChange(this.method)
+  //       this.handleChange(this.method)
 
-      }
-      else {
-        this.isdata = false;
-        this.dataSource = new MatTableDataSource<any>(this.data);
-      }
-    },err=>{
-      this.isdata = false;
-      this.isLoading = false;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;      
-      this.dataSource = new MatTableDataSource<any>(null);
-    })
-  }
+  //     }
+  //     else {
+  //       this.isdata = false;
+  //       this.dataSource = new MatTableDataSource<any>(this.data);
+  //     }
+  //   },err=>{
+  //     this.isdata = false;
+  //     this.isLoading = false;
+  //     this.dataSource.paginator = this.paginator;
+  //     this.dataSource.sort = this.sort;      
+  //     this.dataSource = new MatTableDataSource<any>(null);
+  //   })
+  // }
 
   dataSource!: MatTableDataSource<any>;
 
@@ -130,23 +130,23 @@ export class MainComponent implements OnInit {
     this.paymentOption = this.fb.group({
       method:[this.method,[Validators.required]]
     })
-    this.getData();
+    // this.getData();
   }
 
   isStage1Verified(row:any){
     return row.clerk1.startsWith('Y') || row.clerk2.startsWith('Y')
   }
 
-  pay(){
-    this.isLoading = true;
-    const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
-    console.log(this.data.entity)
-    this.service.initiatePayment(this.data.entity).subscribe(res=>{
-      console.log(res)
-      // if(res.entity && res.entity.length){
-      //   location.reload()
-      // }
-    })
-  }
+  // pay(){
+  //   this.isLoading = true;
+  //   const staffId = JSON.parse(localStorage.getItem('auth-user')).id;
+  //   console.log(this.data.entity)
+  //   this.service.initiatePayment(this.data.entity).subscribe(res=>{
+  //     console.log(res)
+  //     // if(res.entity && res.entity.length){
+  //     //   location.reload()
+  //     // }
+  //   })
+  // }
 
 }

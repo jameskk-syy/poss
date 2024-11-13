@@ -34,6 +34,7 @@ export class HeaderComponent
   isOpenSidebar: boolean;
   userName: string;
   date = new Date();
+  notificationsVisible: boolean = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -47,11 +48,13 @@ export class HeaderComponent
   ) {
     super();
   }
+
   listLang = [
     { text: "English", flag: "assets/images/flags/us.jpg", lang: "en" },
     { text: "Spanish", flag: "assets/images/flags/spain.jpg", lang: "es" },
     { text: "German", flag: "assets/images/flags/germany.jpg", lang: "de" },
   ];
+
   notifications: any[] = [
     {
       message: "Please check your mail",
@@ -111,14 +114,6 @@ export class HeaderComponent
 
     this.homePage = "admin/dashboard";
 
-    // if (userRole === "ROLE_ADMIN") {
-    //   this.homePage = "admin/dashboard";
-    // } else if (userRole === "ROLE_USER") {
-    //   this.homePage = "user/dashboard";
-    // } else {
-    //   // 404?
-    //   this.homePage = "page-not-found";
-    // }
 
     this.langStoreValue = localStorage.getItem("lang");
     const val = this.listLang.filter((x) => x.lang === this.langStoreValue);
@@ -250,4 +245,5 @@ export class HeaderComponent
     this.router.navigate(["/staff/sms"]);
   }
 
+  
 }

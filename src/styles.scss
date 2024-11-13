@@ -23,19 +23,24 @@ body {
 
 
 .bg {
-  background: linear-gradient(to left, #046307, #fafafa);
+  background:#0288D1;
 }
 
 .bg1 {
-  background: linear-gradient(to right, #046307, #fafafa);
+  background:#0288D1;
 }
 
 .down {
-  background: linear-gradient(to bottom, #c5f7c6, #fafafa);
+  background: #0288D1;
 }
 
 .fg {
-  color: #046307;
+  color: #0288D1;
+  font-weight: bolder;
+}
+
+.fg1 {
+  color: #fafafa;
   font-weight: bolder;
 }
 
