@@ -16,7 +16,7 @@ import { ManagePickupsComponent } from '../manage-pickups/manage-pickups.compone
 import { PickupService } from '../pickup.service';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
-import { CollectorsLookupsComponent } from 'src/app/staff/dashboard/look-ups/collectors-lookups/collectors-lookups.component';
+// import { CollectorsLookupsComponent } from 'src/app/staff/dashboard/look-ups/collectors-lookups/collectors-lookups.component';
 import { MilkCollectorsLookupComponent } from '../dialogs/milk-collectors-lookup/milk-collectors-lookup.component';
 import { SubCountiesLookupComponent } from '../../sub-counties/sub-counties-lookup/sub-counties-lookup.component';
 import { Subscription, takeUntil } from 'rxjs';

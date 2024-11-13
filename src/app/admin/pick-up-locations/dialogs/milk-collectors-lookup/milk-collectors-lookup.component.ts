@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { takeUntil } from 'rxjs';
 import { UserService } from 'src/app/data/services/user.service';
-import { MainComponent } from 'src/app/reports/main/main.component';
+// import { MainComponent } from 'src/app/reports/main/main.component';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
 
 @Component({
@@ -34,7 +34,7 @@ export class MilkCollectorsLookupComponent extends BaseComponent implements OnIn
   meetingId: any;
 
   constructor(
-    public dialogRef: MatDialogRef<MainComponent>,
+    // public dialogRef: MatDialogRef<MainComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
     private userService: UserService
   ) {
@@ -96,17 +96,17 @@ export class MilkCollectorsLookupComponent extends BaseComponent implements OnIn
     this.selection.select(...this.dataSource.data);
   }
 
-  selectActionSubjects(){
-    this.dialogRef.close({ event: "close", data: this.selection.selected });
-  }
+  // selectActionSubjects(){
+  //   this.dialogRef.close({ event: "close", data: this.selection.selected });
+  // }
 
-  onSelectRow(data: any) {
-    this.dialogRef.close({ event: "close", data: data });
-  }
+  // onSelectRow(data: any) {
+  //   this.dialogRef.close({ event: "close", data: data });
+  // }
 
-  onNoClick(){
-    this.dialogRef.close();
-  }
+  // onNoClick(){
+  //   this.dialogRef.close();
+  // }
 
 
 

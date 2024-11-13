@@ -12,7 +12,6 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatButton, MatButtonModule } from "@angular/material/button";
 import { HeaderComponent } from "./layout/header/header.component";
-import { DeleteCollectionComponent } from "./staff/sales/pages/delete-collection/delete-collection.component";
 import { PageLoaderComponent } from "./layout/page-loader/page-loader.component";
 import { SidebarComponent } from "./layout/sidebar/sidebar.component";
 import { RightSidebarComponent } from "./layout/right-sidebar/right-sidebar.component";
@@ -41,6 +40,7 @@ import { FooterComponent } from "./layout/footer/footer.component";
 import { NgApexchartsModule } from "ng-apexcharts";
 import { MatTableExporterModule } from "mat-table-exporter";
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { LayoutModule } from "./layout/layout.module";
 // import { MainComponent } from './totals-collector/dashboard/main/main/main.component';
 
 
@@ -63,7 +63,6 @@ export function createTranslateLoader(http: HttpClient): any {
     AuthLayoutComponent,
     MainLayoutComponent,
     FooterComponent,
-    DeleteCollectionComponent,
     // MainComponent,
     // DashboardComponent,
     // MainComponent
@@ -92,6 +91,7 @@ export function createTranslateLoader(http: HttpClient): any {
     SharedModule, 
     MatTableExporterModule,
     MatSidenavModule,
+    LayoutModule
   
   ],
   providers: [
