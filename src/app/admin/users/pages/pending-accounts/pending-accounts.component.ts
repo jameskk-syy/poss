@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 // import { TokenCookieService } from 'src/app/core/service/token-storage-cookies.service';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
-import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { AccountService } from '../../data/services/account.service';
 import { Account } from '../../data/types/account';
 import { AccountDetailsComponent } from '../account-details/account-details.component';

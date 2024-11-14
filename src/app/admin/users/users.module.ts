@@ -39,10 +39,7 @@ import { MatCardModule } from "@angular/material/card";
 import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { UsersComponent } from "./pages/users/users.component";
 import { AdminUpdateUserPasswordComponent } from './pages/dialogs/admin-update-user-password/admin-update-user-password.component';
-import { LookupMilkCollectorsComponent } from "./pages/milk-collectors/lookup-milk-collectors/lookup-milk-collectors.component";
-import { ViewCollectorsComponent } from "./pages/milk-collectors/view-collectors/view-collectors.component";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { FarmerAccountsComponent } from './pages/farmer-accounts/farmer-accounts.component';
 
 @NgModule({
   declarations: [
@@ -68,9 +65,6 @@ import { FarmerAccountsComponent } from './pages/farmer-accounts/farmer-accounts
     UsersComponent,
     AdminUpdateUserPasswordComponent,
 
-    LookupMilkCollectorsComponent,
-    ViewCollectorsComponent,
-    FarmerAccountsComponent
   ],
   imports: [
     CommonModule,

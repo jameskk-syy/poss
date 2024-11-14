@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { UserService } from 'src/app/data/services/user.service';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
-import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { ActiveAccountsComponent } from '../active-accounts/active-accounts.component';
 
 @Component({

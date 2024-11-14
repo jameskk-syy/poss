@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
 import { takeUntil } from "rxjs";
 import { UserService } from "src/app/data/services/user.service";
 import { BaseComponent } from "src/app/shared/components/base/base.component";
-import { SnackbarService } from "src/app/shared/services/snackbar.service";
+import { SnackbarService } from "src/app/shared/snackbar.service";
 import { Account } from "../../data/types/account";
 import { AccountDetailsComponent } from "../account-details/account-details.component";
 import { DeleteAccountComponent } from "../delete-account/delete-account.component";

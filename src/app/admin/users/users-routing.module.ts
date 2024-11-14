@@ -7,7 +7,6 @@ import { AddAccountComponent } from "./pages/add-account/add-account.component";
 import { DeletedAccountsComponent } from "./pages/deleted-accounts/deleted-accounts.component";
 import { InactiveAccountsComponent } from "./pages/inactive-accounts/inactive-accounts.component";
 import { LockedAccountsComponent } from "./pages/locked-accounts/locked-accounts.component";
-import { ViewCollectorsComponent } from "./pages/milk-collectors/view-collectors/view-collectors.component";
 import { ModifyAccountComponent } from "./pages/modify-account/modify-account.component";
 import { PendingAccountsComponent } from "./pages/pending-accounts/pending-accounts.component";
 import { RejectedAccountsComponent } from "./pages/rejected-accounts/rejected-accounts.component";
@@ -55,10 +54,6 @@ const routes: Routes = [
     component: AccountLogsComponent,
   },
 
-  {
-    path: "collectors",
-    component: ViewCollectorsComponent,
-  },
 ];
 
 @NgModule({

@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { takeUntil } from "rxjs";
 import { UserService } from "src/app/data/services/user.service";
 import { BaseComponent } from "src/app/shared/components/base/base.component";
-import { SnackbarService } from "src/app/shared/services/snackbar.service";
+import { SnackbarService } from "src/app/shared/snackbar.service";
 import { ActiveAccountsComponent } from "../active-accounts/active-accounts.component";
 import { RolesLookupComponent } from "../dialogs/roles-lookup/roles-lookup.component";
 
@@ -19,6 +19,8 @@ export class ModifyAccountComponent extends BaseComponent implements OnInit {
   userId: any;
   loading: boolean;
   accountForm: FormGroup;
+  role: any;
+  roleId: any;
 
   constructor(
     private dialog: MatDialog,
@@ -43,57 +45,61 @@ export class ModifyAccountComponent extends BaseComponent implements OnInit {
 
   updateAccountForm() {
     this.accountForm = this.fb.group({
-      roleId: ["", [Validators.required]],
+      role: ["", [Validators.required]],
       username: [this.user.username, [Validators.required]]
     });
   }
 
+ 
   updateAccount() {
-    this.loading = true;
+    this.loading = true
 
-    this.userService
-      .updateUserRole(this.accountForm.value)
-      .pipe(takeUntil(this.subject))
-      .subscribe(
-        (res) => {
-          if (res.statusCode == 200 || res.statusCode == 201) {
-            this.snackbar.showNotification(res.message, "snackbar-success");
-
-            this.dialogRef.close();
-          } else {
-            this.snackbar.showNotification(res.message, "snackbar-danger");
-
-            this.loading = false;
-          }
+    const data = {
+      ...this.accountForm.value,
+      roleId: this.roleId
+    }
+    this.userService.updateUserRole(data).subscribe({
+        next: (res) =>{
+          this.loading =false
+          const successMessage = res.message
+          this.snackbar.showNotification("snackbar-success", successMessage);
+          this.accountForm.reset();
+          
         },
-        (err) => {
-          this.snackbar.showNotification(err.error.error, "snackbar-danger");
-          console.log(err);
+        error: (err) => {
           this.loading = false;
-        }
-      );
-  }
+          const errorMessage = err.message
+          this.snackbar.showNotification("snackbar-danger", errorMessage);
+          
+          }    
+      })
+    }
 
-  roleLookup(){
-    const dialogRef = this.dialog.open(RolesLookupComponent, {
-      width: "500px",
-      data: {
-        action: "Meeting Categories Lookup",
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(
-      (result) => {
+  roleLookup() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+    dialogConfig.data = {
+     
+    };
+  
+    const dialogRef = this.dialog.open(RolesLookupComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.role = result.data;
+        this.roleId = this.role.id
+        console.log ('results sales',this.role)
         this.accountForm.patchValue({
-          roleId: result.data.id,
+          role: this.role.name,
         });
-      },
-      (err) => {
-        console.log(err);
+       
+        console.log ('results sales',this.roleId)
       }
-    );
+    });
   }
-
+  
+  
   onNoClick() {
     this.dialogRef.close();
   }
