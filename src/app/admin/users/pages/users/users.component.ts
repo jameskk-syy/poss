@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { UserService } from 'src/app/data/services/user.service';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
-import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { AccountDetailsComponent } from '../account-details/account-details.component';
 import { DeleteAccountComponent } from '../delete-account/delete-account.component';
 import { AdminUpdateUserPasswordComponent } from '../dialogs/admin-update-user-password/admin-update-user-password.component';
@@ -212,8 +212,10 @@ export class UsersComponent extends BaseComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(res => {
       this.getAllUsers();
+      console.log(" users", this.getAllUsers)
     })
   }
+  
 
   viewAccountLogs(userId) {
     this.router.navigate([`admin/user-accounts/account-logs/${userId}`]);

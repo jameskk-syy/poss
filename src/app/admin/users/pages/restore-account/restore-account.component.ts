@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs';
 import { UserService } from 'src/app/data/services/user.service';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
-import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { AccountService } from '../../data/services/account.service';
 import { Account } from '../../data/types/account';
 import { DeletedAccountsComponent } from '../deleted-accounts/deleted-accounts.component';

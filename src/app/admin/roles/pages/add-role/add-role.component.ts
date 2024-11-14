@@ -33,21 +33,18 @@ export class AddRoleComponent extends BaseComponent implements OnInit {
   hideBtn = false;
   onShowResults = false;
   accessRightsLoaded: boolean = false;
-
   currentUserName: any;
-
   private basicActionsAddOns: {
     name: string;
     selected: boolean;
     accessRights: string;
   }[];
-
   apiFormData: FormGroup;
-
   filtered: { name: string; selected: boolean; code: number }[];
   basicActions: FormArray;
   displayArray: { name: string; selected: boolean; accessRights: string }[];
   obj: any;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -100,8 +97,7 @@ export class AddRoleComponent extends BaseComponent implements OnInit {
     this.getAccessRights();
     
     this.currentUserName = this.tokenStorage.getUser().username;
-    // this.getAccessRights();
-
+    
     this.getPage();
   }
 

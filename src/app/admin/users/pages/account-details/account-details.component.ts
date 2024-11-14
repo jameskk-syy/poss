@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
-import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { AccountService } from '../../data/services/account.service';
 import { Account } from '../../data/types/account';
 import { ActiveAccountsComponent } from '../active-accounts/active-accounts.component';

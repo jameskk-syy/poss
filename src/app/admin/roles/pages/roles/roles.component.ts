@@ -6,7 +6,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from "@angular/router";
-import { SnackbarService } from "src/app/shared/services/snackbar.service";
+import { SnackbarService } from "src/app/shared/snackbar.service";
 import { RoleService } from "src/app/data/services/role.service";
 
 

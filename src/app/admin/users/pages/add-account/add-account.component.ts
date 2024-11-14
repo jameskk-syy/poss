@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { takeUntil } from "rxjs";
 import { UserService } from "src/app/data/services/user.service";
 import { BaseComponent } from "src/app/shared/components/base/base.component";
-import { SnackbarService } from "src/app/shared/services/snackbar.service";
+import { SnackbarService } from "src/app/shared/snackbar.service";
 import { Role } from "../../data/types/role";
 import { RolesLookupComponent } from "../dialogs/roles-lookup/roles-lookup.component";
 
@@ -17,6 +17,7 @@ import { RolesLookupComponent } from "../dialogs/roles-lookup/roles-lookup.compo
 export class AddAccountComponent extends BaseComponent implements OnInit {
   userForm: FormGroup;
   userLimit: FormGroup;
+  role: any;
   roles: Role[] = [];
   departments: any[] = [
     { name: "Infrastructure" },
@@ -25,6 +26,7 @@ export class AddAccountComponent extends BaseComponent implements OnInit {
   ];
 
   loading = false;
+  
 
   constructor(
     private dialog: MatDialog,
@@ -52,61 +54,44 @@ export class AddAccountComponent extends BaseComponent implements OnInit {
     this.router.navigate([`/admin/user-accounts/all`]);
   }
 
+
   roleLookup() {
-    const dialogRef = this.dialog.open(RolesLookupComponent, {
-      width: "800px",
-      // data: {
-      //   action: "Meeting Categories Lookup",
-      // },
-    });
-
-    dialogRef.afterClosed().subscribe(
-      (result) => {
-        // this.userForm.reset();
-
-        // Optionally, you can provide initial values if needed
-        // this.userForm.reset({ email: '', name: '', ... });
-    
-        // Explicitly mark form controls as pristine and untouched
-        Object.keys(this.userForm.controls).forEach(key => {
-          this.userForm.get(key)?.reset()
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+    dialogConfig.data = {
+     
+    };
+  
+    const dialogRef = this.dialog.open(RolesLookupComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.role = result.data;
+        console.log ('results sales',this.role)
+        this.userForm.patchValue({
+          role: this.role.name,
         });
-    
-        // Optionally update form validity if needed
-      },
-      (err) => {
-        console.log(err);
       }
-    );
+    });
   }
 
-  addUser() {
-    this.loading = true;
-
-    this.userService.createUserAccounts(this.userForm.value)
-      .pipe(takeUntil(this.subject))
-      .subscribe(
-        (res) => {
-          this.loading = false;
-
-          console.log(res);
-
-          if(res.statusCode == 200 || res.statusCode == 201){
-            this.snackbar.showNotification(res.message, "snackbar-success");
-
-             this.router.navigate([`/admin/user-accounts/all`]);
-          }else {
-            this.snackbar.showNotification(res.message, "snackbar-danger")
-
-            this.loading = false;
-          }
-        },
-        (err) => {
-          console.log(err)
-          this.snackbar.showNotification(err.error.error, "snackbar-danger");
-          console.log(err);
-          this.loading = false;
-        }
-      );
+  addUser(){
+    this.loading = true
+    this.userService.createUserAccounts(this.userForm.value).subscribe({
+      next: (res) =>{
+        this.loading =false
+        const successMessage = res.message
+        this.snackbar.showNotification("snackbar-success", successMessage);
+        this.userForm.reset();
+        this.userForm.markAsPristine();
+      },
+      error: (err) => {
+        this.loading = false;
+        const errorMessage = err.message
+        this.snackbar.showNotification("snackbar-danger", errorMessage);
+        
+        }    
+    })
   }
 }

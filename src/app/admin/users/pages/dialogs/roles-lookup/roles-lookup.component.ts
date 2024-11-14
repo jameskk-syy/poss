@@ -38,11 +38,10 @@ export class RolesLookupComponent extends BaseComponent implements OnInit {
     private fb: FormBuilder,
     // private agendasCategoryService: AgendasCategoryService
     private roleService: RoleService
-  ) {
+  ) 
+  {
     super();
-    this.meetingDetails = data.data;
-
-    console.log("Meeting Details", this.meetingDetails);
+      
   }
 
   ngOnInit(): void {
@@ -74,8 +73,9 @@ export class RolesLookupComponent extends BaseComponent implements OnInit {
 
   onSelectRow(data: any) {
     this.dialogRef.close({ event: "close", data: data });
-  }
 
+    console.log("role", data)
+  }
 
   onNoClick() {
     this.dialogRef.close();

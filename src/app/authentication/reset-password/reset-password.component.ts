@@ -5,7 +5,7 @@ import { takeUntil } from "rxjs";
 import { AuthService } from "src/app/data/services/auth.service";
 import { NotificationService } from "src/app/data/services/notification.service";
 import { BaseComponent } from "src/app/shared/components/base/base.component";
-import { SnackbarService } from "src/app/shared/services/snackbar.service";
+import { SnackbarService } from "src/app/shared/snackbar.service";
 
 @Component({
   selector: "app-reset-password",
