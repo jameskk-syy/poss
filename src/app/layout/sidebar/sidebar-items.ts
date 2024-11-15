@@ -41,7 +41,7 @@ export const ROUTES: RouteInfo[] = [
     role: ['ROLE_ADMIN'],
     submenu: [
       {
-        path: '/admin/business-profile/create',
+        path: '/admin/configurations/company',
         title: 'Company',
         moduleName: 'profile',
         iconType: 'feather',
@@ -55,7 +55,7 @@ export const ROUTES: RouteInfo[] = [
       },
 
       {
-        path: '/admin/business-profile/create',
+        path: '/admin/configurations/department',
         title: 'Departments',
         moduleName: 'profile',
         iconType: 'feather',
@@ -68,7 +68,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
       {
-        path: '/admin/business-profile/create',
+        path: '/admin/configurations/vendor',
         title: 'Vendor',
         moduleName: 'profile',
         iconType: 'feather',
@@ -81,7 +81,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
       {
-        path: '/admin/business-profile/create',
+        path: '/admin/configurations/customer',
         title: 'Customer',
         moduleName: 'profile',
         iconType: 'feather',
@@ -94,7 +94,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
       {
-        path: '/admin/business-profile/create',
+        path: '/admin/configurations/product',
         title: 'Products',
         moduleName: 'profile',
         iconType: 'feather',

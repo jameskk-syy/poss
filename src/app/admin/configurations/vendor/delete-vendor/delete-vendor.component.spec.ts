@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FarmersPerRouteComponent } from './farmers-per-route.component';
+import { DeleteVendorComponent } from './delete-vendor.component';
 
-describe('FarmersPerRouteComponent', () => {
-  let component: FarmersPerRouteComponent;
-  let fixture: ComponentFixture<FarmersPerRouteComponent>;
+describe('DeleteVendorComponent', () => {
+  let component: DeleteVendorComponent;
+  let fixture: ComponentFixture<DeleteVendorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FarmersPerRouteComponent ]
+      declarations: [ DeleteVendorComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FarmersPerRouteComponent);
+    fixture = TestBed.createComponent(DeleteVendorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

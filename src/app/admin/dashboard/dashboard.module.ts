@@ -13,18 +13,11 @@ import { ComponentsModule } from "src/app/shared/components/components.module";
 import { SharedModule } from "./../../shared/shared.module";
 
 import { MainComponent } from "./main/main.component";
-import { UsersPerDepartmentComponent } from "./users-per-department/users-per-department.component";
-import { UsersPerRoleComponent } from "./users-per-role/users-per-role.component";
-// import { DashboardModule } from "src/app/staff/dashboard/dashboard.module";
-import { FarmersPerRouteComponent } from './farmers-per-route/farmers-per-route.component';
+
 
 @NgModule({
   declarations: [
     MainComponent,
-    
-    UsersPerDepartmentComponent,
-    UsersPerRoleComponent,
-    FarmersPerRouteComponent,
     
   ],
   imports: [
