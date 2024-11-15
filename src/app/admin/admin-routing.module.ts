@@ -7,21 +7,23 @@ const routes: Routes = [
     loadChildren: () =>
       import("./dashboard/dashboard.module").then((m) => m.AdminDashboardModule),
   },
+
+  {
+    path: "configurations",
+    loadChildren: () =>
+      import("./configurations/configurations.module").then((m) => m.ConfigurationsModule),
+  },
   
   {
     path: "roles",
     loadChildren: () =>
-      import("./roles/roles.module").then(
-        (m) => m.RolesModule
-      ),
+      import("./roles/roles.module").then((m) => m.RolesModule),
   },
 
   {
     path: "user-accounts",
     loadChildren: () =>
-      import("./users/users.module").then(
-        (m) => m.UsersModule
-      ),
+      import("./users/users.module").then((m) => m.UsersModule),
   },
 
 ];
