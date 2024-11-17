@@ -21,5 +21,8 @@ export class ConfigurationsService {
   updateCompany(data):Observable<any>{
     return this.http.put(this.companyUrl + `updata`,data)
   }
+  getCompanies():Observable<any>{
+    return this.http.get(this.companyUrl =`get`)
+  }
 
 }

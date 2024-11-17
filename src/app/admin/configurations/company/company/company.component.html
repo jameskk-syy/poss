@@ -15,10 +15,32 @@
               
                 <div class="row">
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-0">
-                        <p style="text-align: center;"><b>Name:</b> <b style="color: #01579B;"> Rubis Kamakis</b></p>
+                        <p style="text-align: center;"><b>Name:</b> <b style="color: #0288D1;"> Rubis Kamakis</b></p>
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-0">
-                        <p style="text-align: center;"><b>Address:</b> <b style="color:#01579B;">Eastern Bypass</b></p>
+                        <p style="text-align: center;"><b>Address:</b> <b style="color:#0288D1;">Eastern Bypass</b></p>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-0">
+                        <p style="text-align: center;"><b>Phone:</b> <b style="color: #0288D1;"> 0789232323</b></p>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-0">
+                        <p style="text-align: center;"><b>Email:</b> <b style="color:#0288D1;">rubskamakis@gmail.com</b></p>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-0">
+                        <p style="text-align: center;"><b>Registration:</b> <b style="color: #0288D1;"> BS-23349</b></p>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-0">
+                        <p style="text-align: center;"><b>Kra Pin:</b> <b style="color:#0288D1;">A0889898934P</b></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3 d-flex justify-content-between">
+                        <button class="btn-space" [class.auth-spinner]="loading" [disabled]="loading"  mat-raised-button color="primary" (click)="addCompany('add')">
+                          Add
+                        </button>
+                        <button class="btn-space" [class.auth-spinner]="loading" [disabled]="loading"  mat-raised-button color="primary" (click)="editCompany('edit')">
+                            Update
+                        </button>
                     </div>
                 </div>
               

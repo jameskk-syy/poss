@@ -44,14 +44,16 @@ export class AddCompanyComponent implements OnInit {
 
     if (this.data.action === 'edit') {
       this.companyForm.patchValue({
-        code: this.data.category.code,
-        name: this.data.category.name,
-        description: this.data.category.description,
-        status: this.data.category.status,
+        name: this.data.company.name,
+        address: this.data.company.address,
+        phone: this.data.company.phone,
+        email: this.data.company.email,
+        registrationNo: this.data.company.registrationNo,
+        kraPin: this.data.company.kraPin
       });
-      this.title = 'Edit Category';
+      this.title = 'Edit Company';
     } else {
-      this.title = 'Add New Category'; 
+      this.title = 'Add Company'; 
     }
   }
 

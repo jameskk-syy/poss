@@ -1,0 +1,22 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <app-breadcrumb [title]="'All Departments'" [items]="['Departments']" [active_item]="'All Departments'">
+            </app-breadcrumb>
+        </div>
+        <mat-tab-group>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Departments
+                </ng-template>
+                <app-departments></app-departments>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Locations
+                </ng-template>
+                <app-locations></app-locations>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</section>
