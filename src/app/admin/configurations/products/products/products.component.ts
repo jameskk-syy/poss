@@ -1,19 +1,19 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
-import { AddLocationsComponent } from '../add-locations/add-locations.component';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ConfigurationsService } from '../../../configurations.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { ConfigurationsService } from '../../configurations.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { AddProductsComponent } from '../add-products/add-products.component';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-locations',
-  templateUrl: './locations.component.html',
-  styleUrls: ['./locations.component.sass']
+  selector: 'app-products',
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.sass']
 })
-export class LocationsComponent implements OnInit {
+export class ProductsComponent implements OnInit {
 
   isLoading: boolean;
   isdata: boolean;
@@ -23,10 +23,12 @@ export class LocationsComponent implements OnInit {
   displayedColumns: string [] = [
     'name',
     'code',
-    'department'
+    'email',
+    'phone'
   ];
  
 
+ 
   constructor(
     private dialog: MatDialog,
     private configurationService: ConfigurationsService
@@ -42,7 +44,7 @@ export class LocationsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addLocation(action:string){
+  addProduct(action:string){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
@@ -53,7 +55,7 @@ export class LocationsComponent implements OnInit {
     console.log('action is',action)
   
 
-    const dialogRef = this.dialog.open(AddLocationsComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AddProductsComponent, dialogConfig);
       dialogRef.afterClosed().subscribe ({
       next:(value) => {
         this.ngOnInit()
@@ -62,18 +64,18 @@ export class LocationsComponent implements OnInit {
     }
 
 
-  editLocation(department:any){
+  editProduct(product:any){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "600px"
     dialogConfig.data = { 
-      department: department
+      product: product
     }
     
   
 
-    const dialogRef = this.dialog.open(AddLocationsComponent, dialogConfig);
+    const dialogRef = this.dialog.open(AddProductsComponent, dialogConfig);
       dialogRef.afterClosed().subscribe ({
       next:(value) => {
         this.ngOnInit()
@@ -82,9 +84,9 @@ export class LocationsComponent implements OnInit {
   }
   
   
-  getLocations(){
+  getProducts(){
     this.isLoading = true;
-    this.subscription = this.configurationService.getLocations().subscribe({
+    this.subscription = this.configurationService.getProducts().subscribe({
       next:(res) => {
         this.data = res;
         console.log('custommm', res)
@@ -102,12 +104,11 @@ export class LocationsComponent implements OnInit {
         },
         error: (err) => {
           this.isLoading = false;
-          console.error('Error fetching departments data:', err);
+          console.error('Error fetching products data:', err);
           this.isdata = false;
         }
     })
   }
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -117,5 +118,6 @@ export class LocationsComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
 
 }

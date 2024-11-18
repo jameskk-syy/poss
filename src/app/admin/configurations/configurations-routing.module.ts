@@ -4,6 +4,7 @@ import { CompanyComponent } from './company/company/company.component';
 import { VendorComponent } from './vendor/vendor/vendor.component';
 import { MainComponent } from './departments/main/main.component';
 import { CustomersComponent } from './customers/customers/customers.component';
+import { ProductsComponent } from './products/products/products.component';
 
 
 const routes: Routes = [
@@ -25,7 +26,7 @@ const routes: Routes = [
   },
   { 
     path: "product",
-    component: CompanyComponent
+    component: ProductsComponent
   },
 
  

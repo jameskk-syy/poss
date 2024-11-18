@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 export class CompanyComponent implements OnInit {
 
   loading: boolean
-  company: any;
+  company: any = {};
   isdata: boolean;
   isloading: boolean;
   subscription!: Subscription;
@@ -24,23 +24,20 @@ export class CompanyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getCompanyData()
   }
 
   getCompanyData(){
     this.loading = true;
     this.subscription = this.configurationService.getCompanies().subscribe({
       next:(res) =>{
-        if (res && res.length > 0) {
           this.company = res;
+          console.log('company data', this.company)
           this.isdata = true;
-        }
-        else {
-          this.isdata = false
-        }
-        this.isloading = false
+          this.loading = false
       },
       error: (err) => {
-        this.isloading = false;
+        this.loading = false;
         console.error('Error fetching stock data:', err);
         this.isdata = false;
       }
@@ -75,18 +72,9 @@ export class CompanyComponent implements OnInit {
     dialogConfig.width = "600px"
     dialogConfig.data = { 
       action:action,
-      company: {
-        name: 'Rubis Kamakis',
-        address: '123 Street',
-        phone: '123-456-7890',
-        email: 'example@company.com',
-        registrationNo: '12345',
-        kraPin: 'KRA123'
-      }
+      company:this.company
     }
-    console.log('action is ',action)
-  
-
+    
     const dialogRef = this.dialog.open(AddCompanyComponent, dialogConfig);
       dialogRef.afterClosed().subscribe ({
       next:(value) => {

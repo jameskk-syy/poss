@@ -23,6 +23,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { CustomersComponent } from './customers/customers/customers.component';
 import { AddCustomersComponent } from './customers/add-customers/add-customers.component';
 import { DeleteCustomersComponent } from './customers/delete-customers/delete-customers.component';
+import { ProductsComponent } from './products/products/products.component';
+import { AddProductsComponent } from './products/add-products/add-products.component';
+import { DeleteProductsComponent } from './products/delete-products/delete-products.component';
+import { EditProductsComponent } from './products/edit-products/edit-products.component';
 
 
 
@@ -44,7 +48,11 @@ import { DeleteCustomersComponent } from './customers/delete-customers/delete-cu
     MainComponent,
     CustomersComponent,
     AddCustomersComponent,
-    DeleteCustomersComponent
+    DeleteCustomersComponent,
+    ProductsComponent,
+    AddProductsComponent,
+    DeleteProductsComponent,
+    EditProductsComponent
   ],
   imports: [
     CommonModule,
