@@ -112,6 +112,20 @@ export const ROUTES: RouteInfo[] = [
     ],
   },
 
+  {
+    path: '/admin/purchases/main',
+    title: 'Purchases',
+    moduleName: 'purchases',
+    iconType: 'feather',
+    icon: 'shopping-cart',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ROLE_ADMIN'],
+    submenu: [],
+  },
+
 
   {
     path: '',

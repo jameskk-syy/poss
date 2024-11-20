@@ -1,19 +1,19 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { ConfigurationsService } from '../../configurations.service';
+import { Subscription } from 'rxjs';
+import { PurchasesService } from '../../purchases.service';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { AddDepartmentComponent } from '../add-department/add-department.component';
+import { CreatePurchaseComponent } from '../create-purchase/create-purchase.component';
 
 @Component({
-  selector: 'app-departments',
-  templateUrl: './departments.component.html',
-  styleUrls: ['./departments.component.sass']
+  selector: 'app-view-purchase',
+  templateUrl: './view-purchase.component.html',
+  styleUrls: ['./view-purchase.component.sass']
 })
-export class DepartmentsComponent implements OnInit {
+export class ViewPurchaseComponent implements OnInit {
 
   isLoading: boolean;
   isdata: boolean;
@@ -21,18 +21,18 @@ export class DepartmentsComponent implements OnInit {
   subscription!: Subscription;
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string [] = [
-    'id',
-    'name',
-    'code',
-    'viewLocation',
-    'action'
+    // 'id',
+    // 'productName',
+    // 'quantity',
+    // 'ViewSupplier',
+    // 'action'
   ];
  
 
  
   constructor(
     private dialog: MatDialog,
-    private configurationService: ConfigurationsService
+    private purchasesService: PurchasesService
   ) { }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -45,18 +45,17 @@ export class DepartmentsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  addDepartment(action:string){
+  createPurchase(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "600px"
     dialogConfig.data = { 
-      action:action
+      
     }
-    console.log('action is',action)
-  
+      
 
-    const dialogRef = this.dialog.open(AddDepartmentComponent, dialogConfig);
+    const dialogRef = this.dialog.open(CreatePurchaseComponent, dialogConfig);
       dialogRef.afterClosed().subscribe ({
       next:(value) => {
         this.ngOnInit()
@@ -65,29 +64,14 @@ export class DepartmentsComponent implements OnInit {
     }
 
 
-  editDepartment(department:any){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false
-    dialogConfig.autoFocus = true
-    dialogConfig.width = "600px"
-    dialogConfig.data = { 
-      department: department
-    }
     
   
 
-    const dialogRef = this.dialog.open(AddDepartmentComponent, dialogConfig);
-      dialogRef.afterClosed().subscribe ({
-      next:(value) => {
-        this.ngOnInit()
-      }
-      });
-  }
+   
   
-  
-  getDepartments(){
+  getPurchases(){
     this.isLoading = true;
-    this.subscription = this.configurationService.getDepartments().subscribe({
+    this.subscription = this.purchasesService.getFuelPurchases().subscribe({
       next:(res) => {
         this.data = res;
         console.log('custommm', res)
@@ -119,4 +103,5 @@ export class DepartmentsComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
 }

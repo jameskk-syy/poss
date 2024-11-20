@@ -10,7 +10,7 @@ import {
 import { Observable, of, throwError } from "rxjs";
 import { delay, mergeMap } from "rxjs/operators";
 
-// Company interface
+// Company Interface
 interface Company {
   id: number;
   name: string;
@@ -22,18 +22,15 @@ interface Company {
   dealCompany: string;
 }
 
-// Department interface (now only requires the 'name' field)
+// Department Interface (only name required)
 interface Department {
   id: number;
   name: string;
-  companyId: number;  // Link to a company
 }
 
-// Initialize a single company object (could be empty initially)
+// Initialize single company and departments
 let company: Company | null = null;
-
-// Initialize an empty array of departments
-let departments: Department[] = [];
+let departments: Department[] = []; // Store only names of departments
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -46,23 +43,19 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function handleRoute() {
       switch (true) {
-        // Company-related routes
+        // Company routes
         case url.endsWith("/api/v1/company/get") && method === "GET":
           return getCompany();
-        case url.endsWith("/api/v1/company/add") && method === "POST":
-          return addCompany();
         case url.endsWith("/api/v1/company/update") && method === "PUT":
           return updateCompany();
+        case url.endsWith("/api/v1/company/add") && method === "POST":
+          return addCompany();
 
-        // Department-related routes
+        // Department routes
         case url.endsWith("/api/v1/department/get") && method === "GET":
           return getDepartments();
-        case url.match(/\/api\/v1\/department\/get\/\d+$/) && method === "GET":
-          return getDepartmentById();
         case url.endsWith("/api/v1/department/add") && method === "POST":
           return addDepartment();
-        case url.match(/\/api\/v1\/department\/update\/\d+$/) && method === "PUT":
-          return updateDepartment();
         case url.match(/\/api\/v1\/department\/delete\/\d+$/) && method === "DELETE":
           return deleteDepartment();
 
@@ -71,7 +64,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       }
     }
 
-    // Company Route Functions
+    // Route Functions - Company
+
     function getCompany() {
       if (!company) return error("Company not found");
       return ok(company);
@@ -84,51 +78,33 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function updateCompany() {
       if (!company) return error("Company not found");
-      company = { ...company, ...body }; // Merge existing company with updated data
+      company = { ...company, ...body };
       return ok(company);
     }
 
-    // Department Route Functions
+    // Route Functions - Department
+
     function getDepartments() {
       return ok(departments);
     }
 
-    function getDepartmentById() {
-      const id = getIdFromUrl();
-      const department = departments.find((dept) => dept.id === id);
-      return department ? ok(department) : error("Department not found");
-    }
-
     function addDepartment() {
-      // Only requires 'name' for the department; other fields are optional and not needed
-      const newDepartment = { 
-        id: departments.length + 1, 
-        name: body.name, 
-        companyId: body.companyId || 1 // Assuming a default companyId if not provided
+      const newDepartment: Department = {
+        id: departments.length + 1,
+        name: body.name, // Only name is stored
       };
       departments.push(newDepartment);
       return ok(newDepartment);
     }
 
-    function updateDepartment() {
-      const id = getIdFromUrl();
-      const index = departments.findIndex((dept) => dept.id === id);
-      if (index === -1) return error("Department not found");
-      
-      // Only update the 'name' field for the department
-      departments[index] = { ...departments[index], name: body.name || departments[index].name };
-      return ok(departments[index]);
-    }
-
     function deleteDepartment() {
       const id = getIdFromUrl();
-      const index = departments.findIndex((dept) => dept.id === id);
-      if (index === -1) return error("Department not found");
-      departments.splice(index, 1);  // Delete the department
-      return ok({ message: "Department deleted" });
+      departments = departments.filter((dept) => dept.id !== id);
+      return ok();
     }
 
     // Helper Functions
+
     function ok(body?) {
       return of(new HttpResponse({ status: 200, body }));
     }
