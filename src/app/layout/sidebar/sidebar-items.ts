@@ -105,10 +105,7 @@ export const ROUTES: RouteInfo[] = [
         badgeClass: '',
         role: ['ROLE_ADMIN'],
         submenu: [],
-      },
-      
-      
-      
+      },      
     ],
   },
 
@@ -235,5 +232,34 @@ export const ROUTES: RouteInfo[] = [
     ],
   },
 
+
+  // dealer Modules
+  {
+    path: '/dealer/dashboard/main',
+    title: 'Dashboard',
+    moduleName: 'dashboard',
+    iconType: 'feather',
+    icon: 'monitor',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ROLE_DEALER'],
+    submenu: [],
+  },
+
+  {
+    path: '/dealer/branches/main',
+    title: 'Branches',
+    moduleName: 'branches',
+    iconType: 'feather',
+    icon: 'git-branch',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ROLE_DEALER'],
+    submenu: [],
+  },
   
 ];
