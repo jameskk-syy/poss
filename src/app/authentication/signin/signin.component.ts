@@ -63,22 +63,8 @@ export class SigninComponent
     
             if (role == Role.Admin) {
               this.router.navigate(['/admin/dashboard'])
-            } else if (role == Role.Staff) {
-              this.router.navigate(['/staff/dashboard'])
-            } else if (role == Role.Collector) {
-              this.router.navigate(['/collections/dashboard'])
-            } else if (role == Role.SalesPerson) {
-              this.router.navigate(['/salesperson/main'])
-            } else if (role == Role.Manager) {
-              this.router.navigate(['/manager/dashboard'])
-             }
-             else if (role== Role.TotalsCollector){
-              this.router.navigate(['/totals-collector/dashboard'])
-             }else if (role == Role.ManagingDirector) {
-              this.router.navigate(['/managing-director/dashboard'])
-             }
-             else if (role == Role.Accountant) {
-              this.router.navigate(['/accountant/dashboard'])
+            } else if (role == Role.Dealer) {
+              this.router.navigate(['/dealer/dashboard'])
             }
              else {
               this.error = "Username or Password are invalid";

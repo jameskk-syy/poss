@@ -28,13 +28,13 @@ export class UserService {
 
     return this.http.get<any>(fetchAllUserAccountsUrl)
   }
-  getAllCollectors(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/collections/analytics/roleUsers?roleAName=${Role.Collector}&roleBName=${Role.SubCollector}`);
-  }
+  // getAllCollectors(): Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/api/v1/collections/analytics/roleUsers?roleAName=${Role.Collector}&roleBName=${Role.SubCollector}`);
+  // }
 
-  getAllSubCollectors(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/collections/analytics/roleUsers?roleAName=${Role.SubCollector}&roleBName=`);
-  }
+  // getAllSubCollectors(): Observable<any> {
+  //   return this.http.get(`${environment.apiUrl}/api/v1/collections/analytics/roleUsers?roleAName=${Role.SubCollector}&roleBName=`);
+  // }
 
   createUserAccounts(user): Observable<any>{
     const createUserAccountsUrl = `${environment.apiUrl}/admin/api/v1/users/create-user`;

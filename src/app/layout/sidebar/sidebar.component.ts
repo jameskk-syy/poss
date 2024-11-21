@@ -115,15 +115,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.sidebarItems = ROUTES.filter((x) => x.role.indexOf(userRole) !== -1);
       if (userRole == Role.Admin) {
         this.userType = Role.Admin;
-      } else if (userRole == Role.Staff) {
-        this.userType = Role.Staff;
-      } else if (userRole == Role.Collector) {
-        this.userType = Role.Collector;
-      }else if (userRole == Role.SalesPerson) {
-        this.userType = Role.SalesPerson;
-      }else if (userRole == Role.TotalsCollector) {
-        this.userType = Role.TotalsCollector;
-      }
+      } else if (userRole == Role.Dealer) {
+        this.userType = Role.Dealer;
+      } 
 
     }
 

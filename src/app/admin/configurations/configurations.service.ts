@@ -14,6 +14,8 @@ export class ConfigurationsService {
 
   companyUrl = `${environment.apiUrl}/api/v1/company/`;
   customerUrl = `${environment.apiUrl}/api/v1/customer/`;
+ 
+ 
   // company
   addCompany(data):Observable<any>{
     return this.http.post(this.companyUrl+ `add`, data)
