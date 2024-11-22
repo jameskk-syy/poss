@@ -1,9 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  FormArray,
-  FormBuilder,
-  FormGroup,
-} from "@angular/forms";
+import { FormArray,FormBuilder, FormGroup,} from "@angular/forms";
 import { Router } from "@angular/router";
 import { takeUntil } from "rxjs";
 // import { PrivilegesTemplate } from "src/app/admin/data/types/privileges_template";
@@ -52,7 +48,8 @@ export class AddRoleComponent extends BaseComponent implements OnInit {
     private notificationAPI: NotificationService,
     private tokenStorage: TokenStorageService,
     private roleService: RoleService
-  ) {
+  ) 
+  {
     super();
     this.getAccessRights();
 
@@ -345,7 +342,7 @@ export class AddRoleComponent extends BaseComponent implements OnInit {
       .pipe(takeUntil(this.subject))
       .subscribe(
         (res) => {
-          // console.log("Access Rights ", res);
+          console.log("Access Rights ", res);
 
           this.basicActionsAddOns = res;
           this.basicActionsAddOns.forEach((privilege) => {

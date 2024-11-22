@@ -38,7 +38,7 @@
                 {{sidebarSubItem.title | translate}}
               </a>
               <!-- Second level menu -->
-              <ul class="ml-menu-2" *ngIf="sidebarSubItem.submenu.length > 0">
+             <ul class="ml-menu-2" *ngIf="sidebarSubItem.submenu.length > 0">
                 <li *ngFor="let sidebarSubsubItem of sidebarSubItem.submenu"
                   [ngClass]="level3Menu === sidebarSubsubItem.moduleName? 'activeSubSub':''"
                   [routerLinkActive]="sidebarSubsubItem.submenu.length > 0 ? '' : 'active'">
@@ -48,7 +48,7 @@
                     {{sidebarSubsubItem.title | translate}}
                   </a>
                 </li>
-              </ul>
+              </ul> 
             </li>
           </ul>
         </li>

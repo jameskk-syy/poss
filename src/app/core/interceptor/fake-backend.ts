@@ -8,42 +8,29 @@ import {
   HTTP_INTERCEPTORS,
 } from "@angular/common/http";
 import { Observable, of, throwError } from "rxjs";
-import { delay, mergeMap, materialize, dematerialize } from "rxjs/operators";
-import { User } from "../models/user";
-import { Role } from "../models/role";
+import { delay, mergeMap } from "rxjs/operators";
 
-const users: User[] = [
-  {
-    id: 1,
-    img: "assets/images/user/admin.jpg",
-    username: "admin@software.com",
-    password: "admin@123",
-    firstName: "Sarah",
-    lastName: "Smith",
-    role: Role.Admin,
-    token: "admin-token",
-  },
-  {
-    id: 2,
-    img: "assets/images/user/employee.jpg",
-    username: "employee@software.com",
-    password: "employee@123",
-    firstName: "Ashton",
-    lastName: "Cox",
-    role: Role.Staff,
-    token: "employee-token",
-  },
-  {
-    id: 3,
-    img: "assets/images/user/client.jpg",
-    username: "client@software.com",
-    password: "client@123",
-    firstName: "Cara",
-    lastName: "Stevens",
-    role: Role.Collector,
-    token: "client-token",
-  },
-];
+// Company Interface
+interface Company {
+  id: number;
+  name: string;
+  address: string;
+  phone: string;
+  kraPin: string;
+  email: string;
+  dealerName: string;
+  dealCompany: string;
+}
+
+// Department Interface (only name required)
+interface Department {
+  id: number;
+  name: string;
+}
+
+// Initialize single company and departments
+let company: Company | null = null;
+let departments: Department[] = []; // Store only names of departments
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -51,63 +38,89 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const { url, method, headers, body } = request;
-    // wrap in delayed observable to simulate server api call
-    return of(null).pipe(mergeMap(handleRoute));
+    const { url, method, body } = request;
+    return of(null).pipe(mergeMap(handleRoute), delay(500)); // Simulate latency
 
     function handleRoute() {
       switch (true) {
-        case url.endsWith("/authenticate") && method === "POST":
-          return authenticate();
+        // Company routes
+        case url.endsWith("/api/v1/company/get") && method === "GET":
+          return getCompany();
+        case url.endsWith("/api/v1/company/update") && method === "PUT":
+          return updateCompany();
+        case url.endsWith("/api/v1/company/add") && method === "POST":
+          return addCompany();
+
+        // Department routes
+        case url.endsWith("/api/v1/department/get") && method === "GET":
+          return getDepartments();
+        case url.endsWith("/api/v1/department/add") && method === "POST":
+          return addDepartment();
+        case url.match(/\/api\/v1\/department\/delete\/\d+$/) && method === "DELETE":
+          return deleteDepartment();
+
         default:
-          // pass through any requests not handled above
           return next.handle(request);
       }
     }
 
-    // route functions
+    // Route Functions - Company
 
-    function authenticate() {
-      const { username, password } = body;
-      const user = users.find(
-        (x) => x.username === username && x.password === password
-      );
-      if (!user) {
-        return error("Username or password is incorrect");
-      }
-      return ok({
-        id: user.id,
-        img: user.img,
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        role: user.role,
-        token: user.token,
-      });
+    function getCompany() {
+      if (!company) return error("Company not found");
+      return ok(company);
     }
 
-    // helper functions
+    function addCompany() {
+      company = { id: 1, ...body };
+      return ok(company);
+    }
+
+    function updateCompany() {
+      if (!company) return error("Company not found");
+      company = { ...company, ...body };
+      return ok(company);
+    }
+
+    // Route Functions - Department
+
+    function getDepartments() {
+      return ok(departments);
+    }
+
+    function addDepartment() {
+      const newDepartment: Department = {
+        id: departments.length + 1,
+        name: body.name, // Only name is stored
+      };
+      departments.push(newDepartment);
+      return ok(newDepartment);
+    }
+
+    function deleteDepartment() {
+      const id = getIdFromUrl();
+      departments = departments.filter((dept) => dept.id !== id);
+      return ok();
+    }
+
+    // Helper Functions
 
     function ok(body?) {
       return of(new HttpResponse({ status: 200, body }));
     }
 
-    function error(message) {
+    function error(message: string) {
       return throwError({ error: { message } });
     }
 
-    function unauthorized() {
-      return throwError({ status: 401, error: { message: "Unauthorised" } });
-    }
-
-    function isLoggedIn() {
-      return headers.get("Authorization") === "Bearer fake-jwt-token";
+    function getIdFromUrl() {
+      const urlParts = url.split("/");
+      return parseInt(urlParts[urlParts.length - 1]);
     }
   }
 }
 
-export let fakeBackendProvider = {
-  // use fake backend in place of Http service for backend-less development
+export const fakeBackendProvider = {
   provide: HTTP_INTERCEPTORS,
   useClass: FakeBackendInterceptor,
   multi: true,

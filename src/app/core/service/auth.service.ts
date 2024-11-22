@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   login(user): Observable<any> {
-    const authUrl = `${environment.apiUrl}/api/v1/authentication/login`
+    const authUrl = `${environment.apiUrl}/api/v1/auth/auth`
     return this.http.post<any>(authUrl, user);
   }
 

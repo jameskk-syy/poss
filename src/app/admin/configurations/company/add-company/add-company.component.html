@@ -18,10 +18,10 @@
     <div mat-dialog-content>
         <form class="register-form m-4" [formGroup]="companyForm">
             <div class="row">
-                <div *ngIf="data.action === 'edit'" class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
                       <mat-label>Name</mat-label>
-                      <input matInput formControlName="name" [readonly]="true" required />
+                      <input matInput formControlName="name" required />
                       <mat-error *ngIf="companyForm.get('name').hasError('required')">
                         Name is required
                       </mat-error>
@@ -59,10 +59,19 @@
                 </div>
                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
-                        <mat-label>RegistrationNo</mat-label>
-                        <input matInput formControlName="registrationNo" required />
-                        <mat-error *ngIf="companyForm.get('registrationNo').hasError('required')">
-                            RegistrationNo is required
+                        <mat-label>Dealer Name</mat-label>
+                        <input matInput formControlName="dealerName" required />
+                        <mat-error *ngIf="companyForm.get('dealerName').hasError('required')">
+                            Dealer Name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div> 
+                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Deal Company</mat-label>
+                        <input matInput formControlName="dealCompany" required />
+                        <mat-error *ngIf="companyForm.get('dealCompany').hasError('required')">
+                            Deal Company is required
                         </mat-error>
                     </mat-form-field>
                 </div> 

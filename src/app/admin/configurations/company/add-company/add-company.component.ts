@@ -35,23 +35,27 @@ export class AddCompanyComponent implements OnInit {
       address: ['', Validators.required],
       phone: ['', Validators.required],
       email: ['', Validators.required],
-      registrationNo: ['', Validators.required],
+      dealerName: ['', Validators.required],
+      dealCompany:['', Validators.required],
       kraPin:['', Validators.required]
       
     });
 
     console.log('Action:', this.data.action);
 
-    if (this.data.action === 'edit') {
+    if (this.data.action === 'edit' && this.data.company) {
       this.companyForm.patchValue({
-        code: this.data.category.code,
-        name: this.data.category.name,
-        description: this.data.category.description,
-        status: this.data.category.status,
+        name: this.data.company.name,
+        address: this.data.company.address,
+        phone: this.data.company.phone,
+        email: this.data.company.email,
+        dealerName: this.data.company.dealerName,
+        dealCompany:this.data.company.dealCompany,
+        kraPin: this.data.company.kraPin
       });
-      this.title = 'Edit Category';
+      this.title = 'Edit Company';
     } else {
-      this.title = 'Add New Category'; 
+      this.title = 'Add Company'; 
     }
   }
 
@@ -65,7 +69,7 @@ export class AddCompanyComponent implements OnInit {
 
     // Call update method if editing
     if (this.data.action === 'edit') {
-      this.updateCategory();
+      this.updateCompany();
     } else {
       // Add new category
       this.subscription = this.configurationsService.addCompany(this.companyForm.value).subscribe({
@@ -86,7 +90,7 @@ export class AddCompanyComponent implements OnInit {
     }
   }
 
-  updateCategory() {
+  updateCompany() {
     this.loading = true;
     this.subscription = this.configurationsService.updateCompany(this.data.category).subscribe({
     next: (res) => {
