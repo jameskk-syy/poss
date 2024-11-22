@@ -14,6 +14,7 @@ import { CreateLubesPurchaseComponent } from './lubes-purchases/create-lubes-pur
 import { ViewLubesPurchaseComponent } from './lubes-purchases/view-lubes-purchase/view-lubes-purchase.component';
 import { ViewLpgPurchaseComponent } from './lpg-purchases/view-lpg-purchase/view-lpg-purchase.component';
 import { CreateLpgPurchaseComponent } from './lpg-purchases/create-lpg-purchase/create-lpg-purchase.component';
+import { OtherPurchasesComponent } from './other-purchases/other-purchases.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { CreateLpgPurchaseComponent } from './lpg-purchases/create-lpg-purchase/
     CreateLubesPurchaseComponent,
     ViewLubesPurchaseComponent,
     ViewLpgPurchaseComponent,
-    CreateLpgPurchaseComponent
+    CreateLpgPurchaseComponent,
+    OtherPurchasesComponent
   ],
   imports: [
     CommonModule,
