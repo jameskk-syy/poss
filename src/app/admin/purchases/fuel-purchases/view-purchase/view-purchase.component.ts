@@ -43,13 +43,14 @@ export class ViewPurchaseComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
+
   }
 
   createPurchase(){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
-    dialogConfig.width = "600px"
+    dialogConfig.width = "800px"
     dialogConfig.data = { 
       
     }

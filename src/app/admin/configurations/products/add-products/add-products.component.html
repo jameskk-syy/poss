@@ -30,6 +30,20 @@
 
                   <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Category</mat-label>
+                        <mat-select formControlName="category" required>
+                            <mat-option *ngFor="let category of categories" [value]="category">
+                              {{ department.name}}
+                            </mat-option>
+                          </mat-select>
+                        <mat-error *ngIf="productForm.get('category').hasError('required')">
+                            Category is required
+                        </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Department</mat-label>
                         <mat-select formControlName="department" required>
                             <mat-option *ngFor="let department of departments" [value]="department">
@@ -40,7 +54,7 @@
                             Department is required
                         </mat-error>
                     </mat-form-field>
-                </div>
+                  </div>
 
                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
