@@ -40,19 +40,19 @@ export const ROUTES: RouteInfo[] = [
     badgeClass: '',
     role: ['ROLE_ADMIN'],
     submenu: [
-      {
-        path: '/admin/configurations/company',
-        title: 'Company',
-        moduleName: 'profile',
-        iconType: 'feather',
-        icon: 'layers',
-        class: '',
-        groupTitle: false,
-        badge: '',
-        badgeClass: '',
-        role: ['ROLE_ADMIN'],
-        submenu: [],
-      },
+      // {
+      //   path: '/admin/configurations/company',
+      //   title: 'Company',
+      //   moduleName: 'profile',
+      //   iconType: 'feather',
+      //   icon: 'layers',
+      //   class: '',
+      //   groupTitle: false,
+      //   badge: '',
+      //   badgeClass: '',
+      //   role: ['ROLE_ADMIN'],
+      //   submenu: [],
+      // },
 
       {
         path: '/admin/configurations/department',
