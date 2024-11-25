@@ -27,6 +27,10 @@ import { ProductsComponent } from './products/products/products.component';
 import { AddProductsComponent } from './products/add-products/add-products.component';
 import { DeleteProductsComponent } from './products/delete-products/delete-products.component';
 import { EditProductsComponent } from './products/edit-products/edit-products.component';
+import { CreateCategoryComponent } from './products/category/create-category/create-category.component';
+import { ViewCategoryComponent } from './products/category/view-category/view-category.component';
+import { DeleteCategoryComponent } from './products/category/delete-category/delete-category.component';
+import { ProductMainComponent } from './products/product-main/product-main.component';
 
 
 
@@ -52,7 +56,11 @@ import { EditProductsComponent } from './products/edit-products/edit-products.co
     ProductsComponent,
     AddProductsComponent,
     DeleteProductsComponent,
-    EditProductsComponent
+    EditProductsComponent,
+    CreateCategoryComponent,
+    ViewCategoryComponent,
+    DeleteCategoryComponent,
+    ProductMainComponent
   ],
   imports: [
     CommonModule,

@@ -1,1 +1,145 @@
-<p>create-purchase works!</p>
+
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modalHeader clearfix">
+                    <div class="modal-about">
+                        <div class="font-weight-bold p-t-5 ms-2 me-2 font-17">
+                            Purchase Fuel
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <form class="register-form m-4" [formGroup]="fuelPurchaseForm">
+            <div class="row">
+                <hr>
+                <div class="font-weight-bold p-t-2 ms-1 me-1 font-15">
+                    Vehicle Information
+                </div>
+
+                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Vendor</mat-label>
+                        <mat-select formControlName="vendor" required>
+                            <mat-option *ngFor="let vendor of vendors" [value]="vendor">
+                              {{vendor}}
+                            </mat-option>
+                          </mat-select>
+                        <mat-error *ngIf="fuelPurchaseForm.get('vendor').hasError('required')">
+                            Vendoris required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                 <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Vehicle Type</mat-label>
+                        <mat-select formControlName="vehicleType" required>
+                            <mat-option *ngFor="let vehicleType of vehicleTypes" [value]="vehicleType">
+                              {{ vehicleType}}
+                            </mat-option>
+                          </mat-select>
+                        <mat-error *ngIf="fuelPurchaseForm.get('vehicleType').hasError('required')">
+                            Vehicle Type is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Registration</mat-label>
+                      <input matInput formControlName="registration" required />
+                      <mat-error *ngIf="fuelPurchaseForm.get('registration').hasError('required')">
+                        Registration is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Driver Name</mat-label>
+                      <input matInput formControlName="driver" required />
+                      <mat-error *ngIf="fuelPurchaseForm.get('driver').hasError('required')">
+                        Driver Name is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Driver Contact</mat-label>
+                      <input matInput formControlName="driverContact" required />
+                      <mat-error *ngIf="fuelPurchaseForm.get('driverContact').hasError('required')">
+                        Driver Contact is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <hr>
+
+                  <div class="row">
+                    <div class="font-weight-bold p-t-2 ms-1 me-1 font-15">
+                        Fuel Details
+                    </div>
+                     <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Fuel Product</mat-label>
+                            <mat-select formControlName="product" required>
+                                <mat-option *ngFor="let product of products" [value]="fuelType">
+                                  {{ fuelType}}
+                                </mat-option>
+                              </mat-select>
+                            <mat-error *ngIf="fuelPurchaseForm.get('product').hasError('required')">
+                                Fuel Product is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+    
+                    <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Quantity (litres)</mat-label>
+                          <input matInput formControlName="quantity" required />
+                          <mat-error *ngIf="fuelPurchaseForm.get('quantity').hasError('required')">
+                            Quantity is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+    
+                      <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Price per Litre</mat-label>
+                          <input matInput formControlName="pricePerLitre" required />
+                          <mat-error *ngIf="fuelPurchaseForm.get('pricePerLitre').hasError('required')">
+                            Driver Name is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <hr>
+                    </div>
+    
+                
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <div class="example-button-row" align="end">
+                            <button mat-raised-button color="warn" (click)="onClick()" tabindex="-1">
+                                Cancel
+                            </button>
+                            <button mat-raised-button color="primary" [disabled]="!fuelPurchaseForm.valid"
+                                (click)="onSubmit()">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                <b>Submit</b>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

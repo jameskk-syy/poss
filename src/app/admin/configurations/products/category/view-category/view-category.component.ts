@@ -1,19 +1,19 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
-import { PurchasesService } from '../../purchases.service';
+import { CreateCategoryComponent } from '../create-category/create-category.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { CreateLubesPurchaseComponent } from '../create-lubes-purchase/create-lubes-purchase.component';
+import { ConfigurationsService } from '../../../configurations.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-view-lubes-purchase',
-  templateUrl: './view-lubes-purchase.component.html',
-  styleUrls: ['./view-lubes-purchase.component.sass']
+  selector: 'app-view-category',
+  templateUrl: './view-category.component.html',
+  styleUrls: ['./view-category.component.sass']
 })
-export class ViewLubesPurchaseComponent implements OnInit {
+export class ViewCategoryComponent implements OnInit {
 
   isLoading: boolean;
   isdata: boolean;
@@ -21,18 +21,17 @@ export class ViewLubesPurchaseComponent implements OnInit {
   subscription!: Subscription;
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string [] = [
-    // 'id',
-    // 'productName',
-    // 'quantity',
-    // 'ViewSupplier',
-    // 'action'
+    'name',
+    'code',
+    'email',
+    'phone'
   ];
  
 
  
   constructor(
     private dialog: MatDialog,
-    private purchasesService: PurchasesService
+    private configurationService: ConfigurationsService
   ) { }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -43,20 +42,20 @@ export class ViewLubesPurchaseComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
-
   }
 
-  createPurchase(){
+  addProduct(action:string){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
-    dialogConfig.width = "800px"
+    dialogConfig.width = "600px"
     dialogConfig.data = { 
-      
+      action:action
     }
-      
+    console.log('action is',action)
+  
 
-    const dialogRef = this.dialog.open(CreateLubesPurchaseComponent, dialogConfig);
+    const dialogRef = this.dialog.open(CreateCategoryComponent, dialogConfig);
       dialogRef.afterClosed().subscribe ({
       next:(value) => {
         this.ngOnInit()
@@ -65,14 +64,29 @@ export class ViewLubesPurchaseComponent implements OnInit {
     }
 
 
+  editProduct(product:any){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "600px"
+    dialogConfig.data = { 
+      product: product
+    }
     
   
 
-   
+    const dialogRef = this.dialog.open(CreateCategoryComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe ({
+      next:(value) => {
+        this.ngOnInit()
+      }
+      });
+  }
   
-  getPurchases(){
+  
+  getProducts(){
     this.isLoading = true;
-    this.subscription = this.purchasesService.getFuelPurchases().subscribe({
+    this.subscription = this.configurationService.getProducts().subscribe({
       next:(res) => {
         this.data = res;
         console.log('custommm', res)
@@ -90,7 +104,7 @@ export class ViewLubesPurchaseComponent implements OnInit {
         },
         error: (err) => {
           this.isLoading = false;
-          console.error('Error fetching departments data:', err);
+          console.error('Error fetching products data:', err);
           this.isdata = false;
         }
     })

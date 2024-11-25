@@ -19,6 +19,7 @@ export class AddProductsComponent implements OnInit {
   title:string;
   departments: any;
   locations:any;
+  categories:any;
 
   constructor(
     public dialogRef: MatDialogRef<ProductsComponent>,
@@ -34,6 +35,7 @@ export class AddProductsComponent implements OnInit {
   ngOnInit(): void {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
+      category:['',Validators.required],
       department:['',Validators.required],
       location: ['', Validators.required]    
     });

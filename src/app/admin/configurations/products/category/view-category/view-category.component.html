@@ -8,7 +8,7 @@
                             <div class="col-8">
                                 <ul class="header-buttons-left ms-0">
                                     <li class="dropdown">
-                                        <h2>Departments</h2>
+                                        <h2>Products</h2>
                                     </li>
                                     <li class="dropdown m-l-20">
                                         <label for="search-input"><i
@@ -19,14 +19,14 @@
                                     </li>
                                     <li>
                                         <div class="m-l-10" matTooltip="ADD">
-                                            <button mat-mini-fab color="primary" (click)="createPurchase()">
+                                            <button mat-mini-fab color="primary" (click)="addProduct('create')">
                                                 <mat-icon class="col-white">add</mat-icon>
                                             </button>
                                         </div>
                                     </li>
                                     <li>
                                         <div class="m-l-10" matTooltip="REFRESH">
-                                            <button mat-mini-fab color="primary" (click)="getPurchases()">
+                                            <button mat-mini-fab color="primary" (click)="getProducts()">
                                                 <mat-icon class="col-white">refresh</mat-icon>
                                             </button>
                                         </div>
@@ -70,47 +70,53 @@
                                 mat-sort-header>#</mat-header-cell>
                             <mat-cell class="table-img tbl-col-width-per-8"
                                 *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)">{{i +
-                                1}}</mat-cell>
+                                [class.even-row]="!(i % 2)">{{i+1}}</mat-cell>
                         </ng-container> 
                     
                         <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">
                                 Name</mat-header-cell>
-                            <mat-cell *matCellDef="let department;let i = index" [class.odd-row]="i % 2"
+                            <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{department.name}}
+                                {{product.name}}
                             </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="code">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Code</mat-header-cell>
-                            <mat-cell *matCellDef="let department;let i = index" [class.odd-row]="i % 2"
+                            <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{department.code}}
+                                {{product.code}}
                             </mat-cell>
                         </ng-container>
-                        <ng-container matColumnDef="viewLocation">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">View Location</mat-header-cell>
-                            <mat-cell *matCellDef="let department;let i = index" [class.odd-row]="i % 2"
+                        <ng-container matColumnDef="email">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Email</mat-header-cell>
+                            <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
                                 [class.even-row]="!(i % 2)" class="column-nowrap">
-                                {{department.code}}
+                                {{product.email}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="phone">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Email</mat-header-cell>
+                            <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" class="column-nowrap">
+                                {{product.phone}}
                             </mat-cell>
                         </ng-container>
                                               
                         <ng-container matColumnDef="action">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
-                            <mat-cell *matCellDef="let department;let i = index" [class.odd-row]="i % 2"
-                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, department)">
+                            <mat-cell *matCellDef="let product;let i = index" [class.odd-row]="i % 2"
+                                [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, customer)">
                                 <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="editDepartment(department)" 
+                                    (click)="editProduct(product)" 
                                     class="tbl-action-btn">
-                                    <app-feather-icons color="primary" matTooltip="Edit Department"
+                                    <app-feather-icons color="primary" matTooltip="Edit Customer"
                                         [icon]="'edit'"></app-feather-icons>
                                 </button>
                                 <button mat-icon-button (click)="$event.stopPropagation()"
-                                    (click)="deleteDepartment(department)" matTooltip="Delete Department"
+                                    (click)="deleteProduct(product)" matTooltip="Delete Product"
                                     class="tbl-action-btn">
-                                    <app-feather-icons matTooltip="Delete Department" [icon]="'trash-2'"
+                                    <app-feather-icons matTooltip="Delete Product" [icon]="'trash-2'"
                                         [class]="'tbl-fav-delete'"></app-feather-icons>
                                 </button>
                             </mat-cell>
@@ -139,6 +145,6 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
 
 
