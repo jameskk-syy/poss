@@ -17,7 +17,7 @@ export class CreatePurchaseComponent implements OnInit {
   fuelPurchaseForm : FormGroup;
   subscription!: Subscription;
   title:string;
-  vehicleTypes: any;
+  transporters: any;
   products:any;
   locations:any;
   vendors:any;
@@ -36,7 +36,7 @@ export class CreatePurchaseComponent implements OnInit {
   ngOnInit(): void {
     this.fuelPurchaseForm = this.fb.group({
       vendor:['',Validators.required],
-      vehicleType: ['', Validators.required],
+      transporter: ['', Validators.required],
       registration:['',Validators.required],
       driver: ['', Validators.required],  
       driverContact:['', Validators.required],

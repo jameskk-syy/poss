@@ -111,6 +111,20 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: '/admin/purchases/main',
+    title: 'Ordering',
+    moduleName: 'ordering',
+    iconType: 'feather',
+    icon: 'box',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ROLE_ADMIN'],
+    submenu: [],
+  },
+
+  {
+    path: '/admin/purchases/main',
     title: 'Purchases',
     moduleName: 'purchases',
     iconType: 'feather',
