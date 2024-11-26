@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { ViewPurchaseComponent } from '../view-purchase/view-purchase.component';
 import { Subscription } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-create-purchase',
@@ -15,12 +16,26 @@ export class CreatePurchaseComponent implements OnInit {
 
   loading = false;
   fuelPurchaseForm : FormGroup;
+  vehicleForm:FormGroup
   subscription!: Subscription;
   title:string;
-  vehicleTypes: any;
+  transporters: any;
   products:any;
   locations:any;
   vendors:any;
+  tanks:any;
+  isLinear: any;
+  fuelPurchases: any;
+
+  productDataSource = new MatTableDataSource<any>([]);
+  productDisplayedColumns = [
+    'product',
+    'tank',
+    'intialReading',
+    'quantityDispersed',
+    'currentReading',
+    'actions'
+  ];
 
   constructor(
     public dialogRef: MatDialogRef<ViewPurchaseComponent>,
@@ -34,29 +49,26 @@ export class CreatePurchaseComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.fuelPurchaseForm = this.fb.group({
+    this.vehicleForm = this.fb.group({
       vendor:['',Validators.required],
-      vehicleType: ['', Validators.required],
+      transporter: ['', Validators.required],
       registration:['',Validators.required],
       driver: ['', Validators.required],  
       driverContact:['', Validators.required],
-      product:['',Validators.required],
-      quantity:['', Validators.required],
-      pricePerLitre:['',Validators.required]
-
+      invoiceNo:['', Validators.required],
     });
 
-    console.log('Action:', this.data.action);
+    this.fuelPurchaseForm = this.fb.group({
+      product:['',Validators.required],
+      tank:['', Validators.required],
+      intialReading:['',Validators.required],
+      quantityDispersed:['', Validators.required],
+      currentReading:['', Validators.required],
+      deviation:['',Validators.required],
+      amount:['',Validators.required]
 
-    if (this.data.action === 'edit') {
-      this.fuelPurchaseForm.patchValue({
-        name: this.data.location.name,
-        department: this.data.location.department
-      });
-      this.title = 'Edit Location';
-    } else {
-      this.title = 'Add Location'; 
-    }
+    })
+
   }
 
   onSubmit() {
@@ -88,6 +100,23 @@ export class CreatePurchaseComponent implements OnInit {
 
   onClick() {
   this.dialogRef.close();
+  }
+
+  addFuelPurchase(){
+
+  }
+  addPurchase() {
+    if (this.fuelPurchaseForm.valid) {
+      const purchaseData = this.fuelPurchaseForm.value;
+      this.productDataSource.data = [...this.productDataSource.data, purchaseData];
+      this.fuelPurchaseForm.reset();
+    }
+  }
+
+  removeItem(index: number) {
+    const data = this.productDataSource.data;
+    data.splice(index, 1);
+    this.productDataSource.data = [...data];
   }
 
 

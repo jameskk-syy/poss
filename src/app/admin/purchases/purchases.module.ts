@@ -15,6 +15,7 @@ import { ViewLubesPurchaseComponent } from './lubes-purchases/view-lubes-purchas
 import { ViewLpgPurchaseComponent } from './lpg-purchases/view-lpg-purchase/view-lpg-purchase.component';
 import { CreateLpgPurchaseComponent } from './lpg-purchases/create-lpg-purchase/create-lpg-purchase.component';
 import { OtherPurchasesComponent } from './other-purchases/other-purchases.component';
+import {MatStepperModule} from '@angular/material/stepper'
 
 
 @NgModule({
@@ -36,7 +37,9 @@ import { OtherPurchasesComponent } from './other-purchases/other-purchases.compo
     MaterialModule,
     ComponentsModule,
     ReactiveFormsModule,
-    MatTabsModule 
+    MatTabsModule,
+    MatStepperModule
+    
   ]
 })
 export class PurchasesModule { }
