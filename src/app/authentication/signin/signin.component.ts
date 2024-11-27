@@ -62,9 +62,9 @@ export class SigninComponent
             const role = res.roles[0].name;
     
             if (role == Role.Admin) {
-              this.router.navigate(['/admin/dashboard'])
-            } else if (role == Role.Dealer) {
               this.router.navigate(['/dealer/dashboard'])
+            } else if (role == Role.Manager) {
+              this.router.navigate(['/manager/dashboard'])
             }
              else {
               this.error = "Username or Password are invalid";
