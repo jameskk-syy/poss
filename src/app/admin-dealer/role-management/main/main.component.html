@@ -1,0 +1,22 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header">
+            <app-breadcrumb [title]="'Roles'" [items]="['Dealer']" [active_item]="'Roles'">
+            </app-breadcrumb>
+        </div>
+        <mat-tab-group>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Roles
+                </ng-template>
+                <app-create-role></app-create-role>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Assign User
+                </ng-template>
+                <app-create-role></app-create-role>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</section>

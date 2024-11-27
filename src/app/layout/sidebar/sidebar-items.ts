@@ -249,21 +249,7 @@ export const ROUTES: RouteInfo[] = [
 
   // dealer Modules
   
-  // {
-  //   path: '/admin/dashboard/main',
-  //   title: 'Dashboard',
-  //   moduleName: 'dashboard',
-  //   iconType: 'feather',
-  //   icon: 'monitor',
-  //   class: '',
-  //   groupTitle: false,
-  //   badge: '',
-  //   badgeClass: '',
-  //   role: ['ROLE_MANAGER'],
-  //   submenu: [],
-  // },
-
-
+  
   {
     path: '/dealer/dashboard/main',
     title: 'Dashboard',
@@ -291,6 +277,63 @@ export const ROUTES: RouteInfo[] = [
     role: ['ROLE_ADMIN'],
     submenu: [],
   },
+  
+  {
+    path: '',
+    title: 'User Accounts',
+    moduleName: 'user-accounts',
+    iconType: 'feather',
+    icon: 'user',
+    class: 'menu-toggle',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ROLE_ADMIN'],
+    submenu: [
+      {
+        path: '/dealer/user-accounts/accounts',
+        title: 'Add Account',
+        moduleName: 'add-account',
+        iconType: '',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        badge: '',
+        badgeClass: '',
+        role: [''],
+        submenu: [],
+      },
+
+      {
+        path: '/dealer/user-accounts/users',
+        title: 'All Users',
+        moduleName: 'add-account',
+        iconType: '',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        badge: '',
+        badgeClass: '',
+        role: [''],
+        submenu: [],
+      },
+    ]
+  },
+
+  {
+    path: '/dealer/user-roles/roles',
+    title: 'Roles',
+    moduleName: 'role-management',
+    iconType: 'feather',
+    icon: 'book',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ROLE_ADMIN'],
+    submenu: [],
+  },
+      
   
 
 ];

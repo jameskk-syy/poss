@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewBranchesComponent } from './view-branches.component';
+import { CreateRoleComponent } from './create-role.component';
 
-describe('ViewBranchesComponent', () => {
-  let component: ViewBranchesComponent;
-  let fixture: ComponentFixture<ViewBranchesComponent>;
+describe('CreateRoleComponent', () => {
+  let component: CreateRoleComponent;
+  let fixture: ComponentFixture<CreateRoleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ViewBranchesComponent ]
+      declarations: [ CreateRoleComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ViewBranchesComponent);
+    fixture = TestBed.createComponent(CreateRoleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
