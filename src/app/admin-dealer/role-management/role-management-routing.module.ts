@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateRoleComponent } from './create-role/create-role.component';
-import { MainComponent } from './main/main.component';
+import { ViewRolesComponent } from './view-roles/view-roles.component';
 
 const routes: Routes = [
   
   {
     path: "roles",
-    component: MainComponent
+    component: ViewRolesComponent
   }
 ];
 

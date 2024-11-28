@@ -6,11 +6,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { CreateUserComponent } from './create-user/create-user.component';
+import { ViewUsersComponent } from './view-users/view-users.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @NgModule({
   declarations: [
-    
+    CreateUserComponent,
+    ViewUsersComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +22,8 @@ import { MaterialModule } from 'src/app/shared/material.module';
     MaterialModule,
     ComponentsModule,
     ReactiveFormsModule,
-    MatTabsModule 
+    MatTabsModule,
+    MatMenuModule 
   ]
 })
 export class UserManagementModule { }

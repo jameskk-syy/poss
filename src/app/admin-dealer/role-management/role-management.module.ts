@@ -7,13 +7,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { MainComponent } from './main/main.component';
+import { ViewRolesComponent } from './view-roles/view-roles.component';
 
 
 @NgModule({
   declarations: [
     CreateRoleComponent,
-    MainComponent
+    ViewRolesComponent,
   ],
   imports: [
     CommonModule,
