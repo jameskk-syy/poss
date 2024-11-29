@@ -8,7 +8,11 @@ import { environment } from 'src/environments/environment';
 })
 export class RoleManagementService {
 
+   roleUrl = `${environment.apiUrl}/admin/api/v1/roles/`
+
   constructor(private http: HttpClient) { }
+
+  
 
   
   getRoleDetails(roleId): Observable<any>{
@@ -25,44 +29,32 @@ export class RoleManagementService {
 
   activateRole(roleId): Observable<any>{
     const activateRoleUrl = `${environment.apiUrl}/admin/api/v1/roles/activate-role/${roleId}`;
-
-    return this.http.put<any>(activateRoleUrl, {})
+    return this.http.put(this.roleUrl + `activate-role`, {})
   }
 
   getAllActiveRoles(): Observable<any>{
-    const getAllActiveRolesUrl = `${environment.apiUrl}/admin/api/v1/roles/active-roles`;
-
-    return this.http.get<any>(getAllActiveRolesUrl, {})
+    return this.http.get(this.roleUrl + `active-roles`, {})
   }
 
   getAllRoles(): Observable<any>{
-    const getAllRolesUrl = `${environment.apiUrl}/admin/api/v1/roles/all-roles`;
-
-    return this.http.get<any>(getAllRolesUrl)
+    return this.http.get(this.roleUrl + `all-roles`)
   }
 
   createRole(role): Observable<any>{
-    const createRoleUrl = `${environment.apiUrl}/admin/api/v1/roles/create-role`;
-
-    return this.http.post<any>(createRoleUrl, role)
+    return this.http.post(this.roleUrl + `create-role`, role)
   }
 
   deactivateRole(roleId): Observable<any>{
-    const deactivateRoleUrl = `${environment.apiUrl}/admin/api/v1/roles/deactivate-role/${roleId}`;
-
-    return this.http.put<any>(deactivateRoleUrl, {})
+    return this.http.put(this.roleUrl +`deactivate-role`, roleId )
   }
 
   getAllinactiveRoles(roleId): Observable<any>{
-    const getAllinactiveRolesUrl = `${environment.apiUrl}/admin/api/v1/roles/inactive-roles`;
-
-    return this.http.put<any>(getAllinactiveRolesUrl, {})
+    return this.http.put(this.roleUrl +`inactive-role`, roleId )
   }
 
   updateRole(roleId, role): Observable<any>{
-    const getAllinactiveRolesUrl = `${environment.apiUrl}/admin/api/v1/roles/update-role/${roleId}`;
-
-    return this.http.put<any>(getAllinactiveRolesUrl, role)
+    return this.http.put(this.roleUrl +`update-role`, roleId, role )
+   
   }
   
 }

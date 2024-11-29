@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { RoleManagementService } from '../role-management.service';
-import { takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
+import { MatDialogRef } from '@angular/material/dialog';
+import { ViewRolesComponent } from '../view-roles/view-roles.component';
 
 
 const ACCESS_RIGHTS = "access-rights";
@@ -21,18 +23,30 @@ export class CreateRoleComponent extends BaseComponent implements OnInit {
   
   displayArray: { name: string; selected: boolean; accessRights: string }[] = [];
   accessRightsLoaded = false;
-  dialogRef: any;
+  accessRightsSubject: Subject<any[]> = new Subject<any[]>();
+
+  private basicActionsAddOns: {
+    name: string;
+    selected: boolean;
+    accessRights: string;
+  }[];
+  
 
   constructor(
+    public dialogRef: MatDialogRef<ViewRolesComponent>,
     private fb: FormBuilder,
     private router: Router,
     private roleService: RoleManagementService,
     private snackbar: SnackbarService,
+    
   ) {
     super();
+    this.getAccessRights();
   }
 
   ngOnInit(): void {
+    this. getAccessRights ();
+    
     this.initializeForm();
 
     this.loadAccessRights();
@@ -46,6 +60,52 @@ export class CreateRoleComponent extends BaseComponent implements OnInit {
     });
   }
 
+  toUpperCase(event: any): void {
+    const value = event.target.value;
+    event.target.value = value.toUpperCase();
+  }
+
+  getAccessRights = () => {
+  this.roleService.fetchAllAccessRights().pipe(takeUntil(this.subject)).subscribe({
+      next: (res) => {
+        this.basicActionsAddOns = res.map((privilege) => ({
+          ...privilege,
+          selected: false,
+        }));
+        console.log("access", this.basicActionsAddOns)
+
+        this.displayArray = [...this.basicActionsAddOns];
+        // Update local storage with the processed data
+        localStorage.removeItem(ACCESS_RIGHTS);
+        localStorage.setItem(ACCESS_RIGHTS, JSON.stringify(this.basicActionsAddOns));
+
+        // Optionally emit the data using a Subject or BehaviorSubject
+        this.accessRightsSubject.next(this.basicActionsAddOns);
+        
+        // Set flag to indicate data is loaded
+        this.accessRightsLoaded = true;
+        console.log("Access Rights Loaded:", this.displayArray);
+      
+      },
+      error: (err) => {
+        console.error("Error fetching access rights:", err);
+      },
+    });
+  };
+
+  toggleAll(selected: boolean) {
+    this.displayArray.forEach((privilege) => (privilege.selected = selected));
+  }
+
+  onChange(e: any, i: any) {
+    this.displayArray[i].selected = e.checked;
+  }
+
+  allSelected() {
+    return this.displayArray.every((privilege) => privilege.selected);
+  }
+
+  
   private loadAccessRights(): void {
     this.roleService.fetchAllAccessRights().pipe(takeUntil(this.subject)).subscribe(
         (next) => {
@@ -104,8 +164,10 @@ export class CreateRoleComponent extends BaseComponent implements OnInit {
       this.snackbar.alertWarning("Invalid form data.");
     }
   }
+
+  
   
   onCancel(){
-
+    this.dialogRef.close();
   }
 }

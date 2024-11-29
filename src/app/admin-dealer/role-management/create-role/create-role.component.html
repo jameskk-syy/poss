@@ -9,7 +9,7 @@
                 </div>
             </div>
         </div>
-        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+        <button mat-icon-button (click)="onCancel()" aria-label="Close dialog">
             <mat-icon>close</mat-icon>
         </button>
     </div>
@@ -17,10 +17,10 @@
         <form [formGroup]="roleForm" class="m-4">
             <!-- Row 1: Role Name -->
             <div class="row">
-                <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
                     <mat-form-field class="example-full-width mb-3" appearance="outline">
                         <mat-label>Role Name</mat-label>
-                        <input matInput formControlName="role" required />
+                        <input matInput formControlName="role" required (input)="toUpperCase($event)"/>
                         <mat-error *ngIf="roleForm.get('role').hasError('required')">
                             Role name is required
                         </mat-error>

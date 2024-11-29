@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { CreateRoleComponent } from '../create-role/create-role.component';
+import { RoleManagementService } from '../role-management.service';
 
 @Component({
   selector: 'app-view-roles',
@@ -34,25 +35,50 @@ export class ViewRolesComponent implements OnInit {
   isLoading: boolean = true;
   Roles: any[] = [];
   currentUser: any;
+  subscription!: any;
+  isdata: boolean;
 
   constructor(
     public dialog: MatDialog,
     private router: Router,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
+    private roleService: RoleManagementService
   ) {}
 
   ngOnInit(): void {
+    this.getRoles()
   }
 
-  refresh(){
-    this.getManagerRoles
+  
+  getRoles(){
+    
+    this.isLoading = true;
+    this.subscription = this.roleService.getAllRoles().subscribe({
+      next:(res) => {
+        this.data = res;
+        console.log('invoces', res)
+          if (this.data.entity.length > 0) {
+            this.isLoading = false;
+            this.isdata = true;
+            // Binding with the datasource
+            this.dataSource = new MatTableDataSource(this.data.entity);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          } else {
+            this.isLoading = false;
+            this.dataSource = new MatTableDataSource<any>(this.data);
+          }
+        },
+        error: (err) => {
+          this.isLoading = false;
+          console.error('Error fetching customer data:', err);
+          this.isdata = false;
+        }
+    })
   }
 
-  getManagerRoles(){
 
-  }
-
-  addRoleCall(){
+  createManager(){
     const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = false;
       dialogConfig.autoFocus = true;
@@ -64,10 +90,8 @@ export class ViewRolesComponent implements OnInit {
       const dilaogRef = this.dialog.open(CreateRoleComponent, dialogConfig);
   
       dilaogRef.afterClosed().subscribe(res => {
-        this.getManagerRoles();
+        this.getRoles();
       })
-  
-      
     }
 
   applyFilter(event: Event) {
