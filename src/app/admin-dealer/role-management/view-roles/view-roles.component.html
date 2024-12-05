@@ -92,26 +92,28 @@
                         <mat-cell *matCellDef="let row" class="column-nowrap psl-3 tbl-col-width-per-25">
                           {{ row.name }}</mat-cell>
                       </ng-container>
-                      <ng-container matColumnDef="postedBy">
+                      <ng-container matColumnDef="status">
                         <mat-header-cell *matHeaderCellDef mat-sort-header
                           class="column-nowrap psl-3 tbl-col-width-per-25">Status</mat-header-cell>
                         <mat-cell *matCellDef="let row" class="column-nowrap psl-3 tbl-col-width-per-25">
-                          <div *ngIf="row.status == 1">
+                          <div *ngIf="row.status === 'ACTIVE'">
                             <span class="badge badge-pill badge-primary col-green">
-                              {{"Active"}}</span>
+                              Active
+                            </span>
                           </div>
-                          <div *ngIf="row.status == 0">
+                          <div *ngIf="row.status === 'INACTIVE'">
                             <span class="badge badge-pill badge-primary col-red">
-                              {{"Inactive"}}</span>
+                              Inactive
+                            </span>
                           </div>
                         </mat-cell>
-                      </ng-container>
+                      </ng-container>                   
   
-                      <ng-container matColumnDef="postedTime">
+                      <ng-container matColumnDef="createdOn">
                         <mat-header-cell *matHeaderCellDef mat-sort-header
-                          class="column-nowrap psl-3 tbl-col-width-per-20">Createed date</mat-header-cell>
+                          class="column-nowrap psl-3 tbl-col-width-per-20">Creation Date</mat-header-cell>
                         <mat-cell *matCellDef="let row" class="column-nowrap psl-3 tbl-col-width-per-20">
-                          {{ row.creationDate | date: 'short' }}
+                          {{ row.createdOn | date: 'short' }}
                         </mat-cell>
                       </ng-container>
   
@@ -121,26 +123,31 @@
                           *matHeaderCellDef>Actions</mat-header-cell>
                         <mat-cell *matCellDef="let row; let i = index" class="column-nowrap psl-3 tbl-col-width-per-20"
                           (click)="$event.stopPropagation()">
-                          <!-- <button class="badge badge-solid-purple btn btn btn-sm m-1"
-                          (click)="updateStatus(row)" [disabled]="row.postedBy == currentUser"><i class="fab fa-check"></i>Verify</button> -->
-                          <button mat-icon-button color="accent" (click)="$event.stopPropagation()" class="tbl-action-btn"
-                            (click)="editRoleCall(row)">
+                          
+                          <!-- Edit Action -->
+                          <button mat-icon-button color="accent" class="tbl-action-btn" (click)="editRoleCall(row)">
                             <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                           </button>
-                          <button mat-icon-button color="primary" (click)="$event.stopPropagation()"
-                            (click)="viewRoleCall(row)" class="tbl-action-btn">
+                          
+                          <!-- View Action -->
+                          <button mat-icon-button color="primary" class="tbl-action-btn" (click)="viewRoleCall(row)">
                             <app-feather-icons [icon]="'eye'" [class]="'tbl-fav-eye'"></app-feather-icons>
                           </button>
-                          <button *ngIf="row.status == 1" mat-icon-button color="accent" (click)="$event.stopPropagation()"
-                            (click)="deleteRoleCall(row)" class="tbl-action-btn">
+                          
+                          <!-- Delete Action -->
+                          <button *ngIf="row.status == 1" mat-icon-button color="accent" class="tbl-action-btn"
+                            (click)="deleteRoleCall(row)">
                             <app-feather-icons [icon]="'lock'" [class]="'tbl-fav-lock'"></app-feather-icons>
                           </button>
-                          <button *ngIf="row.status == 0" mat-icon-button color="success" (click)="$event.stopPropagation()" class="tbl-action-btn"
+                          
+                          <!-- Activate Action -->
+                          <button *ngIf="row.status == 0" mat-icon-button color="success" class="tbl-action-btn"
                             (click)="activateRole(row)">
                             <app-feather-icons [icon]="'unlock'" [class]="'tbl-fav-unlock'"></app-feather-icons>
                           </button>
                         </mat-cell>
                       </ng-container>
+                      
   
                       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                       <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row> -->

@@ -9,12 +9,16 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { ViewUsersComponent } from './view-users/view-users.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { RoleLkupComponent } from './role-lkup/role-lkup.component';
+import { ViewManagersComponent } from './view-managers/view-managers.component';
 
 
 @NgModule({
   declarations: [
     CreateUserComponent,
-    ViewUsersComponent
+    ViewUsersComponent,
+    RoleLkupComponent,
+    ViewManagersComponent
   ],
   imports: [
     CommonModule,

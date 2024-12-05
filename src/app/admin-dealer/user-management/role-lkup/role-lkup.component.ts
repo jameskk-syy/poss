@@ -1,27 +1,25 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { RoleManagementService } from '../../role-management/role-management.service';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-import { CreateRoleComponent } from '../create-role/create-role.component';
-import { RoleManagementService } from '../role-management.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CreateUserComponent } from '../create-user/create-user.component';
 
 @Component({
-  selector: 'app-view-roles',
-  templateUrl: './view-roles.component.html',
-  styleUrls: ['./view-roles.component.sass']
+  selector: 'app-role-lkup',
+  templateUrl: './role-lkup.component.html',
+  styleUrls: ['./role-lkup.component.sass']
 })
-export class ViewRolesComponent implements OnInit {
+export class RoleLkupComponent implements OnInit {
 
   displayedColumns: string[] = [
     "id",
     "name",
     "status",
-    "createdOn",
-    "actions",
+    
   ];
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -40,9 +38,10 @@ export class ViewRolesComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private router: Router,
+    // private router: Router,
     private snackbar: SnackbarService,
-    private roleService: RoleManagementService
+    private roleService: RoleManagementService,
+    public dialogRef: MatDialogRef<CreateUserComponent>
   ) {}
 
   ngOnInit(): void {
@@ -77,22 +76,13 @@ export class ViewRolesComponent implements OnInit {
     })
   }
 
+  onSelectRole(role: any) {
+    console.log('ht', role); 
+    this.dialogRef.close({ role: { name: role.name, id: role.id } });
+    console.log ('role nm',role )
+  }
 
-  createManager(){
-    const dialogConfig = new MatDialogConfig();
-      dialogConfig.disableClose = false;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = "800px";
-      dialogConfig.data = {
-       
-      };
   
-      const dilaogRef = this.dialog.open(CreateRoleComponent, dialogConfig);
-  
-      dilaogRef.afterClosed().subscribe(res => {
-        this.getRoles();
-      })
-    }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -101,5 +91,6 @@ export class ViewRolesComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
 
 }

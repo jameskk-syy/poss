@@ -167,7 +167,7 @@ export class CreateRoleComponent extends BaseComponent implements OnInit {
 
   
   
-  onCancel(){
+  onClick(){
     this.dialogRef.close();
   }
 }

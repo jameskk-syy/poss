@@ -9,7 +9,7 @@
                 </div>
             </div>
         </div>
-        <button mat-icon-button (click)="onCancel()" aria-label="Close dialog">
+        <button mat-icon-button (click)="onClick()" aria-label="Close dialog">
             <mat-icon>close</mat-icon>
         </button>
     </div>
@@ -56,7 +56,9 @@
             <div class="row justify-content-between align-items-center">
                 <div class="col-sm-12">
                     <div class="example-button-row" align="end">
-                        <button mat-button (click)=" onCancel()">Cancel</button>
+                        <button mat-raised-button color="warn" (click)="onClick()" tabindex="-1">
+                            Cancel
+                        </button>
                         <button mat-raised-button color="primary" [disabled]="!roleForm.valid" (click)="onSubmit()">
                             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                             <b>Create</b>

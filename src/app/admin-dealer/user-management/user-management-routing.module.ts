@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ViewUsersComponent } from './view-users/view-users.component';
+import { CreateUserComponent } from './create-user/create-user.component';
+import { ViewManagersComponent } from './view-managers/view-managers.component';
 
 
 const routes: Routes = [
   {
-    path: "accounts",
-    component: ViewUsersComponent
+    path: "branch-managers",
+    component: ViewManagersComponent
   },
 
   {
     path: "users",
-    // component: CreateUserComponent
+    component: ViewUsersComponent
   }
 ];
 

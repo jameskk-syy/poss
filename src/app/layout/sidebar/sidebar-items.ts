@@ -291,8 +291,8 @@ export const ROUTES: RouteInfo[] = [
     role: ['ROLE_ADMIN'],
     submenu: [
       {
-        path: '/dealer/user-accounts/accounts',
-        title: 'Add Account',
+        path: '/dealer/user-accounts/branch-managers',
+        title: 'Branch Managers',
         moduleName: 'add-account',
         iconType: '',
         icon: '',
@@ -307,7 +307,7 @@ export const ROUTES: RouteInfo[] = [
       {
         path: '/dealer/user-accounts/users',
         title: 'All Users',
-        moduleName: 'add-account',
+        moduleName: 'all Users',
         iconType: '',
         icon: '',
         class: 'ml-menu',

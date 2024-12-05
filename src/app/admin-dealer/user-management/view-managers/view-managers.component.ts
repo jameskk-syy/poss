@@ -1,21 +1,20 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import { UserManagementService } from '../user-management.service';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-import { Router } from '@angular/router';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { Router } from '@angular/router';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { CreateUserComponent } from '../create-user/create-user.component';
 
-
 @Component({
-  selector: 'app-view-users',
-  templateUrl: './view-users.component.html',
-  styleUrls: ['./view-users.component.sass']
+  selector: 'app-view-managers',
+  templateUrl: './view-managers.component.html',
+  styleUrls: ['./view-managers.component.sass']
 })
-export class ViewUsersComponent implements OnInit {
+export class ViewManagersComponent implements OnInit {
 
   displayedColumns: string[] = [
     "id",
@@ -57,30 +56,28 @@ export class ViewUsersComponent implements OnInit {
       // this.getAllUsers();
     }
   
-    // addNew() {
-    //   const dialogConfig = new MatDialogConfig();
-    //   dialogConfig.disableClose = false;
-    //   dialogConfig.autoFocus = true;
-    //   dialogConfig.width = "800px";
-    //   dialogConfig.data = {
+    addNew() {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false;
+      dialogConfig.autoFocus = true;
+      dialogConfig.width = "800px";
+      dialogConfig.data = {
        
-    //   };
+      };
   
-    //   const dilaogRef = this.dialog.open(CreateUserComponent, dialogConfig);
+      const dilaogRef = this.dialog.open(CreateUserComponent, dialogConfig);
   
-    //   dilaogRef.afterClosed().subscribe(res => {
-    //     this.getAllUsers();
-    //   })
+      dilaogRef.afterClosed().subscribe(res => {
+        // this.getAllUsers();
+      })
   
       
-    // }
+    }
     
 
-    getAllUsers() {}
+    
     // getAllUsers() {
-    //   this.userService.fetchAllUserAccounts()
-    //     .pipe(takeUntil(this.subject))
-    //     .subscribe(
+    //   this.userService.fetchAllUserAccounts().pipe(takeUntil(this.subject)).subscribe(
     //       (res) => {
     //         this.users = res.userData;
   
@@ -230,7 +227,6 @@ export class ViewUsersComponent implements OnInit {
   
     
   
-  
     applyFilter(event: Event) {
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -250,3 +246,4 @@ export class ViewUsersComponent implements OnInit {
     }
 
 }
+

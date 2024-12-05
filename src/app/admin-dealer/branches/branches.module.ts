@@ -6,11 +6,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { CreateBranchComponent } from './create-branch/create-branch.component';
 
 
 @NgModule({
   declarations: [
-    ViewBranchesComponent
+    ViewBranchesComponent,
+    CreateBranchComponent
   ],
   imports: [
     CommonModule,

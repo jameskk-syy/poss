@@ -57,14 +57,13 @@
             </mat-form-field>
             </div>
             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
-            <mat-form-field class="example-full-width mb-1" appearance="outline">
-                <mat-label>Role</mat-label>
-                <input formControlName="role" matInput />
-                <button (click)="roleLookup()" mat-icon-button matSuffix
-                [attr.aria-label]="'Hide password'">
-                <mat-icon>search</mat-icon>
-                </button>
-            </mat-form-field>
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Role</mat-label>
+                  <input matInput formControlName="role" required />
+                  <mat-icon matSuffix (click)="selectRole()">search</mat-icon>
+                  <mat-error *ngIf="userForm.get('role').hasError('required')">
+                    Role is required  </mat-error>
+                </mat-form-field>
             </div>
             <div class="col-xl-4 col-lg- col-md-12 col-sm-12 mb-3">
             <mat-form-field class="example-full-width mb-3" appearance="outline">
@@ -75,14 +74,23 @@
                 </mat-error>
             </mat-form-field>
             </div>
+            <div class="col-xl-4 col-lg- col-md-12 col-sm-12 mb-3">
+                <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" required />
+                    <mat-error *ngIf="userForm.get('password').hasError('required')">
+                        Password name is required
+                    </mat-error>
+                </mat-form-field>
+                </div>
         </div>
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                 <div class="example-button-row" align="end">
-                    <button type="button" mat-button (click)=" onCancel()">
+                    <button mat-raised-button color="warn" (click)="onClick()" tabindex="-1">
                         Cancel
                     </button>
-                    <button mat-raised-button color="primary" [disabled]="!userForm.valid" (click)="addUser()">
+                    <button mat-raised-button color="primary" [disabled]="!userForm.valid" (click)="createUser()">
                         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                         <b>Submit</b>
                     </button>
