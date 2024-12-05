@@ -12,25 +12,28 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: "", redirectTo: "/authentication/signin", pathMatch: "full" },
+
+      // dealer
       {
-        path: "admin",
+        path: "dealer",
         canActivate: [AuthGuard],
         data: {
           role: Role.Admin,
         },
         loadChildren: () =>
-          import("./admin/admin.module").then((m) => m.AdminModule),
+          import("./admin-dealer/dealer.module").then((m) => m.DealerModule),
       },
+      // manager
       {
-        path: "dealer",
+        path: "manager",
         canActivate: [AuthGuard],
         data: {
-          role: Role.Dealer,
+          role: Role.Manager,
         },
         loadChildren: () =>
-          import("./dealer/dealer.module").then((m) => m.DealerModule),
+          import("./admin-manager/admin.module").then((m) => m.AdminModule),
       },
-      
+            
     ],
   },
   {
