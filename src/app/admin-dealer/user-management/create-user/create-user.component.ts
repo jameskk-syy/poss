@@ -76,7 +76,7 @@ export class CreateUserComponent implements OnInit {
 
   createUser(){
   
-      this.subscription = this.userService.createUser(this.userForm.value).subscribe({
+      this.subscription = this.userService.createUser(this.buildPayload(this.userForm.value)).subscribe({
         next: (res) => {
         this.loading = false;
         console.log ('jhdjh', this.userForm )
@@ -95,18 +95,18 @@ export class CreateUserComponent implements OnInit {
     )
   }
 
-  // buildPayload(user: any) {
-  //   let data = {
-  //     "user_name": user.user_name,
-  //     "first_name": user.first_name,
-  //     "last_name": user.last_name,
-  //     "email": user.email,
-  //     "mobile": user.mobile,
-  //     "role": user.roles.id,
-  //     "password": user.password
-  //   }
-  //   return data;
-  // }
-//(this.buildPayload(this.userForm.value))
+  buildPayload(user: any) {
+    let data = {
+      "user_name": user.user_name,
+      "first_name": user.first_name,
+      "last_name": user.last_name,
+      "email": user.email,
+      "mobile": user.mobile,
+      "role": user.roles.id,
+      "password": user.password
+    }
+    return data;
+  }
+
   }
 

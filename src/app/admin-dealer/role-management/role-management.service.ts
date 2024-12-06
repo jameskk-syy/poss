@@ -52,8 +52,8 @@ export class RoleManagementService {
     return this.http.put(this.roleUrl +`inactive-role`, roleId )
   }
 
-  updateRole(roleId, role): Observable<any>{
-    return this.http.put(this.roleUrl +`update-role`, roleId, role )
+  updateRole(role): Observable<any>{
+    return this.http.put(this.roleUrl +`update-role`, role )
    
   }
   

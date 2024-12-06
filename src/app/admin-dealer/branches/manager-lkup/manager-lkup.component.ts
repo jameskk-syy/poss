@@ -1,27 +1,26 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-import { CreateRoleComponent } from '../create-role/create-role.component';
-import { RoleManagementService } from '../role-management.service';
+import { CreateBranchComponent } from '../create-branch/create-branch.component';
+import { BranchesService } from '../branches.service';
 
 @Component({
-  selector: 'app-view-roles',
-  templateUrl: './view-roles.component.html',
-  styleUrls: ['./view-roles.component.sass']
+  selector: 'app-manager-lkup',
+  templateUrl: './manager-lkup.component.html',
+  styleUrls: ['./manager-lkup.component.sass']
 })
-export class ViewRolesComponent implements OnInit {
+export class ManagerLkupComponent implements OnInit {
 
   displayedColumns: string[] = [
     "id",
-    "name",
+    "firstname",
+    "lastname",
     "status",
-    "createdOn",
-    "actions",
+    
   ];
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -40,23 +39,23 @@ export class ViewRolesComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private router: Router,
+    // private router: Router,
     private snackbar: SnackbarService,
-    private roleService: RoleManagementService
+    private branchService: BranchesService,
+    public dialogRef: MatDialogRef<CreateBranchComponent>
   ) {}
 
   ngOnInit(): void {
-    this.getRoles()
+    this. getRoles()
   }
 
-  
   getRoles(){
     
     this.isLoading = true;
-    this.subscription = this.roleService.getAllRoles().subscribe({
+    this.subscription = this.branchService.getManagers().subscribe({
       next:(res) => {
         this.data = res;
-        console.log('roles', res)
+        console.log('managers', res)
           if (this.data.entity.length > 0) {
             this.isLoading = false;
             this.isdata = true;
@@ -77,45 +76,14 @@ export class ViewRolesComponent implements OnInit {
     })
   }
 
-
-  createRole(action: string){
-    if(action === 'add'){
-      console.log('act', action)
-    const dialogConfig = new MatDialogConfig();
-      dialogConfig.disableClose = false;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = "800px";
-      dialogConfig.data = {
-       
-      };
-  
-      const dilaogRef = this.dialog.open(CreateRoleComponent, dialogConfig);
-  
-      dilaogRef.afterClosed().subscribe(res => {
-        this.getRoles();
-      })
-    }
+  onSelectManager(manager: any) {
+    console.log('ht', manager); 
+    this.dialogRef.close({ manager: { name: manager.name, id: manager.id } });
+    console.log ('manager nm',manager )
   }
 
-  editRole(role: any,action: string){
-    console.log('act', action, role)
-    const dialogConfig = new MatDialogConfig();
-      dialogConfig.disableClose = false;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = "800px";
-      dialogConfig.data = {
-        action: action,
-        role: role
-      };
   
-      const dilaogRef = this.dialog.open(CreateRoleComponent, dialogConfig);
-  
-      dilaogRef.afterClosed().subscribe(res => {
-        this.getRoles();
-      })
-    }
 
-  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

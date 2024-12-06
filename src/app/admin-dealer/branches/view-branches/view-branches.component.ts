@@ -6,6 +6,7 @@ import { BranchesService } from '../branches.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { CreateBranchComponent } from '../create-branch/create-branch.component';
 
 @Component({
   selector: 'app-view-branches',
@@ -21,9 +22,10 @@ export class ViewBranchesComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string [] = [
     'name',
-    'code',
+    'location',
     'email',
-    'phone'
+    'phone',
+    'actions'
   ];
  
 
@@ -44,61 +46,49 @@ export class ViewBranchesComponent implements OnInit {
 
   }
 
-  addCustomer(action:string){
+  createBranch(action: string){
+    const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false;
+      dialogConfig.autoFocus = true;
+      dialogConfig.width = "800px";
+      dialogConfig.data = {
+        action:action
+      };
+  
+      const dilaogRef = this.dialog.open(CreateBranchComponent, dialogConfig);
+  
+      dilaogRef.afterClosed().subscribe(res => {
+        this.getBranches();
+      })
 
   }
 
-  editCustomer(action:string, customer:any){
-    
+  editCustomer(action:string,){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false
+    dialogConfig.autoFocus = true
+    dialogConfig.width = "600px"
+    dialogConfig.data = { 
+      action:action,
+      // branch: branch
+    }
+    console.log('action is ',action)
+  
+
+    const dialogRef = this.dialog.open(CreateBranchComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe ({
+      next:(value) => {
+        this.ngOnInit()
+      }
+      });
   }
 
-  // addCustomer(action:string){
-  //   const dialogConfig = new MatDialogConfig();
-  //   dialogConfig.disableClose = false
-  //   dialogConfig.autoFocus = true
-  //   dialogConfig.width = "600px"
-  //   dialogConfig.data = { 
-  //     action:action
-  //   }
-  //   console.log('action is',action)
-  
-
-  //   const dialogRef = this.dialog.open(AddCustomersComponent, dialogConfig);
-  //     dialogRef.afterClosed().subscribe ({
-  //     next:(value) => {
-  //       this.ngOnInit()
-  //     }
-  //     });
-  //   }
-
-
-  // editCustomer(action:string, customer:any){
-  //   const dialogConfig = new MatDialogConfig();
-  //   dialogConfig.disableClose = false
-  //   dialogConfig.autoFocus = true
-  //   dialogConfig.width = "600px"
-  //   dialogConfig.data = { 
-  //     action:action,
-  //     customer: customer
-  //   }
-  //   console.log('action is ',action)
-  
-
-  //   const dialogRef = this.dialog.open(AddCustomersComponent, dialogConfig);
-  //     dialogRef.afterClosed().subscribe ({
-  //     next:(value) => {
-  //       this.ngOnInit()
-  //     }
-  //     });
-  // }
-  
-  
-  getCustomers(){
+  getBranches(){
     this.isLoading = true;
     this.subscription = this. branchesService.getBranches().subscribe({
       next:(res) => {
         this.data = res;
-        console.log('custommm', res)
+        console.log('branches', res)
           if (this.data.entity.length > 0) {
             this.isLoading = false;
             this.isdata = true;
@@ -117,10 +107,8 @@ export class ViewBranchesComponent implements OnInit {
           this.isdata = false;
         }
     })
+
   }
-
-
-
 
   
   applyFilter(event: Event) {
