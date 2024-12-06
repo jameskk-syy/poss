@@ -31,7 +31,7 @@
                             </li>
                             <li>
                               <div class="m-l-10" matTooltip="ADD">
-                                <button mat-mini-fab color="primary" (click)="createManager()">
+                                <button mat-mini-fab color="primary" (click)="createRole('add')">
                                   <mat-icon class="col-white">add</mat-icon>
                                 </button>
                               </div>
@@ -125,7 +125,7 @@
                           (click)="$event.stopPropagation()">
                           
                           <!-- Edit Action -->
-                          <button mat-icon-button color="accent" class="tbl-action-btn" (click)="editRoleCall(row)">
+                          <button mat-icon-button color="accent" class="tbl-action-btn" (click)="editRole(row,'edit')">
                             <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                           </button>
                           

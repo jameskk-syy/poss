@@ -1,173 +1,148 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { BaseComponent } from 'src/app/shared/components/base/base.component';
-import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RoleManagementService } from '../role-management.service';
-import { Subject, takeUntil } from 'rxjs';
-import { MatDialogRef } from '@angular/material/dialog';
-import { ViewRolesComponent } from '../view-roles/view-roles.component';
-
-
-const ACCESS_RIGHTS = "access-rights";
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 
 @Component({
   selector: 'app-create-role',
   templateUrl: './create-role.component.html',
-  styleUrls: ['./create-role.component.sass']
+  styleUrls: ['./create-role.component.sass'],
 })
-export class CreateRoleComponent extends BaseComponent implements OnInit {
-
-  loading = false;
+export class CreateRoleComponent implements OnInit {
   roleForm: FormGroup;
-  
-  displayArray: { name: string; selected: boolean; accessRights: string }[] = [];
+  displayArray: { name: string; accessRights: string; selected: boolean }[] = [];
   accessRightsLoaded = false;
-  accessRightsSubject: Subject<any[]> = new Subject<any[]>();
-
-  private basicActionsAddOns: {
-    name: string;
-    selected: boolean;
-    accessRights: string;
-  }[];
-  
+  loading = false;
+  title: string;
 
   constructor(
-    public dialogRef: MatDialogRef<ViewRolesComponent>,
     private fb: FormBuilder,
-    private router: Router,
+    private dialogRef: MatDialogRef<CreateRoleComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { action: string; role?: any },
     private roleService: RoleManagementService,
-    private snackbar: SnackbarService,
-    
-  ) {
-    super();
-    this.getAccessRights();
-  }
+    private snackbar: SnackbarService
+  ) {}
 
   ngOnInit(): void {
-    this. getAccessRights ();
-    
     this.initializeForm();
+    this.fetchAccessRights();
 
-    this.loadAccessRights();
+    if (this.data.action === 'edit' && this.data.role) {
+      this.title = 'Edit Role';
+      this.populateForm(this.data.role);
+    } else {
+      this.title = 'Create New Role';
+    }
   }
-  
 
   private initializeForm(): void {
     this.roleForm = this.fb.group({
-      role: [""],
-      privileges: this.fb.array([]),
+      role: ['', Validators.required],
     });
+  }
+
+  fetchAccessRights(): void {
+    this.roleService.fetchAllAccessRights().subscribe({
+      next: (rights) => {
+        // Map all available access rights into displayArray
+        this.displayArray = rights.map((priv) => ({
+          name: priv.name,
+          accessRights: priv.accessRights,
+          selected: false, // Default to unselected
+        }));
+  
+        // If editing, pre-select existing privileges
+        if (this.data.action === 'edit' && this.data.role?.privileges) {
+          const existingPrivileges = this.data.role.privileges;
+          this.displayArray.forEach((item) => {
+            if (existingPrivileges.includes(item.accessRights)) {
+              item.selected = true; // Mark privilege as selected
+            }
+          });
+        }
+  
+        // Mark access rights as loaded
+        this.accessRightsLoaded = true;
+      },
+      error: (err) => {
+        console.error('Error fetching access rights:', err);
+      },
+    });
+  }
+  
+  
+  
+
+  populateForm(role: any): void {
+    this.roleForm.patchValue({
+      role: role.name,
+    });
+  }
+
+  toggleAll(selected: boolean): void {
+    this.displayArray.forEach((item) => (item.selected = selected));
+  }
+
+  allSelected(): boolean {
+    return this.displayArray.every((item) => item.selected);
+  }
+
+  onChange(event: any, index: number): void {
+    this.displayArray[index].selected = event.checked;
+  }
+
+  onSubmit(): void {
+    const privileges = this.displayArray
+      .filter((item) => item.selected)
+      .map((item) => item.accessRights);
+
+    if (this.roleForm.valid) {
+      const formData = { ...this.roleForm.value, privileges };
+      this.loading = true;
+
+      if (this.data.action === 'add') {
+        this.addRole(formData);
+      } else if (this.data.action === 'edit') {
+        this.updateRole({ ...this.data.role, ...formData });
+      }
+    } else {
+      this.snackbar.alertWarning('Please fill in all required fields.');
+    }
+  }
+
+  addRole(data: any): void {
+    this.roleService.createRole(data).subscribe({
+      next: (res) => {
+        this.snackbar.showNotification('snackbar-success', res.message);
+        this.dialogRef.close(true);
+      },
+      error: (err) => {
+        this.loading = false;
+        this.snackbar.showNotification('snackbar-danger', err.message);
+      },
+    });
+  }
+
+  updateRole(data: any): void {
+    this.roleService.updateRole(data).subscribe({
+      next: (res) => {
+        this.snackbar.showNotification('snackbar-success', res.message);
+        this.dialogRef.close(true);
+      },
+      error: (err) => {
+        this.loading = false;
+        this.snackbar.showNotification('snackbar-danger', err.message);
+      },
+    });
+  }
+
+  onClick(): void {
+    this.dialogRef.close();
   }
 
   toUpperCase(event: any): void {
     const value = event.target.value;
     event.target.value = value.toUpperCase();
-  }
-
-  getAccessRights = () => {
-  this.roleService.fetchAllAccessRights().pipe(takeUntil(this.subject)).subscribe({
-      next: (res) => {
-        this.basicActionsAddOns = res.map((privilege) => ({
-          ...privilege,
-          selected: false,
-        }));
-        console.log("access", this.basicActionsAddOns)
-
-        this.displayArray = [...this.basicActionsAddOns];
-        // Update local storage with the processed data
-        localStorage.removeItem(ACCESS_RIGHTS);
-        localStorage.setItem(ACCESS_RIGHTS, JSON.stringify(this.basicActionsAddOns));
-
-        // Optionally emit the data using a Subject or BehaviorSubject
-        this.accessRightsSubject.next(this.basicActionsAddOns);
-        
-        // Set flag to indicate data is loaded
-        this.accessRightsLoaded = true;
-        console.log("Access Rights Loaded:", this.displayArray);
-      
-      },
-      error: (err) => {
-        console.error("Error fetching access rights:", err);
-      },
-    });
-  };
-
-  toggleAll(selected: boolean) {
-    this.displayArray.forEach((privilege) => (privilege.selected = selected));
-  }
-
-  onChange(e: any, i: any) {
-    this.displayArray[i].selected = e.checked;
-  }
-
-  allSelected() {
-    return this.displayArray.every((privilege) => privilege.selected);
-  }
-
-  
-  private loadAccessRights(): void {
-    this.roleService.fetchAllAccessRights().pipe(takeUntil(this.subject)).subscribe(
-        (next) => {
-          this.displayArray = next.map((privilege: any) => ({
-            ...privilege,
-            selected: false,
-          }));
-          this.accessRightsLoaded = true;
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
-  }
-  
-  getLocalAccessRights() {
-    return JSON.parse(localStorage.getItem(ACCESS_RIGHTS));
-  }
-
-  onAccessRightChange(event: any, index: number): void {
-    this.displayArray[index].selected = event.checked;
-  }
-
-  onSubmit(): void {
-    const privileges = <FormArray>this.roleForm.get("privileges");
-    privileges.clear();
-  
-    this.displayArray.forEach((item) => {
-      if (item.selected) {
-        privileges.push(this.fb.control(item.accessRights));
-      }
-    });
-  
-    if (this.roleForm.valid) {
-      this.loading = true;
-      this.roleService.createRole(this.roleForm.value).subscribe(
-        {
-          next: (res) => {
-            
-            const successMessage = res.message;
-            this.snackbar.showNotification("snackbar-success", successMessage);
-            this.dialogRef.close();
-            // this.snackbar.alertSuccess("Role added successfully.");
-            // this.router.navigate(["/admin/roles/view"]);
-          },
-          error: (err) => {
-            this.loading = false;
-            const errorMessage = err.message;
-            this.snackbar.showNotification("snackbar-danger", errorMessage);
-            this.dialogRef.close();
-            // this.snackbar.alertWarning(err.message);
-          }
-        }
-      );
-    } else {
-      this.snackbar.alertWarning("Invalid form data.");
-    }
-  }
-
-  
-  
-  onClick(){
-    this.dialogRef.close();
   }
 }
