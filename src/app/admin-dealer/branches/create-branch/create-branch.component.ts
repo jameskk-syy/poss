@@ -17,6 +17,7 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
   loading: boolean = false; // Initialized
   managers: any;
+  managerId: any;
 
   constructor(
     public dialogRef: MatDialogRef<ViewBranchesComponent>,
@@ -52,12 +53,16 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.managers = result.manager;
-        console.log ('results role',this.managers)
+        console.log ('results manager',this.managers)
 
         this.branchForm.patchValue({
           managerId: this.managers.id,
-          managers: this.managers.name
+          manager: this.managers.name
         });
+
+        this.managerId = this.managers.id;
+        console.log ('results',this.managers.id)
+        console.log ('results userame',this.managers.name)
 
       }
     })
@@ -69,9 +74,22 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
   }
 
  
+ 
+
+
   createBranch() {
+    
     this.loading = true;
-    this.subscription = this.branchService.createBranch(this.branchForm.value).subscribe({
+
+    const formData = this.branchForm.value;
+    
+    const payload = {
+      ...formData,
+      manager: this.managerId, 
+    };
+    console.log('vjhvjh', payload)
+  
+    this.subscription = this.branchService.createBranch(payload).subscribe({
       next: (res) => {
         this.loading = false;
         const successMessage = res.message;
@@ -94,3 +112,6 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
     }
   }
 }
+
+
+
