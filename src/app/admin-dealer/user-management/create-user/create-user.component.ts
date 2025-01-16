@@ -65,6 +65,8 @@ export class CreateUserComponent implements OnInit {
           role: this.roles.name
         });
 
+        console.log ('results role',this.role)
+
       }
     });
   }

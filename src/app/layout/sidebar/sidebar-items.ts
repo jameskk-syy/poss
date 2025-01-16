@@ -277,7 +277,7 @@ export const ROUTES: RouteInfo[] = [
     role: ['ROLE_ADMIN'],
     submenu: [],
   },
-  
+    
   {
     path: '',
     title: 'User Accounts',

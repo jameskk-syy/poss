@@ -50,8 +50,8 @@
                     </ng-container>
 
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let role; columns: displayedColumns"
-                             (click)="onSelectRole(manager)" [style.cursor]="'pointer'" matRipple>
+                    <mat-row *matRowDef="let manager; columns: displayedColumns"
+                             (click)="onSelectManager(manager)" [style.cursor]="'pointer'" matRipple>
                     </mat-row>
                 </mat-table>
 

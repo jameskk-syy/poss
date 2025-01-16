@@ -24,7 +24,8 @@ export class ViewBranchesComponent implements OnInit {
     'name',
     'location',
     'email',
-    'phone',
+    'mobile',
+    'manager',
     'actions'
   ];
  
@@ -43,7 +44,7 @@ export class ViewBranchesComponent implements OnInit {
   contextMenuPosition = { x: "0px", y: "0px" };
 
   ngOnInit(): void {
-
+    this.getBranches()
   }
 
   createBranch(action: string){

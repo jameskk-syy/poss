@@ -90,10 +90,10 @@
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="location">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Code</mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Location</mat-header-cell>
                                     <mat-cell *matCellDef="let branch;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{branch.code}}
+                                        {{branch.location}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="email">
@@ -103,18 +103,18 @@
                                         {{branch.email}}
                                     </mat-cell>
                                 </ng-container>
-                                <ng-container matColumnDef="phone">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Email</mat-header-cell>
+                                <ng-container matColumnDef="mobile">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Phone</mat-header-cell>
                                     <mat-cell *matCellDef="let branch;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{branch.phone}}
+                                        {{branch.mobile}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="manager">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Manager</mat-header-cell>
                                     <mat-cell *matCellDef="let branch;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{branch.phone}}
+                                        {{branch.manager}}
                                     </mat-cell>
                                 </ng-container>
                                                       
@@ -122,12 +122,15 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
                                     <mat-cell *matCellDef="let branch;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, branch)">
-                                        <button mat-icon-button (click)="$event.stopPropagation()"
+                                        <!-- <button mat-icon-button (click)="$event.stopPropagation()"
                                             (click)="editBranch(branch)" 
                                             class="tbl-action-btn">
-                                            <app-feather-icons color="primary" matTooltip="Edit Branch"
+                                            <app-feather-icons color="accent" matTooltip="Edit Branch"
                                                 [icon]="'edit'"></app-feather-icons>
-                                        </button>
+                                        </button> -->
+                                        <button mat-icon-button color="accent" class="tbl-action-btn" (click)="editBranch(branch)">
+                                            <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
+                                          </button>
                                         <button mat-icon-button (click)="$event.stopPropagation()"
                                             (click)="deleteBranch(branch)" matTooltip="Delete Branch"
                                             class="tbl-action-btn">
@@ -138,9 +141,9 @@
                                 </ng-container>
                                 
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                                <!-- <mat-row *matRowDef="let department; columns: displayedColumns"
-                                    (click)="stockDetails(stock)" [style.cursor]="'pointer'" matRipple>
-                                </mat-row> -->
+                                <mat-row *matRowDef="let branch; columns: displayedColumns"
+                                    (click)="branchDetails(branch)" [style.cursor]="'pointer'" matRipple>
+                                </mat-row>
                             </mat-table>
         
                             <!-- Loading spinner -->
