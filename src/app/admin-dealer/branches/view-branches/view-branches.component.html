@@ -122,13 +122,8 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
                                     <mat-cell *matCellDef="let branch;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" (contextmenu)="onContextMenu($event, branch)">
-                                        <!-- <button mat-icon-button (click)="$event.stopPropagation()"
-                                            (click)="editBranch(branch)" 
-                                            class="tbl-action-btn">
-                                            <app-feather-icons color="accent" matTooltip="Edit Branch"
-                                                [icon]="'edit'"></app-feather-icons>
-                                        </button> -->
-                                        <button mat-icon-button color="accent" class="tbl-action-btn" (click)="editBranch(branch)">
+                                       
+                                        <button mat-icon-button color="accent" class="tbl-action-btn" (click)="editBranch(branch, 'edit')">
                                             <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                                           </button>
                                         <button mat-icon-button (click)="$event.stopPropagation()"
@@ -142,7 +137,7 @@
                                 
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                 <mat-row *matRowDef="let branch; columns: displayedColumns"
-                                    (click)="branchDetails(branch)" [style.cursor]="'pointer'" matRipple>
+                                     [style.cursor]="'pointer'" matRipple>
                                 </mat-row>
                             </mat-table>
         

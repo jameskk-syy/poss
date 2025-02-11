@@ -28,13 +28,15 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { DeleteBranchComponent } from './delete-branch/delete-branch.component';
 
 
 @NgModule({
   declarations: [
     ViewBranchesComponent,
     CreateBranchComponent,
-    ManagerLkupComponent
+    ManagerLkupComponent,
+    DeleteBranchComponent
   ],
   imports: [
     CommonModule,

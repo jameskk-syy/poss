@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { CreateBranchComponent } from '../create-branch/create-branch.component';
+import { DeleteBranchComponent } from '../delete-branch/delete-branch.component';
 
 @Component({
   selector: 'app-view-branches',
@@ -53,7 +54,7 @@ export class ViewBranchesComponent implements OnInit {
       dialogConfig.autoFocus = true;
       dialogConfig.width = "800px";
       dialogConfig.data = {
-        action:action
+        
       };
   
       const dilaogRef = this.dialog.open(CreateBranchComponent, dialogConfig);
@@ -64,16 +65,16 @@ export class ViewBranchesComponent implements OnInit {
 
   }
 
-  editCustomer(action:string,){
+  editBranch(branch: any, action: string){
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false
     dialogConfig.autoFocus = true
     dialogConfig.width = "600px"
     dialogConfig.data = { 
       action:action,
-      // branch: branch
+      branch:branch
     }
-    console.log('action is ',action)
+    console.log('action is ',action, branch)
   
 
     const dialogRef = this.dialog.open(CreateBranchComponent, dialogConfig);
@@ -82,6 +83,24 @@ export class ViewBranchesComponent implements OnInit {
         this.ngOnInit()
       }
       });
+  }
+
+  deleteBranch(branch: any){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "400px";
+    dialogConfig.data = {
+      branch:branch.id
+    }
+    
+    const dialogRef = this.dialog.open(DeleteBranchComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe({
+      next: (value) => {
+        this.ngOnInit();
+      }
+    })
+    
   }
 
   getBranches(){

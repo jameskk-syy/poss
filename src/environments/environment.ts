@@ -4,14 +4,10 @@
 
 export const environment = {
   production: false,
-      apiUrl: "http://localhost:8080",
-      API: "http://localhost:8080",  
+      apiUrl: "http://172.16.10.142:8080",
+      API: "http://172.16.10.142:8080",
 
-      // apiUrl: "http://172.16.8.29:8080",
-      // API: "http://172.16.8.29:8080", 
-
-      // apiUrl: "http://http://172.16.11.12:9600",
-      // API: "http://http://172.16.11.12:9600", 
+       
 };
 
 /*

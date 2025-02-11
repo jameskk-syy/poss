@@ -26,9 +26,18 @@ export class BranchesService {
     return this.http.post(this.branchUrl + `create`, data)
   }
 
+  updateBranch(id:any, data: any ): Observable<any>{
+    return this.http.put(this.branchUrl + `edit/${id}`, data)
+  }
+
+  deleteBranch(id: any): Observable<any>{
+    return this.http.delete(this.branchUrl +`delete/${id}`)
+  }
+
   getManagers():Observable<any>{
     return this.http.get(this.userUrl + `managers`)
   }
+
 
 }
 
