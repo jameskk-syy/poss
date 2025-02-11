@@ -7,6 +7,10 @@ export const environment = {
       apiUrl: "http://172.16.10.142:8080",
       API: "http://172.16.10.142:8080",
 
+      // apiUrl: "http://172.16.10.142:8080",
+      // API: "http://172.16.10.142:8080",
+
+
        
 };
 
