@@ -17,8 +17,8 @@ export class ManagerLkupComponent implements OnInit {
 
   displayedColumns: string[] = [
     "id",
-    "firstname",
-    "lastname",
+    "firstName",
+    "lastName",
     "status",
     
   ];
@@ -78,7 +78,7 @@ export class ManagerLkupComponent implements OnInit {
 
   onSelectManager(manager: any) {
     console.log('ht', manager); 
-    this.dialogRef.close({ manager: { name: manager.username, id: manager.id } });
+    this.dialogRef.close({ manager: { name: manager.userName, id: manager.id } });
     console.log ('manager nm',manager )
   }
 

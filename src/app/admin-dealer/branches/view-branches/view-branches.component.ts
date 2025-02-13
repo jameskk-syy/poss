@@ -17,7 +17,7 @@ import { SnackbarService } from 'src/app/shared/snackbar.service';
 })
 export class ViewBranchesComponent implements OnInit {
 
-  isLoading: boolean;
+  loading: boolean;
   isdata: boolean;
   data: any;
   subscription!: Subscription;
@@ -30,7 +30,7 @@ export class ViewBranchesComponent implements OnInit {
     'manager',
     'actions'
   ];
-  loading: boolean;
+
  
 
  
@@ -107,20 +107,20 @@ export class ViewBranchesComponent implements OnInit {
   }
 
   getBranches(){
-    this.isLoading = true;
+    this.loading = true;
     this.subscription = this. branchesService.getBranches().subscribe({
       next:(res) => {
         this.data = res;
         console.log('branches', res)
           if (this.data.entity.length > 0) {
-            this.isLoading = false;
+            this.loading = false;
             this.isdata = true;
             // Binding with the datasource
             this.dataSource = new MatTableDataSource(this.data.entity);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
           } else {
-            this.isLoading = false;
+            this.loading = false;
             this.dataSource = new MatTableDataSource<any>(this.data);
           }
         },

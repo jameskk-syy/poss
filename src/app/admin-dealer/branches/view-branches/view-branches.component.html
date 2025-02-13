@@ -169,12 +169,12 @@
                             </mat-table>
         
                             <!-- Loading spinner -->
-                            <div *ngIf="isLoading" class="tbl-spinner">
+                            <div *ngIf="loading" class="tbl-spinner">
                                 <mat-progress-spinner color="primary" [diameter]="50" mode="indeterminate">
                                 </mat-progress-spinner>
                             </div>
         
-                            <div class="tbl-spinner" *ngIf="isdata==false && !isLoading">
+                            <div class="tbl-spinner" *ngIf="isdata==false && !loading">
                                 <h4>0 Records Found</h4>
                             </div>
         

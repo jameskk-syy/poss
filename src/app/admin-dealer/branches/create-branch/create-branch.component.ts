@@ -18,6 +18,7 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
   loading: boolean = false; // Initialized
   managers: any;
   managerId: any;
+  managerid: any;
   title: string;
 
   constructor(
@@ -41,7 +42,6 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
       manager: ["",[Validators.required]]
     });
 
-    console.log('cvhjhjhfg', this.data)
     if(this.data.action === 'edit'){
       this.branchForm.patchValue({
         name: this.data.branch.name,
@@ -64,9 +64,7 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.width = "60%";
-    dialogConfig.data = {
-     
-    };
+    dialogConfig.data = { };
   
     const dialogRef = this.dialog.open(ManagerLkupComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
@@ -75,11 +73,11 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
         console.log ('results manager',this.managers)
 
         this.branchForm.patchValue({
-          managerId: this.managers.id,
+          managerid: this.managers.id,
           manager: this.managers.name
         });
 
-        this.managerId = this.managers.id;
+        this.managerid = this.managers.id;
         console.log ('results',this.managers.id)
         console.log ('results userame',this.managers.name)
 
@@ -97,14 +95,12 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
 
 
   createBranch() {
-    
     this.loading = true;
-
     const formData = this.branchForm.value;
-    
+    const {manager, ...filteredFormData} = formData;
     const payload = {
-      ...formData,
-      manager: this.managerId, 
+      ...filteredFormData,
+      managerId: this.managerid, 
     };
     console.log('vjhvjh', payload)
 
@@ -127,32 +123,13 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
         }
       });
     }
+  
+    
   }
 
   updateBranch() {
-    const formData = this.branchForm.value;
+    this.loading = true;
     
-    const payload = {
-      ...formData,
-      manager: this.managerId,
-    };
-
-    console.log('payload', payload)
-  
-    this.subscription = this.branchService.updateBranch(this.data.branch.id, payload).subscribe({
-      next: (res) => {
-        this.loading = false;
-        const successMessage = res.message;
-        this.snackbar.showNotification("snackbar-success", successMessage);
-        this.branchForm.reset();
-        this.dialogRef.close();
-      },
-      error: (err) => {
-        this.loading = false;
-        const errorMessage = err.message;
-        this.snackbar.showNotification("snackbar-danger", errorMessage);
-      }
-    });
   }
 
   
