@@ -8,6 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { CreateBranchComponent } from '../create-branch/create-branch.component';
 import { DeleteBranchComponent } from '../delete-branch/delete-branch.component';
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 
 @Component({
   selector: 'app-view-branches',
@@ -29,12 +30,14 @@ export class ViewBranchesComponent implements OnInit {
     'manager',
     'actions'
   ];
+  loading: boolean;
  
 
  
   constructor(
     private dialog: MatDialog,
-    private branchesService: BranchesService
+    private branchesService: BranchesService,
+    private snackbar: SnackbarService
   ) { }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -122,9 +125,9 @@ export class ViewBranchesComponent implements OnInit {
           }
         },
         error: (err) => {
-          this.isLoading = false;
-          console.error('Error fetching customer data:', err);
-          this.isdata = false;
+         
+          this.loading = false;
+          this.snackbar.showNotification("snackbar-danger", err.message);
         }
     })
 

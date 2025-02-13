@@ -11,6 +11,7 @@ import { ViewUsersComponent } from './view-users/view-users.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { RoleLkupComponent } from './role-lkup/role-lkup.component';
 import { ViewManagersComponent } from './view-managers/view-managers.component';
+import { CreateManagerComponent } from './create-manager/create-manager.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ViewManagersComponent } from './view-managers/view-managers.component';
     CreateUserComponent,
     ViewUsersComponent,
     RoleLkupComponent,
-    ViewManagersComponent
+    ViewManagersComponent,
+    CreateManagerComponent
   ],
   imports: [
     CommonModule,

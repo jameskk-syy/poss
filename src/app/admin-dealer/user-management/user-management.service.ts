@@ -13,7 +13,15 @@ export class UserManagementService {
 
   userUrl = `${environment.apiUrl}/api/v1/`;
 
-  createUser(data): Observable<any>{
+  // createUser(data): Observable<any>{
+  //   return this.http.post(this.userUrl + `auth/register`, data)
+  // }
+
+  createManager(data): Observable<any>{
     return this.http.post(this.userUrl + `auth/register`, data)
+  }
+
+  getManagers(): Observable<any>{
+    return this.http.get(this.userUrl + `user/managers`)
   }
 }

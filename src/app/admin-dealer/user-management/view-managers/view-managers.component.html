@@ -2,7 +2,7 @@
     <div class="content-block">
       <div class="block-header">
         <!-- breadcrumb -->
-        <app-breadcrumb [title]="'Active Manager Accounts'" [items]="['Users']"  [active_item]="'Managers'">
+        <app-breadcrumb [title]="'Active Managers'" [items]="['Users']"  [active_item]="'Managers'">
         </app-breadcrumb>
       </div>
   
@@ -75,46 +75,39 @@
                     </div>
                   </div>
                 </div>
-                <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell"
-                  #exporter="matTableExporter">
+                <mat-table #table matTableExporter [dataSource]="dataSource" matSort class="mat-cell" #exporter="matTableExporter">
                   <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef class="table-img tbl-col-width-per-8"
+                        mat-sort-header>#</mat-header-cell>
+                    <mat-cell class="table-img tbl-col-width-per-8"
+                        *matCellDef="let element; let i = index" [class.odd-row]="i % 2"
+                        [class.even-row]="!(i % 2)">{{i+1}}</mat-cell>
+                  </ng-container> 
+      
+                  <ng-container matColumnDef="firstName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                      class="column-nowrap psl-3 tbl-col-width-per-3">Id</mat-header-cell>
-                    <mat-cell *matCellDef="let user" class="column-nowrap psl-3 tbl-col-width-per-3">{{ user.id}}
-                    </mat-cell>
-                  </ng-container>
-                  <ng-container matColumnDef="username">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                      class="column-nowrap psl-3 tbl-col-width-per-12">Username</mat-header-cell>
-                    <mat-cell *matCellDef="let user" class="column-nowrap psl-3 tbl-col-width-per-12">{{ user.username}}
-                    </mat-cell>
-                  </ng-container>
-                  <ng-container matColumnDef="firstname">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header
-                      class="column-nowrap psl-3 tbl-col-width-per-12">Firstname</mat-header-cell>
+                      class="column-nowrap psl-3 tbl-col-width-per-12">First Name</mat-header-cell>
                     <mat-cell *matCellDef="let user" (contextmenu)="onContextMenu($event, user)"
                       class="column-nowrap psl-3 tbl-col-width-per-12">{{ user.firstName }}</mat-cell>                      
                   </ng-container>
-                  <ng-container matColumnDef="lastname">
+                  <ng-container matColumnDef="lastName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                      class="column-nowrap psl-3 tbl-col-width-per-12">Lastname</mat-header-cell>
+                      class="column-nowrap psl-3 tbl-col-width-per-12">Last Name</mat-header-cell>
                     <mat-cell *matCellDef="let user" (contextmenu)="onContextMenu($event, user)"
                       class="column-nowrap psl-3 tbl-col-width-per-12">{{ user.lastName }} </mat-cell>
                   </ng-container>
-                  <ng-container matColumnDef="PickupLocation">
+                  <ng-container matColumnDef="email">
                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                      class="column-nowrap psl-3 tbl-col-width-per-10">Pick Up Location</mat-header-cell>
+                      class="column-nowrap psl-3 tbl-col-width-per-15">Email</mat-header-cell>
                     <mat-cell *matCellDef="let user" (contextmenu)="onContextMenu($event, user)"
-                      class="column-nowrap psl-3 tbl-col-width-per-10">
-                      {{ user.pickUpLocation }}
-                    </mat-cell>
+                      class="column-nowrap psl-3 tbl-col-width-per-15">{{ user.email }}</mat-cell>
                   </ng-container>
-                  <ng-container matColumnDef="phonenumber">
+                <ng-container matColumnDef="phoneNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header
-                      class="column-nowrap psl-3 tbl-col-width-per-15">Phonenumber</mat-header-cell>
+                      class="column-nowrap psl-3 tbl-col-width-per-15">Mobile</mat-header-cell>
                     <mat-cell *matCellDef="let user" (contextmenu)="onContextMenu($event, user)"
                       class="column-nowrap psl-3 tbl-col-width-per-15">
-                      {{ user.mobile }}</mat-cell>
+                      {{ user.phoneNumber }}</mat-cell>
                   </ng-container>
                  
                   <ng-container matColumnDef="status">

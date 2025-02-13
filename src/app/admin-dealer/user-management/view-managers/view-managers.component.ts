@@ -7,7 +7,8 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { CreateUserComponent } from '../create-user/create-user.component';
+import { CreateManagerComponent } from '../create-manager/create-manager.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-view-managers',
@@ -18,10 +19,10 @@ export class ViewManagersComponent implements OnInit {
 
   displayedColumns: string[] = [
     "id",
-    "username",
-    "firstname",
-    "lastname",
-    "phonenumber",
+    "firstName",
+    "lastName",
+    "email",
+    "phoneNumber",
     "status",
     "update",
     "updatePassword",
@@ -32,6 +33,9 @@ export class ViewManagersComponent implements OnInit {
   index: number;
   id: number;
   isLoading = true;
+  loading: boolean;
+  subscription: Subscription = new Subscription();
+  data: any;
 
   constructor(
     public dialog: MatDialog,
@@ -49,11 +53,11 @@ export class ViewManagersComponent implements OnInit {
     contextMenuPosition = { x: "0px", y: "0px" };
 
     ngOnInit(): void {
-      // this.getAllUsers();
+      this.getManagers();
     }
   
     refresh() {
-      // this.getAllUsers();
+      this.getManagers();
     }
   
     addNew() {
@@ -65,37 +69,32 @@ export class ViewManagersComponent implements OnInit {
        
       };
   
-      const dilaogRef = this.dialog.open(CreateUserComponent, dialogConfig);
+      const dilaogRef = this.dialog.open(CreateManagerComponent, dialogConfig);
   
       dilaogRef.afterClosed().subscribe(res => {
-        // this.getAllUsers();
+        this.getManagers();
       })
   
       
     }
     
-
-    
-    // getAllUsers() {
-    //   this.userService.fetchAllUserAccounts().pipe(takeUntil(this.subject)).subscribe(
-    //       (res) => {
-    //         this.users = res.userData;
-  
-  
-    //         if (this.users.length > 0) {
-    //           this.isLoading = false;
-  
-    //           this.dataSource = new MatTableDataSource<any>(this.users);
-    //           this.dataSource.paginator = this.paginator;
-    //           this.dataSource.sort = this.sort;
-    //         }
-    //       },
-    //       (err) => {
-    //         console.log(err);
-    //       }
-    //     );
-    // }
-  
+    getManagers() {
+      this.isLoading = true;
+      this.subscription = this.userService.getManagers().subscribe({
+          next: (res) => {
+              this.data = res;
+              console.log('managers', res);
+              this.dataSource = new MatTableDataSource(this.data?.entity || []);
+              this.dataSource.paginator = this.paginator;
+              this.dataSource.sort = this.sort;
+              this.isLoading = false;
+          },
+          error: (err) => {
+              this.isLoading = false;
+              this.snackbar.showNotification("snackbar-danger", err.message);
+          }
+      });
+    }  
     // editCall(user) {
     //   const dialogConfig = new MatDialogConfig();
     //   dialogConfig.disableClose = false;
@@ -224,6 +223,9 @@ export class ViewManagersComponent implements OnInit {
     // viewAccountLogs(userId) {
     //   this.router.navigate([`admin/user-accounts/account-logs/${userId}`]);
     // }
+
+    
+  
   
     
   

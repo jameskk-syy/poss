@@ -18,6 +18,7 @@ export class CreateUserComponent implements OnInit {
   loading: any;
   userForm: FormGroup
   role: any;
+  roleId: any;
   roleName: any;
   name: any;
   subscription!: Subscription;
@@ -33,82 +34,75 @@ export class CreateUserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userForm = this.fb.group({
-      user_name: ["", [Validators.required]],
-      first_name: ["", [Validators.required]],
-      last_name: ["", [Validators.required]],
-      email: ["", [Validators.required]],
-      mobile: ["", [Validators.required]],
-      role: ["", [Validators.required]],
-      password: ["",[Validators.required]] 
+    
+  }
+
+  // ngOnInit(): void {
+  //   this.userForm = this.fb.group({
+  //     userName: ["", [Validators.required]],
+  //     firstName: ["", [Validators.required]],
+  //     lastName: ["", [Validators.required]],
+  //     email: ["", [Validators.required]],
+  //     mobile: ["", [Validators.required]],
+  //     role: ["", [Validators.required]],
+  //     password: ["",[Validators.required]],
+  //     roleId: ["", [Validators.required]],
       
-    })
-  }
+  //   })
+  // }
 
-  selectRole() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-    dialogConfig.data = {
-     
-    };
-  
-    const dialogRef = this.dialog.open(RoleLkupComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.roles = result.role;
-        console.log ('results role',this.roles)
+  // selectRole() {
+  //   const dialogConfig = new MatDialogConfig();
+  //   dialogConfig.disableClose = false;
+  //   dialogConfig.autoFocus = true;
+  //   dialogConfig.width = "60%";
 
-        this.userForm.patchValue({
-          roleId: this.roles.id,
-          role: this.roles.name
-        });
+  //   const dialogRef = this.dialog.open(RoleLkupComponent, dialogConfig);
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     if (result) {
+  //       this.roles = result.role;
+  //       console.log ('results role',this.roles)
 
-        console.log ('results role',this.role)
+  //       this.userForm.patchValue({
+  //         roleId: this.roles.id,
+  //         role: this.roles.name
+  //       });
+  //       console.log ('results role',this.role)
+  //     } 
+  //   });
+  // }
 
-      }
-    });
-  }
-
-  onClick() {
-    this.dialogRef.close();
-  }
+  // onClick() {
+  //   this.dialogRef.close();
+  // }
  
 
-  createUser(){
-  
-      this.subscription = this.userService.createUser(this.buildPayload(this.userForm.value)).subscribe({
-        next: (res) => {
-        this.loading = false;
-        console.log ('jhdjh', this.userForm )
-        const successMessage = res.message
-        this.snackbar.showNotification("snackbar-success", successMessage);
-        this.userForm.reset();
-        this.dialogRef.close();
-        }, 
-      error: (err) => {
-        this.loading = false;
-        const errorMessage = err.message
-        this.snackbar.showNotification("snackbar-danger", errorMessage);
-        this.dialogRef.close();
-        }
-      }
-    )
-  }
+  // createUser(){
+  //   this.loading = true;
+  //   const formData = this.userForm.value;
+  //   const {role, ...filteredFormData} = formData;
+  //   const payLoad = {
+  //     ...filteredFormData,
+  //     roleId: this.roles.id
+  //   }
 
-  buildPayload(user: any) {
-    let data = {
-      "user_name": user.user_name,
-      "first_name": user.first_name,
-      "last_name": user.last_name,
-      "email": user.email,
-      "mobile": user.mobile,
-      "role": user.roles.id,
-      "password": user.password
-    }
-    return data;
-  }
+  //   this.subscription = this.userService.createUser(payLoad).subscribe({
+  //     next: (res) => {
+  //       this.loading = false;
+  //       console.log ('jhdjh', this.userForm )
+  //       const successMessage = res.message
+  //       this.snackbar.showNotification("snackbar-success", successMessage);
+  //       this.userForm.reset();
+  //       this.dialogRef.close();
+  //     }, 
+  //    error: (err) => {
+  //       this.loading = false;
+  //       const errorMessage = err.message
+  //       this.snackbar.showNotification("snackbar-danger", errorMessage);
+  //       this.dialogRef.close();
+  //     }
+  //   })
+  // }
+}
 
-  }
 
