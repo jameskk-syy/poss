@@ -27,13 +27,14 @@ export class CreateRoleComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.fetchAccessRights();
-
+    console.log('data actions', this.data);
     if (this.data.action === 'edit' && this.data.role) {
       this.title = 'Edit Role';
       this.populateForm(this.data.role);
     } else {
       this.title = 'Create New Role';
     }
+
   }
 
   private initializeForm(): void {

@@ -79,41 +79,38 @@ export class ViewRolesComponent implements OnInit {
 
 
   createRole(action: string){
-    if(action === 'add'){
-      console.log('act', action)
-    const dialogConfig = new MatDialogConfig();
+      const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = false;
       dialogConfig.autoFocus = true;
       dialogConfig.width = "800px";
       dialogConfig.data = {
-       
-      };
+        action: action
+       };
   
       const dilaogRef = this.dialog.open(CreateRoleComponent, dialogConfig);
   
       dilaogRef.afterClosed().subscribe(res => {
         this.getRoles();
       })
-    }
-  }
+   }
+  
 
   editRole(role: any,action: string){
-    console.log('act', action, role)
     const dialogConfig = new MatDialogConfig();
-      dialogConfig.disableClose = false;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = "800px";
-      dialogConfig.data = {
-        action: action,
-        role: role
-      };
-  
-      const dilaogRef = this.dialog.open(CreateRoleComponent, dialogConfig);
-  
-      dilaogRef.afterClosed().subscribe(res => {
-        this.getRoles();
-      })
-    }
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "800px";
+    dialogConfig.data = {
+      action: action,
+      role: role
+    };
+
+    const dilaogRef = this.dialog.open(CreateRoleComponent, dialogConfig);
+
+    dilaogRef.afterClosed().subscribe(res => {
+      this.getRoles();
+    })
+  }
 
   
   applyFilter(event: Event) {
