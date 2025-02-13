@@ -20,7 +20,7 @@
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
                     <mat-form-field class="example-full-width mb-3" appearance="outline">
                         <mat-label>Role Name</mat-label>
-                        <input matInput formControlName="role" required (input)="toUpperCase($event)"/>
+                        <input matInput formControlName="role" required (input)="toUpperCase(roleForm.get('role'))"/>
                         <mat-error *ngIf="roleForm.get('role').hasError('required')">
                             Role name is required
                         </mat-error>

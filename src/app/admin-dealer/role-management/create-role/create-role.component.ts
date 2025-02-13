@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RoleManagementService } from '../role-management.service';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
@@ -28,7 +28,7 @@ export class CreateRoleComponent implements OnInit {
     this.initializeForm();
     this.fetchAccessRights();
     console.log('data actions', this.data);
-    if (this.data.action === 'edit' && this.data.role) {
+    if (this.data.action === 'edit') {
       this.title = 'Edit Role';
       this.populateForm(this.data.role);
     } else {
@@ -142,8 +142,8 @@ export class CreateRoleComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  toUpperCase(event: any): void {
-    const value = event.target.value;
-    event.target.value = value.toUpperCase();
-  }
+  toUpperCase(formControl: AbstractControl): void {
+    formControl.setValue(formControl.value.toUpperCase(), { emitEvent: false });
+}
+
 }
