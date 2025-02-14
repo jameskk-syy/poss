@@ -14,7 +14,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [],
   },
 
-  // Admin Modules
+  // Manager Modules
   {
     path: '/manager/dashboard/main',
     title: 'Dashboard',
@@ -109,19 +109,19 @@ export const ROUTES: RouteInfo[] = [
     ],
   },
 
-  {
-    path: '/manager/purchases/main',
-    title: 'Ordering',
-    moduleName: 'ordering',
-    iconType: 'feather',
-    icon: 'box',
-    class: '',
-    groupTitle: false,
-    badge: '',
-    badgeClass: '',
-    role: ['ROLE_MANAGER'],
-    submenu: [],
-  },
+  // {
+  //   path: '/manager/purchases/main',
+  //   title: 'Ordering',
+  //   moduleName: 'ordering',
+  //   iconType: 'feather',
+  //   icon: 'box',
+  //   class: '',
+  //   groupTitle: false,
+  //   badge: '',
+  //   badgeClass: '',
+  //   role: ['ROLE_MANAGER'],
+  //   submenu: [],
+  // },
 
   {
     path: '/manager/purchases/main',
