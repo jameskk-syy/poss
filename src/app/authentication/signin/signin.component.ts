@@ -33,7 +33,7 @@ export class SigninComponent
 
   ngOnInit() {
     this.authForm = this.formBuilder.group({
-      username: ["", Validators.required],
+      email: ["", Validators.required],
       password: ["", Validators.required],
     });
   }
@@ -55,11 +55,13 @@ export class SigninComponent
     } else {
       this.authService.login(this.authForm.value).subscribe({
         next:(result: any) => {
-          if(result.statusCode === 200) {
-            const res = result.entity;
+          if(result.status == "success") {
+            const res = result;
             this.tokenStorage.saveToken(res.token);
             this.tokenStorage.saveUser(res);
-            const role = res.roles[0].name;
+            const role = res.user.role;
+
+            console.log("role", role)
     
             if (role == Role.Admin) {
               this.router.navigate(['/dealer/dashboard'])

@@ -9,6 +9,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { CreateBranchComponent } from '../create-branch/create-branch.component';
 import { DeleteBranchComponent } from '../delete-branch/delete-branch.component';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
+import { ActivateDeactivateBranchComponent } from '../activate-deactivate-branch/activate-deactivate-branch.component';
 
 @Component({
   selector: 'app-view-branches',
@@ -28,6 +29,7 @@ export class ViewBranchesComponent implements OnInit {
     'email',
     'mobile',
     'manager',
+    'status',
     'actions'
   ];
 
@@ -88,24 +90,7 @@ export class ViewBranchesComponent implements OnInit {
       });
   }
 
-  deleteBranch(branch: any){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "400px";
-    dialogConfig.data = {
-      branch:branch.id
-    }
-    
-    const dialogRef = this.dialog.open(DeleteBranchComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe({
-      next: (value) => {
-        this.ngOnInit();
-      }
-    })
-    
-  }
-
+  
   getBranches(){
     this.loading = true;
     this.subscription = this. branchesService.getBranches().subscribe({
@@ -130,10 +115,8 @@ export class ViewBranchesComponent implements OnInit {
           this.snackbar.showNotification("snackbar-danger", err.message);
         }
     })
-
   }
 
-  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -142,6 +125,48 @@ export class ViewBranchesComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  activateBranch(branch: any, action: string){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "400px";
+    dialogConfig.data = {
+      branch:branch.id,
+      branchName:branch.name,
+      action: action
+    }
+    
+    const dialogRef = this.dialog.open(ActivateDeactivateBranchComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe({
+      next: (value) => {
+        this.ngOnInit();
+      }
+    })
+  }
+
+  inactivateBranch(branch: any, action: string){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "400px";
+    dialogConfig.data = {
+      branch:branch.id,
+      branchName:branch.name,
+      action: action
+    }
+
+    const dialogRef = this.dialog.open(ActivateDeactivateBranchComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe({
+      next: (value) => {
+        this.ngOnInit();
+      }
+
+    })
+  }
+
+  
+  
 
 
 }

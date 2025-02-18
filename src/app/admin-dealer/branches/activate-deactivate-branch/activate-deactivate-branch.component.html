@@ -1,0 +1,27 @@
+
+<div class="container">
+    <div mat-dialog-content>
+      <div class="row">
+        <!--Gift Icon-->
+        <div class="col text-center">
+          <i *ngIf = "action === 'deactivate'" class="far fa-times-circle fa-6x col-red"></i>
+          <i *ngIf = "action === 'activate'" class="far fa-check-circle fa-6x col-green"></i>
+        </div>
+        <!--Modal Text-->
+        <div class="col-12 text-center">
+          <h4>Are you sure you want to {{action}} {{branchName}}?</h4>
+        </div>
+      </div>
+  
+       <mat-dialog-actions align="center" class="mb-1">
+        <button mat-raised-button (click)="onCancel()" class="warn">Cancel</button>
+        <button mat-raised-button 
+        color="primary" 
+        *ngIf="action === 'activate' || action === 'deactivate'" 
+        (click)="action === 'activate' ? activateBranch() : deactivateBranch()" 
+        [class.auth-spinner]="loading">
+        Submit
+        </button>
+      </mat-dialog-actions>
+    </div>
+</div>

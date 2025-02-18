@@ -29,6 +29,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DeleteBranchComponent } from './delete-branch/delete-branch.component';
+import { ActivateDeactivateBranchComponent } from './activate-deactivate-branch/activate-deactivate-branch.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { DeleteBranchComponent } from './delete-branch/delete-branch.component';
     ViewBranchesComponent,
     CreateBranchComponent,
     ManagerLkupComponent,
-    DeleteBranchComponent
+    DeleteBranchComponent,
+    ActivateDeactivateBranchComponent
   ],
   imports: [
     CommonModule,

@@ -38,6 +38,14 @@ export class BranchesService {
     return this.http.get(this.userUrl + `managers`)
   }
 
+  activateBranch(id: any): Observable<any>{
+    return this.http.post(this.branchUrl + `activate/${id}`, {})
+  }
+
+  deactivateBranch(id: any): Observable<any>{
+    return this.http.post(this.branchUrl + `deactivate/${id}`, {})
+  }
+
 
 }
 

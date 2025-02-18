@@ -78,7 +78,7 @@ export class ManagerLkupComponent implements OnInit {
 
   onSelectManager(manager: any) {
     console.log('ht', manager); 
-    this.dialogRef.close({ manager: { name: manager.userName, id: manager.id } });
+    this.dialogRef.close({ manager: { name: `${manager.firstName} ${manager.lastName}`, id: manager.id } });
     console.log ('manager nm',manager )
   }
 

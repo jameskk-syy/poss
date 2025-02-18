@@ -1,63 +1,34 @@
-<div class="auth-container">
-  <div class="row auth-main">
-    <div class="col-sm-12 auth-form-section">
-      <div class="form-section">
-        <div class="auth-wrapper">
-          <div class="text-center">
-            <!-- <img src="assets/images/equity1.jpg"  alt="" /> -->
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+          class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 shadow-lg rounded bg-white p-3 col-xl-4 offset-xl-1">
+        <form [formGroup]="authForm">
+          <div class="d-flex justify-content-center align-items-center mt-1 mb-3">
+            <img src="https://th.bing.com/th?q=Login+Logo+Transparent+Background&w=120&h=120&c=1&rs=1&qlt=90&cb=1&dpr=1.5&pid=InlineBlock&mkt=en-WW&cc=KE&setlang=en&adlt=moderate&t=1&mw=247"
+            class="imgagelogin" alt="Sample image">
           </div>
-          <h2 class="welcome-msg text-center fg">Forecourt Management System</h2>
-          <p class="auth-signup-text text-muted text-center">Enter credentials below:</p>
-          <h2 class="login-title text-center">Sign in</h2>
-          <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
-            <div class="row">
-              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <mat-label>Username</mat-label>
-                  <input matInput formControlName="username" />
-                  <mat-icon matSuffix>face</mat-icon>
-                  <mat-error *ngIf="authForm.get('username').hasError('required')">
-                    Username is required
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xl-12col-lg-12 col-md-12 col-sm-12 mb-2">
-                <mat-form-field class="example-full-width" appearance="outline">
-                  <mat-label>Password</mat-label>
-                  <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
-                  <a class="show-pwd-icon" href="#" onClick="return false;" matSuffix (click)="hide = !hide"
-                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                  </a>
-                  <mat-error *ngIf="authForm.get('password').hasError('required')">
-                    Password is required
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mb-5">
-              <div class="form-check">
-                <label class="form-check-label">
-                  <input class="form-check-input" type="checkbox" value=""> Remember me
-                  <span class="form-check-sign">
-                    <span class="check"></span>
-                  </span>
-                </label>
-              </div>
-              <a class="txt1" routerLink="/authentication/forgot-password">Forgot Password?</a>
-            </div>
-            <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
-            <div class="container-auth-form-btn">
-              <div style="text-align:center">
-                <button mat-raised-button color="primary" [class.auth-spinner]="loading" [disabled]="loading"
-                  class="auth-form-btn" [disabled]="!authForm.valid " type="submit">Login</button>
-              </div>
-            </div>
-          </form>
-        </div>
+          <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="form3Example3">Email address</label>
+            <input type="email" formControlName="email" id="form3Example3" class="form-control form-control-lg"
+              placeholder="Enter a valid email address" />
+          </div>
+          <div data-mdb-input-init class="form-outline mb-3">
+            <label class="form-label" for="form3Example4">Password</label>
+            <input type="password"  formControlName="password" id="form3Example4" class="form-control form-control-lg"
+              placeholder="Enter password" />
+            
+          </div>
+          <div class=" d-flex justify-content-center text-center text-lg-start mt-4 pt-2">
+            <button  type="button" (click)="onSubmit()" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
+              style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+          </div>
+
+        </form>
       </div>
     </div>
   </div>
-</div>
+</section>

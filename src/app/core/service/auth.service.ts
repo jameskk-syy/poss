@@ -4,18 +4,20 @@ import { BehaviorSubject, map, Observable, of } from "rxjs";
 import { User } from "../models/user";
 import { environment } from "src/environments/environment";
 
-const PASSWORD_RESET_API = `${environment.apiUrl}/api/v1/reset/`;
-const USERS_API = `${environment.apiUrl}/admin/api/v1/users/`;
-const AUTH_API = `${environment.apiUrl}/api/v1/auth/`;
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
-
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
+
+  
+ PASSWORD_RESET_API = `${environment.apiUrl}/api/v1/reset/`;
+ USERS_API = `${environment.apiUrl}/admin/api/v1/users/`;
+ AUTH_API = `${environment.apiUrl}/api/v1/auth`;
+
+ httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
+
 
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
@@ -28,77 +30,77 @@ export class AuthService {
   }
 
   login(user): Observable<any> {
-    const authUrl = `${environment.apiUrl}/api/v1/auth/login`
+    const authUrl = `${this.AUTH_API}/login`
     return this.http.post<any>(authUrl, user);
   }
 
   resetPasswordRequest(email: any): Observable<any> {
-    return this.http.post(PASSWORD_RESET_API + `send-token?emailaddress=${email}`, httpOptions);
+    return this.http.post(this.PASSWORD_RESET_API + `send-token?emailaddress=${email}`, this.httpOptions);
   }
 
   resetPassword(data: any): Observable<any> {
-    return this.http.post(PASSWORD_RESET_API + 'change-password', data, httpOptions);
+    return this.http.post(this.PASSWORD_RESET_API + 'change-password', data, this.httpOptions);
   }
 
   registerUser(data: any): Observable<any> {
-    return this.http.post(USERS_API + 'signup', data, httpOptions);
+    return this.http.post(this.USERS_API + 'signup', data, this.httpOptions);
   }
 
   allUsers(): Observable<any> {
-    return this.http.get(USERS_API + 'all-accounts', httpOptions);
+    return this.http.get(this.USERS_API + 'all-accounts', this.httpOptions);
   }
 
   allActiveUsers(): Observable<any> {
-    return this.http.get(USERS_API + 'active-accounts', httpOptions);
+    return this.http.get(this.USERS_API + 'active-accounts', this.httpOptions);
   }
 
   allDeletedUserAccounts(): Observable<any> {
-    return this.http.get(USERS_API + 'deleted-accounts', httpOptions);
+    return this.http.get(this.USERS_API + 'deleted-accounts', this.httpOptions);
   }
 
   allLockedUserAccounts(): Observable<any> {
-    return this.http.get(USERS_API + 'locked-accounts', httpOptions);
+    return this.http.get(this.USERS_API + 'locked-accounts', this.httpOptions);
   }
 
   allInactiveUserAccounts(): Observable<any> {
-    return this.http.get(USERS_API + 'inactiveaccounts', httpOptions);
+    return this.http.get(this.USERS_API + 'inactiveaccounts', this.httpOptions);
   }
 
   getUserByUsername(username: any): Observable<any> {
-    return this.http.get(AUTH_API + `account/${username}`, httpOptions);
+    return this.http.get(this.AUTH_API + `account/${username}`, this.httpOptions);
   }
 
   getUserById(id: any): Observable<any> {
-    return this.http.get(USERS_API + `find/${id}`, httpOptions);
+    return this.http.get(this.USERS_API + `find/${id}`, this.httpOptions);
   }
 
   getUsersInOneDepartment(name: any): Observable<any> {
-    return this.http.get(USERS_API + `department/users?department=${name}`, httpOptions);
+    return this.http.get(this.USERS_API + `department/users?department=${name}`, this.httpOptions);
   }
 
   updateUser(data: any): Observable<any> {
-    return this.http.put(USERS_API + 'update', data, httpOptions);
+    return this.http.put(this.USERS_API + 'update', data, this.httpOptions);
   }
 
   delete(data: any): Observable<any> {
-    return this.http.put(USERS_API + `deleteaccount?username=${data}`, data, httpOptions);
+    return this.http.put(this.USERS_API + `deleteaccount?username=${data}`, data, this.httpOptions);
   }
 
   restoreAccount(data: any): Observable<any> {
-    return this.http.put(USERS_API + `restoreaccount?username=${data}`, data, httpOptions);
+    return this.http.put(this.USERS_API + `restoreaccount?username=${data}`, data, this.httpOptions);
   }
 
   lock(data: any): Observable<any> {
-    return this.http.put(USERS_API + `lockaccount?username=${data}`, data, httpOptions);
+    return this.http.put(this.USERS_API + `lockaccount?username=${data}`, data, this.httpOptions);
   }
 
   unlock(data: any): Observable<any> {
-    return this.http.put(USERS_API + `unlockaccount?username=${data}`, httpOptions);
+    return this.http.put(this.USERS_API + `unlockaccount?username=${data}`, this.httpOptions);
   }
 
   signout(id: any) {
     sessionStorage.clear();
-    return this.http.put(AUTH_API + `logout/${id}`, httpOptions);
+    return this.http.put(this.AUTH_API + `logout/${id}`, this.httpOptions);
   }
 
   getToken() {
@@ -106,15 +108,15 @@ export class AuthService {
   }
 
   bulkUploadUsers(data: any): Observable<any> {
-    return this.http.post(USERS_API + 'upload/bulk/users', data, httpOptions);
+    return this.http.post(this.USERS_API + 'upload/bulk/users', data, this.httpOptions);
   }
 
   bulkUsers(): Observable<any> {
-    return this.http.get(USERS_API + 'uploaded/users', httpOptions);
+    return this.http.get(this.USERS_API + 'uploaded/users', this.httpOptions);
   }
 
   initiateBulkRegistration(): Observable<any> {
-    return this.http.post(USERS_API + 'registration/initiate', httpOptions);
+    return this.http.post(this.USERS_API + 'registration/initiate', this.httpOptions);
   }
 
   public deleteUser(username): Observable<{ message: string }> {

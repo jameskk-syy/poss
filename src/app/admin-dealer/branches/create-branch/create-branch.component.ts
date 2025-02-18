@@ -18,7 +18,6 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
   loading: boolean = false; // Initialized
   managers: any;
   managerId: any;
-  managerid: any;
   title: string;
 
   constructor(
@@ -38,7 +37,7 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
       address: ["", [Validators.required]],
       email: ["", [Validators.required]], 
       mobile: ["", [Validators.required]],
-      pobox: ["", [Validators.required]],
+      boxNumber: ["", [Validators.required]],
       manager: ["",[Validators.required]]
     });
 
@@ -49,8 +48,8 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
         address: this.data.branch.address,
         email: this.data.branch.email,
         mobile: this.data.branch.mobile,
-        pobox: this.data.branch.pobox,
-        manager: this.data.branch.manager
+        boxNumber: this.data.branch.boxNumber,
+        manager: `${this.data.branch.manager.firstName} ${this.data.branch.manager.lastName}`
       });
       this.title = 'Edit Branch';
     }
@@ -64,7 +63,9 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.width = "60%";
-    dialogConfig.data = { };
+    dialogConfig.data = {
+     
+    };
   
     const dialogRef = this.dialog.open(ManagerLkupComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
@@ -73,11 +74,11 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
         console.log ('results manager',this.managers)
 
         this.branchForm.patchValue({
-          managerid: this.managers.id,
+          managerId: this.managers.id,
           manager: this.managers.name
         });
 
-        this.managerid = this.managers.id;
+        this.managerId = this.managers.id;
         console.log ('results',this.managers.id)
         console.log ('results userame',this.managers.name)
 
@@ -95,12 +96,14 @@ export class CreateBranchComponent implements OnInit, OnDestroy {
 
 
   createBranch() {
+    
     this.loading = true;
+
     const formData = this.branchForm.value;
-    const {manager, ...filteredFormData} = formData;
+    
     const payload = {
-      ...filteredFormData,
-      managerId: this.managerid, 
+      ...formData,
+      manager: this.managerId, 
     };
     console.log('vjhvjh', payload)
 

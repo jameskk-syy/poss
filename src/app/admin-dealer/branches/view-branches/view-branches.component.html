@@ -114,15 +114,15 @@
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Manager</mat-header-cell>
                                     <mat-cell *matCellDef="let branch;let i = index" [class.odd-row]="i % 2"
                                         [class.even-row]="!(i % 2)" class="column-nowrap">
-                                        {{branch.manager}}
+                                        {{branch.manager.firstName}} {{branch.manager.lastName}}
                                     </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="status">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header class="column-nowrap">Status</mat-header-cell>
-                                    <mat-cell *matCellDef="let parent; let i = index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)"  class="column-nowrap">
+                                    <mat-cell *matCellDef="let branch; let i = index" [class.odd-row]="i % 2" [class.even-row]="!(i % 2)"  class="column-nowrap">
                             
                                       <!-- Active Status -->
-                                      <div *ngIf="parent.status === 'ACTIVE'">
+                                      <!-- <div *ngIf="parent.status === 'ACTIVE'">
                                         <span class="badge badge-pill badge-primary col-green">
                                           {{ "ACTIVE" }}
                                         </span>
@@ -130,14 +130,34 @@
                                           <app-feather-icons matTooltip="Deactivate" [icon]="'x'" [class]="'tbl-fav-deactivate'">
                                           </app-feather-icons>
                                         </button>
-                                      </div>
+                                      </div> -->
                                   
                                       <!-- Inactive Status -->
-                                      <div *ngIf="parent.status === 'INACTIVE'">
+                                      <!-- <div *ngIf="parent.status === 'INACTIVE'">
                                         <span class="badge badge-pill badge-primary col-red">
                                           {{ "INACTIVE" }}
                                         </span>
                                         <button mat-icon-button color="primary" (click)="toggleActivation(parent)" class="tbl-action-btn">
+                                          <app-feather-icons matTooltip="Activate"  [icon]="'check'" [class]="'tbl-fav-approve'">
+                                          </app-feather-icons>
+                                        </button>
+                                      </div> -->
+                                      <div *ngIf="branch.status === 'ACTIVE'">
+                                        <span class="badge badge-pill badge-primary col-green">
+                                          {{ "ACTIVE" }}
+                                        </span>
+                                        <button mat-icon-button color="warn" (click)="inactivateBranch(branch, 'deactivate')" class="tbl-action-btn">
+                                          <app-feather-icons matTooltip="Deactivate" [icon]="'x'" [class]="'tbl-fav-deactivate'">
+                                          </app-feather-icons>
+                                        </button>
+                                      </div>
+                                  
+                                      <!-- Inactive Status -->
+                                      <div *ngIf="branch.status === 'INACTIVE'">
+                                        <span class="badge badge-pill badge-primary col-red">
+                                          {{ "INACTIVE" }}
+                                        </span>
+                                        <button mat-icon-button color="primary" (click)="activateBranch(branch, 'activate')" class="tbl-action-btn">
                                           <app-feather-icons matTooltip="Activate"  [icon]="'check'" [class]="'tbl-fav-approve'">
                                           </app-feather-icons>
                                         </button>
