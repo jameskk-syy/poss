@@ -1,0 +1,24 @@
+<section class="content mb-5">
+    <div class="content-block">
+        <div class="block-header">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'NEW BRANCH'">
+            </app-breadcrumb>
+        </div>
+       <div class="d-flex justify-content-center">
+        <form class="shadow-lg  col-md-6 col-12 p-4" (ngSubmit)="onCrtBranch()" [formGroup]="newBranch">
+            <div class="form-group">
+              <label for="">Branch Name</label>
+              <input type="text" class="form-control" formControlName="name">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Location</label>
+              <input type="text"  class="form-control"  formControlName="location" >
+             
+            </div>
+         
+            <button type="submit" class="btn btn-primary">Add Branch</button>
+          </form>
+       </div>
+    </div>
+</section>

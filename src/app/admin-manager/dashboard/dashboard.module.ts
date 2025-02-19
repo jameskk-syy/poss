@@ -13,6 +13,7 @@ import { ComponentsModule } from "src/app/shared/components/components.module";
 import { SharedModule } from "./../../shared/shared.module";
 
 import { MainComponent } from "./main/main.component";
+import { MatTableModule } from "@angular/material/table";
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { MainComponent } from "./main/main.component";
     MatProgressBarModule,
     ComponentsModule,
     SharedModule,
+    MatTableModule
     // DashboardModule
     
   ],

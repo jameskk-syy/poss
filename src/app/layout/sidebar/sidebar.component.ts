@@ -48,7 +48,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.routerObj = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         // logic for select active menu in dropdown
-        const role = ["ROLE_ADMIN", "ROLE_CLERK"];
+        const role = ["ADMIN", "ROLE_CLERK"];
         const currenturl = event.url.split("?")[0];
         const firstString = currenturl.split("/").slice(1)[0];
 
@@ -105,11 +105,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.currentUser = this.tokenStorageService.getUser();
-    const role = this.currentUser.roles[0];
+    const role = this.currentUser.user.role;
 
     if (this.currentUser) {
-      let userRole = this.currentUser.roles[0].name;
-      this.userFullName = this.currentUser.username;
+      let userRole = this.currentUser.user.role;
+      this.userFullName = this.currentUser.user.username;
       this.userImg = "assets/images/prof.png";
 
       this.sidebarItems = ROUTES.filter((x) => x.role.indexOf(userRole) !== -1);

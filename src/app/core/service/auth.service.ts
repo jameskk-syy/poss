@@ -29,10 +29,28 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
+  // login(user): Observable<any> {
+  //   const authUrl = `${this.AUTH_API}/login`
+  //   return this.http.post<any>(authUrl, user);
+  // }
+
   login(user): Observable<any> {
-    const authUrl = `${this.AUTH_API}/login`
-    return this.http.post<any>(authUrl, user);
+    const authUrl = `${this.AUTH_API}/login`;
+  
+    return this.http.post<any>(authUrl, user).pipe(
+      map((response) => {
+        if (response && response.token) {
+          localStorage.setItem('jwtToken', response.token);
+          
+          const user = { ...response.user, token: response.token };
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        }
+  
+        return response; 
+      })
+    );
   }
+  
 
   resetPasswordRequest(email: any): Observable<any> {
     return this.http.post(this.PASSWORD_RESET_API + `send-token?emailaddress=${email}`, this.httpOptions);

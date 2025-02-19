@@ -45,7 +45,10 @@
             "scripts": [
               "./node_modules/moment/min/moment.min.js",
               "./node_modules/chart.js/dist/Chart.bundle.js",
-              "./node_modules/apexcharts/dist/apexcharts.min.js"
+              "./node_modules/apexcharts/dist/apexcharts.min.js",
+              "src/assets/js/chart-area-demo.js",
+              "src/assets/js/chart-bar-demo.js",
+              "src/assets/js/datatables-simple-demo.js"
             ],
             "vendorChunk": true,
             "extractLicenses": false,

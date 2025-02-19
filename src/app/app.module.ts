@@ -41,6 +41,11 @@ import { NgApexchartsModule } from "ng-apexcharts";
 import { MatTableExporterModule } from "mat-table-exporter";
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { LayoutModule } from "./layout/layout.module";
+import { MatTableModule } from "@angular/material/table";
+import { MatSortModule } from "@angular/material/sort";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 // import { MainComponent } from './totals-collector/dashboard/main/main/main.component';
 
 
@@ -78,6 +83,11 @@ export function createTranslateLoader(http: HttpClient): any {
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

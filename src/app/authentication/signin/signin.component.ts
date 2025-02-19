@@ -65,9 +65,10 @@ export class SigninComponent
     
             if (role == Role.Admin) {
               this.router.navigate(['/dealer/dashboard'])
-            } else if (role == Role.Manager) {
-              this.router.navigate(['/manager/dashboard'])
             }
+            // } else if (role == Role.Manager) {
+            //   this.router.navigate(['/manager/dashboard'])
+            // }
              else {
               this.error = "Username or Password are invalid";
             }
