@@ -5,6 +5,7 @@ import { Page404Component } from 'src/app/authentication/page404/page404.compone
 import { NewItemComponent } from './new-item/new-item.component';
 import { AllItemsComponent } from './all-items/all-items.component';
 import { BranchComponent } from './branch/branch.component';
+import { SuppliersComponent } from './suppliers/suppliers.component';
 
 const routes: Routes = [
   
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: "newbranch",
     component: BranchComponent,
+  },
+  {
+    path: "supplier",
+    component: SuppliersComponent,
   },
   { path: "**", component: Page404Component },
 

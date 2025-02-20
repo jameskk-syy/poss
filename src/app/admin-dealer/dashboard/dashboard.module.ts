@@ -28,11 +28,12 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NewItemComponent } from './new-item/new-item.component';
-// import { AllItemsComponent } from './all-items/all-items.component';
 import { UsersComponent } from './users/users.component';
 import { BranchComponent } from './branch/branch.component';
 import { MatButtonModule } from '@angular/material/button';
 import { AllItemsComponent } from './all-items/all-items.component';
+import { SuppliersComponent } from './suppliers/suppliers.component';
+import { ReportsComponent } from './reports/reports.component';
 
 
 
@@ -43,6 +44,8 @@ import { AllItemsComponent } from './all-items/all-items.component';
     AllItemsComponent,
     UsersComponent,
     BranchComponent,
+    SuppliersComponent,
+    ReportsComponent,
   ],
   imports: [
     CommonModule,

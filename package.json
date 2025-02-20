@@ -50,6 +50,7 @@
     "chart.js": "^2.9.4",
     "core-js": "^3.20.0",
     "echarts": "^5.4.1",
+    "feather-icons": "^4.29.2",
     "file-saver": "^2.0.5",
     "mat-table-exporter": "^10.2.4",
     "moment": "^2.29.1",
