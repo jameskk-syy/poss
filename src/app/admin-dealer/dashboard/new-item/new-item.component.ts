@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.service';
 
 @Component({
@@ -7,36 +9,44 @@ import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.serv
   templateUrl: './new-item.component.html',
   styleUrls: ['./new-item.component.sass']
 })
-export class NewItemComponent implements OnInit {
+export class NewItemComponent implements OnInit, AfterViewInit {
 
+  displayedColumns: string[] = ['position', 'name', 'description', 'count', 'branch', 'actions'];
+  dataSource = new MatTableDataSource<any>();
   newItem: FormGroup;
-  branches: any[] = []; // Store fetched branches
-  isEditMode = false;        // Toggle for add/edit mode
-  editingItemId: number | null = null; // Store ID of the item being edited
+  branches: any[] = [];
+  isEditMode = false;
+  isFormOpen = false;
+  editingItemId: number | null = null;
 
-  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private fb: FormBuilder,private dashboardService:DashboardService) { 
-    // Initialize the form group with controls
+  constructor(private fb: FormBuilder, private dashboardService: DashboardService) {
     this.newItem = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
       description: ['', [Validators.required]],
       price: ['', [Validators.required]],
-      count: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], // Only numbers for quantity
-      branchId: ['', [Validators.required]] // Selected branch ID
-
+      count: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      branchId: ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
     this.getBranches();
+    this.getProducts();
+  }
+
+  ngAfterViewInit(): void {
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
   }
 
   getBranches(): void {
     this.dashboardService.getAllBranches().subscribe(
       (response: any) => {
         if (response && response.data) {
-          this.branches = response.data; // Extract branches from response
+          this.branches = response.data;
         }
       },
       (error) => {
@@ -44,41 +54,63 @@ export class NewItemComponent implements OnInit {
       }
     );
   }
+
+  getProducts(): void {
+    this.dashboardService.getAllProducts().subscribe(
+      (data: any) => {
+        this.dataSource.data = data;
+      },
+      (error) => {
+        console.error('Error fetching products:', error);
+      }
+    );
+  }
+
+  toggleForm(): void {
+    this.isFormOpen = !this.isFormOpen;
+  }
+
   onSubmit(): void {
     if (this.newItem.valid) {
-      this.dashboardService.createItem(this.newItem.value).pipe().subscribe(
-        res =>{
-          alert(res.message);
-          this.newItem.reset();
-
-        },
-        err=>{
-          console.log(err);
-        }
-      );
-    
-    } else {
-      console.log('Form is invalid!');
+      if (this.isEditMode && this.editingItemId !== null) {
+        this.updateItem();
+      } else {
+        this.addItem();
+      }
     }
   }
 
-
-  // Edit an existing item (called when clicking "Edit" button)
-  editItem(item: any): void {
-    this.isEditMode = true;           // Switch to edit mode
-    this.editingItemId = item.id;     // Store the editing item ID
-    this.newItem.patchValue(item);    // Populate form with item data
+  addItem(): void {
+    this.dashboardService.createItem(this.newItem.value).subscribe(
+      res => {
+        alert(res.message);
+        this.newItem.reset();
+        this.getProducts();
+        this.isFormOpen = false;
+      },
+      err => {
+        console.log(err);
+      }
+    );
   }
 
-  // Update an item
+  editItem(item: any): void {
+    this.isEditMode = true;
+    this.isFormOpen = true;
+    this.editingItemId = item.id;
+    this.newItem.patchValue(item);
+  }
+
   updateItem(): void {
-    if (this.newItem.valid && this.editingItemId !== null) {
+    if (this.editingItemId !== null) {
       this.dashboardService.updateItems(this.editingItemId, this.newItem.value).subscribe(
         () => {
           alert('Item updated successfully!');
           this.newItem.reset();
           this.isEditMode = false;
-          this.editingItemId = null; // Reset edit mode
+          this.isFormOpen = false;
+          this.editingItemId = null;
+          this.getProducts();
         },
         (err) => {
           console.error('Error updating item:', err);
@@ -88,12 +120,22 @@ export class NewItemComponent implements OnInit {
     }
   }
 
-  // Cancel edit mode and reset the form
+  deleteProduct(productId: number): void {
+    this.dashboardService.deleteProduct(productId).subscribe(
+      () => {
+        alert('Product deleted successfully');
+        this.getProducts();
+      },
+      (error) => {
+        console.error('Error deleting product:', error);
+      }
+    );
+  }
+
   cancelEdit(): void {
     this.isEditMode = false;
+    this.isFormOpen = false;
     this.editingItemId = null;
     this.newItem.reset();
   }
 }
-
-
