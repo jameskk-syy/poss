@@ -18,12 +18,15 @@ export class BranchComponent implements OnInit, AfterViewInit{
   isFormOpen = false;
 
   newBranch: FormGroup;
+  branches: any[] = []; // Store fetched branches
+
 
   constructor(private fb: FormBuilder,private dashboardService:DashboardService) { 
     // Initialize the form group with controls
     this.newBranch = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
       location: ['', [Validators.required]],
+      branchId: ['', [Validators.required]] 
     });
   }
 
