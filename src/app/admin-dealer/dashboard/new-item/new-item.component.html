@@ -29,12 +29,13 @@
              <div class="form-group">
               <label for="branch">Branch</label>
               <select class="form-control" formControlName="branchId">
+                <option value="" disabled selected>Select Branch</option>
                 <option *ngFor="let branch of branches" [value]="branch.id">
                   {{ branch.name }}
                 </option>
               </select>
             </div>
-            
+
             <button type="submit" class="btn btn-primary">Add Item</button>
           </form>
        </div>

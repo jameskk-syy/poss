@@ -67,7 +67,9 @@ export class DashboardService {
       map(res => res || {})
     );
   }
-
+  updateItems(id: number, data: any): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/api/items/${id}`, data, this.getHttpOptions());
+  }
   // createBranch(data: any): Observable<any> {
   //   const API_URL = `${environment.apiUrl}/api/branches`;
   //   return this.http.post(API_URL, data, this.getHttpOptions()).pipe(
@@ -116,6 +118,14 @@ export class DashboardService {
       })
     );
   }
+
+  updateBranchs(id: number, data: any): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/api/branches/${id}`, data, this.getHttpOptions());
+}
+
+deleteBranchs(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/branches/${id}`, this.getHttpOptions());
+}
 
   deleteProduct(id: number): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/api/v1/items/${id}`);

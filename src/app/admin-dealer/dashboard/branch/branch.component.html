@@ -2,15 +2,14 @@
   <!-- Centered Accordion Button -->
   <div class="d-flex justify-content-center py-5 mb-3">
       <button class="btn btn-primary" (click)="toggleForm()">
-          {{ isFormOpen ? 'Close Form' : 'Add Branch' }}
+          {{ isFormOpen ? 'Close Form' : isEditMode ? 'Edit Branch' : 'Add Branch' }}
       </button>
   </div>
 
   <!-- Collapsible Form Section -->
   <div *ngIf="isFormOpen" class="content-block">
-     
       <div class="d-flex justify-content-center">
-          <form class="shadow-lg col-md-6 col-12 p-4" (ngSubmit)="onCrtBranch()" [formGroup]="newBranch">
+          <form class="shadow-lg col-md-6 col-12 p-4" (ngSubmit)="isEditMode ? updateBranch() : addBranch()" [formGroup]="newBranch">
               <div class="form-group">
                   <label for="">Branch Name</label>
                   <input type="text" class="form-control" formControlName="name">
@@ -19,7 +18,16 @@
                   <label for="exampleInputPassword1">Location</label>
                   <input type="text" class="form-control" formControlName="location">
               </div>
-              <button type="submit" class="btn btn-primary">Add Branch</button>
+              
+              <!-- Submit & Cancel Buttons -->
+              <div class="text-right">
+                  <button type="submit" class="btn btn-primary mt-3">
+                      {{ isEditMode ? 'Update Branch' : 'Add Branch' }}
+                  </button>
+                  <button *ngIf="isEditMode" type="button" class="btn btn-warning mt-3 ms-2" (click)="cancelEdit()">
+                      Cancel
+                  </button>
+              </div>
           </form>
       </div>
   </div>
@@ -50,16 +58,11 @@
                       <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
                   </ng-container>
 
-                  <!-- <ng-container matColumnDef="branch">
-                      <th mat-header-cell *matHeaderCellDef> Branch </th>
-                      <td mat-cell *matCellDef="let element"> {{element.branch}} </td>
-                  </ng-container> -->
-
                   <!-- Action Column -->
                   <ng-container matColumnDef="actions">
                       <th mat-header-cell *matHeaderCellDef> Actions </th>
                       <td mat-cell *matCellDef="let element">
-                          <button mat-icon-button color="primary" (click)="editProduct(element)">
+                          <button mat-icon-button color="primary" (click)="editBranch(element)">
                               <mat-icon>edit</mat-icon>
                           </button>
                           <button mat-icon-button color="warn" (click)="deleteBranch(element.id)">

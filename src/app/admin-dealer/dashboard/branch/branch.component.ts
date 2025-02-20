@@ -15,10 +15,16 @@ export class BranchComponent implements OnInit, AfterViewInit{
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  isFormOpen = false;
+  
+  
 
   newBranch: FormGroup;
-  branches: any[] = []; // Store fetched branches
+
+  isFormOpen = false;
+  isEditMode = false;        
+  editingItemId: number | null = null; 
+  editingBranchId: number | null = null; // Track branch being edited
+
 
 
   constructor(private fb: FormBuilder,private dashboardService:DashboardService) { 
@@ -26,7 +32,6 @@ export class BranchComponent implements OnInit, AfterViewInit{
     this.newBranch = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
       location: ['', [Validators.required]],
-      branchId: ['', [Validators.required]] 
     });
   }
 
@@ -61,6 +66,12 @@ export class BranchComponent implements OnInit, AfterViewInit{
 
   toggleForm() {
     this.isFormOpen = !this.isFormOpen;
+
+     // Reset form when opening it in add mode
+     if (!this.isEditMode) {
+      this.newBranch.reset();
+  }
+
   }
 
 
@@ -85,19 +96,68 @@ export class BranchComponent implements OnInit, AfterViewInit{
   }
   
 
-  updateProduct(product: any): void {
-    console.log('Editing product:', product);
-  }
+  // updateProduct(product: any): void {
+  //   console.log('Editing product:', product);
+  // }
 
-  deleteProduct(productId: number): void {
-    this.dashboardService.deleteProduct(productId).subscribe(
-      () => {
-        console.log('Product deleted successfully');
-        this.getBranch();
-      },
-      (error) => {
-        console.error('Error deleting product:', error);
-      }
-    );
+  editBranch(branch: any): void {
+    this.isEditMode = true;
+    this.isFormOpen = true;
+    this.editingBranchId = branch.id;
+
+    this.newBranch.patchValue({
+        name: branch.name,
+        location: branch.location
+    });
+}
+
+updateBranch(): void {
+  if (this.newBranch.valid && this.editingBranchId !== null) {
+      this.dashboardService.updateBranchs(this.editingBranchId, this.newBranch.value).subscribe(
+          res => {
+              alert('Branch updated successfully!');
+              this.cancelEdit();
+              this.getBranch(); // Refresh list
+          },
+          err => {
+              console.error('Error updating branch:', err);
+              alert('Failed to update branch.');
+          }
+      );
   }
+}
+
+cancelEdit(): void {
+  this.isEditMode = false;
+  this.editingBranchId = null;
+  this.newBranch.reset();
+  this.isFormOpen = false;
+}
+
+  // deleteProduct(productId: number): void {
+  //   this.dashboardService.deleteProduct(productId).subscribe(
+  //     () => {
+  //       console.log('Product deleted successfully');
+  //       this.getBranch();
+  //     },
+  //     (error) => {
+  //       console.error('Error deleting product:', error);
+  //     }
+  //   );
+  // }
+
+  deleteBranch(id: number): void {
+    if (confirm('Are you sure you want to delete this branch?')) {
+        this.dashboardService.deleteBranchs(id).subscribe(
+            res => {
+                alert('Branch deleted successfully!');
+                this.getBranch(); // Refresh list
+            },
+            err => {
+                console.error('Error deleting branch:', err);
+                alert('Failed to delete branch.');
+            }
+        );
+    }
+}
 }
