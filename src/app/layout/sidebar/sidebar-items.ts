@@ -282,7 +282,7 @@ export const ROUTES: RouteInfo[] = [
     title: 'New Item',
     moduleName: 'dashboard',
     iconType: 'feather',
-    icon: 'share-2',
+    icon: 'plus-circle',
     class: '',
     groupTitle: false,
     badge: '',

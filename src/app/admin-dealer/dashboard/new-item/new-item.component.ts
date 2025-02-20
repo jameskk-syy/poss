@@ -121,6 +121,7 @@ export class NewItemComponent implements OnInit, AfterViewInit {
   }
 
   deleteProduct(productId: number): void {
+    if (confirm('Are you sure you want to delete this branch?')){
     this.dashboardService.deleteProduct(productId).subscribe(
       () => {
         alert('Product deleted successfully');
@@ -131,6 +132,7 @@ export class NewItemComponent implements OnInit, AfterViewInit {
       }
     );
   }
+}
 
   cancelEdit(): void {
     this.isEditMode = false;
