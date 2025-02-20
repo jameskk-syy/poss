@@ -77,15 +77,21 @@ export class DashboardService {
 
   createBranch(data: any): Observable<any> {
     console.log("Sending data to API:", data); // Debugging
+  
     const API_URL = `${environment.apiUrl}/api/branches`;
-    return this.http.post(API_URL, data, this.getHttpOptions()).pipe(
-      map(res => res || {}),
+  
+    return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
+      map(response => {
+        console.log("Branch created successfully:", response); // Debugging
+        return response;
+      }),
       catchError(error => {
         console.error("Error creating branch:", error);
-        return throwError(error);
+        return throwError(() => new Error(error.message || "Failed to create branch"));
       })
     );
   }
+  
   
 
   public getAllProducts(): Observable<any> {
@@ -94,8 +100,27 @@ export class DashboardService {
       map(res => res || [])
     );
   }
+  // public getAllBranches(): Observable<any> {
+  //   const url = `${environment.apiUrl}/api/branches`;
+  //   return this.http.get(url, this.getHttpOptions()).pipe(
+  //     map(res => res || [])
+  //   );
+  // }
+
+  getAllBranches(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/branches`, this.getHttpOptions()).pipe(
+      map(response => response || []), 
+      catchError(error => {
+        console.error("Error fetching branches:", error);
+        return throwError(() => new Error(error.message || "Failed to fetch branches"));
+      })
+    );
+  }
 
   deleteProduct(id: number): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/api/v1/items/${id}`);
+  }
+  deleteBranch(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/branches/${id}`);
   }
 }
