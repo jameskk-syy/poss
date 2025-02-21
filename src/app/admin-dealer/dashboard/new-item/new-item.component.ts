@@ -81,14 +81,19 @@ export class NewItemComponent implements OnInit, AfterViewInit {
 
   getProducts(): void {
     this.dashboardService.getAllProducts().subscribe(
-      (data: any) => {
-        this.dataSource.data = data;
+      (data: any[]) => {
+        this.dataSource.data = data.map(product => ({
+          ...product,
+          branch: this.branches.find(branch => branch.id === product.branchId)?.name || 'Unknown Branch',
+          category: this.categories.find(category => category.id === product.categoryId)?.name || 'Unknown Category'
+        }));
       },
       (error) => {
         console.error('Error fetching products:', error);
       }
     );
   }
+  
 
   toggleForm(): void {
     this.isFormOpen = !this.isFormOpen;
