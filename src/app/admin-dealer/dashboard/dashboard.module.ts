@@ -35,6 +35,7 @@ import { AllItemsComponent } from './all-items/all-items.component';
 import { SuppliersComponent } from './suppliers/suppliers.component';
 import { ReportsComponent } from './reports/reports.component';
 import { CategoryComponent } from './category/category.component';
+import { TransactionComponent } from './transaction/transaction.component';
 
 
 
@@ -48,6 +49,7 @@ import { CategoryComponent } from './category/category.component';
     SuppliersComponent,
     ReportsComponent,
     CategoryComponent,
+    TransactionComponent,
 
   ],
   imports: [

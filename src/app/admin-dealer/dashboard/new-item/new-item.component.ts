@@ -11,7 +11,7 @@ import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.serv
 })
 export class NewItemComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['position', 'name', 'description', 'count', 'branch', 'category',
+  displayedColumns: string[] = ['position', 'name', 'description', 'count', 'branch', 'category', 'price',
     'actions'];
   dataSource = new MatTableDataSource<any>();
   newItem: FormGroup;
@@ -79,6 +79,17 @@ export class NewItemComponent implements OnInit, AfterViewInit {
   }
   
 
+  // getProducts(): void {
+  //   this.dashboardService.getAllProducts().subscribe(
+  //     (data: any) => {
+  //       this.dataSource.data = data;
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching products:', error);
+  //     }
+  //   );
+  // }
+
   getProducts(): void {
     this.dashboardService.getAllProducts().subscribe(
       (data: any[]) => {
@@ -94,7 +105,6 @@ export class NewItemComponent implements OnInit, AfterViewInit {
     );
   }
   
-
   toggleForm(): void {
     this.isFormOpen = !this.isFormOpen;
   }

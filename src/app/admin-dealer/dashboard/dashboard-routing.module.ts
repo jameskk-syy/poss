@@ -7,6 +7,7 @@ import { AllItemsComponent } from './all-items/all-items.component';
 import { BranchComponent } from './branch/branch.component';
 import { SuppliersComponent } from './suppliers/suppliers.component';
 import { CategoryComponent } from './category/category.component';
+import { TransactionComponent } from './transaction/transaction.component';
 
 const routes: Routes = [
   
@@ -38,6 +39,10 @@ const routes: Routes = [
   {
     path: "category",
     component: CategoryComponent,
+  },
+  {
+    path: "makesale",
+    component: TransactionComponent,
   },
   { path: "**", component: Page404Component },
 
