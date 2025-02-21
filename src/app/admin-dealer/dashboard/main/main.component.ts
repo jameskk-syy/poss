@@ -3,6 +3,8 @@ import { Component, AfterViewInit, ViewChild, OnInit  } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
+
 
 declare var Chart: any; // Declare Chart.js
 declare var simpleDatatables: any; // Declare Simple DataTables
@@ -34,7 +36,13 @@ export class MainComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  constructor() {}
+  constructor(private router: Router) {}
+
+
+
+navigateToCategory() {
+  this.router.navigate(['/category']);
+}
 
   ngOnInit(): void {
     this.initializeCharts();

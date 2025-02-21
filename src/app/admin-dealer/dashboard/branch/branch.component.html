@@ -9,7 +9,7 @@
   <!-- Collapsible Form Section -->
   <div *ngIf="isFormOpen" class="content-block">
       <div class="d-flex justify-content-center">
-          <form class="shadow-lg col-md-6 col-12 p-4" (ngSubmit)="isEditMode ? updateBranch() : addBranch()" [formGroup]="newBranch">
+          <form class="shadow-lg col-md-6 col-12 p-4" (ngSubmit)="isEditMode ? updateBranch() : onCrtBranch()" [formGroup]="newBranch">
               <div class="form-group">
                   <label for="">Branch Name</label>
                   <input type="text" class="form-control" formControlName="name">

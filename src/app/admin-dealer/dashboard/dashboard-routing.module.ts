@@ -6,6 +6,7 @@ import { NewItemComponent } from './new-item/new-item.component';
 import { AllItemsComponent } from './all-items/all-items.component';
 import { BranchComponent } from './branch/branch.component';
 import { SuppliersComponent } from './suppliers/suppliers.component';
+import { CategoryComponent } from './category/category.component';
 
 const routes: Routes = [
   
@@ -33,6 +34,10 @@ const routes: Routes = [
   {
     path: "supplier",
     component: SuppliersComponent,
+  },
+  {
+    path: "category",
+    component: CategoryComponent,
   },
   { path: "**", component: Page404Component },
 

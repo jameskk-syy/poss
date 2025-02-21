@@ -34,6 +34,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AllItemsComponent } from './all-items/all-items.component';
 import { SuppliersComponent } from './suppliers/suppliers.component';
 import { ReportsComponent } from './reports/reports.component';
+import { CategoryComponent } from './category/category.component';
 
 
 
@@ -46,6 +47,8 @@ import { ReportsComponent } from './reports/reports.component';
     BranchComponent,
     SuppliersComponent,
     ReportsComponent,
+    CategoryComponent,
+
   ],
   imports: [
     CommonModule,

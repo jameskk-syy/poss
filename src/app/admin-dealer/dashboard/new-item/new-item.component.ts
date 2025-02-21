@@ -11,10 +11,12 @@ import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.serv
 })
 export class NewItemComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['position', 'name', 'description', 'count', 'branch', 'actions'];
+  displayedColumns: string[] = ['position', 'name', 'description', 'count', 'branch', 'category',
+    'actions'];
   dataSource = new MatTableDataSource<any>();
   newItem: FormGroup;
   branches: any[] = [];
+  categories: any[] = [];
   isEditMode = false;
   isFormOpen = false;
   editingItemId: number | null = null;
@@ -27,12 +29,14 @@ export class NewItemComponent implements OnInit, AfterViewInit {
       description: ['', [Validators.required]],
       price: ['', [Validators.required]],
       count: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      branchId: ['', [Validators.required]]
+      branchId: ['', [Validators.required]],
+      categoryId: ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
     this.getBranches();
+    this.getCategory();
     this.getProducts();
   }
 
@@ -54,6 +58,26 @@ export class NewItemComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
+  getCategory(): void {
+    this.dashboardService.getAllCategories().subscribe(
+      (response: any) => {
+        if (response && response.data) {
+          this.categories = response.data;          setTimeout(() => {
+            if (this.paginator) {
+              this.dataSource.paginator = this.paginator; 
+            }
+          });
+        } else {
+          console.error("Unexpected API response structure:", response);
+        }
+      },
+      (error) => {
+        console.error('Error fetching Categoryes:', error);
+      }
+    );
+  }
+  
 
   getProducts(): void {
     this.dashboardService.getAllProducts().subscribe(

@@ -37,7 +37,18 @@
             </option>
           </select>
         </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select class="form-control" formControlName="categoryId">
+            <option value="" disabled selected>Select Category</option>
+            <option *ngFor="let category of categories " [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
   
+      
+        
         <!-- Submit & Cancel Buttons -->
         <div class="text-right">
           <button type="submit" class="btn btn-primary mt-3">
@@ -79,6 +90,11 @@
           <ng-container matColumnDef="branch">
             <th mat-header-cell *matHeaderCellDef> Branch </th>
             <td mat-cell *matCellDef="let element"> {{ element.branch }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef> Category </th>
+            <td mat-cell *matCellDef="let element"> {{ element.category }} </td>
           </ng-container>
 
           <!-- Action Column -->

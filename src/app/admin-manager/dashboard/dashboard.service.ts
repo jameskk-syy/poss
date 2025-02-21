@@ -77,6 +77,17 @@ export class DashboardService {
   //   );
   // }
 
+ 
+
+  public getAllProducts(): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/items`;
+    return this.http.get(url, this.getHttpOptions()).pipe(
+      map(res => res || [])
+    );
+  }
+
+  // branch methods
+
   createBranch(data: any): Observable<any> {
     console.log("Sending data to API:", data); // Debugging
   
@@ -94,21 +105,6 @@ export class DashboardService {
     );
   }
   
-  
-
-  public getAllProducts(): Observable<any> {
-    const url = `${environment.apiUrl}/api/v1/items`;
-    return this.http.get(url, this.getHttpOptions()).pipe(
-      map(res => res || [])
-    );
-  }
-  // public getAllBranches(): Observable<any> {
-  //   const url = `${environment.apiUrl}/api/branches`;
-  //   return this.http.get(url, this.getHttpOptions()).pipe(
-  //     map(res => res || [])
-  //   );
-  // }
-
   getAllBranches(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/branches`, this.getHttpOptions()).pipe(
       map(response => response || []), 
@@ -118,13 +114,46 @@ export class DashboardService {
       })
     );
   }
-
   updateBranchs(id: number, data: any): Observable<any> {
     return this.http.put(`${environment.apiUrl}/api/branches/${id}`, data, this.getHttpOptions());
 }
-
 deleteBranchs(id: number): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/api/branches/${id}`, this.getHttpOptions());
+}
+
+  // Category methods
+
+  createCategory(data: any): Observable<any> {
+    console.log("Sending data to API:", data); // Debugging
+  
+    const API_URL = `${environment.apiUrl}/api/product-categories`;
+  
+    return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
+      map(response => {
+        console.log("Category created successfully:", response); // Debugging
+        return response;
+      }),
+      catchError(error => {
+        console.error("Error creating Category:", error);
+        return throwError(() => new Error(error.message || "Failed to create Category"));
+      })
+    );
+  }
+  
+  getAllCategories(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/product-categories`, this.getHttpOptions()).pipe(
+      map(response => response || []), 
+      catchError(error => {
+        console.error("Error fetching categories:", error);
+        return throwError(() => new Error(error.message || "Failed to fetch Categoryes"));
+      })
+    );
+  }
+  updateCategories(id: number, data: any): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/api/product-categories/${id}`, data, this.getHttpOptions());
+}
+deleteCategory(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/product-categories/${id}`, this.getHttpOptions());
 }
 
   deleteProduct(id: number): Observable<any> {
