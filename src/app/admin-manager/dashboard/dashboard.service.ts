@@ -121,8 +121,26 @@ deleteBranchs(id: number): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/api/branches/${id}`, this.getHttpOptions());
 }
 
-  // Category methods
+createSale(data: any): Observable<any> {
+  console.log("Sending sale transaction data to API:", data); // Debugging
 
+  const API_URL = `${environment.apiUrl}/api/sale-orders`;
+
+  return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
+    map(response => {
+      console.log("Sale transaction created successfully:", response); // Debugging
+      return response;
+    }),
+    catchError(error => {
+      console.error("Error creating sale transaction:", error);
+      return throwError(() => new Error(error.message || "Failed to create sale transaction"));
+    })
+  );
+}
+
+  // Category methods
+ 
+  
   createCategory(data: any): Observable<any> {
     console.log("Sending data to API:", data); // Debugging
   

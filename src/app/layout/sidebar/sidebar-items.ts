@@ -330,6 +330,19 @@ export const ROUTES: RouteInfo[] = [
     role: ['ADMIN'],
     submenu: [],
   },
+  {
+    path: '/dealer/dashboard/makesale',
+    title: 'New Transaction',
+    moduleName: 'dashboard',
+    iconType: 'feather',
+    icon: 'shopping-cart',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ADMIN'],
+    submenu: [],
+  },
     
   {
     path: '',

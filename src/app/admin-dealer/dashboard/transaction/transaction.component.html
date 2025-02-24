@@ -1,46 +1,91 @@
-<section class="  content">
-    <div class=" mt-5 container">
-      <form [formGroup]="saleForm" (ngSubmit)="submitSale()">
-        <div class="form-group">
-          <label>Customer Name</label>
-          <input type="text" class="form-control" formControlName="customerName">
-        </div>
-  
-        <div class="form-group">
-          <label>Branch</label>
-          <select class="form-control" formControlName="branchId">
-            <option value="" disabled>Select Branch</option>
-            <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
-          </select>
-        </div>
-  
-        <div formArrayName="saleOrderLines">
-          <div *ngFor="let product of saleOrderLines.controls; let i = index" [formGroupName]="i" class="card p-3 mb-3">
-            <div class="form-group">
-              <label>Product</label>
-              <select class="form-control" formControlName="itemId">
-                <option value="" disabled>Select Product</option>
-                <option *ngFor="let item of items" [value]="item.id">{{ item.name }}</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Quantity</label>
-              <input type="number" class="form-control" formControlName="quantity" min="1">
-            </div>
-            <div class="form-group">
-              <label>Price</label>
-              <input type="number" class="form-control" formControlName="price">
-            </div>
-            <button type="button" class="btn btn-danger" (click)="removeProduct(i)" *ngIf="saleOrderLines.length > 1">Remove</button>
+<section class="content">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="mt-5 col-md-6">
+        <form [formGroup]="saleForm" (ngSubmit)="submitSale()">
+          <mat-form-field class="w-100">
+            <mat-label>Customer Name (Optional)</mat-label>
+            <input matInput type="text" formControlName="customerName">
+          </mat-form-field>
+
+          <!-- <mat-form-field class="w-100">
+            <mat-label>Product ID</mat-label>
+            <input matInput type="text" formControlName="productId" (click)="fetchProducts()" readonly>
+          </mat-form-field> -->
+          <mat-form-field>
+  <mat-label>Product ID</mat-label>
+  <mat-select (selectionChange)="onProductSelect($event)">
+    <mat-option *ngFor="let product of products" [value]="product">
+      {{ product.id }} - {{ product.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+          <mat-form-field class="w-100">
+            <mat-label>Branch</mat-label>
+            <mat-select formControlName="branchId">
+              <mat-option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Product Selection Table -->
+          <div *ngIf="showProductTable">
+            <table mat-table [dataSource]="items" class="mat-elevation-z8">
+              <thead>
+                <tr>
+                  <th mat-header-cell *matHeaderCellDef>Product Name</th>
+                  <th mat-header-cell *matHeaderCellDef>Branch</th>
+                  <th mat-header-cell *matHeaderCellDef>Price</th>
+                  <th mat-header-cell *matHeaderCellDef>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of items">
+                  <td mat-cell>{{ product.name }}</td>
+                  <td mat-cell>{{ product.branch }}</td>
+                  <td mat-cell>{{ product.price }}</td>
+                  <td mat-cell>
+                    <button mat-button color="primary" (click)="selectProduct(product)">Select</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
-  
-        <div class="d-flex  mt-3">
-            <button type="button" class="btn btn-success" (click)="submitSale()">Add Another Product</button>
-            <button type="submit" class="btn btn-primary ms-2">Submit Sale</button>
+
+          <!-- Selected Products Table -->
+          <table mat-table [dataSource]="selectedProducts" class="mat-elevation-z8" *ngIf="selectedProducts.length > 0">
+            <thead>
+              <tr>
+                <th mat-header-cell *matHeaderCellDef>Product Name</th>
+                <th mat-header-cell *matHeaderCellDef>Branch</th>
+                <th mat-header-cell *matHeaderCellDef>Price</th>
+                <th mat-header-cell *matHeaderCellDef>Quantity</th>
+                <th mat-header-cell *matHeaderCellDef>Subtotal</th>
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of selectedProducts; let i = index">
+                <td mat-cell>{{ product.name }}</td>
+                <td mat-cell>{{ product.branch }}</td>
+                <td mat-cell>{{ product.price }}</td>
+                <td mat-cell>
+                  <input matInput type="number" [(ngModel)]="product.quantity" (input)="updateSubtotal(i)">
+                </td>
+                <td mat-cell>{{ product.subTotal }}</td>
+                <td mat-cell>
+                  <button mat-button color="warn" (click)="removeProduct(i)">Remove</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="d-flex mt-3">
+            <button mat-raised-button color="primary" type="submit">Submit Sale</button>
           </div>
-          
-      </form>
+        </form>
+      </div>
     </div>
-  </section>
-  
+  </div>
+</section>
