@@ -121,25 +121,46 @@ deleteBranchs(id: number): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/api/branches/${id}`, this.getHttpOptions());
 }
 
-createSale(data: any): Observable<any> {
-  console.log("Sending sale transaction data to API:", data); // Debugging
+// createSale(data: any): Observable<any> {
+//   console.log("Sending sale transaction data to API:", data); // Debugging
 
-  const API_URL = `${environment.apiUrl}/api/sale-orders`;
+//   const API_URL = `${environment.apiUrl}/api/sale-orders`;
 
-  return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
-    map(response => {
-      console.log("Sale transaction created successfully:", response); // Debugging
-      return response;
-    }),
-    catchError(error => {
-      console.error("Error creating sale transaction:", error);
-      return throwError(() => new Error(error.message || "Failed to create sale transaction"));
-    })
-  );
-}
+//   return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
+//     map(response => {
+//       console.log("Sale transaction created successfully:", response); // Debugging
+//       return response;
+//     }),
+//     catchError(error => {
+//       console.error("Error creating sale transaction:", error);
+//       return throwError(() => new Error(error.message || "Failed to create sale transaction"));
+//     })
+//   );
+// }
 
   // Category methods
  
+  
+  createSale(data: any): Observable<any> {
+    const API_URL = `${environment.apiUrl}/api/sale-orders`;
+  
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json' }
+    };
+  
+    console.log("✅ Sending sale transaction data to API:", JSON.stringify(data, null, 2));
+  
+    return this.http.post<any>(API_URL, data, httpOptions).pipe(
+      map(response => {
+        console.log("✅ Sale transaction created successfully:", response);
+        return response;
+      }),
+      catchError(error => {
+        console.error("❌ Backend error response:", error.error);
+        return throwError(() => new Error(error.message || "Failed to create sale transaction"));
+      })
+    );
+  }
   
   createCategory(data: any): Observable<any> {
     console.log("Sending data to API:", data); // Debugging
