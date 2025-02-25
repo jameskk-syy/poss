@@ -121,6 +121,47 @@ deleteBranchs(id: number): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/api/branches/${id}`, this.getHttpOptions());
 }
 
+createSupplier(data: any): Observable<any> {
+    console.log("Sending data to API:", data); // Debugging
+  
+    const API_URL = `${environment.apiUrl}/api/suppliers`;
+  
+    return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
+      map(response => {
+        console.log("Supplier created successfully:", response); // Debugging
+        return response;
+      }),
+      catchError(error => {
+        console.error("Error creating Supplier:", error);
+        return throwError(() => new Error(error.message || "Failed to create Supplier"));
+      })
+    );
+  }
+  
+  getAllSuppliers(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/api/suppliers`, this.getHttpOptions()).pipe(
+      map(response => {
+        if (Array.isArray(response)) {
+          return response; // Return the array directly
+        } else {
+          console.error("Unexpected API response:", response);
+          return []; // Return an empty array to prevent crashes
+        }
+      }),
+      catchError(error => {
+        console.error("Error fetching suppliers:", error);
+        return throwError(() => new Error("Failed to fetch suppliers"));
+      })
+    );
+  }
+  
+  updateSuppliers(id: number, data: any): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/api/suppliers/${id}`, data, this.getHttpOptions());
+}
+deleteSuppliers(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/suppliers/${id}`, this.getHttpOptions());
+}
+
 // createSale(data: any): Observable<any> {
 //   console.log("Sending sale transaction data to API:", data); // Debugging
 

@@ -46,6 +46,15 @@
             </option>
           </select>
         </div>
+        <div class="form-group">
+          <label>Supplier</label>
+          <select class="form-control" formControlName="supplierId">
+            <option value="" disabled selected>Select supplierId</option>
+            <option *ngFor="let supplier of suppliers " [value]="supplier.id">
+              {{ supplier.supplierName }}
+            </option>
+          </select>
+        </div>
   
       
         
@@ -96,6 +105,12 @@
             <th mat-header-cell *matHeaderCellDef> Category </th>
             <td mat-cell *matCellDef="let element"> {{ element.category }} </td>
           </ng-container>
+
+          <ng-container matColumnDef="supplier">
+            <th mat-header-cell *matHeaderCellDef> Supplier </th>
+            <td mat-cell *matCellDef="let element"> {{ element.supplier }} </td>
+          </ng-container>
+          
           <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef> Price </th>
             <td mat-cell *matCellDef="let element"> {{ element.price }} </td>

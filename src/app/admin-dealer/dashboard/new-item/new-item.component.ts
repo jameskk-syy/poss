@@ -11,12 +11,12 @@ import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.serv
 })
 export class NewItemComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['position', 'name', 'description', 'count', 'branch', 'category', 'price',
-    'actions'];
+  displayedColumns: string[] = ['position', 'name', 'description', 'count', 'branch', 'category', 'price', 'supplier', 'actions'];
   dataSource = new MatTableDataSource<any>();
   newItem: FormGroup;
   branches: any[] = [];
   categories: any[] = [];
+  suppliers: any[] = [];
   isEditMode = false;
   isFormOpen = false;
   editingItemId: number | null = null;
@@ -30,12 +30,14 @@ export class NewItemComponent implements OnInit, AfterViewInit {
       price: ['', [Validators.required]],
       count: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       branchId: ['', [Validators.required]],
-      categoryId: ['', [Validators.required]]
+      categoryId: ['', [Validators.required]],
+      supplierId: ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
     this.getBranches();
+    this.getSuppliers();
     this.getCategory();
     this.getProducts();
   }
@@ -55,6 +57,30 @@ export class NewItemComponent implements OnInit, AfterViewInit {
       },
       (error) => {
         console.error('Error fetching branches:', error);
+      }
+    );
+  }
+
+
+
+  getSuppliers(): void {
+    this.dashboardService.getAllSuppliers().subscribe(
+      (response: any) => {
+        console.log("API Response:", response); // Debugging
+  
+        if (Array.isArray(response)) {
+          this.dataSource.data = response; // Assign the array to MatTableDataSource
+          setTimeout(() => {
+            if (this.paginator) {
+              this.dataSource.paginator = this.paginator;
+            }
+          });
+        } else {
+          console.error("❌ Unexpected API response structure:", response);
+        }
+      },
+      (error) => {
+        console.error('❌ Error fetching suppliers:', error);
       }
     );
   }
@@ -96,7 +122,8 @@ export class NewItemComponent implements OnInit, AfterViewInit {
         this.dataSource.data = data.map(product => ({
           ...product,
           branch: this.branches.find(branch => branch.id === product.branchId)?.name || 'Unknown Branch',
-          category: this.categories.find(category => category.id === product.categoryId)?.name || 'Unknown Category'
+          category: this.categories.find(category => category.id === product.categoryId)?.name || 'Unknown Category',
+          supplier: this.suppliers.find(supplier => supplier.id === product.supplierId)?.name || 'Unknown Supplier'
         }));
       },
       (error) => {
