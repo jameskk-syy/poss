@@ -10,7 +10,7 @@ import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.serv
   styleUrls: ['./new-item.component.sass']
 })
 export class NewItemComponent implements OnInit, AfterViewInit {
-
+  
   displayedColumns: string[] = ['position', 'name', 'description', 'count', 'branch', 'category', 'price', 'supplier', 'actions'];
   dataSource = new MatTableDataSource<any>();
   newItem: FormGroup;
@@ -36,10 +36,7 @@ export class NewItemComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.getBranches();
-    this.getSuppliers();
-    this.getCategory();
-    this.getProducts();
+    this.loadData();
   }
 
   ngAfterViewInit(): void {
@@ -48,94 +45,106 @@ export class NewItemComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getBranches(): void {
-    this.dashboardService.getAllBranches().subscribe(
-      (response: any) => {
-        if (response && response.data) {
-          this.branches = response.data;
-        }
-      },
-      (error) => {
-        console.error('Error fetching branches:', error);
-      }
-    );
+  /**
+   *  Loads all necessary data before fetching products
+   */
+  loadData(): void {
+    Promise.all([
+      this.getBranches(),
+      this.getSuppliers(),
+      this.getCategories()
+    ]).then(() => {
+      this.getProducts();
+    });
   }
 
-
-
-  getSuppliers(): void {
-    this.dashboardService.getAllSuppliers().subscribe(
-      (response: any) => {
-        console.log("API Response:", response); // Debugging
-  
-        if (Array.isArray(response)) {
-          this.dataSource.data = response; // Assign the array to MatTableDataSource
-          setTimeout(() => {
-            if (this.paginator) {
-              this.dataSource.paginator = this.paginator;
-            }
-          });
-        } else {
-          console.error("❌ Unexpected API response structure:", response);
+  getBranches(): Promise<void> {
+    return new Promise((resolve) => {
+      this.dashboardService.getAllBranches().subscribe(
+        (response: any) => {
+          if (response && response.data) {
+            this.branches = response.data;
+          }
+          resolve();
+        },
+        (error) => {
+          console.error(' Error fetching branches:', error);
+          resolve();
         }
-      },
-      (error) => {
-        console.error('❌ Error fetching suppliers:', error);
-      }
-    );
+      );
+    });
   }
 
-  getCategory(): void {
-    this.dashboardService.getAllCategories().subscribe(
-      (response: any) => {
-        if (response && response.data) {
-          this.categories = response.data;          setTimeout(() => {
-            if (this.paginator) {
-              this.dataSource.paginator = this.paginator; 
-            }
-          });
-        } else {
-          console.error("Unexpected API response structure:", response);
+  getSuppliers(): Promise<void> {
+    return new Promise((resolve) => {
+      this.dashboardService.getAllSuppliers().subscribe(
+        (response: any) => {
+          if (Array.isArray(response)) {
+            this.suppliers = response;
+          } else {
+            console.error(" Unexpected API response structure:", response);
+          }
+          resolve();
+        },
+        (error) => {
+          console.error(' Error fetching suppliers:', error);
+          resolve();
         }
-      },
-      (error) => {
-        console.error('Error fetching Categoryes:', error);
-      }
-    );
+      );
+    });
   }
-  
 
-  // getProducts(): void {
-  //   this.dashboardService.getAllProducts().subscribe(
-  //     (data: any) => {
-  //       this.dataSource.data = data;
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching products:', error);
-  //     }
-  //   );
-  // }
+  getCategories(): Promise<void> {
+    return new Promise((resolve) => {
+      this.dashboardService.getAllCategories().subscribe(
+        (response: any) => {
+          if (response && response.data) {
+            this.categories = response.data;
+          } else {
+            console.error(" Unexpected API response structure:", response);
+          }
+          resolve();
+        },
+        (error) => {
+          console.error(' Error fetching categories:', error);
+          resolve();
+        }
+      );
+    });
+  }
 
+  /**
+   *  Fetches products and assigns correct names for branch, category, and supplier
+   */
   getProducts(): void {
     this.dashboardService.getAllProducts().subscribe(
-      (data: any[]) => {
-        this.dataSource.data = data.map(product => ({
-          ...product,
-          branch: this.branches.find(branch => branch.id === product.branchId)?.name || 'Unknown Branch',
-          category: this.categories.find(category => category.id === product.categoryId)?.name || 'Unknown Category',
-          supplier: this.suppliers.find(supplier => supplier.id === product.supplierId)?.name || 'Unknown Supplier'
-        }));
+      (data) => {
+        console.log("Fetched Products:", data);
+        console.log("Branches:", this.branches);
+        console.log("Categories:", this.categories);
+        console.log("Suppliers:", this.suppliers);
+
+        this.dataSource =new MatTableDataSource(data);
+        this.dataSource.paginator = this.paginator;
+
+        console.log(" Processed Data Source:", this.dataSource);
       },
       (error) => {
-        console.error('Error fetching products:', error);
+        console.error(' Error fetching products:', error);
       }
     );
   }
-  
+
+  /**
+   *  Toggles form visibility
+   */
   toggleForm(): void {
     this.isFormOpen = !this.isFormOpen;
   }
 
+  /**
+   *  Handles form submission for adding or updating an item
+   */
   onSubmit(): void {
     if (this.newItem.valid) {
       if (this.isEditMode && this.editingItemId !== null) {
@@ -146,6 +155,9 @@ export class NewItemComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   *  Adds a new item
+   */
   addItem(): void {
     this.dashboardService.createItem(this.newItem.value).subscribe(
       res => {
@@ -155,11 +167,14 @@ export class NewItemComponent implements OnInit, AfterViewInit {
         this.isFormOpen = false;
       },
       err => {
-        console.log(err);
+        console.error(' Error adding item:', err);
       }
     );
   }
 
+  /**
+   *  Prepares item for editing
+   */
   editItem(item: any): void {
     this.isEditMode = true;
     this.isFormOpen = true;
@@ -167,11 +182,14 @@ export class NewItemComponent implements OnInit, AfterViewInit {
     this.newItem.patchValue(item);
   }
 
+  /**
+   *  Updates an existing item
+   */
   updateItem(): void {
     if (this.editingItemId !== null) {
       this.dashboardService.updateItems(this.editingItemId, this.newItem.value).subscribe(
         () => {
-          alert('Item updated successfully!');
+          alert(' Item updated successfully!');
           this.newItem.reset();
           this.isEditMode = false;
           this.isFormOpen = false;
@@ -179,27 +197,33 @@ export class NewItemComponent implements OnInit, AfterViewInit {
           this.getProducts();
         },
         (err) => {
-          console.error('Error updating item:', err);
-          alert('Failed to update item.');
+          console.error(' Error updating item:', err);
+          alert(' Failed to update item.');
         }
       );
     }
   }
 
+  /**
+   *  Deletes an item
+   */
   deleteProduct(productId: number): void {
-    if (confirm('Are you sure you want to delete this branch?')){
-    this.dashboardService.deleteProduct(productId).subscribe(
-      () => {
-        alert('Product deleted successfully');
-        this.getProducts();
-      },
-      (error) => {
-        console.error('Error deleting product:', error);
-      }
-    );
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.dashboardService.deleteProduct(productId).subscribe(
+        () => {
+          alert(' Product deleted successfully');
+          this.getProducts();
+        },
+        (error) => {
+          console.error(' Error deleting product:', error);
+        }
+      );
+    }
   }
-}
 
+  /**
+   *  Cancels edit mode and resets the form
+   */
   cancelEdit(): void {
     this.isEditMode = false;
     this.isFormOpen = false;
