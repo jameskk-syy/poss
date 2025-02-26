@@ -1,12 +1,9 @@
 <section class="content mb-5">
-  <!-- Centered Accordion Button -->
   <div class="d-flex justify-content-center py-5 mb-3">
       <button class="btn btn-primary" (click)="toggleForm()">
           {{ isFormOpen ? 'Close Form' : isEditMode ? 'Edit Branch' : 'Add Branch' }}
       </button>
   </div>
-
-  <!-- Collapsible Form Section -->
   <div *ngIf="isFormOpen" class="content-block">
       <div class="d-flex justify-content-center">
           <form class="shadow-lg col-md-6 col-12 p-4" (ngSubmit)="isEditMode ? updateBranch() : onCrtBranch()" [formGroup]="newBranch">
@@ -19,7 +16,6 @@
                   <input type="text" class="form-control" formControlName="location">
               </div>
               
-              <!-- Submit & Cancel Buttons -->
               <div class="text-right">
                   <button type="submit" class="btn btn-primary mt-3">
                       {{ isEditMode ? 'Update Branch' : 'Add Branch' }}
@@ -31,8 +27,6 @@
           </form>
       </div>
   </div>
-
-  <!-- Table Section -->
   <div class="content mb-5 content-block">
       <div class="mat-elevation-z8">
           <div class="table-responsive">
@@ -58,7 +52,6 @@
                       <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
                   </ng-container>
 
-                  <!-- Action Column -->
                   <ng-container matColumnDef="actions">
                       <th mat-header-cell *matHeaderCellDef> Actions </th>
                       <td mat-cell *matCellDef="let element">

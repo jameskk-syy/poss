@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-transaction',
@@ -11,9 +13,16 @@ export class TransactionComponent implements OnInit {
   saleForm: FormGroup;
   items: any[] = []; // Store fetched products (Search Results)
   selectedProducts: any[] = []; // Store selected products
+  selectedProductsDataSource = new MatTableDataSource<any>([]);
   showProductTable: boolean = false; // Controls visibility of product search table
+  
+  @ViewChild('selectedProductsPaginator') selectedProductsPaginator: MatPaginator;
 
-  constructor(private fb: FormBuilder, private dashboardService: DashboardService) {
+  constructor(
+    private fb: FormBuilder, 
+    private dashboardService: DashboardService,
+    private cdr: ChangeDetectorRef
+  ) {
     this.saleForm = this.fb.group({
       customerName: '',
       saleOrderLines: this.fb.array([]) // FormArray for selected products
@@ -22,16 +31,21 @@ export class TransactionComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  ngAfterViewInit() {
+    if (this.selectedProductsPaginator) {
+      this.selectedProductsDataSource.paginator = this.selectedProductsPaginator;
+    }
+  }
+
   get saleOrderLines(): FormArray {
     return this.saleForm.get('saleOrderLines') as FormArray;
   }
 
-  // ✅ Fetch products when the search icon is clicked and show the table
+  // Fetch products when the search icon is clicked and show the table
   fetchProducts(): void {
     this.dashboardService.getAllProducts().subscribe(
       (response: any) => {
         console.log('Fetched Products:', response);
-
         if (Array.isArray(response) && response.length > 0) {
           this.items = response;
           this.showProductTable = true; // Show the product search table
@@ -44,8 +58,29 @@ export class TransactionComponent implements OnInit {
     );
   }
 
-  // ✅ Select a product from the search table
+  // Allow toggling of product selection
+  toggleProductSelection(item: any, isChecked: boolean): void {
+    console.log(`Toggle selection for item ${item.id}, checked: ${isChecked}`);
+    if (isChecked) {
+      this.selectProduct(item); // Select the product if checked
+    } else {
+      this.removeProductById(item.id); // Remove the product if unchecked
+    }
+  }
+
+  // Remove product by ID
+  removeProductById(productId: number): void {
+    const index = this.selectedProducts.findIndex(product => product.id === productId);
+    if (index !== -1) {
+      this.selectedProducts.splice(index, 1);
+      this.saleOrderLines.removeAt(index); // Also remove from FormArray
+      this.refreshSelectedProductsTable();
+    }
+  }
+
   selectProduct(selectedProduct: any): void {
+    console.log('Selecting product:', selectedProduct);
+    // Prevent duplicates
     if (!this.selectedProducts.some(product => product.id === selectedProduct.id)) {
       const productData = {
         id: selectedProduct.id,
@@ -59,27 +94,38 @@ export class TransactionComponent implements OnInit {
 
       this.selectedProducts.push(productData);
 
-      // ✅ Add to FormArray
+      // Add product to FormArray
       const productGroup = this.fb.group({
-        itemId: [selectedProduct.id, Validators.required], 
+        itemId: [selectedProduct.id, Validators.required],
         quantity: [1, [Validators.required, Validators.min(1)]],
         price: [selectedProduct.price, Validators.required],
         subTotal: [selectedProduct.price, Validators.required]
       });
 
-      // ✅ Watch for quantity changes and update subtotal dynamically
+      // Watch for quantity changes and update subtotal
       productGroup.get('quantity')?.valueChanges.subscribe(newQuantity => {
         this.updateSubtotal(selectedProduct.id, newQuantity);
       });
 
       this.saleOrderLines.push(productGroup);
-
-      // ✅ Hide product search table after selecting a product
-      this.showProductTable = false;
+      
+      // Refresh the display of selected products in the table
+      this.refreshSelectedProductsTable();
     }
   }
 
-  // ✅ Update subtotal when quantity changes
+  // Method to refresh the display of selected products
+  refreshSelectedProductsTable(): void {
+    console.log('Refreshing selected products table:', this.selectedProducts);
+    // Create a new MatTableDataSource with a new array reference to trigger change detection
+    this.selectedProductsDataSource = new MatTableDataSource([...this.selectedProducts]);
+    if (this.selectedProductsPaginator) {
+      this.selectedProductsDataSource.paginator = this.selectedProductsPaginator;
+    }
+    this.cdr.detectChanges();
+  }
+
+  // Update subtotal when quantity changes
   updateSubtotal(productId: number, newQuantity: number): void {
     if (newQuantity && newQuantity > 0) {
       const product = this.selectedProducts.find(p => p.id === productId);
@@ -87,58 +133,59 @@ export class TransactionComponent implements OnInit {
         product.quantity = newQuantity;
         product.subTotal = product.price * newQuantity;
 
-        // Find index in selectedProducts to update FormArray
-        const index = this.selectedProducts.indexOf(product);
+        // Update FormArray value
+        const index = this.selectedProducts.findIndex(p => p.id === productId);
         if (index !== -1) {
-          this.saleOrderLines.at(index).patchValue({ 
-            quantity: newQuantity, 
-            subTotal: product.subTotal 
+          this.saleOrderLines.at(index).patchValue({
+            quantity: newQuantity,
+            subTotal: product.subTotal
           });
 
-          // ✅ Force UI update
-          this.saleForm.updateValueAndValidity();
+          this.saleForm.markAsDirty();
         }
       }
     }
   }
 
-  // ✅ Remove a selected product
-  removeProduct(index: number): void {
+  removeProduct(index: number, event: Event): void {
+    event.stopPropagation(); 
+    event.preventDefault(); 
+
     this.selectedProducts.splice(index, 1);
     this.saleOrderLines.removeAt(index);
+    this.refreshSelectedProductsTable();
   }
 
-  // ✅ Submit the form
   submitSale(): void {
     if (this.saleForm.valid && this.selectedProducts.length > 0) {
       const saleData = {
-        customerName: this.saleForm.value.customerName || null, 
-        branchId: this.selectedProducts.find(p => p.branchId)?.branchId || 1, 
+        customerName: this.saleForm.value.customerName || null,
+        branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0, 
         saleOrderLines: this.selectedProducts.map(product => ({
-          itemId: product.id,
-          quantity: Number(product.quantity),
-          price: product.price,
-          subTotal: product.subTotal
+          itemId: product.id, 
+          quantity: Number(product.quantity), 
+          price: Number(product.price), 
+          subTotal: Number(product.subTotal) 
         }))
       };
-  
+
       console.log('Submitting sale:', JSON.stringify(saleData, null, 2));
 
       this.dashboardService.createSale(saleData).subscribe(
-        () => { 
+        () => {
           alert('Sale successfully created!');
           this.saleForm.reset();
           this.saleOrderLines.clear();
           this.selectedProducts = [];
+          this.refreshSelectedProductsTable();
         },
         (err) => {
           console.error('Error processing sale:', err);
           alert('Failed to create sale.');
         }
       );
-      
     } else {
-      // ✅ Show the product table instead of an alert if no products are selected
+      // Keep the product search table visible
       this.showProductTable = true;
     }
   }

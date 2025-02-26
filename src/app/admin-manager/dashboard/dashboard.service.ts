@@ -70,25 +70,13 @@ export class DashboardService {
   updateItems(id: number, data: any): Observable<any> {
     return this.http.put(`${environment.apiUrl}/api/v1/items/${id}`, data, this.getHttpOptions());
   }
-  // createBranch(data: any): Observable<any> {
-  //   const API_URL = `${environment.apiUrl}/api/branches`;
-  //   return this.http.post(API_URL, data, this.getHttpOptions()).pipe(
-  //     map(res => res || {})
-  //   );
-  // }
-
- 
-
   public getAllProducts(): Observable<any> {
     const url = `${environment.apiUrl}/api/v1/items`;
     return this.http.get(url, this.getHttpOptions()).pipe(
       map(res => res || [])
     );
   }
-
-  // branch methods
-
-  createBranch(data: any): Observable<any> {
+    createBranch(data: any): Observable<any> {
     console.log("Sending data to API:", data); // Debugging
   
     const API_URL = `${environment.apiUrl}/api/branches`;
@@ -161,27 +149,7 @@ createSupplier(data: any): Observable<any> {
 deleteSuppliers(id: number): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/api/suppliers/${id}`, this.getHttpOptions());
 }
-
-// createSale(data: any): Observable<any> {
-//   console.log("Sending sale transaction data to API:", data); // Debugging
-
-//   const API_URL = `${environment.apiUrl}/api/sale-orders`;
-
-//   return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
-//     map(response => {
-//       console.log("Sale transaction created successfully:", response); // Debugging
-//       return response;
-//     }),
-//     catchError(error => {
-//       console.error("Error creating sale transaction:", error);
-//       return throwError(() => new Error(error.message || "Failed to create sale transaction"));
-//     })
-//   );
-// }
-
-  // Category methods
- 
-  
+   
   createSale(data: any): Observable<any> {
     const API_URL = `${environment.apiUrl}/api/sale-orders`;
   
@@ -189,15 +157,15 @@ deleteSuppliers(id: number): Observable<any> {
       headers: { 'Content-Type': 'application/json' }
     };
   
-    console.log("✅ Sending sale transaction data to API:", JSON.stringify(data, null, 2));
+    console.log("Sending sale transaction data to API:", JSON.stringify(data, null, 2));
   
     return this.http.post<any>(API_URL, data, httpOptions).pipe(
       map(response => {
-        console.log("✅ Sale transaction created successfully:", response);
+        console.log("Sale transaction created successfully:", response);
         return response;
       }),
       catchError(error => {
-        console.error("❌ Backend error response:", error.error);
+        console.error("Backend error response:", error.error);
         return throwError(() => new Error(error.message || "Failed to create sale transaction"));
       })
     );
@@ -239,7 +207,4 @@ deleteCategory(id: number): Observable<any> {
   deleteProduct(id: number): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/api/v1/items/${id}`);
   }
-  // deleteBranch(id: number): Observable<any> {
-  //   return this.http.delete(`${environment.apiUrl}/api/branches/${id}`);
-  // }
 }

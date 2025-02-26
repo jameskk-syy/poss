@@ -15,31 +15,24 @@ export class BranchComponent implements OnInit, AfterViewInit{
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
-  
-
   newBranch: FormGroup;
 
   isFormOpen = false;
   isEditMode = false;        
   editingItemId: number | null = null; 
-  editingBranchId: number | null = null; // Track branch being edited
-
+  editingBranchId: number | null = null; 
 
 
   constructor(private fb: FormBuilder,private dashboardService:DashboardService) { 
-    // Initialize the form group with controls
     this.newBranch = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
       location: ['', [Validators.required]],
     });
   }
 
-  
   ngOnInit(): void {
     this.getBranch();
   }
-
   ngAfterViewInit(): void {
     if (this.paginator) {
       this.dataSource.paginator = this.paginator;
@@ -49,12 +42,12 @@ export class BranchComponent implements OnInit, AfterViewInit{
     if (this.newBranch.valid) {
       this.dashboardService.createBranch(this.newBranch.value).pipe().subscribe(
         res => {
-          alert(res.message);  // Display success message
-          this.newBranch.reset(); // Clear form after successful submission
+          alert(res.message);  
+          this.newBranch.reset(); 
           this.getBranch();
         },
         err => {
-          console.error('Error creating branch:', err);  // Log detailed error
+          console.error('Error creating branch:', err);  
           alert('An error occurred while creating the branch. Please try again.');
         }
       );
@@ -67,22 +60,19 @@ export class BranchComponent implements OnInit, AfterViewInit{
   toggleForm() {
     this.isFormOpen = !this.isFormOpen;
 
-     // Reset form when opening it in add mode
      if (!this.isEditMode) {
       this.newBranch.reset();
   }
 
   }
-
-
   getBranch(): void {
     this.dashboardService.getAllBranches().subscribe(
       (response: any) => {
         if (response && response.data) {
-          this.dataSource = new MatTableDataSource(response.data); // Extract the 'data' array
+          this.dataSource = new MatTableDataSource(response.data); 
           setTimeout(() => {
             if (this.paginator) {
-              this.dataSource.paginator = this.paginator; // Reattach paginator
+              this.dataSource.paginator = this.paginator; 
             }
           });
         } else {
@@ -95,11 +85,6 @@ export class BranchComponent implements OnInit, AfterViewInit{
     );
   }
   
-
-  // updateProduct(product: any): void {
-  //   console.log('Editing product:', product);
-  // }
-
   editBranch(branch: any): void {
     this.isEditMode = true;
     this.isFormOpen = true;
@@ -133,19 +118,6 @@ cancelEdit(): void {
   this.newBranch.reset();
   this.isFormOpen = false;
 }
-
-  // deleteProduct(productId: number): void {
-  //   this.dashboardService.deleteProduct(productId).subscribe(
-  //     () => {
-  //       console.log('Product deleted successfully');
-  //       this.getBranch();
-  //     },
-  //     (error) => {
-  //       console.error('Error deleting product:', error);
-  //     }
-  //   );
-  // }
-
   deleteBranch(id: number): void {
     if (confirm('Are you sure you want to delete this branch?')) {
         this.dashboardService.deleteBranchs(id).subscribe(

@@ -44,10 +44,6 @@ export class NewItemComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator = this.paginator;
     }
   }
-
-  /**
-   *  Loads all necessary data before fetching products
-   */
   loadData(): void {
     Promise.all([
       this.getBranches(),
@@ -112,10 +108,6 @@ export class NewItemComponent implements OnInit, AfterViewInit {
       );
     });
   }
-
-  /**
-   *  Fetches products and assigns correct names for branch, category, and supplier
-   */
   getProducts(): void {
     this.dashboardService.getAllProducts().subscribe(
       (data) => {
@@ -135,16 +127,9 @@ export class NewItemComponent implements OnInit, AfterViewInit {
     );
   }
 
-  /**
-   *  Toggles form visibility
-   */
-  toggleForm(): void {
+ toggleForm(): void {
     this.isFormOpen = !this.isFormOpen;
   }
-
-  /**
-   *  Handles form submission for adding or updating an item
-   */
   onSubmit(): void {
     if (this.newItem.valid) {
       if (this.isEditMode && this.editingItemId !== null) {
@@ -154,10 +139,6 @@ export class NewItemComponent implements OnInit, AfterViewInit {
       }
     }
   }
-
-  /**
-   *  Adds a new item
-   */
   addItem(): void {
     this.dashboardService.createItem(this.newItem.value).subscribe(
       res => {
@@ -172,19 +153,12 @@ export class NewItemComponent implements OnInit, AfterViewInit {
     );
   }
 
-  /**
-   *  Prepares item for editing
-   */
   editItem(item: any): void {
     this.isEditMode = true;
     this.isFormOpen = true;
     this.editingItemId = item.id;
     this.newItem.patchValue(item);
   }
-
-  /**
-   *  Updates an existing item
-   */
   updateItem(): void {
     if (this.editingItemId !== null) {
       this.dashboardService.updateItems(this.editingItemId, this.newItem.value).subscribe(
@@ -203,10 +177,6 @@ export class NewItemComponent implements OnInit, AfterViewInit {
       );
     }
   }
-
-  /**
-   *  Deletes an item
-   */
   deleteProduct(productId: number): void {
     if (confirm('Are you sure you want to delete this product?')) {
       this.dashboardService.deleteProduct(productId).subscribe(
@@ -221,9 +191,6 @@ export class NewItemComponent implements OnInit, AfterViewInit {
     }
   }
 
-  /**
-   *  Cancels edit mode and resets the form
-   */
   cancelEdit(): void {
     this.isEditMode = false;
     this.isFormOpen = false;
