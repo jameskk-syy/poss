@@ -43,6 +43,9 @@ export class MainComponent implements OnInit {
 navigateToCategory() {
   this.router.navigate(['/category']);
 }
+navigateToSales() {
+  this.router.navigate(['/sales']);
+}
 
   ngOnInit(): void {
     this.initializeCharts();

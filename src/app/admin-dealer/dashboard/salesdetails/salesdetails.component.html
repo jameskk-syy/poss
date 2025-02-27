@@ -1,0 +1,97 @@
+<div class="container">
+    <mat-card class="sale-detail-card">
+      <mat-card-header>
+        <mat-card-title>Sale Details</mat-card-title>
+        <mat-card-subtitle *ngIf="sale">Reference Number: {{sale.referenceNumber}}</mat-card-subtitle>
+      </mat-card-header>
+  
+      <mat-card-content>
+        <div *ngIf="loading" class="loading-spinner">
+          <mat-spinner></mat-spinner>
+        </div>
+  
+        <div *ngIf="error" class="error-message">
+          <mat-icon color="warn">error</mat-icon>
+          <p>Unable to load sale details. Please try again later.</p>
+        </div>
+  
+        <div *ngIf="!loading && !error && sale" class="sale-info">
+          <mat-list>
+            <mat-list-item>
+              <span class="info-label">Sale ID:</span>
+              <span class="info-value">{{sale.id}}</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+            
+            <mat-list-item>
+              <span class="info-label">Customer:</span>
+              <span class="info-value">{{sale.customerName}}</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+  
+            <mat-list-item>
+              <span class="info-label">Branch:</span>
+              <span class="info-value">{{sale.branch?.name}}</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+  
+            <mat-list-item>
+              <span class="info-label">Location:</span>
+              <span class="info-value">{{sale.branch?.location}}</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+  
+            <mat-list-item>
+              <span class="info-label">Total Amount:</span>
+              <span class="info-value">{{sale.totalAmount | currency}}</span>
+            </mat-list-item>
+            
+            <mat-divider></mat-divider>
+  
+            <mat-list-item>
+              <span class="info-label">Date Created:</span>
+              <span class="info-value">{{sale.createdAt | date:'medium'}}</span>
+            </mat-list-item>
+          </mat-list>
+  
+          <!-- Sale Items Table (if applicable) -->
+          <div *ngIf="sale.items && sale.items.length > 0" class="sale-items">
+            <h3>Sale Items</h3>
+            <table mat-table [dataSource]="sale.items" class="items-table">
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Item </th>
+                <td mat-cell *matCellDef="let item"> {{item.name}} </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                <td mat-cell *matCellDef="let item"> {{item.quantity}} </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef> Price </th>
+                <td mat-cell *matCellDef="let item"> {{item.price | currency}} </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let item"> {{item.quantity * item.price | currency}} </td>
+              </ng-container>
+  
+              <tr mat-header-row *matHeaderRowDef="['name', 'quantity', 'price', 'total']"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['name', 'quantity', 'price', 'total'];"></tr>
+            </table>
+          </div>
+        </div>
+      </mat-card-content>
+  
+      <mat-card-actions align="end">
+        <button mat-button color="primary" (click)="goBack()">BACK</button>
+        <button *ngIf="sale" mat-raised-button color="primary" [disabled]="loading">PRINT</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>

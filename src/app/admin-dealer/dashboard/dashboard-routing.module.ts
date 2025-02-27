@@ -8,6 +8,8 @@ import { BranchComponent } from './branch/branch.component';
 import { SuppliersComponent } from './suppliers/suppliers.component';
 import { CategoryComponent } from './category/category.component';
 import { TransactionComponent } from './transaction/transaction.component';
+import { SaleslistComponent } from './saleslist/saleslist.component';
+import { SaleDetailComponent } from './salesdetails/salesdetails.component';
 
 const routes: Routes = [
   
@@ -43,6 +45,14 @@ const routes: Routes = [
   {
     path: "makesale",
     component: TransactionComponent,
+  },
+  {
+    path: "sales",
+    component: SaleslistComponent,
+  },
+  {
+    path: "saledetails",
+    component: SaleDetailComponent,
   },
   { path: "**", component: Page404Component },
 

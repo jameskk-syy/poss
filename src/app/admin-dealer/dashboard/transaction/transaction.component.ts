@@ -156,24 +156,61 @@ export class TransactionComponent implements OnInit {
     this.refreshSelectedProductsTable();
   }
 
+  // submitSale(): void {
+  //   if (this.saleForm.valid && this.selectedProducts.length > 0) {
+  //     const saleData = {
+  //       customerName: this.saleForm.value.customerName || null,
+  //       branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0, 
+  //       saleOrderLines: this.selectedProducts.map(product => ({
+  //         itemId: product.id, 
+  //         quantity: Number(product.quantity), 
+  //         price: Number(product.price), 
+  //         subTotal: Number(product.subTotal) 
+  //       }))
+  //     };
+
+  //     console.log('Submitting sale:', JSON.stringify(saleData, null, 2));
+
+  //     this.dashboardService.createSale(saleData).subscribe(
+  //       () => {
+  //         alert('Sale successfully created!');
+  //         this.saleForm.reset();
+  //         this.saleOrderLines.clear();
+  //         this.selectedProducts = [];
+  //         this.refreshSelectedProductsTable();
+  //       },
+  //       (err) => {
+  //         console.error('Error processing sale:', err);
+  //         alert('Failed to create sale.');
+  //       }
+  //     );
+  //   } else {
+  //     // Keep the product search table visible
+  //     this.showProductTable = true;
+  //   }
+  // }
+
   submitSale(): void {
     if (this.saleForm.valid && this.selectedProducts.length > 0) {
       const saleData = {
         customerName: this.saleForm.value.customerName || null,
-        branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0, 
+        branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0,
         saleOrderLines: this.selectedProducts.map(product => ({
-          itemId: product.id, 
-          quantity: Number(product.quantity), 
-          price: Number(product.price), 
-          subTotal: Number(product.subTotal) 
+          itemId: product.id,
+          quantity: Number(product.quantity),
+          price: Number(product.price),
+          subTotal: Number(product.subTotal)
         }))
       };
-
+  
       console.log('Submitting sale:', JSON.stringify(saleData, null, 2));
-
+  
       this.dashboardService.createSale(saleData).subscribe(
         () => {
           alert('Sale successfully created!');
+          this.showProductTable = false; 
+  
+          // Reset the form and selected products
           this.saleForm.reset();
           this.saleOrderLines.clear();
           this.selectedProducts = [];
@@ -185,7 +222,7 @@ export class TransactionComponent implements OnInit {
         }
       );
     } else {
-      // Keep the product search table visible
+      // Keep the product search table visible if the form is invalid
       this.showProductTable = true;
     }
   }
