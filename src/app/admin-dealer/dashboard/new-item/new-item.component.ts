@@ -11,7 +11,7 @@ import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.serv
 })
 export class NewItemComponent implements OnInit, AfterViewInit {
   
-  displayedColumns: string[] = ['position', 'name', 'description', 'count', 'branch', 'category', 'price', 'supplier', 'actions'];
+  displayedColumns: string[] = ['position', 'name', 'description', 'count', 'branch', 'category', 'price', 'sPrice', 'discount', 'supplier', 'actions'];
   dataSource = new MatTableDataSource<any>();
   newItem: FormGroup;
   branches: any[] = [];
@@ -27,7 +27,9 @@ export class NewItemComponent implements OnInit, AfterViewInit {
     this.newItem = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
       description: ['', [Validators.required]],
-      price: ['', [Validators.required]],
+      regularBuyingPrice: ['', [Validators.required]],
+      sellingPrice: ['', [Validators.required]],
+      maxPercentageDiscount: ['', [Validators.required]],
       count: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       branchId: ['', [Validators.required]],
       categoryId: ['', [Validators.required]],
