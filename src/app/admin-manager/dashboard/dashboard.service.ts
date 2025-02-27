@@ -76,6 +76,16 @@ export class DashboardService {
       map(res => res || [])
     );
   }
+  public getAllSales(): Observable<any> {
+    const url = `${environment.apiUrl}/api/sale-orders`;
+    return this.http.get(url, this.getHttpOptions()).pipe(
+      map(res => res || [])
+    );
+  }
+
+  getSaleById(id: string): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/sale-orders${id}`);
+  }
     createBranch(data: any): Observable<any> {
     console.log("Sending data to API:", data); // Debugging
   

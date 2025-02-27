@@ -14,6 +14,13 @@ import { SharedModule } from "./../../shared/shared.module";
 
 import { MainComponent } from "./main/main.component";
 import { MatTableModule } from "@angular/material/table";
+import { HttpClientModule } from "@angular/common/http";
+import { RouterModule } from "@angular/router";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatCardModule } from "@angular/material/card";
+import { MatListModule } from "@angular/material/list";
+import { MatDividerModule } from "@angular/material/divider";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -34,8 +41,13 @@ import { MatTableModule } from "@angular/material/table";
     MatProgressBarModule,
     ComponentsModule,
     SharedModule,
-    MatTableModule
+    MatTableModule,
     // DashboardModule
+    MatPaginatorModule,
+    MatCardModule,
+    MatListModule,
+    MatDividerModule,
+    MatProgressSpinnerModule
     
   ],
 })
