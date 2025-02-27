@@ -38,6 +38,10 @@ import { CategoryComponent } from './category/category.component';
 import { TransactionComponent } from './transaction/transaction.component';
 import { SaleslistComponent } from './saleslist/saleslist.component';
 import { SaleDetailComponent } from './salesdetails/salesdetails.component';
+import { QuotesComponent } from './quotes/quotes.component';
+import { PurchasesComponent } from './purchases/purchases.component';
+import { CustomersComponent } from './customers/customers.component';
+import { ExpensesComponent } from './expenses/expenses.component';
 
 
 
@@ -54,6 +58,10 @@ import { SaleDetailComponent } from './salesdetails/salesdetails.component';
     TransactionComponent,
     SaleslistComponent,
     SaleDetailComponent,
+    QuotesComponent,
+    PurchasesComponent,
+    CustomersComponent,
+    ExpensesComponent,
 
   ],
   imports: [

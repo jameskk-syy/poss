@@ -10,6 +10,10 @@ import { CategoryComponent } from './category/category.component';
 import { TransactionComponent } from './transaction/transaction.component';
 import { SaleslistComponent } from './saleslist/saleslist.component';
 import { SaleDetailComponent } from './salesdetails/salesdetails.component';
+import { QuotesComponent } from './quotes/quotes.component';
+import { CustomersComponent } from './customers/customers.component';
+import { PurchasesComponent } from './purchases/purchases.component';
+import { ExpensesComponent } from './expenses/expenses.component';
 
 const routes: Routes = [
   
@@ -53,6 +57,22 @@ const routes: Routes = [
   {
     path: "saledetails",
     component: SaleDetailComponent,
+  },
+  {
+    path: "quotes",
+    component: QuotesComponent,
+  },
+  {
+    path: "customers",
+    component: CustomersComponent,
+  },
+  {
+    path: "purchases",
+    component: PurchasesComponent,
+  },
+  {
+    path: "expenditure",
+    component: ExpensesComponent,
   },
   { path: "**", component: Page404Component },
 
