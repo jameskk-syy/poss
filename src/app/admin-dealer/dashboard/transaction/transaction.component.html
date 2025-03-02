@@ -11,26 +11,31 @@
                 <input matInput type="text" formControlName="customerName">
               </mat-form-field>
 
-              <mat-form-field class="clickable-field   w-100" appearance="outline" (click)="fetchProducts($event)">
-                <!-- <mat-label>Add Products</mat-label> -->
-                <input matInput type="text" placeholder="Click  to add products" readonly>
+              <mat-form-field class="clickable-field w-100" appearance="outline" (click)="fetchProducts($event)">
+                <input matInput type="text" placeholder="Click to add products" readonly>
                 <button class="bg-secondary" mat-icon-button matSuffix>
                   <mat-icon>add</mat-icon>
                 </button>
               </mat-form-field>
-              
-              
             </div>
           </div>
 
-          <!-- Product Search Table with Selection -->
           <div *ngIf="showProductTable" class="content mb-5 content-block">
-            <button mat-button (click)="showProductTable = false">
-              <mat-icon class="close-icon">close</mat-icon> Close
-            </button>            <div class="mat-elevation-z8">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <button mat-button (click)="showProductTable = false">
+                <mat-icon class="close-icon">close</mat-icon> Close
+              </button>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Search Products</mat-label>
+                <input matInput [formControl]="searchControl" placeholder="Search by ID, name, branch, etc.">
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+            </div>
+            
+            <div class="mat-elevation-z8">
               <div class="table-responsive">
-                <table mat-table [dataSource]="items" class="mat-table">
-
+                <table mat-table [dataSource]="itemsDataSource" class="mat-table">
                   <!-- Selection Column -->
                   <ng-container matColumnDef="select">
                     <th mat-header-cell *matHeaderCellDef>Select</th>
@@ -63,14 +68,11 @@
                   <tr mat-row *matRowDef="let row; columns: ['select', 'id', 'name', 'branch', 'price'];"></tr>
                 </table>
               </div>
-              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="mt-3"></mat-paginator>
+              <mat-paginator #productsPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="mt-3"></mat-paginator>
             </div>
-          <p *ngIf="items.length === 0">No products found.</p>
-
+            <p *ngIf="itemsDataSource.filteredData.length === 0">No products found.</p>
           </div>
-          
 
-          <!-- Selected Products Table -->
           <div *ngIf="selectedProducts.length > 0" class="content mb-5 content-block">
             <div class="mat-elevation-z8">
               <div class="table-responsive">
@@ -99,13 +101,8 @@
                     <th mat-header-cell *matHeaderCellDef>Quantity</th>
                     <td mat-cell *matCellDef="let product; let i = index">
                       <mat-form-field appearance="outline" class="w-100">
-                        <input 
-                          matInput 
-                          type="number" 
-                          [formControl]="saleOrderLines.controls[i].get('quantity')"
-                          (input)="updateSubtotal(product.id, $event.target.value); $event.stopPropagation();"
-                          min="1"
-                          >
+                        <input matInput type="number" [formControl]="saleOrderLines.controls[i].get('quantity')"
+                          (input)="updateSubtotal(product.id, $event.target.value); $event.stopPropagation();" min="1">
                       </mat-form-field>
                     </td>
                   </ng-container>
@@ -118,49 +115,63 @@
                   <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef>Action</th>
                     <td mat-cell *matCellDef="let product; let i = index">
-                      <button mat-button color="warn" (click)="removeProduct(i, $event)">Remove</button>
+                      <button mat-icon-button color="warn" (click)="removeProduct(i, $event)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
                     </td>
                   </ng-container>
 
-                  <tr mat-header-row *matHeaderRowDef="['id', 'name', 'branch', 'price', 'quantity', 'subtotal', 'actions']"></tr>
-                  <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'branch', 'price', 'quantity', 'subtotal', 'actions'];"></tr>
+                  <tr mat-header-row
+                    *matHeaderRowDef="['id', 'name', 'branch', 'price', 'quantity', 'subtotal', 'actions']"></tr>
+                  <tr mat-row
+                    *matRowDef="let row; columns: ['id', 'name', 'branch', 'price', 'quantity', 'subtotal', 'actions'];">
+                  </tr>
                 </table>
               </div>
-              <mat-paginator #selectedProductsPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="mt-3"></mat-paginator>
+              <mat-paginator #selectedProductsPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                class="mt-3"></mat-paginator>
             </div>
           </div>
 
-<div class="row">
-  <!-- <div *ngIf="selectedProducts.length > 0" class="d-flex justify-content-center align-items-center bg-color-secondary col-md-9 mt-3">
-    <div class="pay">Pay: Ksh</div>
-    <div class="totamnt">
-      <input matInput type="number" formControlName="totalAmount" readonly>
-    </div>
-  </div> -->
-  <div *ngIf="selectedProducts.length > 0" class="d-flex justify-content-center align-items-center bg-color-secondary col-md-9 mt-3">
-    <div class="pay-label">Pay: Ksh</div>
-    <div class="totamnt text-center">
-      <input matInput type="number" formControlName="totalAmount" readonly>
-     
-    </div>
-    <div class="words">
-      {{ totalAmountInWords }} 
-    </div>
-  </div>
-  
-  
+          <div class="row">
+            <div *ngIf="selectedProducts.length > 0"
+              class="d-flex justify-content-center align-items-center bg-color-secondary col-md-9 mt-3" style="min-height: 80px;">
+              <div class="pay-label">Pay: Ksh</div>
+              <div class="totamnt text-center">
+                <input matInput type="number" formControlName="totalAmount" readonly>
+              </div>
+              <div class="words">
+                {{ totalAmountInWords }}
+              </div>
+            </div>
 
-          <div *ngIf="selectedProducts.length > 0" class="d-flex  justify-content-between  col-md-3 align-items-center mt-3">
-            <mat-form-field class="w-100" appearance="outline">
-              <mat-label>Total Amount</mat-label>
-              <input matInput type="number" formControlName="totalAmount">
-            </mat-form-field>
+            <!-- col-md-3: Fields stacked downwards -->
+            <div *ngIf="selectedProducts.length > 0"
+              class="col-md-3 d-flex flex-column bg-white p-3 rounded align-items-center text-dark mt-3">
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Total Amount</mat-label>
+                <input matInput type="number" formControlName="totalAmount">
+              </mat-form-field>
+              <div class="" *ngIf="isCreditSale">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Amount Paid</mat-label>
+                  <input matInput type="number" formControlName="amountPaid" (input)="calculateBalance()">
+                </mat-form-field>
+
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Balance</mat-label>
+                  <input matInput type="text" [value]="balance" readonly>
+                </mat-form-field>
+              </div>
+            </div>
           </div>
-        </div>
 
-          <div class=" justify-content-center d-flex mt-3">
+          <div class="justify-content-center d-flex mt-3">
             <button mat-raised-button color="primary" type="submit" [disabled]="selectedProducts.length === 0">
-              Submit Sale
+              {{ isCreditSale ? 'Submit Credit Sale' : 'Submit Cash Sale' }}
+            </button>
+            <button mat-button [color]="isCreditSale ? 'primary' : 'warn'" (click)="toggleSaleMode()">
+              {{ isCreditSale ? 'Cash Sale' : 'Credit Sale' }}
             </button>
           </div>
         </form>

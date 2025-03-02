@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef, HostListener } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, HostListener, AfterViewInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,15 +9,20 @@ import { MatPaginator } from '@angular/material/paginator';
   templateUrl: './transaction.component.html',
   styleUrls: ['./transaction.component.sass']
 })
-export class TransactionComponent implements OnInit {
+export class TransactionComponent implements OnInit, AfterViewInit {
   saleForm: FormGroup;
   items: any[] = []; 
+  itemsDataSource = new MatTableDataSource<any>([]);
   selectedProducts: any[] = []; 
   selectedProductsDataSource = new MatTableDataSource<any>([]);
   showProductTable: boolean = false; 
   totalAmountInWords: string = '';
+  isCreditSale: boolean = false;
+  balance: string = '0';
+  searchControl = new FormControl('');
 
   @ViewChild('selectedProductsPaginator') selectedProductsPaginator: MatPaginator;
+  @ViewChild('productsPaginator') productsPaginator: MatPaginator;
 
   constructor(
     private fb: FormBuilder,
@@ -27,19 +32,51 @@ export class TransactionComponent implements OnInit {
     this.saleForm = this.fb.group({
       customerName: '',
       saleOrderLines: this.fb.array([]),
-      totalAmount: [{ value: 0, disabled: true }, Validators.required] 
+      totalAmount: [{ value: 0, disabled: true }, Validators.required],
+      amountPaid: [{ value: 0, disabled: !this.isCreditSale }]
     });
   }
 
   ngOnInit(): void {
     this.saleForm.get('totalAmount')?.valueChanges.subscribe((value) => {
       this.totalAmountInWords = this.convertNumberToWords(value) + '';
+      this.calculateBalance();
+    });
+    
+    this.saleForm.get('amountPaid')?.valueChanges.subscribe(() => {
+      this.calculateBalance();
+    });
+    
+    // Setup search filtering
+    this.searchControl.valueChanges.subscribe(searchTerm => {
+      this.applyFilter(searchTerm);
     });
   }
 
   ngAfterViewInit() {
     if (this.selectedProductsPaginator) {
       this.selectedProductsDataSource.paginator = this.selectedProductsPaginator;
+    }
+    
+    // Initialize paginator for the products table
+    if (this.productsPaginator) {
+      this.itemsDataSource.paginator = this.productsPaginator;
+      this.cdr.detectChanges();
+    }
+  }
+
+  applyFilter(filterValue: string) {
+    if (!filterValue) {
+      this.itemsDataSource.filter = '';
+      return;
+    }
+    
+    filterValue = filterValue.trim().toLowerCase();
+    this.itemsDataSource.filter = filterValue;
+    
+    // Reset to first page when filtering
+    if (this.itemsDataSource.paginator) {
+      this.itemsDataSource.paginator.firstPage();
     }
   }
 
@@ -55,7 +92,30 @@ export class TransactionComponent implements OnInit {
         console.log('Fetched Products:', response);
         if (Array.isArray(response) && response.length > 0) {
           this.items = response;
+          
+          // Create a MatTableDataSource with products
+          this.itemsDataSource = new MatTableDataSource<any>(this.items);
+          
+          // Setup custom filter predicate for searching across all fields
+          this.itemsDataSource.filterPredicate = (data: any, filter: string) => {
+            const searchTerms = filter.toLowerCase().split(' ');
+            const dataStr = (
+              data.id + ' ' + 
+              data.name.toLowerCase() + ' ' + 
+              (data.branch?.name ? data.branch.name.toLowerCase() : 'n/a') + ' ' + 
+              (data.sellingPrice || 'n/a')
+            );
+            
+            return searchTerms.every(term => dataStr.includes(term));
+          };
+          
+          // Connect the paginator
+          if (this.productsPaginator) {
+            this.itemsDataSource.paginator = this.productsPaginator;
+          }
+          
           this.showProductTable = true;
+          this.cdr.detectChanges();
         } else {
           console.warn('No products found.');
           alert('No products found.');
@@ -65,9 +125,7 @@ export class TransactionComponent implements OnInit {
     );
   }
 
-  
   toggleProductSelection(item: any, isChecked: boolean): void {
-    console.log(`Toggle selection for item ${item.id}, checked: ${isChecked}`);
     if (isChecked) {
       this.selectProduct(item); 
     } else {
@@ -75,20 +133,17 @@ export class TransactionComponent implements OnInit {
     }
   }
 
-  // Remove product by ID
   removeProductById(productId: number): void {
     const index = this.selectedProducts.findIndex(product => product.id === productId);
     if (index !== -1) {
       this.selectedProducts.splice(index, 1);
-      this.saleOrderLines.removeAt(index); // Also remove from FormArray
+      this.saleOrderLines.removeAt(index); 
       this.refreshSelectedProductsTable();
       this.updateTotalAmount(); // Update total amount
     }
   }
 
   selectProduct(selectedProduct: any): void {
-    console.log('Selecting product:', selectedProduct);
-    // Prevent duplicates
     if (!this.selectedProducts.some(product => product.id === selectedProduct.id)) {
       const productData = {
         id: selectedProduct.id,
@@ -120,10 +175,7 @@ export class TransactionComponent implements OnInit {
     }
   }
 
-  // Method to refresh the display of selected products
   refreshSelectedProductsTable(): void {
-    console.log('Refreshing selected products table:', this.selectedProducts);
-    // Create a new MatTableDataSource with a new array reference to trigger change detection
     this.selectedProductsDataSource = new MatTableDataSource([...this.selectedProducts]);
     if (this.selectedProductsPaginator) {
       this.selectedProductsDataSource.paginator = this.selectedProductsPaginator;
@@ -138,7 +190,6 @@ export class TransactionComponent implements OnInit {
     });
   }
 
-  // Update subtotal when quantity changes
   updateSubtotal(productId: number, newQuantity: number): void {
     if (newQuantity && newQuantity > 0) {
       const product = this.selectedProducts.find(p => p.id === productId);
@@ -155,7 +206,7 @@ export class TransactionComponent implements OnInit {
           });
 
           this.saleForm.markAsDirty();
-          this.updateTotalAmount(); // Update total amount
+          this.updateTotalAmount(); 
         }
       }
     }
@@ -171,81 +222,6 @@ export class TransactionComponent implements OnInit {
     this.updateTotalAmount(); 
   }
 
-  // submitSale(): void {
-  //   if (this.saleForm.valid && this.selectedProducts.length > 0) {
-  //     const saleData = {
-  //       customerName: this.saleForm.value.customerName || null,
-  //       branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0,
-  //       saleOrderLines: this.selectedProducts.map(product => ({
-  //         itemId: product.id,
-  //         quantity: Number(product.quantity),
-  //         price: Number(product.sellingPrice),
-  //         subTotal: Number(product.subTotal)
-  //       })),
-  //       totalAmount: this.saleForm.value.totalAmount
-  //     };
-
-  //     console.log('Submitting sale:', JSON.stringify(saleData, null, 2));
-
-  //     this.dashboardService.createSale(saleData).subscribe(
-  //       () => {
-  //         alert('Sale successfully created!');
-  //         this.showProductTable = false;
-
-  //         // Reset the form and selected products
-  //         this.saleForm.reset();
-  //         this.saleOrderLines.clear();
-  //         this.selectedProducts = [];
-  //         this.refreshSelectedProductsTable();
-  //       },
-  //       (err) => {
-  //         console.error('Error processing sale:', err);
-  //         alert('Failed to create sale.');
-  //       }
-  //     );
-  //   } else {
-  //     // Keep the product search table visible if the form is invalid
-  //     this.showProductTable = true;
-  //   }
-  // }
-  submitSale(): void {
-    if (this.saleForm.valid && this.selectedProducts.length > 0) {
-      const saleData = {
-        customerName: this.saleForm.value.customerName || null,
-        totalAmount: this.saleForm.value.totalAmount, // Include totalAmount in the payload
-        branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0,
-        saleOrderLines: this.selectedProducts.map(product => ({
-          item_id: product.id, // Adjust field name if necessary
-          quantity: Number(product.quantity),
-          price: Number(product.sellingPrice),
-          sub_total: Number(product.subTotal) // Adjust field name if necessary
-        })),
-      };
-  
-      console.log('Sending sale transaction data to API:', JSON.stringify(saleData, null, 2));
-  
-      this.dashboardService.createSale(saleData).subscribe(
-        () => {
-          alert('Sale successfully created!');
-          this.showProductTable = false;
-  
-          // Reset the form and selected products
-          this.saleForm.reset();
-          this.saleOrderLines.clear();
-          this.selectedProducts = [];
-          this.refreshSelectedProductsTable();
-        },
-        (err) => {
-          console.error('Error processing sale:', err);
-          alert('Failed to create sale.');
-        }
-      );
-    } else {
-      // Keep the product search table visible if the form is invalid
-      this.showProductTable = true;
-    }
-  }
-
   @HostListener('document:click', ['$event'])
   clickout(event: Event) {
     const tableElement = document.querySelector('.content-block');
@@ -253,6 +229,23 @@ export class TransactionComponent implements OnInit {
       this.showProductTable = false;
     }
   }
+
+  toggleSaleMode(): void {
+    this.isCreditSale = !this.isCreditSale;
+    if (this.isCreditSale) {
+      this.saleForm.get('amountPaid')?.enable();
+    } else {
+      this.saleForm.get('amountPaid')?.disable();
+    }
+  }
+  
+  calculateBalance(): void {
+    const totalAmount = this.saleForm.get('totalAmount')?.value || 0;
+    const amountPaid = this.saleForm.get('amountPaid')?.value || 0;
+    const balanceValue = totalAmount - amountPaid;
+    this.balance = balanceValue >= 0 ? `-${balanceValue}` : `${Math.abs(balanceValue)}`;
+  }
+
   convertNumberToWords(num: number): string {
     const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
     const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
@@ -307,6 +300,40 @@ export class TransactionComponent implements OnInit {
     return words.trim();
   }
   
+  submitSale(): void {
+    if (this.saleForm.valid && this.selectedProducts.length > 0) {
+      const saleData = {
+        customerName: this.saleForm.value.customerName || null,
+        totalAmount: this.saleForm.value.totalAmount,
+        branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0,
+        saleOrderLines: this.selectedProducts.map(product => ({
+          item_id: product.id,
+          quantity: Number(product.quantity),
+          price: Number(product.sellingPrice),
+          sub_total: Number(product.subTotal)
+        })),
+        ...(this.isCreditSale && { amountPaid: this.saleForm.value.amountPaid })
+      };
   
+      console.log('Sending sale transaction data to API:', JSON.stringify(saleData, null, 2));
+  
+      this.dashboardService.createSale(saleData).subscribe(
+        () => {
+          alert('Sale successfully created!');
+          this.showProductTable = false;
+  
+          this.saleForm.reset();
+          this.saleOrderLines.clear();
+          this.selectedProducts = [];
+          this.refreshSelectedProductsTable();
+        },
+        (err) => {
+          console.error('Error processing sale:', err);
+          alert('Failed to create sale.');
+        }
+      );
+    } else {
+      this.showProductTable = true;
+    }
+  }
 }
-  

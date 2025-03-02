@@ -6,23 +6,17 @@
       </button>
     </div>
 
-    <!-- Backdrop for overlay -->
     <div *ngIf="isFormOpen" class="backdrop" (click)="toggleForm()"></div>
 
-    <!-- Collapsible Form Section -->
     <div *ngIf="isFormOpen" class="form-overlay">
       <form (ngSubmit)="isEditMode ? updateItem() : addItem()" [formGroup]="newItem">
         <div class="row">
-          <!-- Row 1 -->
           <div class="col-md-6">
             <div class="form-group">
               <label>Item Name</label>
               <input type="text" class="form-control" formControlName="name">
             </div>
           </div>
-        
-        
-          <!-- Row 2 -->
           <div class="col-md-6">
             <div class="form-group">
               <label>Selling Price</label>
@@ -48,7 +42,6 @@
             </div>
           </div>
         
-          <!-- Row 3 -->
           <div class="col-md-6">
             <div class="form-group">
               <label>Branch</label>
@@ -72,7 +65,6 @@
             </div>
           </div>
         
-          <!-- Row 4 -->
           <div class="col-md-6">
             <div class="form-group">
               <label>Supplier</label>
@@ -107,7 +99,6 @@
     </div>
   </div>
 
-  <!-- Product Table -->
   <div class="content mb-5 content-block">
     <div class="mat-elevation-z8">
       <div class="table-responsive">
@@ -179,7 +170,6 @@
         </table>
       </div>
 
-      <!-- Pagination -->
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements" class="mt-3">
       </mat-paginator>
     </div>
