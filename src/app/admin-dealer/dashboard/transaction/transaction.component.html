@@ -11,7 +11,7 @@
                 <input matInput type="text" formControlName="customerName">
               </mat-form-field>
 
-              <mat-form-field class="clickable-field   w-100" appearance="outline" (click)="fetchProducts()">
+              <mat-form-field class="clickable-field   w-100" appearance="outline" (click)="fetchProducts($event)">
                 <!-- <mat-label>Add Products</mat-label> -->
                 <input matInput type="text" placeholder="Click  to add products" readonly>
                 <button class="bg-secondary" mat-icon-button matSuffix>
@@ -130,23 +130,34 @@
             </div>
           </div>
 
-          <!-- <div *ngIf="selectedProducts.length > 0" class="d-flex justify-content-between align-items-center mt-3">
-              <mat-form-field class="w-100" appearance="outline">
-                <mat-label>Total Amount</mat-label>
-                <input matInput type="number" formControlName="totalAmount" readonly>
-              </mat-form-field>
-          
-          </div> -->
+<div class="row">
+  <!-- <div *ngIf="selectedProducts.length > 0" class="d-flex justify-content-center align-items-center bg-color-secondary col-md-9 mt-3">
+    <div class="pay">Pay: Ksh</div>
+    <div class="totamnt">
+      <input matInput type="number" formControlName="totalAmount" readonly>
+    </div>
+  </div> -->
+  <div *ngIf="selectedProducts.length > 0" class="d-flex justify-content-center align-items-center bg-color-secondary col-md-9 mt-3">
+    <div class="pay-label">Pay: Ksh</div>
+    <div class="totamnt text-center">
+      <input matInput type="number" formControlName="totalAmount" readonly>
+     
+    </div>
+    <div class="words">
+      {{ totalAmountInWords }} 
+    </div>
+  </div>
+  
+  
 
-          <div *ngIf="selectedProducts.length > 0" class="d-flex bg-color-white justify-content-between align-items-center mt-3">
+          <div *ngIf="selectedProducts.length > 0" class="d-flex  justify-content-between  col-md-3 align-items-center mt-3">
             <mat-form-field class="w-100" appearance="outline">
               <mat-label>Total Amount</mat-label>
               <input matInput type="number" formControlName="totalAmount">
             </mat-form-field>
           </div>
-          
+        </div>
 
-          <!-- Submit Button Disabled If No Products Selected -->
           <div class=" justify-content-center d-flex mt-3">
             <button mat-raised-button color="primary" type="submit" [disabled]="selectedProducts.length === 0">
               Submit Sale

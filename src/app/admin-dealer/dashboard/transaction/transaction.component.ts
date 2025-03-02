@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, HostListener } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,10 +11,11 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class TransactionComponent implements OnInit {
   saleForm: FormGroup;
-  items: any[] = []; // Store fetched products (Search Results)
-  selectedProducts: any[] = []; // Store selected products
+  items: any[] = []; 
+  selectedProducts: any[] = []; 
   selectedProductsDataSource = new MatTableDataSource<any>([]);
-  showProductTable: boolean = false; // Controls visibility of product search table
+  showProductTable: boolean = false; 
+  totalAmountInWords: string = '';
 
   @ViewChild('selectedProductsPaginator') selectedProductsPaginator: MatPaginator;
 
@@ -25,12 +26,16 @@ export class TransactionComponent implements OnInit {
   ) {
     this.saleForm = this.fb.group({
       customerName: '',
-      saleOrderLines: this.fb.array([]), // FormArray for selected products
-      totalAmount: [{ value: 0, disabled: true }, Validators.required] // Form control for total amount
+      saleOrderLines: this.fb.array([]),
+      totalAmount: [{ value: 0, disabled: true }, Validators.required] 
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.saleForm.get('totalAmount')?.valueChanges.subscribe((value) => {
+      this.totalAmountInWords = this.convertNumberToWords(value) + '';
+    });
+  }
 
   ngAfterViewInit() {
     if (this.selectedProductsPaginator) {
@@ -42,14 +47,15 @@ export class TransactionComponent implements OnInit {
     return this.saleForm.get('saleOrderLines') as FormArray;
   }
 
-  // Fetch products when the search icon is clicked and show the table
-  fetchProducts(): void {
+  fetchProducts(event: Event): void {
+    event.preventDefault(); 
+    event.stopPropagation(); 
     this.dashboardService.getAllProducts().subscribe(
       (response: any) => {
         console.log('Fetched Products:', response);
         if (Array.isArray(response) && response.length > 0) {
           this.items = response;
-          this.showProductTable = true; // Show the product search table
+          this.showProductTable = true;
         } else {
           console.warn('No products found.');
           alert('No products found.');
@@ -59,13 +65,13 @@ export class TransactionComponent implements OnInit {
     );
   }
 
-  // Allow toggling of product selection
+  
   toggleProductSelection(item: any, isChecked: boolean): void {
     console.log(`Toggle selection for item ${item.id}, checked: ${isChecked}`);
     if (isChecked) {
-      this.selectProduct(item); // Select the product if checked
+      this.selectProduct(item); 
     } else {
-      this.removeProductById(item.id); // Remove the product if unchecked
+      this.removeProductById(item.id); 
     }
   }
 
@@ -104,16 +110,13 @@ export class TransactionComponent implements OnInit {
         subTotal: [selectedProduct.sellingPrice, Validators.required]
       });
 
-      // Watch for quantity changes and update subtotal
       productGroup.get('quantity')?.valueChanges.subscribe(newQuantity => {
         this.updateSubtotal(selectedProduct.id, newQuantity);
       });
 
       this.saleOrderLines.push(productGroup);
-
-      // Refresh the display of selected products in the table
       this.refreshSelectedProductsTable();
-      this.updateTotalAmount(); // Update total amount
+      this.updateTotalAmount(); 
     }
   }
 
@@ -128,7 +131,6 @@ export class TransactionComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // Update total amount
   updateTotalAmount(): void {
     const totalAmount = this.selectedProducts.reduce((sum, product) => sum + product.subTotal, 0);
     this.saleForm.patchValue({
@@ -166,7 +168,7 @@ export class TransactionComponent implements OnInit {
     this.selectedProducts.splice(index, 1);
     this.saleOrderLines.removeAt(index);
     this.refreshSelectedProductsTable();
-    this.updateTotalAmount(); // Update total amount
+    this.updateTotalAmount(); 
   }
 
   // submitSale(): void {
@@ -243,7 +245,68 @@ export class TransactionComponent implements OnInit {
       this.showProductTable = true;
     }
   }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: Event) {
+    const tableElement = document.querySelector('.content-block');
+    if (tableElement && !tableElement.contains(event.target as Node)) {
+      this.showProductTable = false;
+    }
+  }
+  convertNumberToWords(num: number): string {
+    const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+    const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+    const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+    const thousands = ['', 'Thousand', 'Million', 'Billion', 'Trillion'];
   
+    if (num === 0) {
+      return 'Zero Kenya Shillings';
+    }
+  
+    let word = '';
+    if (num < 0) {
+      word = 'Negative ';
+      num = Math.abs(num);
+    }
+  
+    let numStr = num.toString();
+    let chunkCount = 0;
+  
+    while (num > 0) {
+      let chunk = num % 1000;
+      if (chunk !== 0) {
+        let chunkWords = this.convertChunk(chunk, ones, teens, tens);
+        word = chunkWords + (thousands[chunkCount] ? ' ' + thousands[chunkCount] : '') + ' ' + word;
+      }
+      num = Math.floor(num / 1000);
+      chunkCount++;
+    }
+  
+    return word.trim() + ' Kenya Shillings';
+  }
+  
+  private convertChunk(num: number, ones: string[], teens: string[], tens: string[]): string {
+    let words = '';
+  
+    if (num >= 100) {
+      words += ones[Math.floor(num / 100)] + ' Hundred ';
+      num %= 100;
+    }
+  
+    if (num >= 20) {
+      words += tens[Math.floor(num / 10)] + ' ';
+      num %= 10;
+    }
+  
+    if (num >= 10) {
+      words += teens[num - 10] + ' ';
+    } else if (num > 0) {
+      words += ones[num] + ' ';
+    }
+  
+    return words.trim();
+  }
   
   
 }
+  
