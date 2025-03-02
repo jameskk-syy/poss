@@ -197,6 +197,27 @@ deleteSuppliers(id: number): Observable<any> {
       })
     );
   }
+
+  createPrc(data: any): Observable<any> {
+    const API_URL = `${environment.apiUrl}/api/purchases`;
+  
+    const httpOptions = {
+      headers: { 'Content-Type': 'application/json' }
+    };
+  
+    console.log("Sending purchase transaction data to API:", JSON.stringify(data, null, 2));
+  
+    return this.http.post<any>(API_URL, data, httpOptions).pipe(
+      map(response => {
+        console.log("purchase transaction created successfully:", response);
+        return response;
+      }),
+      catchError(error => {
+        console.error("Backend error response:", error.error);
+        return throwError(() => new Error(error.message || "Failed to create purchase transaction"));
+      })
+    );
+  }
   
   getAllCategories(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/product-categories`, this.getHttpOptions()).pipe(
