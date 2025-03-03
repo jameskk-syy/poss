@@ -54,14 +54,10 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    // The paginators will be initialized here, but we'll also ensure they're attached
+    // after data is loaded in the fetchProducts method
     if (this.selectedProductsPaginator) {
       this.selectedProductsDataSource.paginator = this.selectedProductsPaginator;
-    }
-    
-    // Initialize paginator for the products table
-    if (this.productsPaginator) {
-      this.itemsDataSource.paginator = this.productsPaginator;
-      this.cdr.detectChanges();
     }
   }
 
@@ -109,13 +105,20 @@ export class TransactionComponent implements OnInit, AfterViewInit {
             return searchTerms.every(term => dataStr.includes(term));
           };
           
-          // Connect the paginator
-          if (this.productsPaginator) {
-            this.itemsDataSource.paginator = this.productsPaginator;
-          }
-          
+          // Show the product table first
           this.showProductTable = true;
-          this.cdr.detectChanges();
+          
+          // Use setTimeout to ensure the view is updated before attempting to set the paginator
+          setTimeout(() => {
+            // Connect the paginator after the data is loaded and view is updated
+            if (this.productsPaginator) {
+              this.itemsDataSource.paginator = this.productsPaginator;
+              console.log('Paginator attached to products table');
+            } else {
+              console.warn('Products paginator not found');
+            }
+            this.cdr.detectChanges();
+          });
         } else {
           console.warn('No products found.');
           alert('No products found.');
@@ -177,10 +180,14 @@ export class TransactionComponent implements OnInit, AfterViewInit {
 
   refreshSelectedProductsTable(): void {
     this.selectedProductsDataSource = new MatTableDataSource([...this.selectedProducts]);
-    if (this.selectedProductsPaginator) {
-      this.selectedProductsDataSource.paginator = this.selectedProductsPaginator;
-    }
-    this.cdr.detectChanges();
+    
+    // Ensure paginator is attached whenever the selected products table is refreshed
+    setTimeout(() => {
+      if (this.selectedProductsPaginator) {
+        this.selectedProductsDataSource.paginator = this.selectedProductsPaginator;
+      }
+      this.cdr.detectChanges();
+    });
   }
 
   updateTotalAmount(): void {
@@ -304,13 +311,13 @@ export class TransactionComponent implements OnInit, AfterViewInit {
     if (this.saleForm.valid && this.selectedProducts.length > 0) {
       const saleData = {
         customerName: this.saleForm.value.customerName || null,
-        totalAmount: this.saleForm.value.totalAmount,
+        totalAmount: Number(this.saleForm.get('totalAmount')?.value) || 0,
         branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0,
         saleOrderLines: this.selectedProducts.map(product => ({
-          item_id: product.id,
+          itemId: product.id,  // Changed from item_id to match backend expectation
           quantity: Number(product.quantity),
           price: Number(product.sellingPrice),
-          sub_total: Number(product.subTotal)
+          subTotal: Number(product.subTotal)
         })),
         ...(this.isCreditSale && { amountPaid: this.saleForm.value.amountPaid })
       };
@@ -336,4 +343,5 @@ export class TransactionComponent implements OnInit, AfterViewInit {
       this.showProductTable = true;
     }
   }
+  
 }
