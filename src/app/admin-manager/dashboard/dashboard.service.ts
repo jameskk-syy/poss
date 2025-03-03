@@ -61,17 +61,34 @@ export class DashboardService {
     return this.http.get(`${environment.apiUrl}/api/v1/farmer/farmers/count/route`, this.getHttpOptions());
   }
 
+
+  //
   createItem(data: any): Observable<any> {
     const API_URL = `${environment.apiUrl}/api/v1/items`;
     return this.http.post(API_URL, data, this.getHttpOptions()).pipe(
       map(res => res || {})
     );
   }
+
   updateItems(id: number, data: any): Observable<any> {
     return this.http.put(`${environment.apiUrl}/api/v1/items/${id}`, data, this.getHttpOptions());
   }
   public getAllProducts(): Observable<any> {
     const url = `${environment.apiUrl}/api/v1/items`;
+    return this.http.get(url, this.getHttpOptions()).pipe(
+      map(res => res || [])
+    );
+  }
+
+  // addExpense(data: any): Observable<any> {
+  //   const API_URL = `${environment.apiUrl}/api/expenses`;
+  //   return this.http.post(API_URL, data, this.getHttpOptions()).pipe(
+  //     map(res => res || {})
+  //   );
+  // }
+
+  public getExpenses(): Observable<any> {
+    const url = `${environment.apiUrl}/api/expenses`;
     return this.http.get(url, this.getHttpOptions()).pipe(
       map(res => res || [])
     );
@@ -194,6 +211,22 @@ deleteSuppliers(id: number): Observable<any> {
       catchError(error => {
         console.error("Error creating Category:", error);
         return throwError(() => new Error(error.message || "Failed to create Category"));
+      })
+    );
+  }
+  addExpense(data: any): Observable<any> {
+    console.log("Sending data to API:", data); // Debugging
+  
+    const API_URL = `${environment.apiUrl}/api/expenses`;
+  
+    return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
+      map(response => {
+        console.log("Expense created successfully:", response); // Debugging
+        return response;
+      }),
+      catchError(error => {
+        console.error("Error creating Expense:", error);
+        return throwError(() => new Error(error.message || "Failed to create Expense"));
       })
     );
   }
