@@ -9,11 +9,6 @@ const routes: Routes = [
       import("./dashboard/dashboard.module").then((m) => m.DashboardModule)
   },
 
-  {
-    path:"branches",
-    loadChildren: () =>
-      import("./branches/branches.module").then((m) => m.BranchesModule)
-  },
 
   {
     path:"user-roles",

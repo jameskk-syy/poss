@@ -25,42 +25,6 @@ export class DashboardService {
     return { headers };
   }
 
-  public getSummary(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/collections/records/all`, this.getHttpOptions());
-  }
-
-  public getAllFarmers(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/farmer/get`, this.getHttpOptions());
-  }
-
-  public getActiveFarmerCount(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/farmer/active-count`, this.getHttpOptions());
-  }
-
-  public getTodaysDelivery(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/accumulation/todays-total`, this.getHttpOptions());
-  }
-
-  public getDepartmentsPerSubsidiary(): Observable<any> {
-    return this.http.get(this.deptsUrl + 'departments/subsidiary', this.getHttpOptions());
-  }
-
-  public getUsersPerDepartment(): Observable<any> {
-    return this.http.get(this.usersUrl + 'user/department', this.getHttpOptions());
-  }
-
-  public getUsersPerRole(): Observable<any> {
-    return this.http.get(this.usersUrl + 'users/role', this.getHttpOptions());
-  }
-
-  public getMeetingsPerCategory(): Observable<any> {
-    return this.http.get(this.usersUrl + 'meetings/meetingcategory', this.getHttpOptions());
-  }
-
-  public getFarmerCountPerRouteUsingGET(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/v1/farmer/farmers/count/route`, this.getHttpOptions());
-  }
-
 
   //
   createItem(data: any): Observable<any> {
