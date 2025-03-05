@@ -27,20 +27,62 @@ export class DashboardService {
   }
 
   //
+ // private getHtt() {
+  //   const token = localStorage.getItem('token'); 
+  //   // let headers = new HttpHeaders({
+  //   //   'Content-Type': 'multipart/form-data',
+  //   //   'Accept': '*/*', 
+  //   // });
+
+  //   if (token) {
+  //     headers = headers.set('Authorization', `Bearer ${token}`);
+  //   }
+
+  //   return { headers };
+  // }
+
+
+  // //
+  // createItem(data: any): Observable<any> {
+  //   const API_URL = `${environment.apiUrl}/api/v1/items`;
+  //   return this.http.post(API_URL, data, this.getHtt()).pipe(
+  //     map(res => res || {})
+  //   );
+  // }
+
   createItem(data: any): Observable<any> {
     const API_URL = `${environment.apiUrl}/api/v1/items`;
-    return this.http
-      .post(API_URL, data, this.getHttpOptions())
-      .pipe(map((res) => res || {}));
+  
+    // Create FormData object to handle multipart form data
+    const formData = new FormData();
+    
+    // Append each property to the formData object
+    for (const key in data) {
+      if (data[key] !== null && data[key] !== undefined) {
+        formData.append(key, data[key]);
+      }
+    }
+  
+    return this.http.post(API_URL, formData, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+        // Content-Type should NOT be set explicitly for multipart/form-data
+      }),
+    }).pipe(
+      map((res) => res || {}),
+      catchError((error) => {
+        console.error('Error creating item:', error);
+        return throwError(() => new Error(error.message || 'Failed to create item'));
+})
+);
   }
 
+
   updateItems(id: number, data: any): Observable<any> {
-    return this.http.put(
-      `${environment.apiUrl}/api/v1/items/${id}`,
-      data,
-      this.getHttpOptions()
-    );
+    return this.http.put(`${environment.apiUrl}/api/v1/items/${id}`, data, this.getHttpOptions());
   }
+
+
   public getAllProducts(): Observable<any> {
     const url = `${environment.apiUrl}/api/v1/items`;
     return this.http

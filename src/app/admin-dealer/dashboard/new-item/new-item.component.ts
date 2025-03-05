@@ -18,32 +18,32 @@ export class NewItemComponent implements OnInit, AfterViewInit {
   categories: any[] = [];
   suppliers: any[] = [];
   isEditMode = false;
-  isFormOpen = true;
+  isFormOpen = false;
   editingItemId: number | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private fb: FormBuilder, private dashboardService: DashboardService) {
     this.newItem = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(50)]],
-      description: ['', [Validators.required]],
-      regularBuyingPrice: ['', [Validators.required]],
-      sellingPrice: ['', [Validators.required]],
+      name: ['', Validators.required],
+      description: [''],
+      regularBuyingPrice: ['', [Validators.required,Validators.min(0)]],
+      sellingPrice: ['', [Validators.required,, Validators.min(0)]],
       maxPercentageDiscount: ['', [Validators.required]],
-      count: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      count: ['', [Validators.required, Validators.min(1)]],
       branchId: [null, [Validators.required]], 
       categoryId: [null, [Validators.required]],
       supplierId: [null, [Validators.required]],
-      reorderLevel: ['', [Validators.required]],
-      hasVariants: [false, [Validators.required]],
-      variantOfId: ['', [Validators.required]],
-      image: ['', [Validators.required]],
+      reorderLevel: [0],
+      hasVariants: [false],
+      variantOfId: [null],
+      image: [null],
       itemID: ['', [Validators.required]],
-      docStatus: [false, [Validators.required]],
+      docStatus: [false],
       defaultUnitOfMeasure: ['', [Validators.required]],
-      endOfLife: ['', [Validators.required]],
-      disabled: [false, [Validators.required]],
-    });
+      endOfLife: [null],
+      disabled: [false],
+    },{updateOn: 'submit'});
   }
 
   ngOnInit(): void {
@@ -152,28 +152,41 @@ export class NewItemComponent implements OnInit, AfterViewInit {
         categoryId: Number(this.newItem.value.categoryId),
         supplierId: Number(this.newItem.value.supplierId)
       };
-
+      console.log("Form Data being sent:", formData); 
       if (this.isEditMode && this.editingItemId !== null) {
         this.updateItem(formData);
       } else {
-        this.addItem(formData);
+        this.addItem();
+        console.log(formData)
       }
     }
   }
 
-  addItem(formData: any): void {
-    this.dashboardService.createItem(this.newItem.value).subscribe(
+  addItem(): void {
+    if(this.newItem.valid){
+      const formData=this.newItem.value;
+      console.log("Submitting Payload:",formData); //logs payload bfr sending
+    
+    this.dashboardService.createItem(formData).subscribe(
       res => {
+        console.log("This is the response:", res); // Log response
         alert(res.message);
         this.newItem.reset();
         this.getProducts();
         this.isFormOpen = false;
       },
       err => {
-        console.error('Error adding item:', err);
+        console.error('Error adding item:', err); // Log full error
+        if (err.error) {
+          console.error("Backend Error Message:", err.error);
+        }
       }
     );
+  } else{
+    console.warn("Form is Invalid. Please check the inputs.",this.newItem.errors);
   }
+}
+  
 
   editItem(item: any): void {
     this.isEditMode = true;
@@ -222,17 +235,17 @@ export class NewItemComponent implements OnInit, AfterViewInit {
     this.newItem.reset();
   }
 
-  onImageUpload(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const base64Image = e.target.result.split(',')[1];
-        this.newItem.patchValue({ image: base64Image });
-      };
-      reader.readAsDataURL(file);
-    }
-  }
+  // onImageUpload(event: any): void {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e: any) => {
+  //       const base64Image = e.target.result.split(',')[1];
+  //       this.newItem.patchValue({ image: base64Image });
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // }
 
   onFileUpload(event: any): void {
     const file = event.target.files[0];
