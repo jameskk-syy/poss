@@ -16,6 +16,7 @@ export class DashboardService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
+      Accept: '*/*',
     });
 
     if (token) {
@@ -25,72 +26,14 @@ export class DashboardService {
     return { headers };
   }
 
-  public getSummary(): Observable<any> {
-    return this.http.get(
-      `${environment.apiUrl}/api/v1/collections/records/all`,
-      this.getHttpOptions()
-    );
-  }
-
-  public getAllFarmers(): Observable<any> {
-    return this.http.get(
-      `${environment.apiUrl}/api/v1/farmer/get`,
-      this.getHttpOptions()
-    );
-  }
-
-  public getActiveFarmerCount(): Observable<any> {
-    return this.http.get(
-      `${environment.apiUrl}/api/v1/farmer/active-count`,
-      this.getHttpOptions()
-    );
-  }
-
-  public getTodaysDelivery(): Observable<any> {
-    return this.http.get(
-      `${environment.apiUrl}/api/v1/accumulation/todays-total`,
-      this.getHttpOptions()
-    );
-  }
-
-  public getDepartmentsPerSubsidiary(): Observable<any> {
-    return this.http.get(
-      this.deptsUrl + 'departments/subsidiary',
-      this.getHttpOptions()
-    );
-  }
-
-  public getUsersPerDepartment(): Observable<any> {
-    return this.http.get(
-      this.usersUrl + 'user/department',
-      this.getHttpOptions()
-    );
-  }
-
-  public getUsersPerRole(): Observable<any> {
-    return this.http.get(this.usersUrl + 'users/role', this.getHttpOptions());
-  }
-
-  public getMeetingsPerCategory(): Observable<any> {
-    return this.http.get(
-      this.usersUrl + 'meetings/meetingcategory',
-      this.getHttpOptions()
-    );
-  }
-
-  public getFarmerCountPerRouteUsingGET(): Observable<any> {
-    return this.http.get(
-      `${environment.apiUrl}/api/v1/farmer/farmers/count/route`,
-      this.getHttpOptions()
-    );
-  }
-
+  //
   createItem(data: any): Observable<any> {
     const API_URL = `${environment.apiUrl}/api/v1/items`;
     return this.http
       .post(API_URL, data, this.getHttpOptions())
       .pipe(map((res) => res || {}));
   }
+
   updateItems(id: number, data: any): Observable<any> {
     return this.http.put(
       `${environment.apiUrl}/api/v1/items/${id}`,
@@ -100,6 +43,34 @@ export class DashboardService {
   }
   public getAllProducts(): Observable<any> {
     const url = `${environment.apiUrl}/api/v1/items`;
+    return this.http
+      .get(url, this.getHttpOptions())
+      .pipe(map((res) => res || []));
+  }
+
+  // addExpense(data: any): Observable<any> {
+  //   const API_URL = `${environment.apiUrl}/api/expenses`;
+  //   return this.http.post(API_URL, data, this.getHttpOptions()).pipe(
+  //     map(res => res || {})
+  //   );
+  // }
+
+  public getExpenses(): Observable<any> {
+    const url = `${environment.apiUrl}/api/expenses`;
+    return this.http
+      .get(url, this.getHttpOptions())
+      .pipe(map((res) => res || []));
+  }
+
+  // addExpense(data: any): Observable<any> {
+  //   const API_URL = `${environment.apiUrl}/api/expenses`;
+  //   return this.http.post(API_URL, data, this.getHttpOptions()).pipe(
+  //     map(res => res || {})
+  //   );
+  // }
+
+  public getExpenses(): Observable<any> {
+    const url = `${environment.apiUrl}/api/expenses`;
     return this.http
       .get(url, this.getHttpOptions())
       .pipe(map((res) => res || []));
@@ -256,6 +227,42 @@ export class DashboardService {
       })
     );
   }
+  addExpense(data: any): Observable<any> {
+    console.log('Sending data to API:', data); // Debugging
+
+    const API_URL = `${environment.apiUrl}/api/expenses`;
+
+    return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
+      map((response) => {
+        console.log('Expense created successfully:', response); // Debugging
+        return response;
+      }),
+      catchError((error) => {
+        console.error('Error creating Expense:', error);
+        return throwError(
+          () => new Error(error.message || 'Failed to create Expense')
+        );
+      })
+    );
+  }
+  addExpense(data: any): Observable<any> {
+    console.log('Sending data to API:', data); // Debugging
+
+    const API_URL = `${environment.apiUrl}/api/expenses`;
+
+    return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
+      map((response) => {
+        console.log('Expense created successfully:', response); // Debugging
+        return response;
+      }),
+      catchError((error) => {
+        console.error('Error creating Expense:', error);
+        return throwError(
+          () => new Error(error.message || 'Failed to create Expense')
+        );
+      })
+    );
+  }
 
   createPrc(data: any): Observable<any> {
     const API_URL = `${environment.apiUrl}/api/purchases`;
@@ -282,6 +289,10 @@ export class DashboardService {
         );
       })
     );
+  }
+
+  bulkCreateItems(items: any[]): Observable<any> {
+    return this.http.post(`${environment.apiUrl}}/products/bulk`, items);
   }
 
   getAllCategories(): Observable<any> {
