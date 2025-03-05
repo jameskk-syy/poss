@@ -18,7 +18,7 @@ export class NewItemComponent implements OnInit, AfterViewInit {
   categories: any[] = [];
   suppliers: any[] = [];
   isEditMode = false;
-  isFormOpen = false;
+  isFormOpen = true;
   editingItemId: number | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -152,34 +152,28 @@ export class NewItemComponent implements OnInit, AfterViewInit {
         categoryId: Number(this.newItem.value.categoryId),
         supplierId: Number(this.newItem.value.supplierId)
       };
-      console.log("Form Data being sent:", formData); 
+
       if (this.isEditMode && this.editingItemId !== null) {
         this.updateItem(formData);
       } else {
         this.addItem(formData);
-        console.log(formData)
       }
     }
   }
 
   addItem(formData: any): void {
-    this.dashboardService.createItem(formData).subscribe(
+    this.dashboardService.createItem(this.newItem.value).subscribe(
       res => {
-        console.log("This is the response:", res); // Log response
         alert(res.message);
         this.newItem.reset();
         this.getProducts();
         this.isFormOpen = false;
       },
       err => {
-        console.error('Error adding item:', err); // Log full error
-        if (err.error) {
-          console.error("Backend Error Message:", err.error);
-        }
+        console.error('Error adding item:', err);
       }
     );
   }
-  
 
   editItem(item: any): void {
     this.isEditMode = true;
@@ -228,17 +222,17 @@ export class NewItemComponent implements OnInit, AfterViewInit {
     this.newItem.reset();
   }
 
-  // onImageUpload(event: any): void {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e: any) => {
-  //       const base64Image = e.target.result.split(',')[1];
-  //       this.newItem.patchValue({ image: base64Image });
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
+  onImageUpload(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const base64Image = e.target.result.split(',')[1];
+        this.newItem.patchValue({ image: base64Image });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
 
   onFileUpload(event: any): void {
     const file = event.target.files[0];
