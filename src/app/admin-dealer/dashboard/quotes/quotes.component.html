@@ -8,7 +8,29 @@
             <div class="col-md-6">
               <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Customer Name (Optional)</mat-label>
-                <input matInput type="text" formControlName="customerName" />
+                <input
+                  type="text"
+                  matInput
+                  [formControl]="customerNameControl"
+                  [matAutocomplete]="auto"
+                />
+                <mat-autocomplete
+                  class=""
+                  #auto="matAutocomplete"
+                  (optionSelected)="onCustomerSelected($event)"
+                >
+                  <mat-option
+                    *ngFor="let customer of filteredCustomers | async"
+                    [value]="[
+                      customer.customerName +
+                        ' - ' +
+                        customer.customerReferenceNumber
+                    ]"
+                  >
+                    {{ customer.customerName }} -
+                    {{ customer.customerReferenceNumber }}
+                  </mat-option>
+                </mat-autocomplete>
               </mat-form-field>
 
               <mat-form-field

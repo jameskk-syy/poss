@@ -42,8 +42,7 @@ import { QuotesComponent } from './quotes/quotes.component';
 import { PurchasesComponent } from './purchases/purchases.component';
 import { CustomersComponent } from './customers/customers.component';
 import { ExpensesComponent } from './expenses/expenses.component';
-
-
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -62,38 +61,37 @@ import { ExpensesComponent } from './expenses/expenses.component';
     PurchasesComponent,
     CustomersComponent,
     ExpensesComponent,
-
   ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
-     MaterialModule,
-        ReactiveFormsModule,
-        MatTabsModule,
-        MatPaginatorModule,
-        MatTableModule,
-        MatSortModule,
-        MatTableExporterModule,
-        MatIconModule,
-        MatMenuModule,
-        ComponentsModule,
-        SharedModule,
-        CdkAccordionModule,
-        DragDropModule,
-        MatSelectModule,
-        MatDialogModule,
-    
-        MatCardModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatGridListModule,
-        MatInputModule,
-        MatListModule,
-        // MatRadioModule,
-        MatProgressSpinnerModule,
-        MatButtonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    MatTabsModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
+    MatTableExporterModule,
+    MatIconModule,
+    MatMenuModule,
+    ComponentsModule,
+    SharedModule,
+    CdkAccordionModule,
+    DragDropModule,
+    MatSelectModule,
+    MatDialogModule,
 
-  ]
+    MatCardModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatListModule,
+    // MatRadioModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+  ],
 })
-export class DashboardModule { }
+export class DashboardModule {}

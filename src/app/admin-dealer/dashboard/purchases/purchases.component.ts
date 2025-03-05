@@ -7,19 +7,25 @@ import { MatPaginator } from '@angular/material/paginator';
 @Component({
   selector: 'app-purchases',
   templateUrl: './purchases.component.html',
-  styleUrls: ['./purchases.component.sass']
+  styleUrls: ['./purchases.component.sass'],
 })
-export class PurchasesComponent  implements OnInit {
+export class PurchasesComponent implements OnInit {
   purchaseForm: FormGroup;
   itemspr: any[] = []; // Store fetched products (Search Results)
   selectedProducts: any[] = []; // Store selected products
   selectedProductsDataSource = new MatTableDataSource<any>([]);
   showProductTable: boolean = false; // Controls visibility of product search table
-  
-  @ViewChild('selectedProductsPaginator') selectedProductsPaginator: MatPaginator;
+
+  suppliers: any[] = [];
+  isSupplierModalOpen = false;
+  selectedSupplier: string = '';
+  selectedProductForSupplier: any = null; // Store the selected product for the modal
+
+  @ViewChild('selectedProductsPaginator')
+  selectedProductsPaginator: MatPaginator;
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private dashboardService: DashboardService,
     private cdr: ChangeDetectorRef
   ) {
@@ -27,15 +33,18 @@ export class PurchasesComponent  implements OnInit {
       // customerName: '',
       items: this.fb.array([]), // FormArray for selected products
       totalAmount: [{ value: 0, disabled: true }, Validators.required],
-      totalAmountPost: [{ value: 0, disabled: true }, Validators.required]
+      totalAmountPost: [{ value: 0, disabled: true }, Validators.required],
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getSuppliers();
+  }
 
   ngAfterViewInit() {
     if (this.selectedProductsPaginator) {
-      this.selectedProductsDataSource.paginator = this.selectedProductsPaginator;
+      this.selectedProductsDataSource.paginator =
+        this.selectedProductsPaginator;
     }
   }
 
@@ -60,6 +69,49 @@ export class PurchasesComponent  implements OnInit {
     );
   }
 
+  // fetch suppliers
+  getSuppliers(): Promise<void> {
+    return new Promise((resolve) => {
+      this.dashboardService.getAllSuppliers().subscribe(
+        (response: any) => {
+          if (Array.isArray(response)) {
+            this.suppliers = response;
+          } else {
+            console.error(' Unexpected API response structure:', response);
+          }
+          resolve();
+        },
+        (error) => {
+          console.error(' Error fetching suppliers:', error);
+          resolve();
+        }
+      );
+    });
+  }
+
+  openSupplierModal(product: any) {
+    this.selectedProductForSupplier = product; // Store the selected product
+    this.selectedSupplier = product.supplierId || ''; // Preselect if exists
+    this.isSupplierModalOpen = true;
+  }
+
+  saveSupplier() {
+    if (this.selectedProductForSupplier) {
+      // Update supplier for the selected product
+      const supplier = this.suppliers.find(
+        (s) => s.id === this.selectedSupplier
+      );
+      if (supplier) {
+        this.selectedProductForSupplier.supplierId = supplier.id;
+        this.selectedProductForSupplier.supplierName = supplier.supplierName;
+      }
+    }
+    this.closeSupplierModal();
+  }
+
+  closeSupplierModal() {
+    this.isSupplierModalOpen = false;
+  }
   // Allow toggling of product selection
   toggleProductSelection(item: any, isChecked: boolean): void {
     console.log(`Toggle selection for item ${item.id}, checked: ${isChecked}`);
@@ -72,7 +124,9 @@ export class PurchasesComponent  implements OnInit {
 
   // Remove product by ID
   removeProductById(productId: number): void {
-    const index = this.selectedProducts.findIndex(product => product.id === productId);
+    const index = this.selectedProducts.findIndex(
+      (product) => product.id === productId
+    );
     if (index !== -1) {
       this.selectedProducts.splice(index, 1);
       this.items.removeAt(index); // Also remove from FormArray
@@ -83,17 +137,23 @@ export class PurchasesComponent  implements OnInit {
   selectProduct(selectedProduct: any): void {
     console.log('Selecting product:', selectedProduct);
     // Prevent duplicates
-    if (!this.selectedProducts.some(product => product.id === selectedProduct.id)) {
+    if (
+      !this.selectedProducts.some(
+        (product) => product.id === selectedProduct.id
+      )
+    ) {
       const productData = {
         id: selectedProduct.id,
         name: selectedProduct.name,
         branch: selectedProduct.branch ? selectedProduct.branch.name : 'N/A',
         branchId: selectedProduct.branch ? selectedProduct.branch.id : 0,
-        supplier: selectedProduct.supplier ? selectedProduct.supplier.supplierName : 0,
+        supplier: selectedProduct.supplier
+          ? selectedProduct.supplier.supplierName
+          : 0,
         supplierId: selectedProduct.supplier ? selectedProduct.supplier.id : 0,
         regularBuyingPrice: selectedProduct.regularBuyingPrice,
         quantity: 1,
-        subTotal: selectedProduct.regularBuyingPrice
+        subTotal: selectedProduct.regularBuyingPrice,
       };
 
       this.selectedProducts.push(productData);
@@ -102,17 +162,20 @@ export class PurchasesComponent  implements OnInit {
       const productGroup = this.fb.group({
         itemId: [selectedProduct.id, Validators.required],
         quantity: [1, [Validators.required, Validators.min(1)]],
-        regularBuyingPrice: [selectedProduct.regularBuyingPrice, Validators.required],
-        subTotal: [selectedProduct.regularBuyingPrice, Validators.required]
+        regularBuyingPrice: [
+          selectedProduct.regularBuyingPrice,
+          Validators.required,
+        ],
+        subTotal: [selectedProduct.regularBuyingPrice, Validators.required],
       });
 
       // Watch for quantity changes and update subtotal
-      productGroup.get('quantity')?.valueChanges.subscribe(newQuantity => {
+      productGroup.get('quantity')?.valueChanges.subscribe((newQuantity) => {
         this.updateSubtotal(selectedProduct.id, newQuantity);
       });
 
       this.items.push(productGroup);
-      
+
       // Refresh the display of selected products in the table
       this.refreshSelectedProductsTable();
       this.updateTotalAmount();
@@ -123,9 +186,12 @@ export class PurchasesComponent  implements OnInit {
   refreshSelectedProductsTable(): void {
     console.log('Refreshing selected products table:', this.selectedProducts);
     // Create a new MatTableDataSource with a new array reference to trigger change detection
-    this.selectedProductsDataSource = new MatTableDataSource([...this.selectedProducts]);
+    this.selectedProductsDataSource = new MatTableDataSource([
+      ...this.selectedProducts,
+    ]);
     if (this.selectedProductsPaginator) {
-      this.selectedProductsDataSource.paginator = this.selectedProductsPaginator;
+      this.selectedProductsDataSource.paginator =
+        this.selectedProductsPaginator;
     }
     this.cdr.detectChanges();
   }
@@ -133,17 +199,19 @@ export class PurchasesComponent  implements OnInit {
   // Update subtotal when quantity changes
   updateSubtotal(productId: number, newQuantity: number): void {
     if (newQuantity && newQuantity > 0) {
-      const product = this.selectedProducts.find(p => p.id === productId);
+      const product = this.selectedProducts.find((p) => p.id === productId);
       if (product) {
         product.quantity = newQuantity;
         product.subTotal = product.regularBuyingPrice * newQuantity;
 
         // Update FormArray value
-        const index = this.selectedProducts.findIndex(p => p.id === productId);
+        const index = this.selectedProducts.findIndex(
+          (p) => p.id === productId
+        );
         if (index !== -1) {
           this.items.at(index).patchValue({
             quantity: newQuantity,
-            subTotal: product.subTotal
+            subTotal: product.subTotal,
           });
 
           this.purchaseForm.markAsDirty();
@@ -154,17 +222,19 @@ export class PurchasesComponent  implements OnInit {
 
   // Update total amount
   updateTotalAmount(): void {
-    const totalAmount = this.selectedProducts.reduce((sum, product) => sum + product.subTotal, 0);
+    const totalAmount = this.selectedProducts.reduce(
+      (sum, product) => sum + product.subTotal,
+      0
+    );
     this.purchaseForm.patchValue({
       totalAmount: totalAmount,
-      totalAmountPost: totalAmount
+      totalAmountPost: totalAmount,
     });
   }
 
-
   removeProduct(index: number, event: Event): void {
-    event.stopPropagation(); 
-    event.preventDefault(); 
+    event.stopPropagation();
+    event.preventDefault();
 
     this.selectedProducts.splice(index, 1);
     this.items.removeAt(index);
@@ -176,12 +246,12 @@ export class PurchasesComponent  implements OnInit {
   //   if (this.purchaseForm.valid && this.selectedProducts.length > 0) {
   //     const newprData = {
   //       customerName: this.purchaseForm.value.customerName || null,
-  //       branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0, 
+  //       branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0,
   //       items: this.selectedProducts.map(product => ({
-  //         itemId: product.id, 
-  //         quantity: Number(product.quantity), 
-  //         price: Number(product.price), 
-  //         subTotal: Number(product.subTotal) 
+  //         itemId: product.id,
+  //         quantity: Number(product.quantity),
+  //         price: Number(product.price),
+  //         subTotal: Number(product.subTotal)
   //       }))
   //     };
 
@@ -219,14 +289,14 @@ export class PurchasesComponent  implements OnInit {
   //         price: Number(product.price),
   //       }))
   //     };
-  
+
   //     console.log('Submitting purchase:', JSON.stringify(newprData, null, 2));
-  
+
   //     this.dashboardService.createPrc(newprData).subscribe(
   //       () => {
   //         alert('purchase successfully created!');
-  //         this.showProductTable = false; 
-  
+  //         this.showProductTable = false;
+
   //         // Reset the form and selected products
   //         this.purchaseForm.reset();
   //         this.items.clear();
@@ -246,27 +316,31 @@ export class PurchasesComponent  implements OnInit {
 
   submitProduct(): void {
     if (this.purchaseForm.valid && this.selectedProducts.length > 0) {
-      const supplierId = this.selectedProducts.length > 0 ? this.selectedProducts[0].supplierId : 0;
-  
+      const supplierId =
+        this.selectedProducts.length > 0
+          ? this.selectedProducts[0].supplierId
+          : 0;
+
       const newprData = {
-        branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0,
-        items: this.selectedProducts.map(product => ({
+        branchId:
+          Number(this.selectedProducts.find((p) => p.branchId)?.branchId) || 0,
+        items: this.selectedProducts.map((product) => ({
           itemId: product.id,
           subTotal: Number(product.subTotal),
           quantity: Number(product.quantity),
           price: Number(product.price),
         })),
         totalAmount: this.purchaseForm.value.totalAmount,
-        supplierId: supplierId // Include supplierId in the request body
+        supplierId: supplierId, // Include supplierId in the request body
       };
-  
+
       console.log('Submitting purchase:', JSON.stringify(newprData, null, 2));
-  
+
       this.dashboardService.createPrc(newprData).subscribe(
         () => {
           alert('purchase successfully created!');
           this.showProductTable = false;
-  
+
           // Reset the form and selected products
           this.purchaseForm.reset();
           this.items.clear();
@@ -283,5 +357,4 @@ export class PurchasesComponent  implements OnInit {
       this.showProductTable = true;
     }
   }
-  
 }

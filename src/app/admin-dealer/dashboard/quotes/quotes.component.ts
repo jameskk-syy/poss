@@ -18,6 +18,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 // Ensure pdfMake has access to fonts
 (pdfMake as any).vfs = (pdfFonts as any).vfs;
@@ -38,6 +40,10 @@ export class QuotesComponent implements OnInit, AfterViewInit {
   isCreditSale: boolean = false; // Tracks if the sale is on credit
   balance: string = '0'; // Stores balance calculation
   searchControl = new FormControl(''); // For searching/filtering products
+
+  customers: any[] = []; // Store customer list
+  filteredCustomers: Observable<any[]>; // Observable for filtering
+  customerNameControl = new FormControl(''); // Control for autocomplete
 
   @ViewChild('selectedProductsPaginator')
   selectedProductsPaginator: MatPaginator;
@@ -70,8 +76,17 @@ export class QuotesComponent implements OnInit, AfterViewInit {
     this.searchControl.valueChanges.subscribe((searchTerm) => {
       this.applyFilter(searchTerm);
     });
-  }
 
+    // Fetch Customers
+    this.dashboardService.getAllCustomers().subscribe((response: any) => {
+      this.customers = response;
+      console.log('Fetched Customers:', this.customers);
+      this.filteredCustomers = this.customerNameControl.valueChanges.pipe(
+        startWith(''),
+        map((value) => this.filterCustomers(value || ''))
+      );
+    });
+  }
   ngAfterViewInit() {
     if (this.selectedProductsPaginator) {
       this.selectedProductsDataSource.paginator =
@@ -83,6 +98,19 @@ export class QuotesComponent implements OnInit, AfterViewInit {
       this.itemsDataSource.paginator = this.productsPaginator;
       this.cdr.detectChanges();
     }
+  }
+
+  // customers
+  filterCustomers(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.customers.filter((customer) =>
+      customer.customerName.toLowerCase().includes(filterValue)
+    );
+    console.log('Filtered Customers:', this.customers);
+  }
+
+  onCustomerSelected(event: any): void {
+    this.saleForm.patchValue({ customerName: event.option.value });
   }
 
   applyFilter(filterValue: string) {
