@@ -318,7 +318,7 @@ export const ROUTES: RouteInfo[] = [
     role: ['ADMIN'],
     submenu: [],
   },
-    
+  
   {
     path: '/dealer/dashboard/supplier',
     title: 'Supplier',
@@ -390,6 +390,20 @@ export const ROUTES: RouteInfo[] = [
     moduleName: 'dashboard',
     iconType: 'feather',
     icon: 'file-text',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ADMIN'],
+    submenu: [],
+  },
+    
+  {
+    path: '/dealer/dashboard/reports',
+    title: 'Reports',
+    moduleName: 'dashboard',
+    iconType: 'feather',
+    icon: 'clipboard',
     class: '',
     groupTitle: false,
     badge: '',

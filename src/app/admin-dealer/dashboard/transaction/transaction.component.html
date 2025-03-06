@@ -21,11 +21,7 @@
                 >
                   <mat-option
                     *ngFor="let customer of filteredCustomers | async"
-                    [value]="[
-                      customer.customerName +
-                        ' - ' +
-                        customer.customerReferenceNumber
-                    ]"
+                    [value]="customer.customerName"
                   >
                     {{ customer.customerName }} -
                     {{ customer.customerReferenceNumber }}

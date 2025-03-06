@@ -2,39 +2,76 @@
   <div class="d-flex justify-content-center align-items-center container">
     <div class="row">
       <div class="mt-5">
-        <form [formGroup]="purchaseForm" (ngSubmit)="submitProduct()">
-          <!-- Customer Name -->
+        <form [formGroup]="productForm" (ngSubmit)="submitProduct()">
+          <!-- Suppliers Name -->
           <div class="row justify-content-center">
             <div class="col-md-6">
               <!-- <mat-form-field class="w-100" appearance="outline">
-                  <mat-label>Customer Name (Optional)</mat-label>
-                  <input matInput type="text" formControlName="customerName">
-                </mat-form-field> -->
+                <mat-label>Supplier Name (Optional)</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [formControl]="supplierNameControl"
+                  [matAutocomplete]="auto"
+                />
+                <mat-autocomplete
+                  class=""
+                  #auto="matAutocomplete"
+                  (optionSelected)="onSupplierselected($event)"
+                >
+                  <mat-option
+                    *ngFor="let supplier of filteredSuppliers | async"
+                    [value]="supplier.supplierName"
+                  >
+                    {{ supplier.supplierName }}
+                    {{ supplier.supplierReferenceNumber }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field> -->
 
-              <mat-form-field class="w-100" appearance="outline">
-                <mat-label>Search Products</mat-label>
+              <mat-form-field
+                class="clickable-field w-100"
+                appearance="outline"
+                (click)="fetchProducts($event)"
+              >
                 <input
                   matInput
                   type="text"
-                  placeholder="Click the search icon"
+                  placeholder="Click to add products"
                   readonly
                 />
-                <button mat-icon-button matSuffix (click)="fetchProducts()">
-                  <mat-icon>search</mat-icon>
+                <button class="bg-secondary" mat-icon-button matSuffix>
+                  <mat-icon>add</mat-icon>
                 </button>
               </mat-form-field>
             </div>
           </div>
 
-          <!-- Product Search Table with Selection -->
           <div *ngIf="showProductTable" class="content mb-5 content-block">
-            <button mat-button (click)="showProductTable = false">
-              <mat-icon class="close-icon">close</mat-icon> Close
-            </button>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <button mat-button (click)="showProductTable = false">
+                <mat-icon class="close-icon">close</mat-icon> Close
+              </button>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Search Products</mat-label>
+                <input
+                  matInput
+                  [formControl]="searchControl"
+                  placeholder="Search by ID, name, branch, etc."
+                />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+            </div>
+
             <div class="mat-elevation-z8">
               <div class="table-responsive">
-                <table mat-table [dataSource]="itemspr" class="mat-table">
-                  <!-- Selection Column -->
+                <table
+                  mat-table
+                  [dataSource]="itemsprDataSource"
+                  class="mat-table"
+                >
+                  <!-- Selection Column for products table-->
                   <ng-container matColumnDef="select">
                     <th mat-header-cell *matHeaderCellDef>Select</th>
                     <td mat-cell *matCellDef="let item">
@@ -88,15 +125,17 @@
                 </table>
               </div>
               <mat-paginator
+                #productsPaginator
                 [pageSizeOptions]="[5, 10, 20]"
                 showFirstLastButtons
                 class="mt-3"
               ></mat-paginator>
             </div>
-            <p *ngIf="items.length === 0">No products found.</p>
+            <p *ngIf="itemsprDataSource.filteredData.length === 0">
+              No products found.
+            </p>
           </div>
 
-          <!-- Selected Products Table -->
           <div
             *ngIf="selectedProducts.length > 0"
             class="content mb-5 content-block"
@@ -134,57 +173,6 @@
                     </td>
                   </ng-container>
 
-                  <ng-container matColumnDef="supplier">
-                    <th mat-header-cell *matHeaderCellDef>Supplier</th>
-                    <td mat-cell *matCellDef="let product">
-                      <button
-                        mat-button
-                        color="primary"
-                        type="button"
-                        (click)="openSupplierModal(product)"
-                      >
-                        {{
-                          product.supplierName
-                            ? product.supplierName
-                            : "Select Supplier"
-                        }}
-                      </button>
-                    </td>
-                  </ng-container>
-
-                  <!-- Supplier Selection Modal -->
-                  <mat-dialog *ngIf="isSupplierModalOpen">
-                    <h2>Select Supplier</h2>
-                    <mat-form-field appearance="fill">
-                      <mat-label>Supplier</mat-label>
-                      <mat-select [(value)]="selectedSupplier">
-                        <mat-option
-                          *ngFor="let supplier of suppliers"
-                          [value]="supplier.id"
-                        >
-                          {{ supplier.supplierName }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <div class="modal-actions">
-                      <button
-                        mat-button
-                        type="button"
-                        (click)="closeSupplierModal()"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        mat-raised-button
-                        color="primary"
-                        type="button"
-                        (click)="saveSupplier()"
-                      >
-                        Save
-                      </button>
-                    </div>
-                  </mat-dialog>
-
                   <ng-container matColumnDef="quantity">
                     <th mat-header-cell *matHeaderCellDef>Quantity</th>
                     <td mat-cell *matCellDef="let product; let i = index">
@@ -193,7 +181,7 @@
                           matInput
                           type="number"
                           [formControl]="
-                            saleOrderLines.controls[i].get('quantity')
+                            items.controls[i].get('quantity')
                           "
                           (input)="
                             updateSubtotal(product.id, $event.target.value);
@@ -216,11 +204,11 @@
                     <th mat-header-cell *matHeaderCellDef>Action</th>
                     <td mat-cell *matCellDef="let product; let i = index">
                       <button
-                        mat-button
+                        mat-icon-button
                         color="warn"
                         (click)="removeProduct(i, $event)"
                       >
-                        Remove
+                        <mat-icon>delete</mat-icon>
                       </button>
                     </td>
                   </ng-container>
@@ -232,7 +220,6 @@
                       'name',
                       'branch',
                       'price',
-                      'supplier',
                       'quantity',
                       'subtotal',
                       'actions'
@@ -247,7 +234,6 @@
                         'name',
                         'branch',
                         'price',
-                        'supplier',
                         'quantity',
                         'subtotal',
                         'actions'
@@ -264,49 +250,66 @@
               ></mat-paginator>
             </div>
           </div>
-          <!-- Add this section below the closing div tag of the table -->
-          <div
-            *ngIf="selectedProducts.length > 0"
-            class="d-flex justify-content-between align-items-center mt-3"
-          >
-            <!-- Left Section: 70% Width -->
-            <div class="w-70">
-              <mat-form-field class="w-100" appearance="outline">
-                <mat-label>Total Amount</mat-label>
+
+          <div class="row">
+            <div
+              *ngIf="selectedProducts.length > 0"
+              class="d-flex justify-content-center align-items-center bg-color-secondary col-md-9 mt-3"
+              style="min-height: 80px"
+            >
+              <div class="pay-label">Pay: Ksh</div>
+              <div class="totamnt text-center">
                 <input
                   matInput
                   type="number"
                   formControlName="totalAmount"
                   readonly
                 />
-              </mat-form-field>
+              </div>
+              <div class="words">
+                {{ totalAmountInWords }}
+              </div>
             </div>
 
-            <!-- Right Section: 30% Width -->
-            <div class="w-30 ml-2">
+            <!-- col-md-3: Fields stacked downwards -->
+            <div
+              *ngIf="selectedProducts.length > 0"
+              class="col-md-3 d-flex flex-column bg-white p-3 rounded align-items-center text-dark mt-3"
+            >
               <mat-form-field class="w-100" appearance="outline">
-                <mat-label>Total Amount (Post to DB)</mat-label>
-                <input
-                  matInput
-                  type="number"
-                  formControlName="totalAmountPost"
-                  readonly
-                />
+                <mat-label>Total Amount</mat-label>
+                <input matInput type="number" formControlName="totalAmount" />
               </mat-form-field>
+              <div class="" *ngIf="isCreditSale">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Amount Paid</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="amountPaid"
+                    (input)="calculateBalance()"
+                  />
+                </mat-form-field>
+
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>Balance</mat-label>
+                  <input matInput type="text" [value]="balance" readonly />
+                </mat-form-field>
+              </div>
             </div>
           </div>
 
-          <!-- Submit Button Disabled If No Products Selected -->
-          <div class="justify-content-center d-flex mt-3">
+         <div class="justify-content-center d-flex mt-3">
             <button
               mat-raised-button
               color="primary"
               type="submit"
               [disabled]="selectedProducts.length === 0"
             >
-              Submit Sale
+              Submit Purchase
             </button>
           </div>
+
         </form>
       </div>
     </div>

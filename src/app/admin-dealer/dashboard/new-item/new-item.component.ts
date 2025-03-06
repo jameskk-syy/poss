@@ -33,7 +33,7 @@ export class NewItemComponent implements OnInit, AfterViewInit {
       count: ['', [Validators.required, Validators.min(1)]],
       branchId: [null, [Validators.required]], 
       categoryId: [null, [Validators.required]],
-      supplierId: [null, [Validators.required]],
+      supplierId: [null],
       reorderLevel: [0],
       hasVariants: [false],
       variantOfId: [null],
@@ -247,56 +247,32 @@ export class NewItemComponent implements OnInit, AfterViewInit {
   //   }
   // }
 
+  onImageUpload(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.newItem.patchValue({ image: file }); // Store the file object directly
+    }
+  }
+
   onFileUpload(event: any): void {
     const file = event.target.files[0];
-    if (!file) {
-      alert('Please select an Excel file');
-      return;
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file); // Append the file directly
+  
+      this.dashboardService.uploadExcelFile(formData).subscribe(
+        response => {
+          alert('File uploaded successfully!');
+          this.getProducts(); // Refresh the product list if necessary
+        },
+        error => {
+          console.error('Error uploading file:', error);
+          alert('Failed to upload file.');
+        }
+      );
     }
-
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-      const sheetName = workbook.SheetNames[0];
-      const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-
-      if (sheetData.length > 0) {
-        this.processExcelData(sheetData);
-      } else {
-        alert('No data found in the Excel file.');
-      }
-    };
-    reader.readAsArrayBuffer(file);
   }
 
-  processExcelData(sheetData: any[]): void {
-    const formattedData = sheetData.map((row: any) => ({
-      name: row['Item Name'] || '',
-      description: 'Imported from Excel',
-      regularBuyingPrice: row['Buying Price'] || 0,
-      sellingPrice: row['Selling Price'] || 0,
-      maxPercentageDiscount: row['Discount (%)'] || 0,
-      count: row['Item Quantity'] || 0,
-      branchId: this.findIdByName(this.branches, row['Branch']),
-      categoryId: this.findIdByName(this.categories, row['Item Group']),
-      supplierId: this.findIdByName(this.suppliers, row['Supplier'])
-    }));
-
-    this.dashboardService.bulkCreateItems(formattedData).subscribe(
-      () => {
-        alert('Products imported successfully!');
-        this.getProducts();
-      },
-      (error) => {
-        console.error('Error importing products:', error);
-        alert('Failed to import products.');
-      }
-    );
-  }
-
-  findIdByName(list: any[], name: string): number | null {
-    const item = list.find(i => i.name === name);
-    return item ? item.id : null;
-  }
+  
+  
 }

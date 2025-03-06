@@ -14,6 +14,7 @@ import { QuotesComponent } from './quotes/quotes.component';
 import { CustomersComponent } from './customers/customers.component';
 import { PurchasesComponent } from './purchases/purchases.component';
 import { ExpensesComponent } from './expenses/expenses.component';
+import { ReportsComponent } from './reports/reports.component';
 
 const routes: Routes = [
   
@@ -45,6 +46,10 @@ const routes: Routes = [
   {
     path: "category",
     component: CategoryComponent,
+  },
+  {
+    path: "reports",
+    component: ReportsComponent,
   },
   {
     path: "makesale",

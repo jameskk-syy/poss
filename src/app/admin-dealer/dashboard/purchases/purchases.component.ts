@@ -1,65 +1,183 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ChangeDetectorRef,
+  HostListener,
+  AfterViewInit,
+} from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+
 
 @Component({
   selector: 'app-purchases',
   templateUrl: './purchases.component.html',
   styleUrls: ['./purchases.component.sass'],
 })
-export class PurchasesComponent implements OnInit {
-  purchaseForm: FormGroup;
-  itemspr: any[] = []; // Store fetched products (Search Results)
-  selectedProducts: any[] = []; // Store selected products
+export class PurchasesComponent implements OnInit, AfterViewInit {
+  productForm: FormGroup;
+  itemspr: any[] = [];
+  itemsprDataSource = new MatTableDataSource<any>([]);
+  selectedProducts: any[] = [];
   selectedProductsDataSource = new MatTableDataSource<any>([]);
-  showProductTable: boolean = false; // Controls visibility of product search table
+  showProductTable: boolean = false;
+  totalAmountInWords: string = '';
+  isCreditSale: boolean = false;
+  balance: string = '0';
+  searchControl = new FormControl('');
 
-  suppliers: any[] = [];
-  isSupplierModalOpen = false;
-  selectedSupplier: string = '';
-  selectedProductForSupplier: any = null; // Store the selected product for the modal
+  suppliers: any[] = []; // Store supplier list
+  filteredSuppliers: Observable<any[]>; // Observable for filtering
+  supplierNameControl = new FormControl(''); // Control for autocomplete
 
   @ViewChild('selectedProductsPaginator')
   selectedProductsPaginator: MatPaginator;
+  @ViewChild('productsPaginator') productsPaginator: MatPaginator;
 
   constructor(
     private fb: FormBuilder,
     private dashboardService: DashboardService,
     private cdr: ChangeDetectorRef
   ) {
-    this.purchaseForm = this.fb.group({
-      // customerName: '',
-      items: this.fb.array([]), // FormArray for selected products
+    this.productForm = this.fb.group({
+      // supplierName: '',
+      items: this.fb.array([]),
       totalAmount: [{ value: 0, disabled: true }, Validators.required],
-      totalAmountPost: [{ value: 0, disabled: true }, Validators.required],
     });
   }
 
   ngOnInit(): void {
-    this.getSuppliers();
+    this.productForm.get('totalAmount')?.valueChanges.subscribe((value) => {
+      this.totalAmountInWords = this.convertNumberToWords(value) + '';
+    });
+
+    // this.productForm.get('amountPaid')?.valueChanges.subscribe(() => {
+    //   this.calculateBalance();
+    // });
+
+    // Setup search filtering
+    this.searchControl.valueChanges.subscribe((searchTerm) => {
+      this.applyFilter(searchTerm);
+    });
+
+    // Fetch suppliers
+    this.dashboardService.getAllSuppliers().subscribe((response: any) => {
+      this.suppliers = response;
+      console.log('Fetched suppliers:', this.suppliers);
+      this.filteredSuppliers = this.supplierNameControl.valueChanges.pipe(
+        startWith(''),
+        map((value) => this.filterSuppliers(value || ''))
+      );
+    });
   }
 
   ngAfterViewInit() {
+    // The paginators will be initialized here, but we'll also ensure they're attached
+    // after data is loaded in the fetchProducts method
     if (this.selectedProductsPaginator) {
       this.selectedProductsDataSource.paginator =
         this.selectedProductsPaginator;
     }
+
+    // Initialize paginator for the products table
+    if (this.productsPaginator) {
+      this.itemsprDataSource.paginator = this.productsPaginator;
+      this.cdr.detectChanges();
+    }
+  }
+
+  filterSuppliers(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.suppliers.filter((supplier) =>
+      supplier.supplierName.toLowerCase().includes(filterValue)
+    );
+    console.log('Filtered suppliers:', this.suppliers);
+  }
+
+  onSupplierselected(event: any): void {
+    this.productForm.patchValue({ supplierName: event.option.value });
+  }
+
+  applyFilter(filterValue: string) {
+    if (!filterValue) {
+      this.itemsprDataSource.filter = '';
+      return;
+    }
+
+    filterValue = filterValue.trim().toLowerCase();
+    this.itemsprDataSource.filter = filterValue;
+
+    // Reset to first page when filtering
+    if (this.itemsprDataSource.paginator) {
+      this.itemsprDataSource.paginator.firstPage();
+    }
   }
 
   get items(): FormArray {
-    return this.purchaseForm.get('items') as FormArray;
+    return this.productForm.get('items') as FormArray;
   }
 
-  // Fetch products when the search icon is clicked and show the table
-  fetchProducts(): void {
+  fetchProducts(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
     this.dashboardService.getAllProducts().subscribe(
       (response: any) => {
         console.log('Fetched Products:', response);
         if (Array.isArray(response) && response.length > 0) {
           this.itemspr = response;
-          this.showProductTable = true; // Show the product search table
+
+          // Create a MatTableDataSource with products
+          this.itemsprDataSource = new MatTableDataSource<any>(this.itemspr);
+
+          // Setup custom filter predicate for searching across all fields
+          this.itemsprDataSource.filterPredicate = (
+            data: any,
+            filter: string
+          ) => {
+            const searchTerms = filter.toLowerCase().split(' ');
+            const dataStr =
+              data.id +
+              ' ' +
+              data.name.toLowerCase() +
+              ' ' +
+              (data.branch?.name ? data.branch.name.toLowerCase() : 'n/a') +
+              ' ' +
+              (data.regularBuyingPrice || 'n/a');
+
+            return searchTerms.every((term) => dataStr.includes(term));
+          };
+
+          // Connect the paginator
+          if (this.productsPaginator) {
+            this.itemsprDataSource.paginator = this.productsPaginator;
+          }
+
+          this.showProductTable = true;
+
+          // Use setTimeout to ensure the view is updated before attempting to set the paginator
+          setTimeout(() => {
+            // Connect the paginator after the data is loaded and view is updated
+            if (this.productsPaginator) {
+              this.itemsprDataSource.paginator = this.productsPaginator;
+              console.log('Paginator attached to products table');
+            } else {
+              console.warn('Products paginator not found');
+            }
+            this.cdr.detectChanges();
+          });
         } else {
           console.warn('No products found.');
           alert('No products found.');
@@ -69,74 +187,27 @@ export class PurchasesComponent implements OnInit {
     );
   }
 
-  // fetch suppliers
-  getSuppliers(): Promise<void> {
-    return new Promise((resolve) => {
-      this.dashboardService.getAllSuppliers().subscribe(
-        (response: any) => {
-          if (Array.isArray(response)) {
-            this.suppliers = response;
-          } else {
-            console.error(' Unexpected API response structure:', response);
-          }
-          resolve();
-        },
-        (error) => {
-          console.error(' Error fetching suppliers:', error);
-          resolve();
-        }
-      );
-    });
-  }
-
-  openSupplierModal(product: any) {
-    this.selectedProductForSupplier = product; // Store the selected product
-    this.selectedSupplier = product.supplierId || ''; // Preselect if exists
-    this.isSupplierModalOpen = true;
-  }
-
-  saveSupplier() {
-    if (this.selectedProductForSupplier) {
-      // Update supplier for the selected product
-      const supplier = this.suppliers.find(
-        (s) => s.id === this.selectedSupplier
-      );
-      if (supplier) {
-        this.selectedProductForSupplier.supplierId = supplier.id;
-        this.selectedProductForSupplier.supplierName = supplier.supplierName;
-      }
-    }
-    this.closeSupplierModal();
-  }
-
-  closeSupplierModal() {
-    this.isSupplierModalOpen = false;
-  }
-  // Allow toggling of product selection
   toggleProductSelection(item: any, isChecked: boolean): void {
-    console.log(`Toggle selection for item ${item.id}, checked: ${isChecked}`);
     if (isChecked) {
-      this.selectProduct(item); // Select the product if checked
+      this.selectProduct(item);
     } else {
-      this.removeProductById(item.id); // Remove the product if unchecked
+      this.removeProductById(item.id);
     }
   }
 
-  // Remove product by ID
   removeProductById(productId: number): void {
     const index = this.selectedProducts.findIndex(
       (product) => product.id === productId
     );
     if (index !== -1) {
       this.selectedProducts.splice(index, 1);
-      this.items.removeAt(index); // Also remove from FormArray
+      this.items.removeAt(index);
       this.refreshSelectedProductsTable();
+      this.updateTotalAmount(); // Update total amount
     }
   }
 
   selectProduct(selectedProduct: any): void {
-    console.log('Selecting product:', selectedProduct);
-    // Prevent duplicates
     if (
       !this.selectedProducts.some(
         (product) => product.id === selectedProduct.id
@@ -147,10 +218,6 @@ export class PurchasesComponent implements OnInit {
         name: selectedProduct.name,
         branch: selectedProduct.branch ? selectedProduct.branch.name : 'N/A',
         branchId: selectedProduct.branch ? selectedProduct.branch.id : 0,
-        supplier: selectedProduct.supplier
-          ? selectedProduct.supplier.supplierName
-          : 0,
-        supplierId: selectedProduct.supplier ? selectedProduct.supplier.id : 0,
         regularBuyingPrice: selectedProduct.regularBuyingPrice,
         quantity: 1,
         subTotal: selectedProduct.regularBuyingPrice,
@@ -162,41 +229,45 @@ export class PurchasesComponent implements OnInit {
       const productGroup = this.fb.group({
         itemId: [selectedProduct.id, Validators.required],
         quantity: [1, [Validators.required, Validators.min(1)]],
-        regularBuyingPrice: [
-          selectedProduct.regularBuyingPrice,
-          Validators.required,
-        ],
+        price: [selectedProduct.regularBuyingPrice, Validators.required],
         subTotal: [selectedProduct.regularBuyingPrice, Validators.required],
       });
 
-      // Watch for quantity changes and update subtotal
       productGroup.get('quantity')?.valueChanges.subscribe((newQuantity) => {
         this.updateSubtotal(selectedProduct.id, newQuantity);
       });
 
       this.items.push(productGroup);
-
-      // Refresh the display of selected products in the table
       this.refreshSelectedProductsTable();
       this.updateTotalAmount();
     }
   }
 
-  // Method to refresh the display of selected products
   refreshSelectedProductsTable(): void {
-    console.log('Refreshing selected products table:', this.selectedProducts);
-    // Create a new MatTableDataSource with a new array reference to trigger change detection
     this.selectedProductsDataSource = new MatTableDataSource([
       ...this.selectedProducts,
     ]);
-    if (this.selectedProductsPaginator) {
-      this.selectedProductsDataSource.paginator =
-        this.selectedProductsPaginator;
-    }
-    this.cdr.detectChanges();
+
+    // Ensure paginator is attached whenever the selected products table is refreshed
+    setTimeout(() => {
+      if (this.selectedProductsPaginator) {
+        this.selectedProductsDataSource.paginator =
+          this.selectedProductsPaginator;
+      }
+      this.cdr.detectChanges();
+    });
   }
 
-  // Update subtotal when quantity changes
+  updateTotalAmount(): void {
+    const totalAmount = this.selectedProducts.reduce(
+      (sum, product) => sum + product.subTotal,
+      0
+    );
+    this.productForm.patchValue({
+      totalAmount: totalAmount,
+    });
+  }
+
   updateSubtotal(productId: number, newQuantity: number): void {
     if (newQuantity && newQuantity > 0) {
       const product = this.selectedProducts.find((p) => p.id === productId);
@@ -214,22 +285,11 @@ export class PurchasesComponent implements OnInit {
             subTotal: product.subTotal,
           });
 
-          this.purchaseForm.markAsDirty();
+          this.productForm.markAsDirty();
+          this.updateTotalAmount();
         }
       }
     }
-  }
-
-  // Update total amount
-  updateTotalAmount(): void {
-    const totalAmount = this.selectedProducts.reduce(
-      (sum, product) => sum + product.subTotal,
-      0
-    );
-    this.purchaseForm.patchValue({
-      totalAmount: totalAmount,
-      totalAmountPost: totalAmount,
-    });
   }
 
   removeProduct(index: number, event: Event): void {
@@ -242,118 +302,148 @@ export class PurchasesComponent implements OnInit {
     this.updateTotalAmount();
   }
 
-  // submitpurchase(): void {
-  //   if (this.purchaseForm.valid && this.selectedProducts.length > 0) {
-  //     const newprData = {
-  //       customerName: this.purchaseForm.value.customerName || null,
-  //       branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0,
-  //       items: this.selectedProducts.map(product => ({
-  //         itemId: product.id,
-  //         quantity: Number(product.quantity),
-  //         price: Number(product.price),
-  //         subTotal: Number(product.subTotal)
-  //       }))
-  //     };
+  @HostListener('document:click', ['$event'])
+  clickout(event: Event) {
+    const tableElement = document.querySelector('.content-block');
+    if (tableElement && !tableElement.contains(event.target as Node)) {
+      this.showProductTable = false;
+    }
+  }
 
-  //     console.log('Submitting purchase:', JSON.stringify(newprData, null, 2));
 
-  //     this.dashboardService.createpurchase(newprData).subscribe(
-  //       () => {
-  //         alert('purchase successfully created!');
-  //         this.purchaseForm.reset();
-  //         this.items.clear();
-  //         this.selectedProducts = [];
-  //         this.refreshSelectedProductsTable();
-  //       },
-  //       (err) => {
-  //         console.error('Error processing purchase:', err);
-  //         alert('Failed to create purchase.');
-  //       }
-  //     );
-  //   } else {
-  //     // Keep the product search table visible
-  //     this.showProductTable = true;
-  //   }
-  // }
+  convertNumberToWords(num: number): string {
+    const ones = [
+      '',
+      'One',
+      'Two',
+      'Three',
+      'Four',
+      'Five',
+      'Six',
+      'Seven',
+      'Eight',
+      'Nine',
+    ];
+    const teens = [
+      'Ten',
+      'Eleven',
+      'Twelve',
+      'Thirteen',
+      'Fourteen',
+      'Fifteen',
+      'Sixteen',
+      'Seventeen',
+      'Eighteen',
+      'Nineteen',
+    ];
+    const tens = [
+      '',
+      '',
+      'Twenty',
+      'Thirty',
+      'Forty',
+      'Fifty',
+      'Sixty',
+      'Seventy',
+      'Eighty',
+      'Ninety',
+    ];
+    const thousands = ['', 'Thousand', 'Million', 'Billion', 'Trillion'];
 
-  // submitProduct(): void {
-  //   if (this.purchaseForm.valid && this.selectedProducts.length > 0) {
-  //     const newprData = {
-  //       // customerName: this.purchaseForm.value.customerName || null,
-  //       branchId: Number(this.selectedProducts.find(p => p.branchId)?.branchId) || 0,
-  //       items: this.selectedProducts.map(product => ({
-  //         itemId: product.id,
-  //         subTotal: Number(product.subTotal),
+    if (num === 0) {
+      return 'Zero Kenya Shillings';
+    }
 
-  //         quantity: Number(product.quantity),
-  //         price: Number(product.price),
-  //       }))
-  //     };
+    let word = '';
+    if (num < 0) {
+      word = 'Negative ';
+      num = Math.abs(num);
+    }
 
-  //     console.log('Submitting purchase:', JSON.stringify(newprData, null, 2));
+    let numStr = num.toString();
+    let chunkCount = 0;
 
-  //     this.dashboardService.createPrc(newprData).subscribe(
-  //       () => {
-  //         alert('purchase successfully created!');
-  //         this.showProductTable = false;
+    while (num > 0) {
+      let chunk = num % 1000;
+      if (chunk !== 0) {
+        let chunkWords = this.convertChunk(chunk, ones, teens, tens);
+        word =
+          chunkWords +
+          (thousands[chunkCount] ? ' ' + thousands[chunkCount] : '') +
+          ' ' +
+          word;
+      }
+      num = Math.floor(num / 1000);
+      chunkCount++;
+    }
 
-  //         // Reset the form and selected products
-  //         this.purchaseForm.reset();
-  //         this.items.clear();
-  //         this.selectedProducts = [];
-  //         this.refreshSelectedProductsTable();
-  //       },
-  //       (err) => {
-  //         console.error('Error processing purchase:', err);
-  //         alert('Failed to create purchase.');
-  //       }
-  //     );
-  //   } else {
-  //     // Keep the product search table visible if the form is invalid
-  //     this.showProductTable = true;
-  //   }
-  // }
+    return word.trim() + ' Kenya Shillings';
+  }
+
+  private convertChunk(
+    num: number,
+    ones: string[],
+    teens: string[],
+    tens: string[]
+  ): string {
+    let words = '';
+
+    if (num >= 100) {
+      words += ones[Math.floor(num / 100)] + ' Hundred ';
+      num %= 100;
+    }
+
+    if (num >= 20) {
+      words += tens[Math.floor(num / 10)] + ' ';
+      num %= 10;
+    }
+
+    if (num >= 10) {
+      words += teens[num - 10] + ' ';
+    } else if (num > 0) {
+      words += ones[num] + ' ';
+    }
+
+    return words.trim();
+  }
 
   submitProduct(): void {
-    if (this.purchaseForm.valid && this.selectedProducts.length > 0) {
-      const supplierId =
-        this.selectedProducts.length > 0
-          ? this.selectedProducts[0].supplierId
-          : 0;
-
-      const newprData = {
+    if (this.productForm.valid && this.selectedProducts.length > 0) {
+      const purchData = {
+        // supplierName: this.productForm.value.supplierName || null,
+        totalAmount: Number(this.productForm.get('totalAmount')?.value) || 0,
         branchId:
           Number(this.selectedProducts.find((p) => p.branchId)?.branchId) || 0,
         items: this.selectedProducts.map((product) => ({
-          itemId: product.id,
-          subTotal: Number(product.subTotal),
+          itemId: product.id, // Changed from item_id to match backend expectation
           quantity: Number(product.quantity),
-          price: Number(product.price),
+          price: Number(product.regularBuyingPrice),
+          subTotal: Number(product.subTotal),
         })),
-        totalAmount: this.purchaseForm.value.totalAmount,
-        supplierId: supplierId, // Include supplierId in the request body
+       
       };
 
-      console.log('Submitting purchase:', JSON.stringify(newprData, null, 2));
+      console.log(
+        'Sending sale transaction data to API:',
+        JSON.stringify(purchData, null, 2)
+      );
 
-      this.dashboardService.createPrc(newprData).subscribe(
+      this.dashboardService.createPrc(purchData).subscribe(
         () => {
-          alert('purchase successfully created!');
+          alert('Sale successfully created!');
           this.showProductTable = false;
 
-          // Reset the form and selected products
-          this.purchaseForm.reset();
+          this.productForm.reset();
           this.items.clear();
           this.selectedProducts = [];
           this.refreshSelectedProductsTable();
         },
         (err) => {
-          console.error('Error processing purchase:', err);
-          alert('Failed to create purchase.');
+          console.error('Error processing sale:', err);
+          alert('Failed to create sale.');
         }
       );
     } else {
-      // Keep the product search table visible if the form is invalid
       this.showProductTable = true;
     }
   }

@@ -89,6 +89,12 @@ export class DashboardService {
       .get(url, this.getHttpOptions())
       .pipe(map((res) => res || []));
   }
+  public getAllPurchases(): Observable<any> {
+    const url = `${environment.apiUrl}/api/v1/items`;
+    return this.http
+      .get(url, this.getHttpOptions())
+      .pipe(map((res) => res || []));
+  }
 
   // addExpense(data: any): Observable<any> {
   //   const API_URL = `${environment.apiUrl}/api/expenses`;
@@ -128,6 +134,24 @@ export class DashboardService {
     return this.http.get(`${environment.apiUrl}/api/sale-orders${id}`);
   }
   createBranch(data: any): Observable<any> {
+    console.log('Sending data to API:', data); // Debugging
+
+    const API_URL = `${environment.apiUrl}/api/branches`;
+
+    return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
+      map((response) => {
+        console.log('Branch created successfully:', response); // Debugging
+        return response;
+      }),
+      catchError((error) => {
+        console.error('Error creating branch:', error);
+        return throwError(
+          () => new Error(error.message || 'Failed to create branch')
+        );
+      })
+    );
+  }
+  createprs(data: any): Observable<any> {
     console.log('Sending data to API:', data); // Debugging
 
     const API_URL = `${environment.apiUrl}/api/branches`;
@@ -333,8 +357,21 @@ export class DashboardService {
     );
   }
 
-  bulkCreateItems(items: any[]): Observable<any> {
-    return this.http.post(`${environment.apiUrl}}/products/bulk`, items);
+
+  uploadExcelFile(data: FormData): Observable<any> {
+    const API_URL = `${environment.apiUrl}/api/items/upload`;
+  
+    return this.http.post(API_URL, data, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+      }),
+    }).pipe(
+      map((res) => res || {}),
+      catchError((error) => {
+        console.error('Error uploading file:', error);
+        return throwError(() => new Error(error.message || 'Failed to upload file'));
+      })
+    );
   }
 
   getAllCategories(): Observable<any> {
@@ -353,6 +390,46 @@ export class DashboardService {
         })
       );
   }
+
+ // Method to download the sale order report as a PDF
+ getReports(startDate: string, endDate: string): void {
+  const params = {
+    startDate,
+    endDate
+  };
+
+  this.http
+    .get(`${environment.apiUrl}/api/sale-orders/report/pdf`, {
+      params,
+      ...this.getHttpOptions(),
+      responseType: 'blob' // Important: Set response type to blob
+    })
+    .subscribe({
+      next: (response) => {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'sale_order_report.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      },
+      error: (error) => {
+        console.error('Error downloading report:', error);
+        if (error.error instanceof Blob) {
+          // Handle specific error blob response if necessary
+          const reader = new FileReader();
+          reader.onload = () => {
+            const errorData = JSON.parse(reader.result as string);
+            alert(errorData.message || "An error occurred while generating the report.");
+          };
+          reader.readAsText(error.error);
+        } else {
+          alert("Failed to connect to the server.");
+        }
+      }
+    });
+}
   updateCategories(id: number, data: any): Observable<any> {
     return this.http.put(
       `${environment.apiUrl}/api/product-categories/${id}`,
