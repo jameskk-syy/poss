@@ -7,22 +7,21 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
-  declarations: [
-    
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     DealerRoutingModule,
     MatTableModule,
     MatSortModule,
+    NgApexchartsModule,
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
   ],
-  exports:[
+  exports: [
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
@@ -30,4 +29,4 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule,
   ],
 })
-export class DealerModule { }
+export class DealerModule {}

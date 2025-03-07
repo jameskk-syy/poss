@@ -126,12 +126,12 @@ export class DashboardService {
   //   );
   // }
 
-  public getExpenses(): Observable<any> {
-    const url = `${environment.apiUrl}/api/expenses`;
-    return this.http
-      .get(url, this.getHttpOptions())
-      .pipe(map((res) => res || []));
-  }
+  // public getExpenses(): Observable<any> {
+  //   const url = `${environment.apiUrl}/api/expenses`;
+  //   return this.http
+  //     .get(url, this.getHttpOptions())
+  //     .pipe(map((res) => res || []));
+  // }
   public getAllSales(): Observable<any> {
     const url = `${environment.apiUrl}/api/sale-orders`;
     return this.http

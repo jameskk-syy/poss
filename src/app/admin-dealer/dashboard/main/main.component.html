@@ -62,23 +62,26 @@
           </div>
 
           <!-- Charts -->
+          <!-- Charts -->
           <div class="row d-flex flex-wrap">
+            <!-- 1️⃣ Bar Chart - Sales Per Branch -->
             <div class="col-xl-6 mb-4">
               <div class="card h-100">
                 <div class="card-header">
-                  <i class="fas fa-chart-bar me-1"></i>
-                  Sales Per products
+                  <i class="fas fa-chart-bar me-1"></i> Sales Per Branch
                 </div>
                 <div class="card-body">
                   <canvas #barChart width="100%" height="40"></canvas>
                 </div>
               </div>
             </div>
+
+            <!-- 2️⃣ Pie Chart - Revenue Distribution Per Category -->
             <div class="col-xl-6 mb-4">
               <div class="card h-100">
                 <div class="card-header">
-                  <i class="fas fa-chart-pie me-1"></i>
-                  Products Per Category
+                  <i class="fas fa-chart-pie me-1"></i> Revenue Distribution Per
+                  Category
                 </div>
                 <div class="card-body">
                   <canvas #pieChart width="100%" height="40"></canvas>
@@ -86,12 +89,12 @@
               </div>
             </div>
           </div>
-          <div class="row d-flex flex-wrap">
+
+          <!-- <div class="row d-flex flex-wrap">
             <div class="col-xl-12 mb-4">
               <div class="card h-100">
                 <div class="card-header">
-                  <i class="fas fa-chart-line me-1"></i>
-                  Sales Trend Over Time
+                  <i class="fas fa-chart-line me-1"></i> Sales Trend Over Time
                 </div>
                 <div class="card-body">
                   <canvas #lineChart width="100%" height="40"></canvas>
@@ -100,8 +103,34 @@
             </div>
           </div>
 
+          <div class="row d-flex flex-wrap">
+            <div class="col-xl-6 mb-4">
+              <div class="card h-100">
+                <div class="card-header">
+                  <i class="fas fa-chart-doughnut me-1"></i> Top-Selling
+                  Products
+                </div>
+                <div class="card-body">
+                  <canvas #doughnutChart width="100%" height="40"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6 mb-4">
+              <div class="card h-100">
+                <div class="card-header">
+                  <i class="fas fa-chart-bar me-1"></i> Sales Performance Per
+                  Branch Over Time
+                </div>
+                <div class="card-body">
+                  <canvas #stackedBarChart width="100%" height="40"></canvas>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
           <!-- Sales Data Table -->
-          <div class="card mb-4">
+          <!-- <div class="card mb-4">
             <div class="card-header">
               <i class="fas fa-table me-1"></i>
               Sales Data
@@ -116,7 +145,7 @@
                 <ng-container matColumnDef="categoryId">
                   <th mat-header-cell *matHeaderCellDef>Category</th>
                   <td mat-cell *matCellDef="let element">
-                    {{ element.categoryId }}
+                    {{ element.categoryName }}
                   </td>
                 </ng-container>
                 <ng-container matColumnDef="date">
@@ -138,7 +167,7 @@
               </table>
               <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
