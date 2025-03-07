@@ -69,12 +69,12 @@ export class DashboardService {
   //   );
   // }
 
-  public getExpenses(): Observable<any> {
-    const url = `${environment.apiUrl}/api/expenses`;
-    return this.http
-      .get(url, this.getHttpOptions())
-      .pipe(map((res) => res || []));
-  }
+  // public getExpenses(): Observable<any> {
+  //   const url = `${environment.apiUrl}/api/expenses`;
+  //   return this.http
+  //     .get(url, this.getHttpOptions())
+  //     .pipe(map((res) => res || []));
+  // }
   public getAllSales(): Observable<any> {
     const url = `${environment.apiUrl}/api/sale-orders`;
     return this.http
@@ -223,24 +223,6 @@ export class DashboardService {
         console.error('Error creating Category:', error);
         return throwError(
           () => new Error(error.message || 'Failed to create Category')
-        );
-      })
-    );
-  }
-  addExpense(data: any): Observable<any> {
-    console.log('Sending data to API:', data); // Debugging
-
-    const API_URL = `${environment.apiUrl}/api/expenses`;
-
-    return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
-      map((response) => {
-        console.log('Expense created successfully:', response); // Debugging
-        return response;
-      }),
-      catchError((error) => {
-        console.error('Error creating Expense:', error);
-        return throwError(
-          () => new Error(error.message || 'Failed to create Expense')
         );
       })
     );

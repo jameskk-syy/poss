@@ -4,56 +4,53 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.service';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-saleslist',
   templateUrl: './saleslist.component.html',
-  styleUrls: ['./saleslist.component.sass']
+  styleUrls: ['./saleslist.component.sass'],
 })
 export class SaleslistComponent implements OnInit, AfterViewInit {
-  
   displayedColumns: string[] = [
-    'position', 
-    'customerName', 
-    'branch', 
+    'position',
+    'customerName',
+    'branch',
     'location',
     'totalAmount',
-    'createdAt', 
+    'createdAt',
     'referenceNumber',
-    'actions'  // Add actions column
+    'actions', // Add actions column
   ];
   dataSource = new MatTableDataSource();
-  
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
+
   constructor(
     private dashboardService: DashboardService,
     private router: Router
   ) {}
-  
-  
-navigateToSdetails() {
-  this.router.navigate(['/saledetails']);
-}
 
+  navigateToSdetails() {
+    this.router.navigate(['/saledetails']);
+  }
 
   ngOnInit(): void {
     this.getSales();
   }
-  
+
   ngAfterViewInit(): void {
     if (this.paginator) {
       this.dataSource.paginator = this.paginator;
     }
   }
-    
+
   getSales(): void {
     this.dashboardService.getAllSales().subscribe(
       (data: any) => {
         this.dataSource.data = data;
+        console.log('sales', data);
       },
       (error) => {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching sales:', error);
       }
     );
   }
