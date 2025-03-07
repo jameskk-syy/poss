@@ -39,6 +39,8 @@ export class PurchasesComponent implements OnInit, AfterViewInit {
   balance: string = '0';
   searchControl = new FormControl('');
 
+  isLoading = false;
+
   suppliers: any[] = []; // Store supplier list
   filteredSuppliers: Observable<any[]>; // Observable for filtering
   supplierNameControl = new FormControl(''); // Control for autocomplete
@@ -138,6 +140,8 @@ export class PurchasesComponent implements OnInit, AfterViewInit {
   }
 
   fetchProducts(event: Event): void {
+    this.isLoading = true;
+
     event.preventDefault();
     event.stopPropagation();
     this.dashboardService.getAllProducts().subscribe(
@@ -173,6 +177,8 @@ export class PurchasesComponent implements OnInit, AfterViewInit {
           }
 
           this.showProductTable = true;
+
+          this.isLoading = false;
 
           // Use setTimeout to ensure the view is updated before attempting to set the paginator
           setTimeout(() => {

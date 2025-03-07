@@ -121,7 +121,7 @@ export class ReportsComponent implements OnInit {
       alert('Please select both start and end dates');
       return;
     }
-    this.fetchReports(startDate, endDate);
+    this.getIncomereport(startDate, endDate);
   }
 
   fetchReports(startDate: string, endDate: any): void {
@@ -134,6 +134,10 @@ export class ReportsComponent implements OnInit {
 
   getExpreport(startDate: string, endDate: string, expenseType: string): void {
     this.dashboardService.expReports(startDate, endDate, expenseType);
+  }
+
+  getIncomereport(startDate: string, endDate: string): void {
+    this.dashboardService.incomeReport(startDate, endDate);
   }
 
   viewReport(reportId: number): void {

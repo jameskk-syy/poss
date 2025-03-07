@@ -38,6 +38,8 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   balance: string = '0';
   searchControl = new FormControl('');
 
+  isLoading = false;
+
   customers: any[] = []; // Store customer list
   filteredCustomers: Observable<any[]>; // Observable for filtering
   customerNameControl = new FormControl(''); // Control for autocomplete
@@ -132,6 +134,8 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   }
 
   fetchProducts(event: Event): void {
+    this.isLoading = true;
+
     event.preventDefault();
     event.stopPropagation();
     this.dashboardService.getAllProducts().subscribe(
@@ -167,6 +171,7 @@ export class TransactionComponent implements OnInit, AfterViewInit {
           }
 
           this.showProductTable = true;
+          this.isLoading = false;
 
           // Use setTimeout to ensure the view is updated before attempting to set the paginator
           setTimeout(() => {

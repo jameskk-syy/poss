@@ -254,24 +254,47 @@ export class NewItemComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onFileUpload(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('file', file); // Append the file directly
+  // onFileUpload(event: any): void {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const formData = new FormData();
+  //     formData.append('file', file); // Append the file directly
   
-      this.dashboardService.uploadExcelFile(formData).subscribe(
-        response => {
-          alert('File uploaded successfully!');
-          this.getProducts(); // Refresh the product list if necessary
-        },
-        error => {
-          console.error('Error uploading file:', error);
-          alert('Failed to upload file.');
-        }
-      );
-    }
+  //     this.dashboardService.uploadExcelFile(formData).subscribe(
+  //       response => {
+  //         alert('File uploaded successfully!');
+  //         this.getProducts(); // Refresh the product list if necessary
+  //       },
+  //       error => {
+  //         console.error('Error uploading file:', error);
+  //         alert('Failed to upload file.');
+  //       }
+  //     );
+  //   }
+  // }
+
+  // In your component file (.ts)
+onFileUpload(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+    const formData = new FormData();
+    formData.append('file', file); // Make sure this key matches what your API expects
+    
+    console.log('Uploading file:', file.name); // Debug log
+    
+    this.dashboardService.uploadExcelFile(formData).subscribe({
+      next: (response) => {
+        console.log('Upload response:', response); // Debug log
+        alert('File uploaded successfully!');
+        this.getProducts(); // Refresh the product list
+      },
+      error: (error) => {
+        console.error('Error uploading file:', error);
+        alert(`Failed to upload file: ${error.message || 'Unknown error'}`);
+      }
+    });
   }
+}
 
   
   

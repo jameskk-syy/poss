@@ -41,6 +41,8 @@ export class QuotesComponent implements OnInit, AfterViewInit {
   balance: string = '0'; // Stores balance calculation
   searchControl = new FormControl(''); // For searching/filtering products
 
+  isLoading=false;
+
   customers: any[] = []; // Store customer list
   filteredCustomers: Observable<any[]>; // Observable for filtering
   customerNameControl = new FormControl(''); // Control for autocomplete
@@ -133,6 +135,7 @@ export class QuotesComponent implements OnInit, AfterViewInit {
   }
 
   fetchProducts(event: Event): void {
+    this.isLoading=true;
     event.preventDefault();
     event.stopPropagation();
     this.dashboardService.getAllProducts().subscribe(
@@ -168,7 +171,18 @@ export class QuotesComponent implements OnInit, AfterViewInit {
           }
 
           this.showProductTable = true;
-          this.cdr.detectChanges();
+          this.isLoading = false;
+          this.cdr.detectChanges(); // Use setTimeout to ensure the view is updated before attempting to set the paginator
+          setTimeout(() => {
+            // Connect the paginator after the data is loaded and view is updated
+            if (this.productsPaginator) {
+              this.itemsDataSource.paginator = this.productsPaginator;
+              console.log('Paginator attached to products table');
+            } else {
+              console.warn('Products paginator not found');
+            }
+            this.cdr.detectChanges();
+          });
         } else {
           console.warn('No products found.');
           alert('No products found.');

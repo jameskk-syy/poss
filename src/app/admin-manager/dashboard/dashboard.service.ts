@@ -349,22 +349,41 @@ export class DashboardService {
   }
 
 
-  uploadExcelFile(data: FormData): Observable<any> {
-    const API_URL = `${environment.apiUrl}/api/items/upload`;
+  // uploadExcelFile(data: FormData): Observable<any> {
+  //   const API_URL = `${environment.apiUrl}/api/items/upload/upload-to-all-branches`;
   
-    return this.http.post(API_URL, data, {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
-      }),
-    }).pipe(
-      map((res) => res || {}),
-      catchError((error) => {
-        console.error('Error uploading file:', error);
-        return throwError(() => new Error(error.message || 'Failed to upload file'));
-      })
-    );
-  }
+  //   return this.http.post(API_URL, data, {
+  //     headers: new HttpHeaders({
+  //       Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+  //     }),
+  //   }).pipe(
+  //     map((res) => res || {}),
+  //     catchError((error) => {
+  //       console.error('Error uploading file:', error);
+  //       return throwError(() => new Error(error.message || 'Failed to upload file'));
+  //     })
+  //   );
+  // }
 
+  // In your service file
+uploadExcelFile(data: FormData): Observable<any> {
+  const API_URL = `${environment.apiUrl}/api/items/upload/upload-to-all-branches`;
+  
+  // Remove content-type header to let the browser set it with the boundary parameter
+  return this.http.post(API_URL, data, {
+    headers: new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+      // Don't set Content-Type here as it will be set automatically for FormData
+    }),
+    reportProgress: true, // Optional: for tracking upload progress
+  }).pipe(
+    map((res) => res || {}),
+    catchError((error) => {
+      console.error('Error uploading file:', error);
+      return throwError(() => new Error(error.message || 'Failed to upload file'));
+    })
+  );
+}
   getAllCategories(): Observable<any> {
     return this.http
       .get(
