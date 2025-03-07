@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -24,6 +24,15 @@ export class DashboardService {
     }
 
     return { headers };
+  }
+
+  getHttps() {
+    const token = localStorage.getItem('token'); // Or the correct way you store the token
+    return {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      }),
+    };
   }
 
   //
@@ -293,25 +302,7 @@ export class DashboardService {
       })
     );
   }
-  // addExpense(data: any): Observable<any> {
-  //   console.log('Sending data to API:', data); // Debugging
-
-  //   const API_URL = `${environment.apiUrl}/api/expenses`;
-
-  //   return this.http.post<any>(API_URL, data, this.getHttpOptions()).pipe(
-  //     map((response) => {
-  //       console.log('Expense created successfully:', response); // Debugging
-  //       return response;
-  //     }),
-  //     catchError((error) => {
-  //       console.error('Error creating Expense:', error);
-  //       return throwError(
-  //         () => new Error(error.message || 'Failed to create Expense')
-  //       );
-  //     })
-  //   );
-  // }
-  addExpense(data: any): Observable<any> {
+    addExpense(data: any): Observable<any> {
     console.log('Sending data to API:', data); // Debugging
 
     const API_URL = `${environment.apiUrl}/api/expenses`;
@@ -391,7 +382,6 @@ export class DashboardService {
       );
   }
 
- // Method to download the sale order report as a PDF
  getReports(startDate: string, endDate: string): void {
   const params = {
     startDate,
@@ -401,7 +391,7 @@ export class DashboardService {
   this.http
     .get(`${environment.apiUrl}/api/sale-orders/report/pdf`, {
       params,
-      ...this.getHttpOptions(),
+      ...this.getHttpOptions(), 
       responseType: 'blob' // Important: Set response type to blob
     })
     .subscribe({
@@ -417,7 +407,6 @@ export class DashboardService {
       error: (error) => {
         console.error('Error downloading report:', error);
         if (error.error instanceof Blob) {
-          // Handle specific error blob response if necessary
           const reader = new FileReader();
           reader.onload = () => {
             const errorData = JSON.parse(reader.result as string);
@@ -430,6 +419,158 @@ export class DashboardService {
       }
     });
 }
+purchaseReport(startDate: string, endDate: string): void {
+  const params = {
+    startDate,
+    endDate
+  };
+
+  this.http
+    .get(`${environment.apiUrl}/api/purchases/purchase-report/pdf`, {
+      params,
+      ...this.getHttpOptions(), 
+      responseType: 'blob' 
+    })
+    .subscribe({
+      next: (response) => {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'purchase_report.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      },
+      error: (error) => {
+        console.error('Error downloading purchase report:', error);
+        if (error.error instanceof Blob) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const errorData = JSON.parse(reader.result as string);
+            alert(errorData.message || "An error occurred while generating the purchase report.");
+          };
+          reader.readAsText(error.error);
+        } else {
+          alert("Failed to connect to the server.");
+        }
+      }
+    });
+}
+
+incomeReport(startDate: string, endDate: string): void {
+  const params = new HttpParams()
+    .set('startDate', startDate)
+    .set('endDate', endDate);
+
+  this.http
+    .get(`${environment.apiUrl}/api/reports/profit-loss/pdf`, {
+      headers: this.getHttpOptions().headers, // Ensure headers are explicitly passed
+      params,
+      responseType: 'blob'
+    })
+    .subscribe({
+     next: (response: Blob) => {  // Explicitly cast response as Blob
+  const blob = new Blob([response], { type: 'application/pdf' });
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = 'P&L_report.pdf'; // Ensure correct file name
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+},
+
+      error: (error) => {
+        console.error('Error downloading P&L report:', error);
+        if (error.error instanceof Blob) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const errorData = JSON.parse(reader.result as string);
+            alert(errorData.message || "An error occurred while generating the P$L report.");
+          };
+          reader.readAsText(error.error);
+        } else {
+          alert("Failed to connect to the server.");
+        }
+      }
+    });
+}
+expReports(startDate: string, endDate: string, expenseType: string): void {
+  const params = new HttpParams()
+    .set('startDate', startDate)
+    .set('endDate', endDate)
+    .set('expenseType',expenseType);
+
+  this.http
+    .get(`${environment.apiUrl}/api/reports/report/expenses/pdf`, {
+      headers: this.getHttpOptions().headers, // Ensure headers are explicitly passed
+      params,
+      responseType: 'blob'
+    })
+    .subscribe({
+     next: (response: Blob) => {  // Explicitly cast response as Blob
+  const blob = new Blob([response], { type: 'application/pdf' });
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = 'expense_report.pdf'; // Ensure correct file name
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+},
+
+      error: (error) => {
+        console.error('Error downloading expense report:', error);
+        if (error.error instanceof Blob) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const errorData = JSON.parse(reader.result as string);
+            alert(errorData.message || "An error occurred while generating the report.");
+          };
+          reader.readAsText(error.error);
+        } else {
+          alert("Failed to connect to the server.");
+        }
+      }
+    });
+}
+
+
+// purchaseReport(startDate: string, endDate: string): void {
+//   const params = {
+//     startDate,
+//     endDate
+//   };
+
+//   this.http
+//     .get(`${environment.apiUrl}/api/purchases/purchase-report/pdf`, {
+//       params,
+//       ...this.getHttpOptions(), // Ensure this is included
+//       responseType: 'blob' // Important: Set response type to blob
+//     })
+//     .subscribe({
+//       next: (response) => {
+//         const blob = new Blob([response], { type: 'application/pdf' });
+//         const link = document.createElement('a');
+//         link.href = window.URL.createObjectURL(blob);
+//         link.download = 'purchases_report.pdf'; // Change the file name to reflect the content
+//         document.body.appendChild(link);
+//         link.click();
+//         document.body.removeChild(link);
+//       },
+//       error: (error) => {
+//         console.error('Error downloading report:', error);
+//         if (error.error instanceof Blob) {
+//           const reader = new FileReader();
+//           reader.onload = () => {
+//             const errorData = JSON.parse(reader.result as string);
+//             alert(errorData.message || "An error occurred while generating the report.");
+//           };
+//           reader.readAsText(error.error);
+//         } else {
+//           alert("Failed to connect to the server.");
+//         }
+//       }
+//     });
+// }
   updateCategories(id: number, data: any): Observable<any> {
     return this.http.put(
       `${environment.apiUrl}/api/product-categories/${id}`,

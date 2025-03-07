@@ -53,7 +53,8 @@ export class PurchasesComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef
   ) {
     this.productForm = this.fb.group({
-      // supplierName: '',
+      supplierName: '',
+      supplierId:[null],
       items: this.fb.array([]),
       totalAmount: [{ value: 0, disabled: true }, Validators.required],
     });
@@ -108,7 +109,13 @@ export class PurchasesComponent implements OnInit, AfterViewInit {
   }
 
   onSupplierselected(event: any): void {
-    this.productForm.patchValue({ supplierName: event.option.value });
+    const selectedSupplier = this.suppliers.find(supplier => supplier.supplierName === event.option.value);
+    if (selectedSupplier) {
+      this.productForm.patchValue({ 
+        supplierName: selectedSupplier.supplierName, 
+        supplierId: selectedSupplier.id // Set the supplier ID
+      });
+    }
   }
 
   applyFilter(filterValue: string) {
@@ -410,37 +417,36 @@ export class PurchasesComponent implements OnInit, AfterViewInit {
   submitProduct(): void {
     if (this.productForm.valid && this.selectedProducts.length > 0) {
       const purchData = {
-        // supplierName: this.productForm.value.supplierName || null,
+        supplierId: this.productForm.value.supplierId || null, // Use supplierId from the form
         totalAmount: Number(this.productForm.get('totalAmount')?.value) || 0,
         branchId:
           Number(this.selectedProducts.find((p) => p.branchId)?.branchId) || 0,
         items: this.selectedProducts.map((product) => ({
-          itemId: product.id, // Changed from item_id to match backend expectation
+          itemId: product.id,
           quantity: Number(product.quantity),
           price: Number(product.regularBuyingPrice),
           subTotal: Number(product.subTotal),
         })),
-       
       };
-
+  
       console.log(
-        'Sending sale transaction data to API:',
+        'Sending purchase transaction data to API:',
         JSON.stringify(purchData, null, 2)
       );
-
+  
       this.dashboardService.createPrc(purchData).subscribe(
         () => {
-          alert('Sale successfully created!');
+          alert('Purchase successfully created!');
           this.showProductTable = false;
-
+  
           this.productForm.reset();
           this.items.clear();
           this.selectedProducts = [];
           this.refreshSelectedProductsTable();
         },
         (err) => {
-          console.error('Error processing sale:', err);
-          alert('Failed to create sale.');
+          console.error('Error processing purchase:', err);
+          alert('Failed to create purchase.');
         }
       );
     } else {
