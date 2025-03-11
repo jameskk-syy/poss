@@ -43,6 +43,7 @@ import { PurchasesComponent } from './purchases/purchases.component';
 import { CustomersComponent } from './customers/customers.component';
 import { ExpensesComponent } from './expenses/expenses.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { PaymentDialogComponent } from './transaction/payment-dialog/payment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     PurchasesComponent,
     CustomersComponent,
     ExpensesComponent,
+    PaymentDialogComponent,
   ],
   imports: [
     CommonModule,

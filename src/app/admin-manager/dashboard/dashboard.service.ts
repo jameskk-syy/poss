@@ -12,6 +12,8 @@ export class DashboardService {
   deptsUrl = `${environment.apiUrl}/api/v1/department/`;
   usersUrl = `${environment.apiUrl}/api/action-items/user/analytics/`;
 
+
+
   private getHttpOptions() {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders({
@@ -58,6 +60,13 @@ export class DashboardService {
   //     map(res => res || {})
   //   );
   // }
+
+  makeMpesaPayment(data:any):Observable<any> {
+    const url = `${environment.mpesaUrl}/initiate-payment`;
+    return this.http
+      .post(url,data, this.getHttpOptions())
+      .pipe(map((res) => res || []));
+  }
 
   createItem(data: any): Observable<any> {
     const API_URL = `${environment.apiUrl}/api/v1/items`;

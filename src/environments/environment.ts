@@ -4,9 +4,12 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://172.16.10.16:8082',
+  // apiUrl: 'http://197.155.71.138:3500',
+  apiUrl: ' http://172.16.10.16:8082',
+  mpesaUrl : ' http://172.16.10.16:8080',
+ 
   // apiUrl: "http://localhost:8082",
-  API: 'http://172.16.8.99:8081',
+  // API: 'http://172.16.8.:8081',
 
   // apiUrl: "http://172.16.10.142:8080",
   // API: "http://172.16.10.142:8080",

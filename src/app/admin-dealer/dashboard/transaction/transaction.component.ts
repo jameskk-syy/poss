@@ -20,6 +20,8 @@ import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import { PaymentDialogComponent } from './payment-dialog/payment-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-transaction',
@@ -51,10 +53,12 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private dashboardService: DashboardService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dialog:MatDialog
   ) {
     this.saleForm = this.fb.group({
       customerName: '',
+      // customerId:'',
       saleOrderLines: this.fb.array([]),
       totalAmount: [{ value: 0, disabled: true }, Validators.required],
       amountPaid: [{ value: 0, disabled: !this.isCreditSale }],
@@ -319,11 +323,24 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   toggleSaleMode(): void {
     this.isCreditSale = !this.isCreditSale;
     if (this.isCreditSale) {
-      this.saleForm.get('amountPaid')?.enable();
+      this.saleForm.get('amountPaid')?.disable
     } else {
       this.saleForm.get('amountPaid')?.disable();
     }
   }
+  
+  openPaymentDialog(amount:any): void {
+    const dialogRef = this.dialog.open(PaymentDialogComponent, {
+      width: '350px',
+      data: {amount}
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Payment Confirmed:', result);
+        // Handle payment submission to API here
+      }
+    })}
 
   calculateBalance(): void {
     const totalAmount = this.saleForm.get('totalAmount')?.value || 0;
@@ -437,26 +454,26 @@ export class TransactionComponent implements OnInit, AfterViewInit {
         branchId:
           Number(this.selectedProducts.find((p) => p.branchId)?.branchId) || 0,
         saleOrderLines: this.selectedProducts.map((product) => ({
-          itemId: product.id, // Changed from item_id to match backend expectation
+          itemId: product.id, 
           quantity: Number(product.quantity),
           price: Number(product.sellingPrice),
           subTotal: Number(product.subTotal),
         })),
-        ...(this.isCreditSale && {
-          amountPaid: this.saleForm.value.amountPaid,
-        }),
+        saleType: this.isCreditSale ? 'CREDIT' : 'NORMAL', 
+        customerId: this.saleForm.value.customerId,
+        ...(this.isCreditSale && { amountPaid: this.saleForm.value.amountPaid }),
       };
-
+  
       console.log(
         'Sending sale transaction data to API:',
         JSON.stringify(saleData, null, 2)
       );
-
+    if(!this.isCreditSale){
       this.dashboardService.createSale(saleData).subscribe(
         () => {
           alert('Sale successfully created!');
           this.showProductTable = false;
-
+  
           this.saleForm.reset();
           this.saleOrderLines.clear();
           this.selectedProducts = [];
@@ -467,8 +484,12 @@ export class TransactionComponent implements OnInit, AfterViewInit {
           alert('Failed to create sale.');
         }
       );
+    }{
+      this.openPaymentDialog(saleData?.totalAmount);
+    }
     } else {
       this.showProductTable = true;
     }
   }
+  
 }

@@ -280,6 +280,19 @@ export const ROUTES: RouteInfo[] = [
   },
 
   {
+    path: '/dealer/dashboard/purchases',
+    title: 'Purchases',
+    moduleName: 'dashboard',
+    iconType: 'feather',
+    icon: 'dollar-sign',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: ['ADMIN'],
+    submenu: [],
+  },
+  {
     path: '/dealer/dashboard/newitem',
     title: 'Products',
     moduleName: 'dashboard',
@@ -371,19 +384,7 @@ export const ROUTES: RouteInfo[] = [
     role: ['ADMIN'],
     submenu: [],
   },
-  {
-    path: '/dealer/dashboard/purchases',
-    title: 'Purchases',
-    moduleName: 'dashboard',
-    iconType: 'feather',
-    icon: 'dollar-sign',
-    class: '',
-    groupTitle: false,
-    badge: '',
-    badgeClass: '',
-    role: ['ADMIN'],
-    submenu: [],
-  },
+  
   {
     path: '/dealer/dashboard/expenditure',
     title: 'Expenses',

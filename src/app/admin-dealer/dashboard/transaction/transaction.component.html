@@ -311,17 +311,20 @@
               type="submit"
               [disabled]="selectedProducts.length === 0"
             >
-              {{ isCreditSale ? "Submit Credit Sale" : "Submit Cash Sale" }}
+              {{ isCreditSale ? "Mpesa Sale" : "Submit Cash Sale" }}
             </button>
             <button
               mat-button
               [color]="isCreditSale ? 'primary' : 'warn'"
               (click)="toggleSaleMode()"
             >
-              {{ isCreditSale ? "Cash Sale" : "Credit Sale" }}
+              {{ isCreditSale ? "Cash Sale" : "Mpesa Sale" }}
             </button>
           </div>
         </form>
+        <div class="justify-content-end d-flex">
+           
+        </div>
       </div>
     </div>
   </div>
