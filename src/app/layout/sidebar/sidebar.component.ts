@@ -105,11 +105,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.currentUser = this.tokenStorageService.getUser();
-    const role = this.currentUser.user.role;
+    const role = this.currentUser.role;
 
     if (this.currentUser) {
-      let userRole = this.currentUser.user.role;
-      this.userFullName = this.currentUser.user.username;
+      let userRole = this.currentUser.role;
+      this.userFullName = this.currentUser.username;
       this.userImg = "assets/images/prof.png";
 
       this.sidebarItems = ROUTES.filter((x) => x.role.indexOf(userRole) !== -1);

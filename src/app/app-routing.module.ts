@@ -18,11 +18,11 @@ const routes: Routes = [
         path: "dealer",
         canActivate: [AuthGuard],
         data: {
-          role: Role.Admin,
+          roles: [Role.Admin, Role.STOREKEEPER, Role.CASHIER],
         },
         loadChildren: () =>
           import("./admin-dealer/dealer.module").then((m) => m.DealerModule),
-      },
+      },      
       // manager
       {
         path: "manager",

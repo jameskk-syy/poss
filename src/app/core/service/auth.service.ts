@@ -12,7 +12,7 @@ export class AuthService {
   
  PASSWORD_RESET_API = `${environment.apiUrl}/api/v1/reset/`;
  USERS_API = `${environment.apiUrl}/admin/api/v1/users/`;
- AUTH_API = `${environment.apiUrl}/api/v1/auth`;
+ AUTH_API = `${environment.apiUrl}`;
 
  httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -42,7 +42,7 @@ export class AuthService {
         if (response && response.token) {
           localStorage.setItem('jwtToken', response.token);
           
-          const user = { ...response.user, token: response.token };
+          const user = { ...response.payload, token: response.token };
           localStorage.setItem('currentUser', JSON.stringify(user));
         }
   

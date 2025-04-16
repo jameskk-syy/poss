@@ -22,6 +22,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { PaymentDialogComponent } from './payment-dialog/payment-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { NotificationService } from 'src/app/data/services/notification.service';
 
 @Component({
   selector: 'app-transaction',
@@ -49,46 +50,44 @@ export class TransactionComponent implements OnInit, AfterViewInit {
   @ViewChild('selectedProductsPaginator')
   selectedProductsPaginator: MatPaginator;
   @ViewChild('productsPaginator') productsPaginator: MatPaginator;
-
+  userForm!: FormGroup;
+  roles: string[] = ['ADMIN', 'CASHIER', 'STOREKEEPER'];
   constructor(
     private fb: FormBuilder,
     private dashboardService: DashboardService,
     private cdr: ChangeDetectorRef,
-    private dialog:MatDialog
+    private dialog:MatDialog,
+    private notificationApi:NotificationService
   ) {
-    this.saleForm = this.fb.group({
-      customerName: '',
-      // customerId:'',
-      saleOrderLines: this.fb.array([]),
-      totalAmount: [{ value: 0, disabled: true }, Validators.required],
-      amountPaid: [{ value: 0, disabled: !this.isCreditSale }],
+   
+  }
+  ngOnInit(): void {
+    this.userForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      role: ['', Validators.required]
     });
   }
 
-  ngOnInit(): void {
-    this.saleForm.get('totalAmount')?.valueChanges.subscribe((value) => {
-      this.totalAmountInWords = this.convertNumberToWords(value) + '';
-      this.calculateBalance();
-    });
-
-    this.saleForm.get('amountPaid')?.valueChanges.subscribe(() => {
-      this.calculateBalance();
-    });
-
-    // Setup search filtering
-    this.searchControl.valueChanges.subscribe((searchTerm) => {
-      this.applyFilter(searchTerm);
-    });
-
-    // Fetch Customers
-    this.dashboardService.getAllCustomers().subscribe((response: any) => {
-      this.customers = response;
-      console.log('Fetched Customers:', this.customers);
-      this.filteredCustomers = this.customerNameControl.valueChanges.pipe(
-        startWith(''),
-        map((value) => this.filterCustomers(value || ''))
+  onSubmit(): void {
+    if (this.userForm.valid) {
+      this.dashboardService.addUser(this.userForm.value).pipe().subscribe(
+        res => {
+          this.notificationApi.alertSuccess("user added successfully"); // Log response
+          alert(res.message);
+          this.userForm.reset();
+          // this.getProducts();
+          // this.isFormOpen = false;
+        },
+        err => {
+          console.error('Error adding item:', err); // Log full error
+          if (err.error) {
+            console.error("Backend Error Message:", err.error);
+          }
+        }
       );
-    });
+      
+    }
   }
 
   ngAfterViewInit() {

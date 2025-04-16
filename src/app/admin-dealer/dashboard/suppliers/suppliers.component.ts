@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.service';
+import { NotificationService } from 'src/app/data/services/notification.service';
+
 
 @Component({
   selector: 'app-suppliers',
@@ -19,23 +21,55 @@ export class SuppliersComponent implements OnInit, AfterViewInit {
   editingSupplierId: number | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  salesItemForm!: FormGroup;
+  constructor(private fb: FormBuilder, private dashboardService: DashboardService,
+    private notificationApi:NotificationService
+  ) {
 
-  constructor(private fb: FormBuilder, private dashboardService: DashboardService) {
-    this.newSupplier = this.fb.group({
-      supplierCode: ['', [Validators.required]],
-      supplierName: ['', [Validators.required]],
-      contactPerson: ['', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
-      emailAddress: ['', [Validators.required, Validators.email]],
-      physicalAddress: ['', [Validators.required]],
-      postalAddress: ['', [Validators.required]]
-    });
   }
 
   ngOnInit(): void {
-    this.getSuppliers();
+    this.salesItemForm = this.fb.group({
+      clientId:['',Validators.required],
+      itemId: [null, Validators.required],
+      itemName: ['', Validators.required],
+      itemBrand: [''],
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      price: [0.00, [Validators.required, Validators.min(0)]],
+      discount: [0.00, [Validators.min(0)]],
+      storeId: [null, Validators.required]
+    });
   }
 
+  onSubmit(): void {
+    if (this.salesItemForm.valid) {
+      const data = {
+        sellDate: Date.now(),
+        type: "CASH",
+        station: this.salesItemForm.controls.storeId.value,
+        salesItems: [  // 👈 wrap in array
+          {
+            itemName: this.salesItemForm.controls.itemName.value,
+            itemId: this.salesItemForm.controls.itemId.value
+          }
+        ]
+      };
+  
+      this.dashboardService.addSale(data, this.salesItemForm.controls.clientId.value).pipe().subscribe(
+        res => {
+          this.notificationApi.alertSuccess("sale added successfully");
+          alert(res.message);
+          this.salesItemForm.reset();
+        },
+        err => {
+          console.error('Error adding item:', err);
+          if (err.error) {
+            console.error("Backend Error Message:", err.error);
+          }
+        }
+      );
+    }
+  }
   ngAfterViewInit(): void {
     if (this.paginator) {
       this.dataSource.paginator = this.paginator;
@@ -69,16 +103,6 @@ export class SuppliersComponent implements OnInit, AfterViewInit {
     this.isFormOpen = !this.isFormOpen;
     if (!this.isFormOpen) {
       this.cancelEdit();
-    }
-  }
-
-  onSubmit(): void {
-    if (this.newSupplier.valid) {
-      if (this.isEditMode && this.editingSupplierId !== null) {
-        this.updateSupplier();
-      } else {
-        this.addSupplier();
-      }
     }
   }
 

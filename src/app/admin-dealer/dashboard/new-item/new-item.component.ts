@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.service';
+import { NotificationService } from 'src/app/data/services/notification.service';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -15,110 +16,45 @@ export class NewItemComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<any>();
   newItem: FormGroup;
   branches: any[] = [];
-  categories: any[] = [];
   suppliers: any[] = [];
   isEditMode = false;
+  productForm!: FormGroup;
   isFormOpen = false;
   editingItemId: number | null = null;
+  categories = [
+    { id: 10, name: 'Category A' },
+  ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private fb: FormBuilder, private dashboardService: DashboardService) {
-    this.newItem = this.fb.group({
-      name: ['', Validators.required],
-      description: [''],
-      regularBuyingPrice: ['', [Validators.required,Validators.min(0)]],
-      sellingPrice: ['', [Validators.required,, Validators.min(0)]],
-      maxPercentageDiscount: ['', [Validators.required]],
-      count: ['', [Validators.required, Validators.min(1)]],
-      branchId: [null, [Validators.required]], 
-      categoryId: [null, [Validators.required]],
-      supplierId: [null],
-      reorderLevel: [0],
-      hasVariants: [false],
-      variantOfId: [null],
-      image: [null],
-      itemID: ['', [Validators.required]],
-      docStatus: [false],
-      defaultUnitOfMeasure: ['', [Validators.required]],
-      endOfLife: [null],
-      disabled: [false],
-    },{updateOn: 'submit'});
+  constructor(private fb: FormBuilder, private dashboardService: DashboardService
+    ,private notificationApi:NotificationService
+  ) {
+  
   }
 
   ngOnInit(): void {
-    this.loadData();
+    this.productForm = this.fb.group({
+      id: [null],
+      name: ['', Validators.required],
+      itemCode: ['', Validators.required],
+      brand: [''],
+      description: [''],
+      category: [null, Validators.required],
+      purchasePrice: [0, [Validators.required, Validators.min(0)]],
+      sellingPrice: [0, [Validators.required, Validators.min(0)]],
+      tagId: [null],
+      averageDailySales: [0],
+      leadTime: [0],
+      safetyStock: [0],
+      stockAccount: [''],
+      salesAccount: ['']
+    });
   }
-
   ngAfterViewInit(): void {
     if (this.paginator) {
       this.dataSource.paginator = this.paginator;
     }
-  }
-
-  loadData(): void {
-    Promise.all([
-      this.getBranches(),
-      this.getSuppliers(),
-      this.getCategories()
-    ]).then(() => {
-      this.getProducts();
-    });
-  }
-
-  getBranches(): Promise<void> {
-    return new Promise((resolve) => {
-      this.dashboardService.getAllBranches().subscribe(
-        (response: any) => {
-          if (response && response.data) {
-            this.branches = response.data;
-          }
-          resolve();
-        },
-        (error) => {
-          console.error('Error fetching branches:', error);
-          resolve();
-        }
-      );
-    });
-  }
-
-  getSuppliers(): Promise<void> {
-    return new Promise((resolve) => {
-      this.dashboardService.getAllSuppliers().subscribe(
-        (response: any) => {
-          if (Array.isArray(response)) {
-            this.suppliers = response;
-          } else {
-            console.error("Unexpected API response structure:", response);
-          }
-          resolve();
-        },
-        (error) => {
-          console.error('Error fetching suppliers:', error);
-          resolve();
-        }
-      );
-    });
-  }
-
-  getCategories(): Promise<void> {
-    return new Promise((resolve) => {
-      this.dashboardService.getAllCategories().subscribe(
-        (response: any) => {
-          if (response && response.data) {
-            this.categories = response.data;
-          } else {
-            console.error("Unexpected API response structure:", response);
-          }
-          resolve();
-        },
-        (error) => {
-          console.error('Error fetching categories:', error);
-          resolve();
-        }
-      );
-    });
   }
 
   getProducts(): void {
@@ -145,21 +81,28 @@ export class NewItemComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
-    if (this.newItem.valid) {
-      const formData = { 
-        ...this.newItem.value, 
-        branchId: Number(this.newItem.value.branchId),
-        categoryId: Number(this.newItem.value.categoryId),
-        supplierId: Number(this.newItem.value.supplierId)
-      };
-      console.log("Form Data being sent:", formData); 
-      if (this.isEditMode && this.editingItemId !== null) {
-        this.updateItem(formData);
-      } else {
-        this.addItem();
-        console.log(formData)
+    if(this.productForm.valid){
+      const formData=this.productForm.value;
+      console.log("Submitting Payload:",formData); //logs payload bfr sending
+    
+    this.dashboardService.createItem(formData).subscribe(
+      res => {
+        console.log("This is the response:", res); // Log response
+        this.notificationApi.alertSuccess(res.message);
+        this.productForm.reset();
+        // this.getProducts();
+        // this.isFormOpen = false;
+      },
+      err => {
+        console.error('Error adding item:', err); // Log full error
+        if (err.error) {
+          console.error("Backend Error Message:", err.error);
+        }
       }
-    }
+    );
+  } else{
+    console.warn("Form is Invalid. Please check the inputs.",this.newItem.errors);
+  }
   }
 
   addItem(): void {

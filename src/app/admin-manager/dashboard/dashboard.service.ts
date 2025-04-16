@@ -7,6 +7,12 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class DashboardService {
+
+ 
+
+ 
+
+ 
   constructor(private http: HttpClient) {}
 
   deptsUrl = `${environment.apiUrl}/api/v1/department/`;
@@ -67,21 +73,86 @@ export class DashboardService {
       .post(url,data, this.getHttpOptions())
       .pipe(map((res) => res || []));
   }
+  addSale(value: any,id:any): Observable<any> {
+    const API_URL = `${environment.apiUrl}/api/V1/sales/sell/${id}?soldBy='gathiru'`;
+    return this.http.post(API_URL, value, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+        // Content-Type should NOT be set explicitly for multipart/form-data
+      }),
+    }).pipe(
+      map((res) => res || {}),
+      catchError((error) => {
+        console.error('Error creating item:', error);
+        return throwError(() => new Error(error.message || 'Failed to create item'));
+})
+);
+  }
+  addStore(data:any): Observable<any> {
+    const API_URL = `${environment.apiUrl}/api/V1/stores/add/store?postedBy='gathiru'`;
+    return this.http.post(API_URL, data, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+        // Content-Type should NOT be set explicitly for multipart/form-data
+      }),
+    }).pipe(
+      map((res) => res || {}),
+      catchError((error) => {
+        console.error('Error creating item:', error);
+        return throwError(() => new Error(error.message || 'Failed to create item'));
+})
+);
+  }
+  addClient(value: any): Observable<any> {
+    const API_URL = `${environment.apiUrl}/api/V1/clients/add-client?postedBy='gathiru'`;
+    return this.http.post(API_URL, value, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+        // Content-Type should NOT be set explicitly for multipart/form-data
+      }),
+    }).pipe(
+      map((res) => res || {}),
+      catchError((error) => {
+        console.error('Error creating item:', error);
+        return throwError(() => new Error(error.message || 'Failed to create item'));
+})
+);
+  }
+  addUser(value: any): Observable<any> {
+    const API_URL = `${environment.apiUrl}/register`;
+    return this.http.post(API_URL, value, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+        // Content-Type should NOT be set explicitly for multipart/form-data
+      }),
+    }).pipe(
+      map((res) => res || {}),
+      catchError((error) => {
+        console.error('Error creating item:', error);
+        return throwError(() => new Error(error.message || 'Failed to create item'));
+})
+);
+  }
+  addStock //   'Content-Type': 'multipart/form-data',
+  (value: any) : Observable<any> {
+    const API_URL = `${environment.apiUrl}/api/V1/stocks/add-stock?postedBy='gathiru'`;
+    return this.http.post(API_URL, value, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+        // Content-Type should NOT be set explicitly for multipart/form-data
+      }),
+    }).pipe(
+      map((res) => res || {}),
+      catchError((error) => {
+        console.error('Error creating item:', error);
+        return throwError(() => new Error(error.message || 'Failed to create item'));
+})
+);
+  }
 
   createItem(data: any): Observable<any> {
-    const API_URL = `${environment.apiUrl}/api/v1/items`;
-  
-    // Create FormData object to handle multipart form data
-    const formData = new FormData();
-    
-    // Append each property to the formData object
-    for (const key in data) {
-      if (data[key] !== null && data[key] !== undefined) {
-        formData.append(key, data[key]);
-      }
-    }
-  
-    return this.http.post(API_URL, formData, {
+    const API_URL = `${environment.apiUrl}/api/V1/items/add-item?postedBy='gathiru'`;
+    return this.http.post(API_URL, data, {
       headers: new HttpHeaders({
         Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
         // Content-Type should NOT be set explicitly for multipart/form-data
@@ -102,13 +173,13 @@ export class DashboardService {
 
 
   public getAllProducts(): Observable<any> {
-    const url = `${environment.apiUrl}/api/v1/items`;
+    const url = `${environment.apiUrl}/api/V1/items/all-items`;
     return this.http
       .get(url, this.getHttpOptions())
       .pipe(map((res) => res || []));
   }
   public getAllPurchases(): Observable<any> {
-    const url = `${environment.apiUrl}/api/v1/items`;
+    const url = `${environment.apiUrl}/api/V1/items/all-items`;
     return this.http
       .get(url, this.getHttpOptions())
       .pipe(map((res) => res || []));

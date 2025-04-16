@@ -10,7 +10,23 @@ import { DashboardService } from 'src/app/admin-manager/dashboard/dashboard.serv
 })
 export class AllItemsComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['position', 'name', 'description', 'count', 'actions'];
+  displayedColumns: string[] = [
+    'name',
+    'itemCode',
+    'brand',
+    'description',
+    'category',
+    'purchasePrice',
+    'sellingPrice',
+    'tagId',
+    'averageDailySales',
+    'leadTime',
+    'safetyStock',
+    'stockAccount',
+    'salesAccount',
+    'actions'
+  ];
+  
   dataSource = new MatTableDataSource<any>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -30,7 +46,7 @@ export class AllItemsComponent implements OnInit, AfterViewInit {
   getProducts(): void {
     this.dashboardService.getAllProducts().subscribe(
       (data: any) => {
-        this.dataSource.data = data;
+        this.dataSource.data = data.data;
       },
       (error) => {
         console.error('Error fetching products:', error);

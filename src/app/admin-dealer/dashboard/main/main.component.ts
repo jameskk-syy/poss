@@ -62,7 +62,7 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchData();
+    // this.fetchData();
     console.log('Data Source:', this.dataSource);
     console.log('data fetched:', this.salesData);
 

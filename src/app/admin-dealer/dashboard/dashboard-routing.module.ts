@@ -73,7 +73,7 @@ const routes: Routes = [
   },
   {
     path: "purchases",
-    component: PurchasesComponent,
+    component: AllItemsComponent,
   },
   {
     path: "expenditure",
